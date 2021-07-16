@@ -3,20 +3,97 @@
 \chapter{System identification}
 \label{chap:system_id}
 
+    \par
+    System identification is the process of creating mathematical models of a dynamical system by using input and output measurements of the system.
+    Two major approaches are used to represent the dynamics of such a system, resulting in white-box or black-box models.
+
+ 
+\section{Parameter estimation} 
+
+    \subsection{White-box models}
+
+        In white-box models the physics of a model are understood by the user.    
+        These models are therefore determined from first principles.
+        This can be done by modelling physical processes with techniques like Lagrangian mechanics or Newton equations.
+        In this case, the mathematical relations between physical properties are predefined in the modelling phase.
+        System identification is then reduced to parameter estimation to determine values for the parameters used in die model.
+        
+        \paragraph{} 
+        This is the approach used by \cite{erasmus} and \cite{slabber} for swing damping control of a quadrotor with an unknown suspended payload.
+        The system was modelled as two rigid bodies connected by a link and the following assumptions were made regarding the suspended payload:
+        \begin{itemize}
+            \item The payload is a point mass.
+            \item The link is massless.
+            \item The link is rigid.
+            \item The link is attached to the CoM of the quadrotor.
+        \end{itemize}
+        The only unknown parameters in the quadrotor and payload model is the payload mass and link length.
+        These parameters are first estimated and then inserted into the predefined, linearised model.
+        This model is used by a LQR controller to damp swing angles while also controlling the vehicle.
+
+        \paragraph{} 
+        The approach works well for systems with predictable dynamics, but it is not very adaptable.
+        The payload considered by \cite{erasmus} and \cite{slabber} is limited to a small rigid mass suspended from the quadrotor by a non-stretching cable. 
+        In this use case it was shown that a LQR controller successfully controls a quadrotor while minimising payload swing angles.
+        However, if a payload or cable is used that violates one of the modelling assumptions, the predefined model no longer accurately represent the system.
+        Since the controller is dependent on this model, the mismatch between the model and actual dynamics may result in undesirable controller behaviour.
 
 
-\section{Model based estimation}
+    Parameter estimation
 
-\subsection{Payload mass estimation}
-RLS
+    \subsection{Payload mass estimation}
+        RLS
 
-\subsection{Cable length estimation}
-FFT
+    \subsection{Cable length estimation}
+        The cable length is estimated from the measurement of natural frequency of the swinging payload.
+        As described by
+        \cite{bisgaard},
+        the natural frequency is given by:
+        \begin{equation} \label{eq:nat_freq}
+            \omega_n = \sqrt{ \frac{g}{l} \cdot \frac{m_q + m_p}{m_q}}
+        \end{equation}
+        The natural frequency is measured by performing a FFT on the payload swing angle response after a position step by the quadrotor.
+        The dominant frequency identified by the FFT during free swing is the natural frequency of the payload.
+        
+        \ref{fig:pos_step_angle}
+        shows the payload swing angle after the system is stimulated by a position step setpoint.
+        As shown in 
+        \ref{fig:pos_step_angle}
+        the first few seconds of the step response are not used in the FFT.
+        This is to minimise the effect of the quadrotor controllers on the swing angle frequency 
+        by excluding the transient response in the FFT.
 
-\section{Data-driven estimation}
-\subsection{DMD}
-\subsection{HAVOK}
-\subsection{SINDy}
-SINDy-PI and other similar rational function SINDy
-Continous system.
+        \ref{fig:pos_step_angle} 
+        shows the resulting amplitude spectrum of the payload swing angle response.
+        
+        Since $m_q$ and $g$ is known, and $m_p$ and $\omega_n$ has been estimated, $l$ can now be determined from
+        \ref{eq:nat_freq}
+        
+
+\section{Data-driven system identification}
+    \subsection{Black-box models}
+        In contrast to white-box models, black-box models do not require predefined mathematical relations between system parameters.
+        % The user only considers what goes into, and comes out of, the black-box.
+        % Something imagery about why it is called black box
+        No prior knowledge of the physics of the system are considered and no modelling assumptions are made.
+        Black-box techniques determine the mathematical relationship between inputs and outputs of a system based only on measurement data.
+        This is referred to as data-driven system identification.
+
+        \paragraph{}
+        Black-box models can be categorised as either non-linear or linear models.
+        Non-linear models are often more accurate than linear models because complex, real-world dynamics are better approximated by non-linear systems.
+        The dynamics of a quadrotor and suspended payload are also non-linear.
+        Examples of black box models with quadrotors and payloads in literature ???
+
+        \paragraph{}
+        However, non-linear models are inherently more complex than linear models. 
+        Controllers that use non-linear models are usually more computationally complex than those with linear models.
+        Control archetictures for quadrotors used in practical applications are mostly implemented on onboard hardware.
+        Therefore there is value in low-complexity, linear models since these may be simple enough to execute on low cost hardware.
+        trade-off between accuracy and complexity.
+        Non-linear models may require control implementations that are too computationally expensive and may not be practically realisable on the available hardware on a quadrotor.
+
+    \subsection{DMD}
+    \subsection{HAVOK}
+
 
