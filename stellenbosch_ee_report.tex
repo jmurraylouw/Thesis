@@ -36,21 +36,50 @@
 \def \numberline#1{\savenumberline{#1.}}
 
 % Figures
-\usepackage{graphicx}
+\usepackage{graphicx} % JPG, PNG, PDF images
+\usepackage{svg} % SVG images
 \usepackage{pdfpages}
+\usepackage{float}
 \usepackage{subcaption}
 \setlength{\abovecaptionskip}{7.5pt}  % spacing above and below captions
 \newcommand*{\WaterMark}[2][0.2\paperwidth]{\AddToShipoutPicture*{\AtTextCenter{\parbox[c]{0pt}{\makebox[0pt][c]{\includegraphics[width=#1]{#2}}}}}}
 
+% TikZ
+\usepackage{tikz}
+\usetikzlibrary{shapes, shadows, arrows, arrows.meta}
+\usetikzlibrary{fit}
+\usetikzlibrary{external}
+\tikzexternalize % activate!
+
+% Plots
+\usepackage{pgfplots} % plots
+\pgfplotsset{width=\columnwidth, compat=newest} % plot parameters
+\usepgfplotslibrary{units} % allows to enter the units nicely
+\usepgfplotslibrary{colorbrewer} % awesome colors
+
+% Color
+\usepackage{xcolor}
+\definecolor{light_blue}{RGB}{222,235,247}
+\definecolor{faded_red}{RGB}{203,24,29} % #CB181D
+
 % Mathematics
 \usepackage[cmex10]{amsmath}
+\usepackage{mathtools}
+\usepackage{bm}
 \usepackage{amssymb}
 \usepackage{cancel}
+\usepackage{siunitx} % SI Units
+\usepackage{tabstackengine}
+\newcolumntype{M}[1]{>{\centering\arraybackslash$}m{#1}<{$}} % Middle (don't clash with C from tabularx)
+\newlength{\mycolwd} % array column width
+\settowidth{\mycolwd}{$\bm{x}_{w+q-1}$} % "width" of largest element in array
+\stackMath
 \DeclareMathOperator*{\argmax}{arg\,max}
 \newcommand{\T}{^\top}
 \newcommand{\tr}{\textrm{tr}}
 \renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}
 \newcommand{\defeq}{\triangleq}
+\newcommand{\R}{\mathbb{R}}
 
 % Tables
 \usepackage{booktabs}
@@ -72,7 +101,7 @@
 \renewcommand{\sectionmark}[1]{\markright{\normalsize \thesection.\ #1}}
 \fancyhead[C]{\nouppercase{\textit{\rightmark}}}
 \fancyhead[RO]{\thepage}
- \fancyhead[LE]{\thepage}  % double-sided printing
+%\fancyhead[LE]{\thepage}  % double-sided printing
 \fancyfoot{}
 \setlength\headheight{14.5pt}
 \renewcommand{\headrulewidth}{0pt}
@@ -96,6 +125,7 @@
 % Bibliography
 \usepackage{cite}  % automatically reorder inline citations
 \bibliographystyle{IEEEtran}
+% \usepackage[hyphens]{url}
 
 % Fix titlesec issue
 \usepackage{etoolbox}
@@ -104,63 +134,17 @@
 \patchcmd{\ttlh@hang}{\noindent}{}{}{}
 \makeatother
 
-% Include packages
-% Figures and graphics
-\usepackage{graphicx} % JPG, PNG, PDF images
-\usepackage{svg} % SVG images
-\graphicspath{ {images/} }
-\usepackage{float}
-\usepackage{subcaption}
-
 % Itemize modifications
 \usepackage{enumitem}
 
-% Math
-\usepackage{amsmath, mathtools, bm}
-\usepackage{mathrsfs}
-\usepackage{siunitx} % SI Units
-\usepackage{tabstackengine}
-\stackMath
-\newcolumntype{C}[1]{>{\centering\arraybackslash$}m{#1}<{$}}
-\newlength{\mycolwd} % array column width
-\settowidth{\mycolwd}{$\bm{x}_{w+q-1}$} % "width" of largest element in array
-
-% TikZ
-\usepackage{tikz}
-\usetikzlibrary{shapes, shadows, arrows, arrows.meta}
-\usetikzlibrary{fit}
-\usetikzlibrary{external}
-\tikzexternalize % activate!
-
-% Plots
-\usepackage{pgfplots} % plots
-\pgfplotsset{width=\columnwidth, compat=newest} % plot parameters
-\usepgfplotslibrary{units} % allows to enter the units nicely
-\usepgfplotslibrary{colorbrewer} % awesome colors
-
-% Color
-\usepackage{xcolor}
-\definecolor{light_blue}{RGB}{222,235,247}
-\definecolor{faded_red}{RGB}{203,24,29} % #CB181D
-
-% Glossary
-\usepackage[acronym, nomain, nopostdot, nonumberlist, nogroupskip, toc, automake=false]{glossaries}
-\loadglsentries{glossary}
-
-% Bibliography
-\usepackage{natbib}
-% \bibliographystyle{ifacconf.bst}
-\usepackage[hyphens]{url}
-
 % Editing
 \usepackage{xcolor}
-\newcommand{\jmurraylouw}[1]{\textcolor{blue}{#1}}
+\newcommand{\murray}[1]{\textcolor{blue}{#1}}
 \newcommand{\willem}[1]{\textcolor{red}{#1}}
-\usepackage{amssymb}
-\newcommand{\R}{\mathbb{R}}
-% \usepackage[prependcaption,textsize=tiny]{todonotes}
-% \setlength{\marginparwidth}{1.2cm}
 
+% Glossary
+% \usepackage[acronym, nomain, nopostdot, nonumberlist, nogroupskip, toc, automake=false]{glossaries}
+%\loadglsentries{glossary}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}

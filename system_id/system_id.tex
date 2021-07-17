@@ -3,7 +3,7 @@
 \chapter{System identification}
 \label{chap:system_id}
 
-    \par
+    \paragraph{}
     System identification is the process of creating mathematical models of a dynamical system by using input and output measurements of the system.
     Two major approaches are used to represent the dynamics of such a system, resulting in white-box or black-box models.
 
@@ -101,114 +101,121 @@
         Non-linear data-driven techniques like Neural Networks and SINDy \cite{Brunton2016} may produce models that are more accurate, however they have greater computational complexity.
         DMDc and HAVOK are less computationally complex and their models are suitable for linear MPC, which is significantly faster than non-linear MPC.
         This is desirable for a RUAV use case, where onboard computational power is limited.
-%
+    
+    \subsection{System Identification Procedure}
+        ?? do correct numbering
+        1. Takeoff and hover 
+        2. Command a series of velocity step inputs with random step sizes and time intervals
+        3. Measure and save input and output data
+        4. Apply algorithm to data and generate model
+        
     \subsection{Dynamic Mode Decomposition with Control} \label{sec:dmdc}
+
+        \paragraph{}
+        DMD is a linear regression technique that is used here to approximate a non-linear dynamical system \cite{Tu2014}.
+        It only uses temporal measurements to reconstruct the system dynamics, with no prior modelling assumptions.
+        DMDc is an adaptation of DMD that also accounts for control \cite{Proctor2016}.
+
+        \paragraph{}
+        This section provides an overview of the specific implementation of DMDc used in this paper.
+        Note that this implementation is a slight adaptation of DMDc, and includes time-delay-embedding of multiple observables. 
+        \cite{Korda2018} and \cite{Arbabi2017} use time-delay-embedding in their DMD adaptions in similar ways.
+
+        \paragraph{}
+        Only the non-velocity observables,
+        $\bm{y} = \begin{bmatrix}
+            x_Q & z_Q & \theta & \beta
+        \end{bmatrix}^T$,
+        of the 2D RUAV and payload system are used in this implementation.
+        The algorithm produces a linear, discrete state-space model.
+        Therefore discrete instances, $\bm{y}_k$, of the continuous time observable, $\bm{y}(t)$, are used, where $\bm{y}_k = \bm{y}(k T_s)$, and $T_s$ is the sampling time of the model.    
+        Delay-coordinates (i.e. $\bm{y}_{k-1}, \bm{y}_{k-2}$, etc.) are also included in the state-space model.
+        Hence, we define an extended state vector as:
+        \begin{equation}
+            \bm{a}_{k} = \begin{bmatrix} \bm{y}_{k-(q-1)} & \cdots & & \bm{y}_{k-1} & & \bm{y}_{k} \end{bmatrix}^T ,
+        \end{equation}
+        where $\bm{a}_k \in \R^{(n_y)(q)}$, and the subscript of $\bm{a}$ denotes the highest subscript of ${\bm{y}}$ in the vector.
+        The state-space model is therefore defined as:
+        \begin{equation} \label{eq:dmd_state_space}
+            \bm{a}_{k+1} = \bm{A} \bm{a}_k + \bm{B} \bm{u}_k ,
+        \end{equation}
+        where \( \bm{u}_k \in \R^{n_u} \) is the input vector at the current time-step, 
+        \( \bm{A} \in \R^{(q \cdot n_y) \times (q \cdot n_y)} \) is the system matrix and \( \bm{B} \in \R^{(q \cdot n_y) \times n_u} \) is the input matrix.
+        The training data consists of discrete measurements, $\bm{y}_k$, and corresponding inputs, $\bm{u}_k$, taken at regular intervals of $\Delta t = T_s$, during a simulated flight. 
+        The training data is collected into the following matrices:
+        \begin{align} \label{eq:dmd_matrices}
+            \bm{X} \phantom{'} = & \left [
+                \begin{array}{*{5}{@{}M{\mycolwd}@{}}}
+                        \bm{y}_1 & \bm{y}_2 & \bm{y}_3 & \cdots & \bm{y}_{w} \\
+                        \bm{y}_2 & \bm{y}_3 & \bm{y}_4 & \cdots & \bm{y}_{w+1} \\
+                        \vdots   & \vdots   & \vdots   & \ddots & \vdots \\
+                        \bm{y}_{q} & \bm{y}_{q+1} & \bm{y}_{q+2} & \cdots & \bm{y}_{w+q-1}
+                \end{array}
+            \right ] , \nonumber \\
+            = & \phantom{.} \left [
+                \begin{array}{*{5}{@{}M{\mycolwd}@{}}}
+                        \bm{a}_{q} & \bm{a}_{q+1} & \bm{a}_{q+2} & \cdots & \bm{a}_{w+q-1}
+                \end{array}
+            \right ] , \nonumber \\[6pt]
+            \bm{X^\prime} = & \phantom{.} \left [
+                \begin{array}{*{5}{@{}M{\mycolwd}@{}}}
+                        \bm{a}_{q+1} & \bm{a}_{q+2} & \bm{a}_{q+3} & \cdots & \bm{a}_{w+q}
+                \end{array}
+            \right ] , \nonumber \\
+        \bm{\Upsilon} \phantom{'} = & \phantom{.} \left [
+                \begin{array}{*{5}{@{}M{\mycolwd}@{}}}
+                        \bm{u}_{q} & \bm{u}_{q+1} & \bm{u}_{q+2} & \cdots & \bm{u}_{w+q-1}
+                \end{array}
+            \right ] ,
+        \end{align}
+     
+        where $w$ is the number of columns in the matrices, 
+        $\bm{X^\prime}$ is the matrix $\bm{X}$ shifted forward by one time-step, 
+        and $\bm{\Upsilon}$ is a matrix of inputs.
+        Equation (\ref{eq:dmd_state_space}) can be combined with the matrices in Equation (\ref{eq:dmd_matrices}) to produce:
+        \begin{equation}
+            \bm{X^\prime} = \bm{A} \bm{X} + \bm{B} \bm{\Upsilon} .
+        \end{equation}
+        Note that the primary objective of DMDc is to determine the best fit $\bm{A}$ and $\bm{B}$ that approximates the observed process, given the data in $\bm{X}$, $\bm{X^\prime}$ and $\bm{\Upsilon}$ \cite{Proctor2016}.
+        In order to group the unknowns into a single matrix, Equation~(\ref{eq:dmd_state_space}) is manipulated into the form,
+        \begin{equation} \label{eq:G_Omega}
+            \bm{X^\prime} =   \begin{bmatrix} \bm{A} & \bm{B} \end{bmatrix}
+                        \begin{bmatrix} \bm{X} \\ \bm{\Upsilon} \end{bmatrix} 
+                    =   \bm{G \Omega} ,
+        \end{equation} 
+        where $\bm{\Omega}$ contains the state and control data, and $\bm{G}$ represents the system and input matrices. A SVD is preformed on $\bm{\Omega}$ resulting in:
+        \(
+            \bm{\Omega} = \bm{U} \bm{\Sigma} \bm{V}^T
+        \).
+        Often, only the first $p$ columns of $\bm{U}$ and $\bm{V}$ are required for a good approximation \cite{Brunton2017}, 
+        hence the SVD is used in the truncated form: 
+        \begin{equation} \label{eq:tilde_svd}
+            \bm{\Omega} \approx \Tilde{\bm{U}} \Tilde{\bm{\Sigma}} \Tilde{\bm{V}}^T ,
+        \end{equation}
+        where $\Tilde{ }$ represents rank-$p$ truncation.
+        In many cases, the truncated form results in better approximations from noisy measurements than the exact form, since the effect of measurement noise is mostly captured by the truncated columns of $\bm{U}$ and $\bm{V}$.
+        By truncating these columns, the influence of noise in the regression problem is reduced.
+    
+        \paragraph{}
+        Now, by combining (\ref{eq:tilde_svd}) with the over-constrained equality in (\ref{eq:G_Omega}), the least-squared solution, $\bm{G}$, can be found with:
+        \begin{equation}
+            \bm{G} \approx \bm{X^\prime} \Tilde{\bm{V}} \Tilde{\bm{\Sigma}}^{-1} \Tilde{\bm{U}} .
+        \end{equation}
+        $\bm{A}$ and $\bm{B}$ is obtained by breaking up $\bm{G}$ into two separate matrices:
+        \(
+            \bm{G} = \begin{bmatrix} \bm{A} & \bm{B} \end{bmatrix}.
+        \)
+         
+        Since the state vector, $\bm{a}$, includes delay-coordinates, some matrix entries are known a priori and are independent of the dynamics. For example, the values of $\bm{y}_{k}$ should be mapped from their position in $\bm{a}_k$ to specific indices in $\bm{a}_{k+1}$. Due to the least-squares fitting and coordinate transformation, DMDc will not produce these exact values in $\bm{A}$ and $\bm{B}$. By forcing each of these matrix entries to 1 or 0, the state-prediction performance of the model is improved.
+
+        \subsection{Hankel Alternative View Of Koopman}
 % 
-    \par
-    DMD is a linear regression technique that is used here to approximate a non-linear dynamical system \cite{Tu2014}.
-    It only uses temporal measurements to reconstruct the system dynamics, with no prior modelling assumptions.
-    DMDc is an adaptation of DMD that also accounts for control \cite{Proctor2016}.
-% 
-    \par
-    This section provides an overview of the specific implementation of DMDc used in this paper.
-    Note that this implementation is a slight adaptation of DMDc, and includes time-delay-embedding of multiple observables. 
-    \cite{Korda2018} and \cite{Arbabi2017} use time-delay-embedding in their DMD adaptions in similar ways.
-% 
-    \par
-    Only the non-velocity observables,
-    $\bm{y} = \begin{bmatrix}
-        x_Q & z_Q & \theta & \beta
-    \end{bmatrix}^T$,
-    of the \gls{2d} RUAV and payload system are used in this implementation.
-    The algorithm produces a linear, discrete state-space model.
-    Therefore discrete instances, $\bm{y}_k$, of the continuous time observable, $\bm{y}(t)$, are used, where $\bm{y}_k = \bm{y}(k T_s)$, and $T_s$ is the sampling time of the model.    
-    Delay-coordinates (i.e. $\bm{y}_{k-1}, \bm{y}_{k-2}$, etc.) are also included in the state-space model.
-    Hence, we define an extended state vector as:
-    \begin{equation}
-         \bm{a}_{k} = \begin{bmatrix} \bm{y}_{k-(q-1)} & \cdots & & \bm{y}_{k-1} & & \bm{y}_{k} \end{bmatrix}^T ,
-    \end{equation}
-    where $\bm{a}_k \in \R^{(n_y)(q)}$, and the subscript of $\bm{a}$ denotes the highest subscript of ${\bm{y}}$ in the vector.
-    The state-space model is therefore defined as:
-    \begin{equation} \label{eq:dmd_state_space}
-        \bm{a}_{k+1} = \bm{A} \bm{a}_k + \bm{B} \bm{u}_k ,
-    \end{equation}
-    where \( \bm{u}_k \in \R^{n_u} \) is the input vector at the current time-step, 
-    \( \bm{A} \in \R^{(q \cdot n_y) \times (q \cdot n_y)} \) is the system matrix and \( \bm{B} \in \R^{(q \cdot n_y) \times n_u} \) is the input matrix.
-    The training data consists of discrete measurements, $\bm{y}_k$, and corresponding inputs, $\bm{u}_k$, taken at regular intervals of $\Delta t = T_s$, during a simulated flight. 
-    The training data is collected into the following matrices:
-    \begin{align} \label{eq:dmd_matrices}
-        \bm{X} \phantom{'} = & \left [
-            \begin{array}{*{5}{@{}C{\mycolwd}@{}}}
-                    \bm{y}_1 & \bm{y}_2 & \bm{y}_3 & \cdots & \bm{y}_{w} \\
-                    \bm{y}_2 & \bm{y}_3 & \bm{y}_4 & \cdots & \bm{y}_{w+1} \\
-                    \vdots   & \vdots   & \vdots   & \ddots & \vdots \\
-                    \bm{y}_{q} & \bm{y}_{q+1} & \bm{y}_{q+2} & \cdots & \bm{y}_{w+q-1}
-            \end{array}
-        \right ] , \nonumber \\
-        = & \phantom{.} \left [
-            \begin{array}{*{5}{@{}C{\mycolwd}@{}}}
-                    \bm{a}_{q} & \bm{a}_{q+1} & \bm{a}_{q+2} & \cdots & \bm{a}_{w+q-1}
-            \end{array}
-        \right ] , \nonumber \\[6pt]
-        \bm{X^\prime} = & \phantom{.} \left [
-            \begin{array}{*{5}{@{}C{\mycolwd}@{}}}
-                    \bm{a}_{q+1} & \bm{a}_{q+2} & \bm{a}_{q+3} & \cdots & \bm{a}_{w+q}
-            \end{array}
-        \right ] , \nonumber \\
-       \bm{\Upsilon} \phantom{'} = & \phantom{.} \left [
-            \begin{array}{*{5}{@{}C{\mycolwd}@{}}}
-                    \bm{u}_{q} & \bm{u}_{q+1} & \bm{u}_{q+2} & \cdots & \bm{u}_{w+q-1}
-            \end{array}
-        \right ] ,
-    \end{align}
-% 
-    where $w$ is the number of columns in the matrices, 
-    $\bm{X^\prime}$ is the matrix $\bm{X}$ shifted forward by one time-step, 
-    and $\bm{\Upsilon}$ is a matrix of inputs.
-    Equation (\ref{eq:dmd_state_space}) can be combined with the matrices in Equation (\ref{eq:dmd_matrices}) to produce:
-    \begin{equation}
-        \bm{X^\prime} = \bm{A} \bm{X} + \bm{B} \bm{\Upsilon} .
-    \end{equation}
-    Note that the primary objective of DMDc is to determine the best fit $\bm{A}$ and $\bm{B}$ that approximates the observed process, given the data in $\bm{X}$, $\bm{X^\prime}$ and $\bm{\Upsilon}$ \cite{Proctor2016}.
-    In order to group the unknowns into a single matrix, Equation~(\ref{eq:dmd_state_space}) is manipulated into the form,
-    \begin{equation} \label{eq:G_Omega}
-        \bm{X^\prime} =   \begin{bmatrix} \bm{A} & \bm{B} \end{bmatrix}
-                    \begin{bmatrix} \bm{X} \\ \bm{\Upsilon} \end{bmatrix} 
-                =   \bm{G \Omega} ,
-    \end{equation} 
-    where $\bm{\Omega}$ contains the state and control data, and $\bm{G}$ represents the system and input matrices. A SVD is preformed on $\bm{\Omega}$ resulting in:
-    \(
-        \bm{\Omega} = \bm{U} \bm{\Sigma} \bm{V}^T
-    \).
-    Often, only the first $p$ columns of $\bm{U}$ and $\bm{V}$ are required for a good approximation \cite{Brunton2017}, 
-    hence the SVD is used in the truncated form: 
-    \begin{equation} \label{eq:tilde_svd}
-        \bm{\Omega} \approx \Tilde{\bm{U}} \Tilde{\bm{\Sigma}} \Tilde{\bm{V}}^T ,
-    \end{equation}
-    where $\Tilde{ }$ represents rank-$p$ truncation.
-    In many cases, the truncated form results in better approximations from noisy measurements than the exact form, since the effect of measurement noise is mostly captured by the truncated columns of $\bm{U}$ and $\bm{V}$.
-    By truncating these columns, the influence of noise in the regression problem is reduced.
-% 
-    \par
-    Now, by combining (\ref{eq:tilde_svd}) with the over-constrained equality in (\ref{eq:G_Omega}), the least-squared solution, $\bm{G}$, can be found with:
-    \begin{equation}
-        \bm{G} \approx \bm{X^\prime} \Tilde{\bm{V}} \Tilde{\bm{\Sigma}}^{-1} \Tilde{\bm{U}} .
-    \end{equation}
-    $\bm{A}$ and $\bm{B}$ is obtained by breaking up $\bm{G}$ into two separate matrices:
-    \(
-        \bm{G} = \begin{bmatrix} \bm{A} & \bm{B} \end{bmatrix}.
-    \)
-    % 
-    Since the state vector, $\bm{a}$, includes delay-coordinates, some matrix entries are known a priori and are independent of the dynamics. For example, the values of $\bm{y}_{k}$ should be mapped from their position in $\bm{a}_k$ to specific indices in $\bm{a}_{k+1}$. Due to the least-squares fitting and coordinate transformation, DMDc will not produce these exact values in $\bm{A}$ and $\bm{B}$. By forcing each of these matrix entries to 1 or 0, the state-prediction performance of the model is improved.
-%===============================================================================
-    \subsection{Hankel Alternative View Of Koopman}
-% 
-    \par
+    \paragraph{}
     HAVOK is a data-driven, regression technique that provides a connection between DMD and Koopman operator theory \cite{Brunton2017, Champion2019}. 
     We have adapted the standard HAVOK algorithm slightly to account for the effect of control and to extract a discrete, linear model that approximates the behaviour of a controlled dynamical system.
     In this section, a brief overview is provided for this implementation and expansion of \mbox{HAVOK}.
     % 
-    \par
+    \paragraph{}
     The extracted discrete state-space model is defined as:
     \begin{equation} \label{eq:havoc_state_space}
         \bm{a}_{k+1} = \Tilde{\bm{A}} \bm{a}_k + \Tilde{\bm{B}} \bm{u}_k ,
@@ -218,12 +225,12 @@
     and \( \Tilde{\bm{B}} \in \R^{(q \cdot n_y) \times n_u} \) is the input matrix. 
     Here, $\Tilde{\phantom{a}}$ is used to differentiate these matrices from $\bm{A}$ and $\bm{B}$ used in DMDc.
     % 
-    \par
+    \paragraph{}
     The original HAVOK algorithm, developed by \cite{Brunton2017}, constructs a Hankel matrix from output variables only. 
     In order to incorporate the effect of control, an extended Hankel matrix, $\bm{\Pi}$, is created by appending a matrix of inputs to a Hankel matrix of measurements:
     \begin{equation} \label{eq:pi_hankel}
         \bm{\Pi} = \phantom{.} \left [
-            \begin{array}{*{5}{@{}C{\mycolwd}@{}}}
+            \begin{array}{*{5}{@{}M{\mycolwd}@{}}}
                     \bm{a}_{q} & \bm{a}_{q+1} & \bm{a}_{q+2} & \cdots & \bm{a}_{w+q-1} \\
                     \bm{u}_{q} & \bm{u}_{q+1} & \bm{u}_{q+2} & \cdots & \bm{u}_{w+q-1}
             \end{array}
@@ -238,7 +245,7 @@
     It is important to note that the model extracted by HAVOK depends on the choice of hyperparameters, $p$ and $q$.
     The number of samples in the training data, $N_{train} = w + q -1$, also influences the accuracy of the model.
     % 
-    \par
+    \paragraph{}
     The columns of $\Tilde{\bm{V}}$ are the most significant principal components of the system dynamics \cite{Kamb2020}.
     This matrix, $\Tilde{\bm{V}}$, can be considered to contain a time-series of the pseudo-state, $\bm{v}$, such that
     \(
@@ -257,12 +264,12 @@
     So, in order to setup an over-determined equality for (\ref{eq:v_ss}), $\Tilde{\bm{V}}^T$ is divided into two matrices:
     \begin{align} \label{eq:v1v2}
         \bm{V}_1 &= \left [
-            \begin{array}{*{5}{@{}C{\mycolwd}@{}}} 
+            \begin{array}{*{5}{@{}M{\mycolwd}@{}}} 
                 \bm{v}_{q \phantom{-1}}     & \bm{v}_{q+1} & ... & \bm{v}_{w-1} \\
             \end{array} 
         \right ] , \nonumber \\ 
         \bm{V}_2 &= \left [
-            \begin{array}{*{5}{@{}C{\mycolwd}@{}}} 
+            \begin{array}{*{5}{@{}M{\mycolwd}@{}}} 
                 \bm{v}_{q+1}     & \bm{v}_{q+2} & ... & \bm{v}_{w \phantom{-1}} \\
             \end{array} 
         \right ] ,
@@ -314,6 +321,5 @@
     Note that the matrix entries in Equation (\ref{matrix_decomp}) that map $\bm{u}_k$ to $\bm{u}_{k+1}$ are meaningless for our purposes and are discarded.
     Similarly to DMDc, some matrix entries in $\Tilde{\bm{A}}$ and $\Tilde{\bm{B}}$ are known a priori due to the relative positions of delay coordinates. These are forced to 1 or 0 to improve the prediction performance of the model.
 
-    \subsection{HAVOK}
 
 
