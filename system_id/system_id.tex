@@ -190,42 +190,62 @@
                 \bm{x}_{k-1} & \bm{x}_{k-2} & \cdots & \bm{x}_{k-q}
             \end{bmatrix}^T ,
         \end{equation}
-        $\bm{d}_k \in \R^{(n_x)(q)}$ and where $q$ is the number of delay-coordinates included in the model.
-
-        \murray{q = number of delays from here up}
+        $\bm{d}_k \in \R^{(n_x)(q)}$ and where $q$ is the number of delay-coordinates used in the model.
+        
         \paragraph{}
         The discrete state-space model is therefore defined as:
         \begin{equation} \label{eq:dmd_state_space}
-            \bm{x}_{k+1} = \bm{A} \bm{x}_k + \bm{A}_1 \bm{d}_k + \bm{B} \bm{u}_k ,
+            \bm{x}_{k+1} = \bm{A} \bm{x}_k + \bm{A}_d \bm{d}_k + \bm{B} \bm{u}_k ,
         \end{equation}
         \( \bm{A} \in \R^{n_x \times n_x} \) is the system matrix, 
         \( \bm{A}_1 \in \R^{(q \cdot n_x) \times (q \cdot n_x)} \) is the state delay system matrix and 
         \( \bm{B} \in \R^{n_x \times n_u} \) is the input matrix.
+        \murray{q = number of delays from here up}
         
-        \paragraph{}
+        \paragraph{Training data}
         The training data consists of full-state measurements, $\bm{x}_k$, and corresponding inputs, $\bm{u}_k$, 
-        taken at regular intervals of $\Delta t = T_s$, during a simulated flight. 
+        taken at regular intervals of $\Delta t = T_s$, during a simulated flight with Cascaded PID control.
+        In a practical flight, these time-series measurements need to be saved in memory because it is usd as a single batch by DMD.
+        Note that DMD can be applied in a recursive manner as described in \cite{Noack2016}, 
+        However this implementation is not considered because memory size will not be a limitation since a companion computer will be used.
+        
+        \paragraph{Steps and intervals}
+        For the training period, different velocity step inputs are commanded with varying time intervals between step commands.
+        A algorithm schedules these velocity step commands, by assigning random step values and time-intervals within a specified range.
+        The velocity range is determined in simulation by iteratively increasing the maximum velocity step 
+        to a safe value where the quadrotor and payload system remain in stable flight.
+        The maximum time-interval is set to a value that allows the payload swing to reach a steady-state condition.
+        This ensures that the identified model includes transient and steady-state dynamics.
+
+        \paragraph{Why velocity steps?}
+        Velocity step commands are used in the training period because this 
+        Frequency decomposition stimulates the system for a large range of frequencies.
+        
+        \paragraph{Matrices}
         The training data is collected into the following matrices:
         \begin{align} \label{eq:dmd_matrices}
-            \bm{X} \phantom{'} = & \left [
-                \begin{array}{*{5}{@{}M{\mycolwd}@{}}}
-                        \bm{x}_1 & \bm{x}_2 & \bm{x}_3 & \cdots & \bm{x}_{w} \\
-                        \bm{x}_2 & \bm{x}_3 & \bm{x}_4 & \cdots & \bm{x}_{w+1} \\
-                        \vdots   & \vdots   & \vdots   & \ddots & \vdots \\
-                        \bm{x}_{q} & \bm{x}_{q+1} & \bm{x}_{q+2} & \cdots & \bm{x}_{w+q-1}
-                \end{array}
-            \right ] , \nonumber \\
-            = & \phantom{.} \left [
-                \begin{array}{*{5}{@{}M{\mycolwd}@{}}}
-                        \bm{a}_{q} & \bm{a}_{q+1} & \bm{a}_{q+2} & \cdots & \bm{a}_{w+q-1}
-                \end{array}
-            \right ] , \nonumber \\[6pt]
             \bm{X^\prime} = & \phantom{.} \left [
                 \begin{array}{*{5}{@{}M{\mycolwd}@{}}}
-                        \bm{a}_{q+1} & \bm{a}_{q+2} & \bm{a}_{q+3} & \cdots & \bm{a}_{w+q}
+                        \bm{x}_{q+2} & \bm{x}_{q+3} & \bm{x}_{q+4} & \cdots & \bm{x}_{w+q+1}
                 \end{array}
             \right ] , \nonumber \\
-        \bm{\Upsilon} \phantom{'} = & \phantom{.} \left [
+            %
+            \bm{X} \phantom{''} = & \phantom{.} \left [
+                \begin{array}{*{5}{@{}M{\mycolwd}@{}}}
+                    \bm{x}_{q+1} & \bm{x}_{q+2} & \bm{x}_{q+3} & \cdots & \bm{x}_{w+q}                      
+                \end{array}
+            \right ] , \nonumber \\
+            % 
+            \bm{X}_d \phantom{'} = & \phantom{'} \left [
+                \begin{array}{*{5}{@{}M{\mycolwd}@{}}}
+                    \bm{x}_{q} & \bm{x}_{q+1} & \bm{x}_{q+2} & \cdots & \bm{x}_{w+q-1} \\
+                    \vdots   & \vdots   & \vdots   & \ddots & \vdots \\
+                    \bm{x}_2 & \bm{x}_3 & \bm{x}_4 & \cdots & \bm{x}_{w+1} \\
+                    \bm{x}_1 & \bm{x}_2 & \bm{x}_3 & \cdots & \bm{x}_{w} \\                       
+                \end{array}
+            \right ] , \nonumber \\
+            % 
+            \bm{\Upsilon} \phantom{'} = & \phantom{.} \left [
                 \begin{array}{*{5}{@{}M{\mycolwd}@{}}}
                         \bm{u}_{q} & \bm{u}_{q+1} & \bm{u}_{q+2} & \cdots & \bm{u}_{w+q-1}
                 \end{array}
@@ -234,43 +254,52 @@
      
         where $w$ is the number of columns in the matrices, 
         $\bm{X^\prime}$ is the matrix $\bm{X}$ shifted forward by one time-step, 
-        and $\bm{\Upsilon}$ is a matrix of inputs.
+        $\bm{X}_d$ is the matrix with delay states, 
+        and $\bm{\Upsilon}$ is the matrix of inputs.
         Equation (\ref{eq:dmd_state_space}) can be combined with the matrices in Equation (\ref{eq:dmd_matrices}) to produce:
         \begin{equation}
-            \bm{X^\prime} = \bm{A} \bm{X} + \bm{B} \bm{\Upsilon} .
+            \bm{X^\prime} = \bm{A} \bm{X} + \bm{A}_d \bm{X}_d + \bm{B} \bm{\Upsilon} .
         \end{equation}
-        Note that the primary objective of DMDc is to determine the best fit $\bm{A}$ and $\bm{B}$ that approximates the observed process, given the data in $\bm{X}$, $\bm{X^\prime}$ and $\bm{\Upsilon}$ \cite{Proctor2016}.
-        In order to group the unknowns into a single matrix, Equation~(\ref{eq:dmd_state_space}) is manipulated into the form,
+        Note that the primary objective of DMDc is to determine the best fit $\bm{A}$, $\bm{A}_d$ and $\bm{B}$ to approximates the observed process, 
+        given the data in $\bm{X^\prime}$, $\bm{X}$, $\bm{X}_d$, and $\bm{\Upsilon}$ \cite{Proctor2016c}.
+        In order to group the unknowns into a single matrix, (\ref{eq:dmd_state_space}) is manipulated into the form,
         \begin{equation} \label{eq:G_Omega}
-            \bm{X^\prime} =   \begin{bmatrix} \bm{A} & \bm{B} \end{bmatrix}
-                        \begin{bmatrix} \bm{X} \\ \bm{\Upsilon} \end{bmatrix} 
-                    =   \bm{G \Omega} ,
+            \bm{X^\prime} =   
+            \begin{bmatrix} 
+                \bm{A} & \bm{A}_d & \bm{B} 
+            \end{bmatrix}
+            \begin{bmatrix} 
+                \bm{X} \\ \bm{X}_d \\ \bm{\Upsilon} 
+            \end{bmatrix} 
+            = \bm{G \Omega} ,
         \end{equation} 
-        where $\bm{\Omega}$ contains the state and control data, and $\bm{G}$ represents the system and input matrices. A SVD is preformed on $\bm{\Omega}$ resulting in:
+        where $\bm{\Omega}$ contains the state and control data, and $\bm{G}$ represents the system and input matrices.
+        A SVD is preformed on $\bm{\Omega}$ resulting in:
         \(
             \bm{\Omega} = \bm{U} \bm{\Sigma} \bm{V}^T
         \).
-        Often, only the first $p$ columns of $\bm{U}$ and $\bm{V}$ are required for a good approximation \cite{Brunton2017}, 
+        Often, only the first $p$ columns of $\bm{U}$ and $\bm{V}$ are required for a good approximation of the dynamics \cite{Brunton2017}.
+        In many cases, the truncated form results in better models than the exact form when noisy measurements are used.
+        This is because the effect of measurement noise is mostly captured by the truncated columns of $\bm{U}$ and $\bm{V}$.
+        By truncating these columns, the influence of noise in the regression problem is reduced. \murray{explain this better}
         hence the SVD is used in the truncated form: 
         \begin{equation} \label{eq:tilde_svd}
             \bm{\Omega} \approx \Tilde{\bm{U}} \Tilde{\bm{\Sigma}} \Tilde{\bm{V}}^T ,
         \end{equation}
-        where $\Tilde{ }$ represents rank-$p$ truncation.
-        In many cases, the truncated form results in better approximations from noisy measurements than the exact form, since the effect of measurement noise is mostly captured by the truncated columns of $\bm{U}$ and $\bm{V}$.
-        By truncating these columns, the influence of noise in the regression problem is reduced.
+        where $\phantom{.} \Tilde{ } \phantom{.}$ represents rank-$p$ truncation.
+        \murray{maybe insert colour pictures showing matrices}        
     
         \paragraph{}
-        Now, by combining (\ref{eq:tilde_svd}) with the over-constrained equality in (\ref{eq:G_Omega}), the least-squared solution, $\bm{G}$, can be found with:
+        By combining (\ref{eq:tilde_svd}) with the over-constrained equality in (\ref{eq:G_Omega}), 
+        the least-squared solution, $\bm{G}$, can be found with:
         \begin{equation}
             \bm{G} \approx \bm{X^\prime} \Tilde{\bm{V}} \Tilde{\bm{\Sigma}}^{-1} \Tilde{\bm{U}} .
         \end{equation}
-        $\bm{A}$ and $\bm{B}$ is obtained by breaking up $\bm{G}$ into two separate matrices:
+        According to \ref{eq:G_Omega}, $\bm{G}$ can now be seperated into:
         \(
-            \bm{G} = \begin{bmatrix} \bm{A} & \bm{B} \end{bmatrix}.
+            \bm{G} = \begin{bmatrix} \bm{A} & \bm{A}_d & \bm{B} \end{bmatrix}.
         \)
-         
-        Since the state vector, $\bm{a}$, includes delay-coordinates, some matrix entries are known a priori and are independent of the dynamics. For example, the values of $\bm{x}_{k}$ should be mapped from their position in $\bm{a}_k$ to specific indices in $\bm{a}_{k+1}$. Due to the least-squares fitting and coordinate transformation, DMDc will not produce these exact values in $\bm{A}$ and $\bm{B}$. By forcing each of these matrix entries to 1 or 0, the state-prediction performance of the model is improved.
-
+        
         \subsection{Hankel Alternative View Of Koopman}
 % 
     \paragraph{}
@@ -381,8 +410,14 @@
     %     \label{fig:lambda_decomp}
     % \end{figure}
     % 
-    Note that the matrix entries in Equation (\ref{matrix_decomp}) that map $\bm{u}_k$ to $\bm{u}_{k+1}$ are meaningless for our purposes and are discarded.
+    Note that the matrix entries in (\ref{matrix_decomp}) that map $\bm{u}_k$ to $\bm{u}_{k+1}$ are meaningless for our purposes and are discarded.
     Similarly to DMDc, some matrix entries in $\Tilde{\bm{A}}$ and $\Tilde{\bm{B}}$ are known a priori due to the relative positions of delay coordinates. These are forced to 1 or 0 to improve the prediction performance of the model.
+    
+    \murray{merge these paragraphs}
+    Since the state vector, $\bm{a}$, includes delay-coordinates, some matrix entries are known a priori and are independent of the dynamics. 
+    For example, the values of $\bm{x}_{k}$ should be mapped from their position in $\bm{a}_k$ to specific indices in $\bm{a}_{k+1}$. 
+    Due to the least-squares fitting and coordinate transformation, DMDc will not produce these exact values in $\bm{A}$ and $\bm{B}$. 
+    By forcing each of these matrix entries to 1 or 0, the state-prediction performance of the model is improved.
 
 
 
