@@ -96,24 +96,23 @@
         trade-off between accuracy and complexity.
         Non-linear models may require control implementations that are too computationally expensive and may not be practically realisable on the available hardware on a quadrotor.
 
-    \subsection{DMD}
-    \gls{dmdc} and \gls{havok} are the two data-driven system identification methods investigated in this paper. 
-    These are linear regression techniques that produce a linear model to approximate non-linear dynamics.
-    Non-linear data-driven techniques like Neural Networks and \gls{sindy} \citep{Brunton2016} may produce models that are more accurate, however they have greater computational complexity.
-    \gls{dmdc} and \gls{havok} are less computationally complex and their models are suitable for linear MPC, which is significantly faster than non-linear MPC.
-    This is desirable for a \gls{ruav} use case, where onboard computational power is limited.
+        DMDc and HAVOK are the two data-driven system identification methods investigated in this paper. 
+        These are linear regression techniques that produce a linear model to approximate non-linear dynamics.
+        Non-linear data-driven techniques like Neural Networks and SINDy \cite{Brunton2016} may produce models that are more accurate, however they have greater computational complexity.
+        DMDc and HAVOK are less computationally complex and their models are suitable for linear MPC, which is significantly faster than non-linear MPC.
+        This is desirable for a RUAV use case, where onboard computational power is limited.
 %
     \subsection{Dynamic Mode Decomposition with Control} \label{sec:dmdc}
 % 
     \par
-    \gls{dmd} is a linear regression technique that is used here to approximate a non-linear dynamical system \citep{Tu2014}.
+    DMD is a linear regression technique that is used here to approximate a non-linear dynamical system \cite{Tu2014}.
     It only uses temporal measurements to reconstruct the system dynamics, with no prior modelling assumptions.
-    \gls{dmdc} is an adaptation of \gls{dmd} that also accounts for control \citep{Proctor2016}.
+    DMDc is an adaptation of DMD that also accounts for control \cite{Proctor2016}.
 % 
     \par
-    This section provides an overview of the specific implementation of \gls{dmdc} used in this paper.
-    Note that this implementation is a slight adaptation of \gls{dmdc}, and includes time-delay-embedding of multiple observables. 
-    \citet{Korda2018} and \citet{Arbabi2017} use time-delay-embedding in their \gls{dmd} adaptions in similar ways.
+    This section provides an overview of the specific implementation of DMDc used in this paper.
+    Note that this implementation is a slight adaptation of DMDc, and includes time-delay-embedding of multiple observables. 
+    \cite{Korda2018} and \cite{Arbabi2017} use time-delay-embedding in their DMD adaptions in similar ways.
 % 
     \par
     Only the non-velocity observables,
@@ -170,19 +169,19 @@
     \begin{equation}
         \bm{X^\prime} = \bm{A} \bm{X} + \bm{B} \bm{\Upsilon} .
     \end{equation}
-    Note that the primary objective of \gls{dmdc} is to determine the best fit $\bm{A}$ and $\bm{B}$ that approximates the observed process, given the data in $\bm{X}$, $\bm{X^\prime}$ and $\bm{\Upsilon}$ \citep{Proctor2016}.
+    Note that the primary objective of DMDc is to determine the best fit $\bm{A}$ and $\bm{B}$ that approximates the observed process, given the data in $\bm{X}$, $\bm{X^\prime}$ and $\bm{\Upsilon}$ \cite{Proctor2016}.
     In order to group the unknowns into a single matrix, Equation~(\ref{eq:dmd_state_space}) is manipulated into the form,
     \begin{equation} \label{eq:G_Omega}
         \bm{X^\prime} =   \begin{bmatrix} \bm{A} & \bm{B} \end{bmatrix}
                     \begin{bmatrix} \bm{X} \\ \bm{\Upsilon} \end{bmatrix} 
                 =   \bm{G \Omega} ,
     \end{equation} 
-    where $\bm{\Omega}$ contains the state and control data, and $\bm{G}$ represents the system and input matrices. A \gls{svd} is preformed on $\bm{\Omega}$ resulting in:
+    where $\bm{\Omega}$ contains the state and control data, and $\bm{G}$ represents the system and input matrices. A SVD is preformed on $\bm{\Omega}$ resulting in:
     \(
         \bm{\Omega} = \bm{U} \bm{\Sigma} \bm{V}^T
     \).
-    Often, only the first $p$ columns of $\bm{U}$ and $\bm{V}$ are required for a good approximation \citep{Brunton2017}, 
-    hence the \gls{svd} is used in the truncated form: 
+    Often, only the first $p$ columns of $\bm{U}$ and $\bm{V}$ are required for a good approximation \cite{Brunton2017}, 
+    hence the SVD is used in the truncated form: 
     \begin{equation} \label{eq:tilde_svd}
         \bm{\Omega} \approx \Tilde{\bm{U}} \Tilde{\bm{\Sigma}} \Tilde{\bm{V}}^T ,
     \end{equation}
@@ -200,14 +199,14 @@
         \bm{G} = \begin{bmatrix} \bm{A} & \bm{B} \end{bmatrix}.
     \)
     % 
-    Since the state vector, $\bm{a}$, includes delay-coordinates, some matrix entries are known a priori and are independent of the dynamics. For example, the values of $\bm{y}_{k}$ should be mapped from their position in $\bm{a}_k$ to specific indices in $\bm{a}_{k+1}$. Due to the least-squares fitting and coordinate transformation, \gls{dmdc} will not produce these exact values in $\bm{A}$ and $\bm{B}$. By forcing each of these matrix entries to 1 or 0, the state-prediction performance of the model is improved.
+    Since the state vector, $\bm{a}$, includes delay-coordinates, some matrix entries are known a priori and are independent of the dynamics. For example, the values of $\bm{y}_{k}$ should be mapped from their position in $\bm{a}_k$ to specific indices in $\bm{a}_{k+1}$. Due to the least-squares fitting and coordinate transformation, DMDc will not produce these exact values in $\bm{A}$ and $\bm{B}$. By forcing each of these matrix entries to 1 or 0, the state-prediction performance of the model is improved.
 %===============================================================================
     \subsection{Hankel Alternative View Of Koopman}
 % 
     \par
-    \gls{havok} is a data-driven, regression technique that provides a connection between DMD and Koopman operator theory \citep{Brunton2017, Champion2019}. 
-    We have adapted the standard \gls{havok} algorithm slightly to account for the effect of control and to extract a discrete, linear model that approximates the behaviour of a controlled dynamical system.
-    In this section, a brief overview is provided for this implementation and expansion of \mbox{\gls{havok}}.
+    HAVOK is a data-driven, regression technique that provides a connection between DMD and Koopman operator theory \cite{Brunton2017, Champion2019}. 
+    We have adapted the standard HAVOK algorithm slightly to account for the effect of control and to extract a discrete, linear model that approximates the behaviour of a controlled dynamical system.
+    In this section, a brief overview is provided for this implementation and expansion of \mbox{HAVOK}.
     % 
     \par
     The extracted discrete state-space model is defined as:
@@ -217,10 +216,10 @@
     where $\bm{a}_k$ is the state vector previously defined in Section \ref{sec:dmdc}, 
     \( \Tilde{\bm{A}} \in \R^{(q \cdot n_y) \times (q \cdot n_y)} \) is the system matrix, 
     and \( \Tilde{\bm{B}} \in \R^{(q \cdot n_y) \times n_u} \) is the input matrix. 
-    Here, $\Tilde{\phantom{a}}$ is used to differentiate these matrices from $\bm{A}$ and $\bm{B}$ used in \gls{dmdc}.
+    Here, $\Tilde{\phantom{a}}$ is used to differentiate these matrices from $\bm{A}$ and $\bm{B}$ used in DMDc.
     % 
     \par
-    The original \gls{havok} algorithm, developed by \citet{Brunton2017}, constructs a Hankel matrix from output variables only. 
+    The original HAVOK algorithm, developed by \cite{Brunton2017}, constructs a Hankel matrix from output variables only. 
     In order to incorporate the effect of control, an extended Hankel matrix, $\bm{\Pi}$, is created by appending a matrix of inputs to a Hankel matrix of measurements:
     \begin{equation} \label{eq:pi_hankel}
         \bm{\Pi} = \phantom{.} \left [
@@ -231,7 +230,7 @@
         \right ] ,
     \end{equation}
     where $w$ is the number of columns in $\bm{\Pi}$.
-    A truncated \gls{svd} of this Hankel matrix results in following approximation:
+    A truncated SVD of this Hankel matrix results in following approximation:
     \begin{equation} \label{eq:havok_svd_tilde}
         \bm{\Pi} \approx \Tilde{\bm{U}} \Tilde{\bm{\Sigma}} \Tilde{\bm{V}}^T ,
     \end{equation}
@@ -240,14 +239,14 @@
     The number of samples in the training data, $N_{train} = w + q -1$, also influences the accuracy of the model.
     % 
     \par
-    The columns of $\Tilde{\bm{V}}$ are the most significant principal components of the system dynamics \citep{Kamb2020}.
+    The columns of $\Tilde{\bm{V}}$ are the most significant principal components of the system dynamics \cite{Kamb2020}.
     This matrix, $\Tilde{\bm{V}}$, can be considered to contain a time-series of the pseudo-state, $\bm{v}$, such that
     \(
         \Tilde{\bm{V}}^T = \begin{bmatrix} 
             \bm{v}_q & \bm{v}_{q+1} & \cdots & \bm{v}_w 
         \end{bmatrix} ,
     \)
-    characterises the evolution of the actual dynamics in an eigen-time-delay coordinate system \citep{Brunton2017}.
+    characterises the evolution of the actual dynamics in an eigen-time-delay coordinate system \cite{Brunton2017}.
     % 
     Consider the following discrete, state-space formulation:
     \begin{equation} \label{eq:v_ss}
@@ -313,7 +312,7 @@
     % \end{figure}
     % 
     Note that the matrix entries in Equation (\ref{matrix_decomp}) that map $\bm{u}_k$ to $\bm{u}_{k+1}$ are meaningless for our purposes and are discarded.
-    Similarly to \gls{dmdc}, some matrix entries in $\Tilde{\bm{A}}$ and $\Tilde{\bm{B}}$ are known a priori due to the relative positions of delay coordinates. These are forced to 1 or 0 to improve the prediction performance of the model.
+    Similarly to DMDc, some matrix entries in $\Tilde{\bm{A}}$ and $\Tilde{\bm{B}}$ are known a priori due to the relative positions of delay coordinates. These are forced to 1 or 0 to improve the prediction performance of the model.
 
     \subsection{HAVOK}
 
