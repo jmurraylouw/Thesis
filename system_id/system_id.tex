@@ -79,14 +79,62 @@
         but at the cost of greater computational complexity.
         \murray{Name more techniques}
         DMDc and HAVOK are less computationally complex and their models are suitable for linear MPC, which is significantly faster than non-linear MPC.
-        This is desirable for a RUAV use case, where onboard computational power is limited.
+        This is desirable for the quadrotor use case, where onboard computational power is limited.
         
         \paragraph{}
         These techniques and their implementation are explained in the sections below.
         Each technique is considered for use in a velocity controller in the North direction
 
+        \paragraph{Considered controller}
+        % As discussed in \ref{sec:linear_model}, the payload has minimal effect on quadrotor attitude because it is attached near the CoM of the vehicle.
+        % Therefore the attitude states are excluded from the system identification model.
+        The model identified by DMDc will be used to design a longitudinal velocity controller.
+        As shown in \ref{fig:system_id_plant}, the plant considered for system identification includes the dynamics of the inner loop, attitude controllers.
+        The swing damping controllers which will utilise the identified model act only in the translational velocity loop.
+        Because of the large time-scale separation between the inner and outer loop controllers, 
+        the attitude states have a negilable effect on the plant dynamics seen by the velocity controller.
+        As discussed in Section~\ref{sec:linear_model}, the payload minimally effects the quadrotor attitude because it is attached near the CoM of the vehicle.
+        Therefore the attitude states are excluded from the system identification model.
+
+\section{Plant considered for system identification}
+        \begin{figure}[h]
+            \centering
+        %     \includegraphics[width=\linewidth]{cae_siamese}
+            \includegraphics[width=0.5\linewidth]{floating_pend.png}            
+            \caption{Floating pendulum model considered for system identification for a North velocity controller}
+            \label{fig:floating_pend}
+        \end{figure}
     
+        \paragraph{Derived model}
+        Figure \ref{fig:floating_pend} shows the plant considered for system identification.
+        In Chapter~\ref{chap:modelling} the differential equations that describe the motion of this system are derived with Lagrangian mechanics.
+        From these equations it is clear that the considered plant is defined by the state vector,
+        \begin{equation}
+            \bm{x} = \begin{bmatrix}
+                V_N & \dot{\theta}
+            \end{bmatrix}^T,
+        \end{equation}
+        and the input vector,
+        \begin{equation}
+            \bm{u} = \begin{bmatrix}
+                A_{N,sp}
+            \end{bmatrix},
+        \end{equation}
+    
+        % From this derivation it is clear that the angular velocity of the payload, $\dot{\theta}$, is required to described the system dynamics.
+        % However, $\dot{\theta}$ is not measured directly on the considered practical quadrotor setup.
+        % Instead, the payload angle, $\theta$, is measured by a potentiometer attached to a DAC on Honeybee as described in Chapter \ref{chap:system_overview}.
+        % As expected, this measurement is extremely noisy.
+        % \murray{Maybe insert figure to show noise}
+        % % Figure \ref{} shows the angle measurement during a practical experiment of the payload while Honeybee is held stationary
+        % Numerical differentiation is applied to the noisy $\theta$ signal which results in a very inaccurate estimation of $\dot{\theta}$.
+        % Therefore it is desirable to rather use $\theta$ in the system identification process. 
+
 \section{Parameter estimation}
+    \subsection{Predetermined linear model}
+        The motivation for paramater estimation is to determine unknown parameter values required by the predetermined model.
+        This model was derived a prioiri in Section~\ref{sec:linear_model}.
+        
     \subsection{Payload mass estimation}
         RLS
 
@@ -120,9 +168,7 @@
         error for different lengths??
   
 \section{Dynamic Mode Decomposition with control}
-\label{sec:dmdc}        
-
-    \murray{remember to cite CCA paper if published}
+\label{sec:dmdc}
     
     \paragraph{Intro}        
     DMD is a linear regression technique that can be used to approximate a non-linear dynamical system \cite{Tu2014}.
@@ -131,50 +177,6 @@
     This section provides an overview of the specific implementation of DMDc used in this paper.        
     Note that this implementation is a slight adaptation of DMDc, and includes time-delay-embedding of multiple observables. 
     \cite{Korda2018b} and \cite{Arbabi2018} use time-delay-embedding in their DMD adaptions in similar ways.
-
-    \paragraph{Considered controller}
-    % As discussed in \ref{sec:linear_model}, the payload has minimal effect on quadrotor attitude because it is attached near the CoM of the vehicle.
-    % Therefore the attitude states are excluded from the system identification model.
-    The model identified by DMDc will be used to design a longitudinal velocity controller.
-    As shown in \ref{fig:system_id_plant}, the plant considered for system identification includes the dynamics of the inner loop, attitude controllers.
-    The swing damping controllers which will utilise the identified model act only in the translational velocity loop.
-    Because of the large time-scale separation between the inner and outer loop controllers, 
-    the attitude states have a negilable effect on the plant dynamics seen by the velocity controller.
-    As discussed in Section~\ref{sec:linear_model}, the payload minimally effects the quadrotor attitude because it is attached near the CoM of the vehicle.
-    Therefore the attitude states are excluded from the system identification model.
-
-    \begin{figure}[h]
-        \centering
-    %     \includegraphics[width=\linewidth]{cae_siamese}
-        \includegraphics[width=0.5\linewidth]{floating_pend.png}            
-        \caption{Floating pendulum model considered for system identification for a North velocity controller}
-        \label{fig:floating_pend}
-    \end{figure}
-
-    \paragraph{Derived model}
-    Figure \ref{fig:floating_pend} shows the resulting model considered for system identification.
-    In Chapter \ref{chap:modelling} the differential equations that describe the motion of this system are derived with Lagrangian mechanics.
-    From these equations it is clear that the considered plant is defined by the state vector,
-    \begin{equation}
-        \bm{x} = \begin{bmatrix}
-            V_N & \dot{\theta}
-        \end{bmatrix}^T,
-    \end{equation}
-    and the input vector,
-    \begin{equation}
-        \bm{u} = \begin{bmatrix}
-            A_{N,sp}
-        \end{bmatrix},
-    \end{equation}
-
-    % From this derivation it is clear that the angular velocity of the payload, $\dot{\theta}$, is required to described the system dynamics.
-    % However, $\dot{\theta}$ is not measured directly on the considered practical quadrotor setup.
-    % Instead, the payload angle, $\theta$, is measured by a potentiometer attached to a DAC on Honeybee as described in Chapter \ref{chap:system_overview}.
-    % As expected, this measurement is extremely noisy.
-    % \murray{Maybe insert figure to show noise}
-    % % Figure \ref{} shows the angle measurement during a practical experiment of the payload while Honeybee is held stationary
-    % Numerical differentiation is applied to the noisy $\theta$ signal which results in a very inaccurate estimation of $\dot{\theta}$.
-    % Therefore it is desirable to rather use $\theta$ in the system identification process.
 
     \paragraph{State space model}
     DMD produces a linear, discrete state-space model of the system dynamics.
@@ -208,18 +210,6 @@
     In a practical flight, these time-series measurements need to be saved in memory because it is usd as a single batch by DMD.
     Note that DMD can be applied in a recursive manner as described in \cite{Noack2016}, 
     However this implementation is not considered because memory size will not be a limitation since a companion computer will be used.
-    
-    \paragraph{Steps and intervals}
-    For the training period, different velocity step inputs are commanded with varying time intervals between step commands.
-    A algorithm schedules these velocity step commands, by assigning random step values and time-intervals within a specified range.
-    The velocity range is determined in simulation by iteratively increasing the maximum velocity step 
-    to a safe value where the quadrotor and payload system remain in stable flight.
-    The maximum time-interval is set to a value that allows the payload swing to reach a steady-state condition.
-    This ensures that the identified model includes transient and steady-state dynamics.
-
-    \paragraph{Why velocity steps?}
-    Velocity step commands are used in the training period because this 
-    Frequency decomposition stimulates the system for a large range of frequencies.
     
     \paragraph{Data matrices}
     The training data is collected into the following matrices:
@@ -428,8 +418,12 @@
 
 
 
-\section{Implentation and results}
+\section{Implementation and results}
     \subsection{Methodology}
+        \paragraph{Simulation environment}
+
+        \paragraph{Method overview}
+        \murray{Maybe convert this to a flow diagram}
 
         \begin{enumerate}
             \item Takeoff and hover
@@ -437,10 +431,92 @@
             \item Measure and save input and output data
             \item Apply algorithm to data and generate model
         \end{enumerate}
+
+        \paragraph{}
+
+        \paragraph{Steps and intervals}
+        For the training period, different velocity step inputs are commanded with varying time intervals between step commands.
+        A algorithm schedules these velocity step commands, by assigning random step values and time-intervals within a specified range.
+        The velocity range is determined in simulation by iteratively increasing the maximum velocity step 
+        to a safe value where the quadrotor and payload system remain in stable flight.
+        The maximum time-interval is set to a value that allows the payload swing to reach a steady-state condition.
+        This ensures that the identified model includes transient and steady-state dynamics.
+
+        \paragraph{Why velocity steps?}
+        Velocity step commands are used in the training period because this 
+        Frequency decomposition stimulates the system for a large range of frequencies.
+
+        \paragraph{Testing data}
+
+        \paragraph{Error metric}
+        Each state error signal is scaled by the reciprocal of the maximum value of that state variable in the training data.
+        % This is to provide a better representative error when taking the mean of state variable errors.
+        This is to ensure that a scale difference in the variable types create a bias in the error metric.
+        For example, the quadrotor velocity reaches values of \SI{3}{\metre/\second} but the payload swing angle has a maximum of only \SI[]{0.526}{\radian}.
+        The velocity prediction error is therefore inherently larger than the payload angle prediction error
+        and will bias the error metric towards favouring models with good velocity predictions.
+        The proposed scaled error metric ensures that the MAE of each state variable can be compared to each other.
+        It also provides an error metric that is better and unbiased representative of the model prediction performance across all state variables. 
+
+    \subsection{Hyperparameters}
+        Fixed size of data
+        Fixed sample time
+        Fixed pendulum params
+        Talk about the "front"
+        Also about singular values
+        For each of the experiments shown in this chapter, a hyperparameters selected tuned to produced
+
+    \subsection{Sample time}
+        best hyperparameters.
+        
+        Fixed size of data.
+        Fixed pendulum params.
+
+    \subsection{Size of training data}
+        The length of training data used for system identification also affects the quality of the model produced.
+        Figure~\ref{fig:MAE_vs_train} plots the prediciton error metric compared to the length of training data used for the different system identification procedures.
+        For each length of training data, the hyperparameter combination producing the lowest prediction error was determined and used.
+        From Figure~\ref{fig:MAE_vs_train} it is clear that the prediction error of both methods decrease as the amount of training data increases.
+        This trend confirms our intuition that as more data is used in the regression problem, 
+        the determined model will better approximates the actual dynamics instead of over-fitting to the training data.
+        
+        \input{system_id/plots/MAE_vs_train.tex}
+
+        \paragraph{}
+        compared
+
+        \paragraph{}
+        In Figure~\ref{fig:MAE_vs_train} it can be seen that after approximately \SI{110}{\second} 
+        the prediction error does not significantly improve with more training data.
+        It practice less training data is desirable because less flight time will be wasted on training a model before the quadrotor can fly with a updated controller.
+        Less training data also corresponds to lower memory usage on quadrotor hardware.
+        Such a slight improvement in prediction error also has a negligible effect on control performance and is therefore not worth the increased data requirement.
+        Therefore, only \SI{110}{\second} of flight data will be used to train system identification models. 
+        
+        \paragraph{}
+
+        effect on overfitting
+        best hyperparameters
+        Fixed sample time
+        Fixed pendulum params
     
-    \subsection{Effect of sample time}
-    \subsection{Effect of hyperparameters and size of data}
+    \subsection{Noise}
+        Measurement noise 
+        Payload angle smoothed
+
+        effect on overfitting
+        best hyperparameters
+        Fixed sample time
+        Fixed pendulum params
+    
+    \subsection{System parameters}
+        Best hyperparameters.
+        Fixed size of data.
+        Fixed sample time.
+
     \subsection{Dynamic payload}
+        Data-driven vs Parameter estimation
+
     \subsection{Practical flight data}
     \subsection{HIL}
         \paragraph{Companion computer}
