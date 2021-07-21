@@ -1,1 +1,2 @@
 stellenbosch_ee_report-figure0.pdf: system_id/csv/dmd_MAE_vs_Ntrain_single_pend_mp0.2_l0.5.mat.csv
+stellenbosch_ee_report-figure0.pdf: system_id/csv/havok_MAE_vs_Ntrain_single_pend_mp0.2_l0.5.mat.csv

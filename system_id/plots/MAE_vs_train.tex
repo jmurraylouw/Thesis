@@ -1,14 +1,14 @@
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}
-        \begin{axis}[
-            grid = major,
+        \begin{axis}[            
             xlabel = Length of training data,
             ylabel = MAE,
             x unit = \si{\second},
-            y unit = \si{\second},
+            % y unit = \si{\second},
             xmin = 0,     xmax = 250,
             ymin = 0.015, ymax = 0.04,
+            grid = major,
             legend cell align = left,
             legend pos = north east,
             grid style = dashed,
@@ -28,12 +28,13 @@
         \addplot+[mark=none, style=solid, ultra thick] table[x=T_train, y=MAE_mean, col sep=comma] {system_id/csv/dmd_MAE_vs_Ntrain_single_pend_mp0.2_l0.5.mat.csv};
         \addlegendentry{DMD}
         
-        % \addplot+[mark=none, style=solid, ultra thick] table[x=t, y=dx_wl, col sep=comma] {plots/load_vs_no_load_step_10.csv};
-        % \addlegendentry{With payload}
+        \addplot+[mark=none, style=solid, ultra thick] table[x=T_train, y=MAE_mean, col sep=comma] {system_id/csv/havok_MAE_vs_Ntrain_single_pend_mp0.2_l0.5.mat.csv};
+        \addlegendentry{HAVOK}
 
         \end{axis}
     \end{tikzpicture} 
     
-    \caption{Velocity response to a position step input with $m =$~\SI{2}{\kilo\gram}, $l =$~\SI{1}{\meter}.}
-    \label{fig:dx_load_vs_no_load}
+    \caption{Prediction MAE of system identification models for different lengths of training data with 
+    $m =$~\SI{0.2}{\kilo\gram}, $l =$~\SI{0.5}{\meter}, $T_s =$~\SI{0.03}{\second}.}
+    \label{fig:MAE_vs_train}
 \end{figure}
