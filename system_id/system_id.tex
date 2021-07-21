@@ -123,7 +123,7 @@
     
         % From this derivation it is clear that the angular velocity of the payload, $\dot{\theta}$, is required to described the system dynamics.
         % However, $\dot{\theta}$ is not measured directly on the considered practical quadrotor setup.
-        % Instead, the payload angle, $\theta$, is measured by a potentiometer attached to a DAC on Honeybee as described in Chapter \ref{chap:system_overview}.
+        % Instead, the payload angle, $\theta$, is measured by a potentiometer attached to a ADC on Honeybee as described in Chapter \ref{chap:system_overview}.
         % As expected, this measurement is extremely noisy.
         % \murray{Maybe insert figure to show noise}
         % % Figure \ref{} shows the angle measurement during a practical experiment of the payload while Honeybee is held stationary
@@ -501,8 +501,39 @@
         Fixed pendulum params
     
     \subsection{Noise}
-        Measurement noise 
-        Payload angle smoothed
+        \paragraph{}
+        Measurement noise is \murray{Find reference for measurement noise definition}
+        This is bad for system identification because the output signals no longer represent the actual process
+        hides the actual dynamics of the system under  
+        The IMU, barometer, magnetometer and GPS sensors on the practical quadrotor are used for state estimation 
+        and all experience measurement noise.
+        The EKF performs sensor fusion and smooths out most of the measurement noise to provide a state estimate that is less noisy than raw sensor values.
+        
+        \paragraph{}
+        The potentiometer and ADC which measure the payload angle on the quadrotor alos has quite a lot of measurement noise.
+        However, this signal is not smoothed by an onboard EKF.
+        Figure~\ref{fig:payload_noise} shows the noisy payload angle measurement for a practical pendulum test while the quadrotor is held stationary.
+        For models using $\theta$ in the state vector instead of $\dot{\theta}$, 
+        this noisy signal can be smoothed with \murray{matlab smoother}.
+        Figure~\ref{fig:payload_noise_smoothed} compares the noisy payload angle measurement to the smoothed signal and actual payload angle for a simulated flight.
+        The is applied as band-limited white-noise and the noise power was iteratively adjusted to match that of the practical payload measurements.
+        
+        % \input{system_id/plots/payload_noise.tex}
+        
+        % \input{system_id/plots/payload_noise_smoothed.tex}
+        
+        \paragraph{}
+        However, since there is no direct measurement of $\dot{\theta}$, 
+        numerical differentiation is performed on the noisy $\theta$ measurement to estimate $\dot{\theta}$. 
+        This amplifies the noise and results in inaccurate $\dot{\theta}$ signal.
+        Total variation differentiation is implemented to estimate $\dot{\theta}$ from the noisy measurements more accurately. \cite{}
+        Figure~\ref{fig:payload_noise_diff} shows
+        
+        % \input{system_id/plots/payload_noise_diff.tex} // With TVDiff
+
+        Noise also affects model prediction accuracy and the length of training data required for adequate predictions. 
+        
+        % \input{system_id/plots/MAE_vs_train_noise.tex}
 
         effect on overfitting
         best hyperparameters
