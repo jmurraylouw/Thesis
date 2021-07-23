@@ -1,2 +1,4 @@
-stellenbosch_ee_report-figure0.pdf: system_id/csv/dmd_MAE_vs_Ntrain_single_pend_mp0.2_l0.5.mat.csv
-stellenbosch_ee_report-figure0.pdf: system_id/csv/havok_MAE_vs_Ntrain_single_pend_mp0.2_l0.5.mat.csv
+stellenbosch_ee_report-figure0.pdf: system_id/csv/MAE_vs_Ntrain_Simulink_single_pend_mp0.2_l0.5_PID_vel_steps_tune_scale_0.7longer_times.mat_dmd_angle.csv
+stellenbosch_ee_report-figure0.pdf: system_id/csv/MAE_vs_Ntrain_Simulink_single_pend_mp0.2_l0.5_PID_vel_steps_tune_scale_0.7longer_times.mat_havok_angle.csv
+stellenbosch_ee_report-figure0.pdf: system_id/csv/MAE_vs_Ntrain_Simulink_single_pend_mp0.2_l0.5_PID_vel_steps_tune_scale_0.7longer_times.mat_dmd_angular_rate.csv
+stellenbosch_ee_report-figure0.pdf: system_id/csv/MAE_vs_Ntrain_Simulink_single_pend_mp0.2_l0.5_PID_vel_steps_tune_scale_0.7longer_times.mat_havok_angular_rate.csv

@@ -1,4 +1,4 @@
-\graphicspath{{system_id/fig/}}
+\graphicspath{{system_id/fig/}, {system_id/plots}}
 
 \chapter{System identification}
 \label{chap:system_id}
@@ -96,7 +96,7 @@
         As discussed in Section~\ref{sec:linear_model}, the payload minimally effects the quadrotor attitude because it is attached near the CoM of the vehicle.
         Therefore the attitude states are excluded from the system identification model.
 
-\section{Plant considered for system identification}
+\section{Plant considered for system identification} \label{sec:plant_considered}
         \begin{figure}[h]
             \centering
         %     \includegraphics[width=\linewidth]{cae_siamese}
@@ -472,34 +472,44 @@
         Fixed size of data.
         Fixed pendulum params.
 
-    \subsection{Size of training data}
-        The length of training data used for system identification also affects the quality of the model produced.
-        Figure~\ref{fig:MAE_vs_train} plots the prediciton error metric compared to the length of training data used for the different system identification procedures.
+    \subsection{Choice of payload variable in the state vector}
+        As discussed in Section~\ref{sec:plant_considered}, 
+        the continuous-time, equations of motion of a floating pendulum are dependent on $\dot{\theta}$ and $V_N$, 
+        but do not depend on $\theta$.
+        Therefore it is expected that 
+        $
+        \bm{x} = \begin{bmatrix}
+            V_N & \dot{\theta}
+        \end{bmatrix}^T
+        $
+        is used as the state vector for system identification.
+        However, if $\dot{\theta}$ is not included in the state vector of a discrete model, 
+        it can still be represented with numerical differentiation like the backward Euler form,
+        \begin{equation}
+            \dot{\theta}_k = (\frac{1}{T_s}) \cdot \theta_k - (\frac{1}{T_s}) \cdot \theta_{k-1} .
+        \end{equation}
+        Therefore the original state vector can also be replaced by,
+        $
+            \bm{x} = \begin{bmatrix}
+                V_N & \theta
+            \end{bmatrix}^T
+        $
+        in system identification.
+
+        \paragraph{}
+        Based on the floating pendulum equations, it is expected that a model derived with $\dot{\theta}$ data 
+        will better approximate the actual dynamics than one using $\theta$.
+        This is because $\dot{\theta}$ contains more direct information about the dynamics compared to $\theta$.
+        A model using $\theta$ needs to "learn" numerical differentiation and the effect of $\dot{\theta}$ on the other variables.
+        A model using $\dot{\theta}$ only needs to consider its relationship with other variables.
+
+        \input{system_id/plots/MAE_vs_train_SITL_angular_rate}
+
+        \paragraph{}
+        Figure~\ref{} shows the prediction error of techniques using $\dot{\theta}$ or $\theta$ for different amounts of training data.
         For each length of training data, the hyperparameter combination producing the lowest prediction error was determined and used.
-        From Figure~\ref{fig:MAE_vs_train} it is clear that the prediction error of both methods decrease as the amount of training data increases.
-        This trend confirms our intuition that as more data is used in the regression problem, 
-        the determined model will better approximates the actual dynamics instead of over-fitting to the training data.
-        
-        \input{system_id/plots/MAE_vs_train.tex}
+        From this plot it is clear that models with $\theta$ produce more accurate predictions than those with $\dot{\theta}$.
 
-        \paragraph{}
-        compared
-
-        \paragraph{}
-        In Figure~\ref{fig:MAE_vs_train} it can be seen that after approximately \SI{120}{\second} 
-        the prediction error does not significantly improve with more training data.
-        It practice less training data is desirable because less flight time will be wasted on training a model before the quadrotor can fly with a updated controller.
-        Less training data also corresponds to lower memory usage on quadrotor hardware.
-        Such a slight improvement in prediction error also has a negligible effect on control performance and is therefore not worth the increased data requirement.
-        Therefore, only \SI{120}{\second} of flight data will be used to train system identification models. 
-        
-        \paragraph{}
-
-        effect on overfitting
-        best hyperparameters
-        Fixed sample time
-        Fixed pendulum params
-    
     \subsection{Noise}
         \paragraph{}
         Measurement noise is \murray{Find reference for measurement noise definition}
@@ -512,15 +522,11 @@
         \paragraph{}
         The potentiometer and ADC which measure the payload angle on the quadrotor alos has quite a lot of measurement noise.
         However, this signal is not smoothed by an onboard EKF.
-        Figure~\ref{fig:payload_noise} shows the noisy payload angle measurement for a practical pendulum test while the quadrotor is held stationary.
+        Figure~\ref{fig:paylbest hyperparameters.oad_noise} shows the noisy payload angle measurement for a practical pendulum test while the quadrotor is held stationary.
         For models using $\theta$ in the state vector instead of $\dot{\theta}$, 
         this noisy signal can be smoothed with \murray{matlab smoother}.
         Figure~\ref{fig:payload_noise_smoothed} compares the noisy payload angle measurement to the smoothed signal and actual payload angle for a simulated flight.
         The is applied as band-limited white-noise and the noise power was iteratively adjusted to match that of the practical payload measurements.
-        
-        % \input{system_id/plots/payload_noise.tex}
-        
-        % \input{system_id/plots/payload_noise_smoothed.tex}
         
         \paragraph{}
         However, since there is no direct measurement of $\dot{\theta}$, 
@@ -533,13 +539,44 @@
 
         Noise also affects model prediction accuracy and the length of training data required for adequate predictions. 
         
-        % \input{system_id/plots/MAE_vs_train_noise.tex}
+        % \input{system_id/plots/SITL_MAE_vs_train_noise.tex}
 
-        effect on overfitting
-        best hyperparameters
-        Fixed sample time
-        Fixed pendulum params
+
     
+
+    \subsection{Size of training data}
+        The length of training data used for system identification affects the quality of the model produced.
+        In Figure~\ref{fig:SITL_MAE_vs_train_angular_rate} it is clear that prediction error decreases as the amount of training data increases.
+        As more training data is used in the regression problem, 
+        the determined model better approximates the actual dynamics because a large range of the dynamics is "seen" by the algorithm.
+
+        
+        % \input{low data prediction}
+        \paragraph{}
+        Models produced from data lengths as short as \SI{5}{\second} predict the movement of state variables surprisingly well.
+        Figure~\ref{} shows prediction.
+        Note how the general shape of the prediction represents the training data, 
+        even though it contains a lot more high frequency oscillations.
+
+        % \input{system_id/plots/MAE_vs_train_Simulink_diff2.tex}
+
+        \paragraph{}
+        Figure~\ref{} shows the MAE of prediction state derivative.
+        Define MAE diff with equation ??.
+        From Figure~\ref{} it appears that at least \SI{}{} training data is required to produce models that represent the dynamics.
+
+        \paragraph{}
+        The models produced from HAVOK appear to produce slightly better prediction errors, however this small difference has a negligible effect on control performance.
+
+        \paragraph{}
+        In Figure~\ref{fig:MAE_vs_train} it can be seen that after approximately \SI{??}{\second} 
+        the prediction error does not significantly improve with more training data.
+        It practice less training data is desirable because less flight time will be wasted on training a model before the quadrotor can fly with a updated controller.
+        Less training data also corresponds to lower memory usage on quadrotor hardware.
+        Such a slight improvement in prediction error also has a negligible effect on control performance and is therefore not worth the increased data requirement.
+        Therefore, only \SI{??}{\second} of flight data will be used to train system identification models. 
+
+
     \subsection{System parameters}
         Best hyperparameters.
         Fixed size of data.
