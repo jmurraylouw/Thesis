@@ -507,8 +507,7 @@
         A model using $\theta$ needs to "learn" numerical differentiation and the effect of $\dot{\theta}$ on the other variables.
         A model using $\dot{\theta}$ only needs to consider its relationship with other variables.
 
-        \input{system_id/plots/MAE_vs_train_SITL_angular_rate}
-        % \input{system_id/dx_load_vs_no_load.tex}
+        \input{system_id/plots/MAE_vs_train_Simulink_angular_rate.tex}
 
         \paragraph{}
         % Figure~\ref{} shows the prediction error of techniques using $\dot{\theta}$ or $\theta$ for different amounts of training data.
@@ -544,7 +543,13 @@
 
         Noise also affects model prediction accuracy and the length of training data required for adequate predictions. 
         
-        % \input{system_id/plots/SITL_MAE_vs_train_noise.tex}
+        \input{system_id/plots/noise_vs_no_noise.tex}
+
+        \input{system_id/plots/havok_vs_dmd_noise.tex}
+
+        HAVOK performs better than DMD.
+        This slight difference in prediciton performance has a negligible effect on control.
+        
 
         Input data needs to be adjusted.
 
