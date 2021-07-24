@@ -1,4 +1,4 @@
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \begin{tikzpicture}
         \begin{axis}[            
@@ -24,7 +24,7 @@
                 Dark2\nextlist
             }
         ]
-
+        
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = T_train, y = MAE_mean, col sep = comma] 
         {system_id/csv/MAE_vs_Ntrain_Simulink_single_pend_mp0.2_l0.5_PID_vel_steps_tune_scale_0.7longer_times.mat_dmd_angle.csv};

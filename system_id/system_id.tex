@@ -294,7 +294,8 @@
     according to the required dimensions of each matrix.
     Thereby, the state-space model approximated by DMDc is complete.
     
-\section{Hankel Alternative View Of Koopman}
+\section{Hankel Alternative View Of Koopman} 
+\label{sec:havok}
     
     \murray{q = number of delays, from here up}
     
@@ -459,6 +460,9 @@
         It also provides an error metric that is better and unbiased representative of the model prediction performance across all state variables. 
 
     \subsection{Hyperparameters}
+        As discussed in Section~\ref{sec:dmdc} and \ref{sec:havok} 
+        DMDc and HAVOK are dependent on two hyperparameters: the number of delay-coordinates ($q$) and the SVD truncation rank ($p$).
+
         Fixed size of data
         Fixed sample time
         Fixed pendulum params
@@ -504,9 +508,10 @@
         A model using $\dot{\theta}$ only needs to consider its relationship with other variables.
 
         \input{system_id/plots/MAE_vs_train_SITL_angular_rate}
+        % \input{system_id/dx_load_vs_no_load.tex}
 
         \paragraph{}
-        Figure~\ref{} shows the prediction error of techniques using $\dot{\theta}$ or $\theta$ for different amounts of training data.
+        % Figure~\ref{} shows the prediction error of techniques using $\dot{\theta}$ or $\theta$ for different amounts of training data.
         For each length of training data, the hyperparameter combination producing the lowest prediction error was determined and used.
         From this plot it is clear that models with $\theta$ produce more accurate predictions than those with $\dot{\theta}$.
 
@@ -522,7 +527,7 @@
         \paragraph{}
         The potentiometer and ADC which measure the payload angle on the quadrotor alos has quite a lot of measurement noise.
         However, this signal is not smoothed by an onboard EKF.
-        Figure~\ref{fig:paylbest hyperparameters.oad_noise} shows the noisy payload angle measurement for a practical pendulum test while the quadrotor is held stationary.
+        Figure~\ref{fig:payload_noise} shows the noisy payload angle measurement for a practical pendulum test while the quadrotor is held stationary.
         For models using $\theta$ in the state vector instead of $\dot{\theta}$, 
         this noisy signal can be smoothed with \murray{matlab smoother}.
         Figure~\ref{fig:payload_noise_smoothed} compares the noisy payload angle measurement to the smoothed signal and actual payload angle for a simulated flight.
@@ -541,7 +546,9 @@
         
         % \input{system_id/plots/SITL_MAE_vs_train_noise.tex}
 
+        Input data needs to be adjusted.
 
+        % \input{plot of SITL acc_sp}
     
 
     \subsection{Size of training data}
@@ -561,20 +568,20 @@
         % \input{system_id/plots/MAE_vs_train_Simulink_diff2.tex}
 
         \paragraph{}
-        Figure~\ref{} shows the MAE of prediction state derivative.
+        % Figure~\ref{} shows the MAE of prediction state derivative.
         Define MAE diff with equation ??.
-        From Figure~\ref{} it appears that at least \SI{}{} training data is required to produce models that represent the dynamics.
+        % From Figure~\ref{} it appears that at least \SI{}{} training data is required to produce models that represent the dynamics.
 
         \paragraph{}
         The models produced from HAVOK appear to produce slightly better prediction errors, however this small difference has a negligible effect on control performance.
 
         \paragraph{}
-        In Figure~\ref{fig:MAE_vs_train} it can be seen that after approximately \SI{??}{\second} 
+        % In Figure~\ref{fig:MAE_vs_train} it can be seen that after approximately \SI{??}{\second} 
         the prediction error does not significantly improve with more training data.
         It practice less training data is desirable because less flight time will be wasted on training a model before the quadrotor can fly with a updated controller.
         Less training data also corresponds to lower memory usage on quadrotor hardware.
         Such a slight improvement in prediction error also has a negligible effect on control performance and is therefore not worth the increased data requirement.
-        Therefore, only \SI{??}{\second} of flight data will be used to train system identification models. 
+        % Therefore, only \SI{??}{\second} of flight data will be used to train system identification models. 
 
 
     \subsection{System parameters}
