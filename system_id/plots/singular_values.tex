@@ -1,0 +1,44 @@
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+        \begin{semilogyaxis}[            
+            xlabel = Index of mode,
+            ylabel = Singular value,
+            % x unit = \si{\second},
+            % y unit = \si{\second},
+            xmin = 0,     xmax = 29,
+            ymin = 1e-2,  ymax = 1e3,
+            grid = major,
+            legend cell align = left,
+            legend pos = north east,
+            grid style = dashed,
+            legend style = {font = \scriptsize},
+            label style = {font = \scriptsize},
+            tick label style = {font = \scriptsize},
+            width = 0.95\columnwidth,
+            height = 0.5\columnwidth,
+            % initialize Dark2
+            cycle list/Dark2,
+            % combine it with 'mark list*':
+            cycle multiindex* list = {
+                Dark2\nextlist
+            }
+        ]
+
+        \addplot+[only marks, mark = square, ultra thick] 
+        table[x = index, y = S, col sep = comma] 
+        {system_id/csv/Singular_values_SITL_x_vel_noise_longer_times_q.csv_havok_angle_Ttrain_60_q29_p13.csv};
+        \addlegendentry{Significant modes}
+
+        \addplot+[only marks, mark = square, ultra thick] 
+        table[x = index, y = S, col sep = comma] 
+        {system_id/csv/Singular_values_SITL_x_vel_noise_longer_times_q.csv_havok_angle_Ttrain_60_q29_p13_trunc.csv};
+        \addlegendentry{Truncated modes}
+
+        \end{semilogyaxis}
+    \end{tikzpicture} 
+    
+    \caption{Significant and truncated singular values of a HAVOK model produced from noisy data
+    ($m =$~\SI{0.2}{\kilo\gram}, $l =$~\SI{0.5}{\meter}, $T_s =$~\SI{0.03}{\second}, $T_{train} =$~\SI{60}{\second}.)}
+    \label{fig:singular_values}
+\end{figure}

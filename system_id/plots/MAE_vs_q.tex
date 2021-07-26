@@ -2,12 +2,12 @@
     \centering
     \begin{tikzpicture}
         \begin{axis}[            
-            xlabel = Length of training data,
+            xlabel = {Number of delay-coordinates, $q$},
             ylabel = MAE,
-            x unit = \si{\second},
+            % x unit = \si{\second},
             % y unit = \si{\second},
-            xmin = 0,     xmax = 120,
-            ymin = 0.08,  ymax = 0.12,
+            xmin = 0,     xmax = 50,
+            ymin = 0.09,  ymax = 0.15,
             grid = major,
             legend cell align = left,
             legend pos = north east,
@@ -26,19 +26,19 @@
         ]
 
         \addplot+[mark = none, style = solid, ultra thick] 
-        table[x = T_train, y = MAE_mean, col sep = comma] 
-        {system_id/csv/MAE_vs_Ntrain_SITL_x_vel_noise_longer_times.csv_dmd_angle.csv};
+        table[x = q, y = MAE_mean, col sep = comma] 
+        {system_id/csv/MAE_vs_q_SITL_x_vel_noise_longer_times_q.csv_dmd_angle_Ttrain_60.csv};
         \addlegendentry{DMD}
-
+        
         \addplot+[mark = none, style = solid, ultra thick] 
-        table[x = T_train, y = MAE_mean, col sep = comma] 
-        {system_id/csv/MAE_vs_Ntrain_SITL_x_vel_noise_longer_times.csv_havok_angle.csv};
+        table[x = q, y = MAE_mean, col sep = comma] 
+        {system_id/csv/MAE_vs_q_SITL_x_vel_noise_longer_times_q.csv_havok_angle_Ttrain_60.csv};
         \addlegendentry{HAVOK}
 
         \end{axis}
     \end{tikzpicture} 
     
-    \caption{DMD and HAVOK prediction error for different lengths of noisy training data
-    ($m =$~\SI{0.2}{\kilo\gram}, $l =$~\SI{0.5}{\meter}, $T_s =$~\SI{0.03}{\second}).}
-    % \label{fig:havok_vs_dmd_noise}
+    \caption{DMD and HAVOK predictions error for different lengths of noisy training data
+    ($m =$~\SI{0.2}{\kilo\gram}, $l =$~\SI{0.5}{\meter}, $T_s =$~\SI{0.03}{\second}, $T_{train} =$~\SI{60}{\second}.)}
+    \label{fig:havok_vs_dmd_noise}
 \end{figure}

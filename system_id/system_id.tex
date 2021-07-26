@@ -271,6 +271,8 @@
         \bm{\Omega} = \bm{U} \bm{\Sigma} \bm{V}^T
     \).
     Often, only the first $p$ columns of $\bm{U}$ and $\bm{V}$ are required for a good approximation of the dynamics \cite{Brunton2017a}.
+    Talk about Reduced Order Modelling??
+    POD modes??
     In many cases, the truncated form results in better models than the exact form when noisy measurements are used.
     This is because the effect of measurement noise is mostly captured by the truncated columns of $\bm{U}$ and $\bm{V}$.
     By truncating these columns, the influence of noise in the regression problem is reduced. \murray{explain this better}
@@ -448,6 +450,7 @@
         Frequency decomposition stimulates the system for a large range of frequencies.
 
         \paragraph{Testing data}
+        Cross-validate
 
         \paragraph{Error metric}
         Each state error signal is scaled by the reciprocal of the maximum value of that state variable in the training data.
@@ -459,9 +462,21 @@
         The proposed scaled error metric ensures that the MAE of each state variable can be compared to each other.
         It also provides an error metric that is better and unbiased representative of the model prediction performance across all state variables. 
 
+        Add Information Criteria ??
+        AIC Brunton Kutz??
+
     \subsection{Hyperparameters}
         As discussed in Section~\ref{sec:dmdc} and \ref{sec:havok} 
-        DMDc and HAVOK are dependent on two hyperparameters: the number of delay-coordinates ($q$) and the SVD truncation rank ($p$).
+        DMDc and HAVOK are dependent on two hyperparameters: the number of delay-coordinates, $q$, and the SVD truncation rank, $p$.
+
+        Parsimony
+        Pareto front
+        cite Data-Driven book
+
+        The more terms better chance to overfit, lower generalisation
+        \input{system_id/plots/MAE_vs_q.tex}
+
+        % \input{system_id/plots/singular_values.tex}
 
         Fixed size of data
         Fixed sample time
@@ -472,14 +487,15 @@
 
     \subsection{Sample time}
         best hyperparameters.
-        
+        best N_train.
+        \input{system_id/plots/MAE_vs_Ts.tex}
         Fixed size of data.
         Fixed pendulum params.
 
     \subsection{Choice of payload variable in the state vector}
         As discussed in Section~\ref{sec:plant_considered}, 
-        the continuous-time, equations of motion of a floating pendulum are dependent on $\dot{\theta}$ and $V_N$, 
-        but do not depend on $\theta$.
+        the equations of motion of a floating pendulum in continuous-time are dependent on $\dot{\theta}$ and $V_N$, 
+        but are not dependent on $\theta$.
         Therefore it is expected that 
         $
         \bm{x} = \begin{bmatrix}
@@ -566,11 +582,11 @@
         % \input{low data prediction}
         \paragraph{}
         Models produced from data lengths as short as \SI{5}{\second} predict the movement of state variables surprisingly well.
-        Figure~\ref{} shows prediction.
+        % Figure~\ref{} shows prediction.
         Note how the general shape of the prediction represents the training data, 
         even though it contains a lot more high frequency oscillations.
 
-        % \input{system_id/plots/MAE_vs_train_Simulink_diff2.tex}
+        \input{system_id/plots/MAE_diff.tex}
 
         \paragraph{}
         % Figure~\ref{} shows the MAE of prediction state derivative.
@@ -596,6 +612,8 @@
 
     \subsection{Dynamic payload}
         Data-driven vs Parameter estimation
+
+        plot hyperparameterss MAE. Not how much more delays are required
 
     \subsection{Practical flight data}
     \subsection{HIL}
