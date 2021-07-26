@@ -1,0 +1,201 @@
+\section{Implementation and results}
+%     \subsection{Methodology}
+%         \paragraph{Simulation environment}
+
+%         \paragraph{Method overview}
+%         \murray{Maybe convert this to a flow diagram}
+
+%         \begin{enumerate}
+%             \item Takeoff and hover
+%             \item Command a series of velocity step inputs with random step sizes and time intervals
+%             \item Measure and save input and output data
+%             \item Apply algorithm to data and generate model
+%         \end{enumerate}
+
+%         \paragraph{}
+
+%         \paragraph{Steps and intervals}
+%         For the training period, different velocity step inputs are commanded with varying time intervals between step commands.
+%         A algorithm schedules these velocity step commands, by assigning random step values and time-intervals within a specified range.
+%         The velocity range is determined in simulation by iteratively increasing the maximum velocity step 
+%         to a safe value where the quadrotor and payload system remain in stable flight.
+%         The maximum time-interval is set to a value that allows the payload swing to reach a steady-state condition.
+%         This ensures that the identified model includes transient and steady-state dynamics.
+
+%         \paragraph{Why velocity steps?}
+%         Velocity step commands are used in the training period because this 
+%         Frequency decomposition stimulates the system for a large range of frequencies.
+
+%         \paragraph{Testing data}
+%         Cross-validate
+
+%         \paragraph{Error metric}
+%         Each state error signal is scaled by the reciprocal of the maximum value of that state variable in the training data.
+%         % This is to provide a better representative error when taking the mean of state variable errors.
+%         This is to ensure that a scale difference in the variable types create a bias in the error metric.
+%         For example, the quadrotor velocity reaches values of \SI{3}{\metre/\second} but the payload swing angle has a maximum of only \SI[]{0.526}{\radian}.
+%         The velocity prediction error is therefore inherently larger than the payload angle prediction error
+%         and will bias the error metric towards favouring models with good velocity predictions.
+%         The proposed scaled error metric ensures that the MAE of each state variable can be compared to each other.
+%         It also provides an error metric that is better and unbiased representative of the model prediction performance across all state variables. 
+
+%         Add Information Criteria ??
+%         AIC Brunton Kutz??
+
+%     \subsection{Hyperparameters}
+%         As discussed in Section~\ref{sec:dmdc} and \ref{sec:havok} 
+%         DMDc and HAVOK are dependent on two hyperparameters: the number of delay-coordinates, $q$, and the SVD truncation rank, $p$.
+
+%         Parsimony
+%         Pareto front
+%         cite Data-Driven book
+
+%         The more terms better chance to overfit, lower generalisation
+%         \input{system_id/plots/MAE_vs_q.tex}
+
+%         % \input{system_id/plots/singular_values.tex}
+
+%         Fixed size of data
+%         Fixed sample time
+%         Fixed pendulum params
+%         Talk about the "front"
+%         Also about singular values
+%         For each of the experiments shown in this chapter, a hyperparameters selected tuned to produced
+
+%     \subsection{Sample time}
+%         best hyperparameters.
+%         best N_train.
+%         \input{system_id/plots/MAE_vs_Ts.tex}
+%         Fixed size of data.
+%         Fixed pendulum params.
+
+%     \subsection{Choice of payload variable in the state vector}
+%         As discussed in Section~\ref{sec:plant_considered}, 
+%         the equations of motion of a floating pendulum in continuous-time are dependent on $\dot{\theta}$ and $V_N$, 
+%         but are not dependent on $\theta$.
+%         Therefore it is expected that 
+%         $
+%         \bm{x} = \begin{bmatrix}
+%             V_N & \dot{\theta}
+%         \end{bmatrix}^T
+%         $
+%         is used as the state vector for system identification.
+%         However, if $\dot{\theta}$ is not included in the state vector of a discrete model, 
+%         it can still be represented with numerical differentiation like the backward Euler form,
+%         \begin{equation}
+%             \dot{\theta}_k = (\frac{1}{T_s}) \cdot \theta_k - (\frac{1}{T_s}) \cdot \theta_{k-1} .
+%         \end{equation}
+%         Therefore the original state vector can also be replaced by,
+%         $
+%             \bm{x} = \begin{bmatrix}
+%                 V_N & \theta
+%             \end{bmatrix}^T
+%         $
+%         in system identification.
+
+%         \paragraph{}
+%         Based on the floating pendulum equations, it is expected that a model derived with $\dot{\theta}$ data 
+%         will better approximate the actual dynamics than one using $\theta$.
+%         This is because $\dot{\theta}$ contains more direct information about the dynamics compared to $\theta$.
+%         A model using $\theta$ needs to "learn" numerical differentiation and the effect of $\dot{\theta}$ on the other variables.
+%         A model using $\dot{\theta}$ only needs to consider its relationship with other variables.
+
+%         \input{system_id/plots/MAE_vs_train_Simulink_angular_rate.tex}
+
+%         \paragraph{}
+%         % Figure~\ref{} shows the prediction error of techniques using $\dot{\theta}$ or $\theta$ for different amounts of training data.
+%         For each length of training data, the hyperparameter combination producing the lowest prediction error was determined and used.
+%         From this plot it is clear that models with $\theta$ produce more accurate predictions than those with $\dot{\theta}$.
+
+%     \subsection{Noise}
+%         \paragraph{}
+%         Measurement noise is \murray{Find reference for measurement noise definition}
+%         This is bad for system identification because the output signals no longer represent the actual process
+%         hides the actual dynamics of the system under  
+%         The IMU, barometer, magnetometer and GPS sensors on the practical quadrotor are used for state estimation 
+%         and all experience measurement noise.
+%         The EKF performs sensor fusion and smooths out most of the measurement noise to provide a state estimate that is less noisy than raw sensor values.
+        
+%         \paragraph{}
+%         The potentiometer and ADC which measure the payload angle on the quadrotor alos has quite a lot of measurement noise.
+%         However, this signal is not smoothed by an onboard EKF.
+%         Figure~\ref{fig:payload_noise} shows the noisy payload angle measurement for a practical pendulum test while the quadrotor is held stationary.
+%         For models using $\theta$ in the state vector instead of $\dot{\theta}$, 
+%         this noisy signal can be smoothed with \murray{matlab smoother}.
+%         Figure~\ref{fig:payload_noise_smoothed} compares the noisy payload angle measurement to the smoothed signal and actual payload angle for a simulated flight.
+%         The is applied as band-limited white-noise and the noise power was iteratively adjusted to match that of the practical payload measurements.
+        
+%         \paragraph{}
+%         However, since there is no direct measurement of $\dot{\theta}$, 
+%         numerical differentiation is performed on the noisy $\theta$ measurement to estimate $\dot{\theta}$. 
+%         This amplifies the noise and results in inaccurate $\dot{\theta}$ signal.
+%         Total variation differentiation is implemented to estimate $\dot{\theta}$ from the noisy measurements more accurately. \cite{}
+%         Figure~\ref{fig:payload_noise_diff} shows
+        
+%         % \input{system_id/plots/payload_noise_diff.tex} // With TVDiff
+
+%         Noise also affects model prediction accuracy and the length of training data required for adequate predictions. 
+        
+%         \input{system_id/plots/noise_vs_no_noise.tex}
+
+%         \input{system_id/plots/havok_vs_dmd_noise.tex}
+
+%         HAVOK performs better than DMD.
+%         This slight difference in prediciton performance has a negligible effect on control.
+        
+
+%         Input data needs to be adjusted.
+
+%         % \input{plot of SITL acc_sp}
+    
+
+%     \subsection{Size of training data}
+%         The length of training data used for system identification affects the quality of the model produced.
+%         In Figure~\ref{fig:SITL_MAE_vs_train_angular_rate} it is clear that prediction error decreases as the amount of training data increases.
+%         As more training data is used in the regression problem, 
+%         the determined model better approximates the actual dynamics because a large range of the dynamics is "seen" by the algorithm.
+
+        
+%         % \input{low data prediction}
+%         \paragraph{}
+%         Models produced from data lengths as short as \SI{5}{\second} predict the movement of state variables surprisingly well.
+%         % Figure~\ref{} shows prediction.
+%         Note how the general shape of the prediction represents the training data, 
+%         even though it contains a lot more high frequency oscillations.
+
+%         \input{system_id/plots/MAE_diff.tex}
+
+%         \paragraph{}
+%         % Figure~\ref{} shows the MAE of prediction state derivative.
+%         Define MAE diff with equation ??.
+%         % From Figure~\ref{} it appears that at least \SI{}{} training data is required to produce models that represent the dynamics.
+
+%         \paragraph{}
+%         The models produced from HAVOK appear to produce slightly better prediction errors, however this small difference has a negligible effect on control performance.
+
+%         \paragraph{}
+%         % In Figure~\ref{fig:MAE_vs_train} it can be seen that after approximately \SI{??}{\second} 
+%         the prediction error does not significantly improve with more training data.
+%         It practice less training data is desirable because less flight time will be wasted on training a model before the quadrotor can fly with a updated controller.
+%         Less training data also corresponds to lower memory usage on quadrotor hardware.
+%         Such a slight improvement in prediction error also has a negligible effect on control performance and is therefore not worth the increased data requirement.
+%         % Therefore, only \SI{??}{\second} of flight data will be used to train system identification models. 
+
+
+%     \subsection{System parameters}
+%         Best hyperparameters.
+%         Fixed size of data.
+%         Fixed sample time.
+
+%     \subsection{Dynamic payload}
+%         Data-driven vs Parameter estimation
+
+%         plot hyperparameterss MAE. Not how much more delays are required
+
+%     \subsection{Practical flight data}
+%     \subsection{HIL}
+%         \paragraph{Companion computer}
+%         \paragraph{Software}
+%         \paragraph{CPU}
+%         \paragraph{Memory}
+

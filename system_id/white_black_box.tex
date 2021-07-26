@@ -1,0 +1,79 @@
+\section{White-box and black-box techniques}
+
+    \subsection{White-box techniques}
+
+        \paragraph{} 
+        The underlying physics of a white-box model is understood by the user because    
+        they are determined from first principles.
+        This is done by modelling physical processes with techniques like Lagrangian mechanics or Newton equations.
+        With system identification techniques that use these models, 
+        the mathematical relations between system parameters are predefined in the modelling phase.
+        The system identification process is therefore reduced to parameter estimation to determine values for parameters used in die model.
+
+        \paragraph{} 
+        This approach is used by \cite{Erasmus2020} and \cite{Slabber2020} for swing damping control of a quadrotor with an unknown suspended payload.
+        The system was modelled as two rigid bodies connected by a link and the following assumptions were made regarding the suspended payload:
+        \begin{itemize}
+            \item The payload is a point mass.
+            \item The link is massless.
+            \item The link is rigid.
+            \item The link is attached to the CoM of the quadrotor.
+        \end{itemize}
+        The only unknown parameters in the quadrotor and payload model is the payload mass and link length.
+        These parameters are first estimated and then inserted into the predefined, linearised model.
+        This model is used by a LQR controller to damp swing angles while also controlling the vehicle.
+
+        \paragraph{} 
+        The approach works well for systems with predictable dynamics, but it is not very adaptable.
+        The payload considered by \cite{Erasmus2020} and \cite{Slabber2020} is limited to a small rigid mass suspended from the quadrotor by a non-stretching cable. 
+        In this use case it was shown that a LQR controller successfully controls a quadrotor while minimising payload swing angles.
+        However, if a payload or cable is used that violates one of the modelling assumptions, the predefined model no longer accurately represent the system.
+        Since the controller is dependent on this model, the mismatch between the model and actual dynamics may result in undesirable controller behaviour.
+
+    \subsection{Black-box techniques}
+
+        Data-driven system identification methods produce black-box models.
+        In contrast to white-box models, black-box models do not require predefined mathematical relations between system parameters.
+        % The user only considers what goes into, and comes out of, the black-box.
+        % Something imagery about why it is called black box
+        No prior knowledge of the physics of the system are considered and no modelling assumptions are made.
+        Black-box techniques determine the mathematical relationship between inputs and outputs of a system using information from measurement data only.
+
+        \paragraph{}
+        Black-box models can be categorised as either non-linear or linear models.
+        Non-linear models are often more accurate than linear models because complex, real-world dynamics are better approximated by non-linear systems.
+        The dynamics of a quadrotor and suspended payload are also non-linear.
+        Examples of black box models with quadrotors and payloads in literature ???
+
+        \paragraph{}
+        However, non-linear models are inherently more complex than linear models. 
+        Controllers that use non-linear models are usually more computationally complex than those with linear models.
+        Control archetictures for quadrotors used in practical applications are mostly implemented on onboard hardware.
+        Therefore there is value in low-complexity, linear models since these may be simple enough to execute on low cost hardware.
+        trade-off between accuracy and complexity.
+        Non-linear models may require control implementations that are too computationally expensive and may not be practically realisable on the available hardware on a quadrotor.
+        
+        \paragraph{}
+        DMDc and HAVOK are the two data-driven system identification methods investigated in this paper. 
+        These are linear regression techniques that produce a linear model to approximate non-linear dynamics.
+        Non-linear data-driven techniques like Neural Networks and SINDy \cite{Brunton2016} may produce models that are more accurate than linear techniques, 
+        but at the cost of greater computational complexity.
+        \murray{Name more techniques}
+        DMDc and HAVOK are less computationally complex and their models are suitable for linear MPC, which is significantly faster than non-linear MPC.
+        This is desirable for the quadrotor use case, where onboard computational power is limited.
+        
+        \paragraph{}
+        These techniques and their implementation are explained in the sections below.
+        Each technique is considered for use in a velocity controller in the North direction
+
+        \paragraph{Considered controller}
+        % As discussed in \ref{sec:linear_model}, the payload has minimal effect on quadrotor attitude because it is attached near the CoM of the vehicle.
+        % Therefore the attitude states are excluded from the system identification model.
+        The model identified by DMDc will be used to design a longitudinal velocity controller.
+        As shown in \ref{fig:system_id_plant}, the plant considered for system identification includes the dynamics of the inner loop, attitude controllers.
+        The swing damping controllers which will utilise the identified model act only in the translational velocity loop.
+        Because of the large time-scale separation between the inner and outer loop controllers, 
+        the attitude states have a negilable effect on the plant dynamics seen by the velocity controller.
+        As discussed in Section~\ref{sec:linear_model}, the payload minimally effects the quadrotor attitude because it is attached near the CoM of the vehicle.
+        Therefore the attitude states are excluded from the system identification model.
+

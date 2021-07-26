@@ -1,0 +1,125 @@
+\section{Hankel Alternative View Of Koopman} 
+\label{sec:havok}
+    
+    \murray{q = number of delays, from here up}
+    
+    \paragraph{}
+    HAVOK is a data-driven, regression technique that provides a connection between DMD and Koopman operator theory \cite{Brunton2017a, Champion2019}. 
+    We have adapted the standard HAVOK algorithm slightly to account for the effect of control and to extract a discrete, linear model that approximates the behaviour of a controlled dynamical system.
+    In this section, a brief overview is provided for this implementation and expansion of \mbox{HAVOK}.
+    % 
+    \paragraph{}
+    The extracted discrete state-space model is defined as:
+    \begin{equation} \label{eq:havoc_state_space}
+        \bm{a}_{k+1} = \Tilde{\bm{A}} \bm{a}_k + \Tilde{\bm{B}} \bm{u}_k ,
+    \end{equation}
+    where $\bm{a}_k$ is the state vector previously defined in Section \ref{sec:dmdc}, 
+    \( \Tilde{\bm{A}} \in \R^{(q \cdot n_x) \times (q \cdot n_x)} \) is the system matrix, 
+    and \( \Tilde{\bm{B}} \in \R^{(q \cdot n_x) \times n_u} \) is the input matrix. 
+    Here, $\Tilde{\phantom{a}}$ is used to differentiate these matrices from $\bm{A}$ and $\bm{B}$ used in DMDc.
+    % 
+    \paragraph{}
+    The original HAVOK algorithm, developed by \cite{Brunton2017}, constructs a Hankel matrix from output variables only. 
+    In order to incorporate the effect of control, an extended Hankel matrix, $\bm{\Pi}$, is created by appending a matrix of inputs to a Hankel matrix of measurements:
+    \begin{equation} \label{eq:pi_hankel}
+        \bm{\Pi} = \phantom{.} \left [
+            \begin{array}{*{5}{@{}M{\mycolwd}@{}}}
+                    \bm{a}_{q} & \bm{a}_{q+1} & \bm{a}_{q+2} & \cdots & \bm{a}_{w+q-1} \\
+                    \bm{u}_{q} & \bm{u}_{q+1} & \bm{u}_{q+2} & \cdots & \bm{u}_{w+q-1}
+            \end{array}
+        \right ] ,
+    \end{equation}
+    where $w$ is the number of columns in $\bm{\Pi}$.
+    A truncated SVD of this Hankel matrix results in following approximation:
+    \begin{equation} \label{eq:havok_svd_tilde}
+        \bm{\Pi} \approx \Tilde{\bm{U}} \Tilde{\bm{\Sigma}} \Tilde{\bm{V}}^T ,
+    \end{equation}
+    where $\Tilde{\phantom{a}}$ represents rank-$p$ truncation.
+    It is important to note that the model extracted by HAVOK depends on the choice of hyperparameters, $p$ and $q$.
+    The number of samples in the training data, $N_{train} = w + q -1$, also influences the accuracy of the model.
+    % 
+    \paragraph{}
+    The columns of $\Tilde{\bm{V}}$ are the most significant principal components of the system dynamics \cite{Kamb2020}.
+    This matrix, $\Tilde{\bm{V}}$, can be considered to contain a time-series of the pseudo-state, $\bm{v}$, such that
+    \(
+        \Tilde{\bm{V}}^T = \begin{bmatrix} 
+            \bm{v}_q & \bm{v}_{q+1} & \cdots & \bm{v}_w 
+        \end{bmatrix} ,
+    \)
+    characterises the evolution of the actual dynamics in an eigen-time-delay coordinate system \cite{Brunton2017}.
+    % 
+    Consider the following discrete, state-space formulation:
+    \begin{equation} \label{eq:v_ss}
+        \bm{v}_{k+1} = \bm{\Lambda} \bm{v}_k .
+    \end{equation}
+    Recall that DMDc finds a best fit linear operator that directly maps $\bm{a}_{k}$ to $\bm{a}_{k+1}$.
+    Similarly, HAVOK determines the best fit linear operator $\bm{\Lambda}$ that maps the pseudo-state $\bm{v}_k$ to $\bm{v}_{k+1}$.
+    So, in order to setup an over-determined equality for (\ref{eq:v_ss}), $\Tilde{\bm{V}}^T$ is divided into two matrices:
+    \begin{align} \label{eq:v1v2}
+        \bm{V}_1 &= \left [
+            \begin{array}{*{5}{@{}M{\mycolwd}@{}}} 
+                \bm{v}_{q \phantom{-1}}     & \bm{v}_{q+1} & ... & \bm{v}_{w-1} \\
+            \end{array} 
+        \right ] , \nonumber \\ 
+        \bm{V}_2 &= \left [
+            \begin{array}{*{5}{@{}M{\mycolwd}@{}}} 
+                \bm{v}_{q+1}     & \bm{v}_{q+2} & ... & \bm{v}_{w \phantom{-1}} \\
+            \end{array} 
+        \right ] ,
+    \end{align} 
+    where $\bm{V}_2$ is $\bm{V}_1$ advanced a single step forward in time.
+    The matrices from Equation (\ref{eq:v1v2}) are now combined with Equation (\ref{eq:v_ss}) and the best fit $\bm{\Lambda}$ is determined with the Moore-Penrose pseudoinverse:
+    \begin{equation} \label{eq:v_dmd}
+        \bm{V}_2 = \bm{\Lambda} \bm{V}_1 \phantom{---} \Rightarrow \phantom{---} \bm{\Lambda} \approx \bm{V}_1 \bm{V}_1^{\dagger}
+    \end{equation}
+    % 
+    It can be shown from Equation (\ref{eq:havok_svd_tilde}) that Equation (\ref{eq:v_ss}) is transformed from the eigen-time-delay coordinate system to the original coordinate system as the following:
+    \begin{equation} \label{eq:v_ss_a} 
+        \begin{bmatrix}
+            \bm{a}_{k+1}  \\  \bm{u}_{k+1} 
+        \end{bmatrix}
+    \phantom{.} = \phantom{.} (\Tilde{\bm{U}} \Tilde{\bm{\Sigma}}) \bm{\Lambda} (\Tilde{\bm{U}}  \Tilde{\bm{\Sigma}})^{\dagger} \phantom{.}
+        \begin{bmatrix}
+            \bm{a}_{k}  \\  \bm{u}_{k} 
+        \end{bmatrix} .
+    \end{equation}    
+    % 
+    This form is used to extract $\Tilde{\bm{A}}$ and $\Tilde{\bm{B}}$ from the matrix,
+    \( 
+        (\Tilde{\bm{U}} \Tilde{\bm{\Sigma}}) \bm{\Lambda} (\Tilde{\bm{U}}  \Tilde{\bm{\Sigma}})^{\dagger}
+    \), in the following way:
+    \begin{equation} \label{matrix_decomp}
+        \begin{bmatrix}
+            \bm{a}_{k+1}  \\  \bm{u}_{k+1} 
+        \end{bmatrix}
+        \phantom{.} = \phantom{.} 
+        \begin{bmatrix}
+            \Tilde{\bm{A}} \phantom{.....} \Tilde{\bm{B}} \\
+            \textit{(discarded)}
+        \end{bmatrix}
+        \phantom{.}
+        \begin{bmatrix}
+            \bm{a}_{k}  \\  \bm{u}_{k} 
+        \end{bmatrix}.
+    \end{equation}    
+    % 
+    % This decomposition is illustrated in Fig.~\ref{fig:lambda_decomp}, where blocks represent different groups of entries in the matrix.
+    % \begin{figure}[h]
+    %     \includegraphics[scale = 0.45]{Lambda_decomp.png}
+    %     \centering
+    %     \caption{Illustration of the extraction of $\Tilde{\bm{A}}$ and $\Tilde{\bm{B}}$ from (\ref{eq:v_ss_a})}
+    %     \label{fig:lambda_decomp}
+    % \end{figure}
+    % 
+    Note that the matrix entries in (\ref{matrix_decomp}) that map $\bm{u}_k$ to $\bm{u}_{k+1}$ are meaningless for our purposes and are discarded.
+    Similarly to DMDc, some matrix entries in $\Tilde{\bm{A}}$ and $\Tilde{\bm{B}}$ are known a priori due to the relative positions of delay coordinates. These are forced to 1 or 0 to improve the prediction performance of the model.
+    
+    \murray{merge these paragraphs}
+    Since the state vector, $\bm{a}$, includes delay-coordinates, some matrix entries are known a priori and are independent of the dynamics. 
+    For example, the values of $\bm{x}_{k}$ should be mapped from their position in $\bm{a}_k$ to specific indices in $\bm{a}_{k+1}$. 
+    Due to the least-squares fitting and coordinate transformation, DMDc will not produce these exact values in $\bm{A}$ and $\bm{B}$. 
+    By forcing each of these matrix entries to 1 or 0, the state-prediction performance of the model is improved.
+
+
+
+
