@@ -1,0 +1,49 @@
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[            
+            xlabel = Length of training data,
+            ylabel = MAE,
+            x unit = \si{\second},
+            % y unit = \si{\second},
+            xmin = 0,     xmax = 120,
+            ymin = 0.08,  ymax = 0.12,
+            grid = major,
+            legend cell align = left,
+            legend pos = north east,
+            grid style = dashed,
+            legend style = {font = \scriptsize},
+            label style = {font = \scriptsize},
+            tick label style = {font = \scriptsize},
+            width = 0.45\columnwidth,
+            height = 0.5\columnwidth,
+            % initialize Dark2
+            cycle list/Dark2,
+            % combine it with 'mark list*':
+            cycle multiindex* list = {
+                Dark2\nextlist
+            }
+        ]
+        
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = T_train, y = MAE_mean, col sep = comma] 
+        {system_id/csv/MAE_vs_Ntrain_SITL_x_vel_noise_l0-5_m0-2.csv_havok_angle.csv};
+        \addlegendentry{$l =$~\SI{0.5}{\metre}}
+        
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = T_train, y = MAE_mean, col sep = comma] 
+        {system_id/csv/MAE_vs_Ntrain_SITL_x_vel_noise_l1_m0-2.csv_havok_angle.csv};
+        \addlegendentry{$l =$~\SI{1}{\metre}}
+        
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = T_train, y = MAE_mean, col sep = comma] 
+        {system_id/csv/MAE_vs_Ntrain_SITL_x_vel_noise_l2_m0-2.csv_havok_angle.csv};
+        \addlegendentry{$l =$~\SI{2}{\metre}}
+        
+        \end{axis}
+    \end{tikzpicture} 
+    
+    \caption{HAVOK prediction error using different cable lengths with a range of different sample times of noisy training data
+    ($m =$~\SI{0.2}{\kilo\gram}, $T_{train} =$~various??.)}
+    \label{fig:MAE_vs_Ntrain_vs_L_havok}
+\end{figure}

@@ -63,10 +63,17 @@
         For each of the experiments shown in this chapter, a hyperparameters selected tuned to produced
 
     \subsection{Sample time}
-        best hyperparameters.
-        \input{system_id/plots/MAE_vs_Ts.tex}
-        Fixed size of data.
-        Fixed pendulum params.
+        The sample time, $T_s$, used for system identification sets the sample time of the discrete model, 
+        which determines the sample time of the MPC.
+        Resampling strategies can enable the MPC to run at a different frequency to the discrete model but this adds unnecessary complexity to the control architecture.
+        
+        \paragraph{}
+        The MPC acts in the velocity loop and commands an acceleration setpoint.
+        The default PID velocity controller runs at \SI{50}{\hertz} which corresponds to $T_s =~$\SI{0.02}{\second}.
+        Due to the computational complexity of an MPC, the optimiser will struggle to run at \SI{50}{\hertz} on a quadrotor companion computer.
+        \input{system_id/plots/MAE_vs_Ts_vs_L.tex}
+        This is because the  
+        % \input{system_id/plots/MAE_vs_Ts.tex}
 
     \subsection{Choice of payload variable in the state vector}
         As discussed in Section~\ref{sec:plant_considered}, 
@@ -100,7 +107,8 @@
         A model using $\dot{\theta}$ only needs to consider its relationship with other variables.
 
         \input{system_id/plots/MAE_vs_train_Simulink_angular_rate.tex}
-
+            \murray{Add plot of using thetaand dtheta??}
+            \murray{Redo this plot with SITL noise}
         \paragraph{}
         % Figure~\ref{} shows the prediction error of techniques using $\dot{\theta}$ or $\theta$ for different amounts of training data.
         For each length of training data, the hyperparameter combination producing the lowest prediction error was determined and used.
@@ -181,6 +189,9 @@
 
 
     \subsection{System parameters}
+            
+        Works across a range of parameters.
+
         \paragraph{}
         The payload acting as a single floating pendulum, as described in Section~\ref{sec:plant_considered},
         has two system parameters, $m_p$ and $l$.
@@ -198,9 +209,9 @@
         \paragraph{}
         The cable length is limited to:
         \begin{equation}
-            0.025 \leq l \leq \SI{2}{\metre} .
+            0.5 \leq l \leq \SI{2}{\metre} .
         \end{equation}
-        A cable length shorter than \SI{0.025}{\metre} is quite impractical and may rather be attached as a rigid payload.
+        A cable length shorter than \SI{0.5}{\metre} is quite impractical and may rather be attached as a rigid payload.
         There are very few practical applications that may require a shorter cable length.
         It is also unsafe to fly with a shorter cable length, 
         since the payload may collide with the quadrotor during an uncontrolled swing.
@@ -211,12 +222,19 @@
 
         \paragraph{}
         Plot MAE vs l
-        Plot MAE vs m
-        See if you can rather plot MAE vs l, with contours of m
+        \input{system_id/plots/MAE_vs_Ntrain_vs_L_havok.tex}
+        DMD shows the same trend revealed in Figure~\ref{fig:MAE_vs_Ntrain_vs_L_havok}.
 
         \paragraph{}
-        See how it affects Ts
-        plot MAE vs Ts with contours of l
+        Plot MAE vs m
+        \input{system_id/plots/MAE_vs_Ntrain_vs_m_havok.tex}
+        DMD shows the same trend revealed in Figure~\ref{fig:MAE_vs_Ntrain_vs_m_havok}.
+
+        \paragraph{}
+        % Not very conclusive
+        % \input{system_id/plots/MAE_vs_Ts_vs_L.tex}
+        % See how it affects Ts
+        % plot MAE vs Ts with contours of l
 
         Best hyperparameters.
         Fixed size of data.
@@ -228,11 +246,11 @@
         This creates a double pendulum model which has different dynamcis than a single pendulum.
 
         \murray{insert picture a practical quad with long payload}
-
+        \paragraph{}
         Another payload case that will cause inaccuracies in the parameter estimation technique is if a payload is attached rigidly to the quadrotor while it also has a suspended payload.
         The payload mass estimation is based on the assumption that the quadrotor mass is known.
         However if a mass is rigidly attached to the vehicle, the effective quadrotor mass is changed and the RLS payload mass estimation is no longer accurate.
-        
+
         These payload produce significantly different dynamics than predicted by the a priori model.
         Since the system identification by parameter estimation depends heavily on the pre-determined mathematical model,
         

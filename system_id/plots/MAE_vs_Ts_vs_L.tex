@@ -6,7 +6,7 @@
             ylabel = MAE,
             % x unit = \si{\second},
             % y unit = \si{\second},
-            xmin = 0,     xmax = 0.07,
+            xmin = 0.02,     xmax = 0.05,
             ymin = 0.085,  ymax = 0.125,
             grid = major,
             legend cell align = left,
@@ -27,18 +27,28 @@
 
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = Ts, y = MAE_mean, col sep = comma] 
-        {system_id/csv/MAE_vs_Ts_SITL_x_vel_noise_longer_times_Ts.csv_dmd_angle.csv};
-        \addlegendentry{DMD}
+        {system_id/csv/MAE_vs_Ts_SITL_x_vel_noise_l0-25_m0-2.csv_dmd_angle.csv};
+        \addlegendentry{$l =$~\SI{0.25}{\metre}}
         
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = Ts, y = MAE_mean, col sep = comma] 
-        {system_id/csv/MAE_vs_Ts_SITL_x_vel_noise_longer_times_Ts.csv_havok_angle.csv};
-        \addlegendentry{HAVOK}
-
+        {system_id/csv/MAE_vs_Ts_SITL_x_vel_noise_l0-5_m0-2.csv_dmd_angle.csv};
+        \addlegendentry{$l =$~\SI{0.5}{\metre}}
+        
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = Ts, y = MAE_mean, col sep = comma] 
+        {system_id/csv/MAE_vs_Ts_SITL_x_vel_noise_l1_m0-2.csv_dmd_angle.csv};
+        \addlegendentry{$l =$~\SI{1}{\metre}}
+        
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = Ts, y = MAE_mean, col sep = comma] 
+        {system_id/csv/MAE_vs_Ts_SITL_x_vel_noise_l2_m0-2.csv_dmd_angle.csv};
+        \addlegendentry{$l =$~\SI{2}{\metre}}
+        
         \end{axis}
     \end{tikzpicture} 
     
-    \caption{DMD and HAVOK predictions error for different sample times of noisy training data
-    ($m =$~\SI{0.2}{\kilo\gram}, $l =$~\SI{0.5}{\meter}, $T_{train} =$~\SI{60}{\second}.)}
+    \caption{DMD prediction error using different cable lengths with a range of different sample times of noisy training data
+    ($m =$~\SI{0.2}{\kilo\gram}, $T_{train} =$~various??.)}
     % \label{fig:havok_vs_dmd_noise}
 \end{figure}
