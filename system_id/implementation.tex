@@ -254,16 +254,42 @@
         It is a non-trivial task to compare the data-driven models with the white-box models,
         because they are different forms and are used in different types of controllers.
         The a white-box system identification technique determines a continuous state space model 
-        which is used in an LQR controller.
-        The data-driven techniques result in a discrete state space model 
-        which is used for optimisation over a prediction horizon in a MPC. 
-        Even though the models cannot easily be compared, 
-        the performance of controllers using these models can be compared.
-        This will be investigated in % Chapter~\ref{chap:}
+        which is used in an LQR controller. 
+        This is in the form:
+        \begin{equation}
+            \dot{x} = A x + B u
+        \end{equation}
+        For this model, it is important that the time-derivative estimate of the model 
+        at the current time-step 
+        is similar to the actual time-derivative of the system state at that time-step.
+        The LQR controller applies an gain to the current state estimate 
+        to determine the input signal at that time-step only.
+        Hence, the state prediction for multiple time-steps into the future is not important.
+
+        \paragraph{}
+        In contrast, the data-driven techniques result in a discrete state space model,
+        \begin{equation}
+            x_{k+1} = A x_k + B u_k ,
+        \end{equation} 
+        which is used in a MPC.
+        Therefore the prediction accuracy of the model for multiple time-steps over a time horizon is important,
+        since the MPC optimises the control input based on this state prediction.
+        
+        \paragraph{}
+        Even though the models cannot easily be compared to each other, 
+        the performance of the controllers using these models can be compared.
+        This comparison will be investigated in % Chapter~\ref{chap:}
+
+        \paragraph{}
+        For single pend
+        plot theta prediction dmd vs havok va white-box
+
+        For double pend
+        plot theta prediction dmd vs havok va white-box
 
         \paragraph{}
         Since the a priori white-box model is based on a single pendulum model, 
-        the resulting state predictions are significantly different from the actual dynamics.
+        the dynamics described by the model are significantly different from the actual dynamics.
         This has a detrimental effect on the control performance of a controller based on such a model.
         
         \input{system_id/plots/MAE_vs_Ntrain_double_pend}
