@@ -1,0 +1,44 @@
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[            
+            xlabel = Length of training data,
+            ylabel = MAE,
+            x unit = \si{\second},
+            % y unit = \si{\second},
+            xmin = 0,     xmax = 120,
+            ymin = 0.06,  ymax = 0.15,
+            grid = major,
+            legend cell align = left,
+            legend pos = north east,
+            grid style = dashed,
+            legend style = {font = \scriptsize},
+            label style = {font = \scriptsize},
+            tick label style = {font = \scriptsize},
+            width = 0.95\columnwidth,
+            height = 0.5\columnwidth,
+            % initialize Dark2
+            cycle list/Dark2,
+            % combine it with 'mark list*':
+            cycle multiindex* list = {
+                Dark2\nextlist
+            }
+        ]
+        
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = T_train, y = MAE_mean, col sep = comma] 
+        {system_id/csv/MAE_vs_Ntrain_SITL_x_vel_noise_l1_m0-3.csv_havok_angle.csv};
+        \addlegendentry{single pendulum - $m =$~\SI{0.3}{\kilo\gram}, $l =$~\SI{1}{\metre},}
+        
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = T_train, y = MAE_mean, col sep = comma] 
+        {system_id/csv/MAE_vs_Ntrain_SITL_x_vel_noise_m1_0.2_l1_m2_0.1_l2_0.3.csv_havok_angle.csv};
+        \addlegendentry{double pendulum - $m_1 =$~\SI{0.2}{\kilo\gram}, $m_1 =$~\SI{0.1}{\kilo\gram}, $l_1 =$~\SI{1}{\metre}, $l_2 =$~\SI{0.3}{\metre}}
+        
+        \end{axis}
+    \end{tikzpicture} 
+    
+    \caption{HAVOK prediction error using different cable lengths with a range of different lengths of noisy training data
+    ($l =$~\SI{1}{\metre}, $T_{train} =$~various??.)}
+    \label{fig:single_vs_double_pend}
+\end{figure}

@@ -243,20 +243,50 @@
     \subsection{Dynamic payload}
         Some payloads attached to the cable may not satisfy the assumptions made in Section~\ref{sec:plant_considered}.
         For example, if a long payload is attached to the cable, the CoM of the payload will be quite a distance below the attachment of the cable.
-        This creates a double pendulum model which has different dynamcis than a single pendulum.
+        This creates a double pendulum model with dynamics that differ significantly from a single pendulum.
+        Figure~?? shows a practical double pendulum use case. 
+        In 2D this payload is better represented by the floating double pendulum modelled in Figure~??.
 
         \murray{insert picture a practical quad with long payload}
-        \paragraph{}
-        Another payload case that will cause inaccuracies in the parameter estimation technique is if a payload is attached rigidly to the quadrotor while it also has a suspended payload.
-        The payload mass estimation is based on the assumption that the quadrotor mass is known.
-        However if a mass is rigidly attached to the vehicle, the effective quadrotor mass is changed and the RLS payload mass estimation is no longer accurate.
-
-        These payload produce significantly different dynamics than predicted by the a priori model.
-        Since the system identification by parameter estimation depends heavily on the pre-determined mathematical model,
+        \murray{insert diagram of double pend}
         
+        \paragraph{}
+        It is a non-trivial task to compare the data-driven models with the white-box models,
+        because they are different forms and are used in different types of controllers.
+        The a white-box system identification technique determines a continuous state space model 
+        which is used in an LQR controller.
+        The data-driven techniques result in a discrete state space model 
+        which is used for optimisation over a prediction horizon in a MPC. 
+        Even though the models cannot easily be compared, 
+        the performance of controllers using these models can be compared.
+        This will be investigated in % Chapter~\ref{chap:}
+
+        \paragraph{}
+        Since the a priori white-box model is based on a single pendulum model, 
+        the resulting state predictions are significantly different from the actual dynamics.
+        This has a detrimental effect on the control performance of a controller based on such a model.
+        
+        \input{system_id/plots/MAE_vs_Ntrain_double_pend}
+
         \paragraph{}
         For each of these payload cases, a different parameter estimation based techniques would needs to be designed for effective control.
         This is undesirable for practical drone deliveries, especially when the type of paylaod is not known well in advance or changes regularly.
         A data-driven technique provides a more general solution since it accommodates a larger range of payload types and does not require a prioir modelling information.
         
         plot hyperparameterss MAE. Not how much more delays are required
+        
+        Takens theorum.
+        Add DMD to plot
+        \input{system_id/plots/MAE_vs_q_double_pend}
+
+        \paragraph{}
+        The double pendulum is one example of a payload case that would require a redesign of the control architecture.
+        Other dynamic payloads that are difficult to model with a white-box method are containers holding a fluid.
+        Examples: 
+
+        \paragraph{}
+        Another payload case that will cause inaccuracies in estimated white-box model 
+        is if a payload is attached rigidly to the quadrotor while also carrying a suspended payload.
+        The payload mass estimation is based on the assumption that the quadrotor mass is known.
+        However if a mass is rigidly attached to the vehicle, the effective quadrotor mass is changed and the RLS payload mass estimation is no longer accurate.
+
