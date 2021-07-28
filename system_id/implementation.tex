@@ -264,7 +264,7 @@
         is similar to the actual time-derivative of the system state at that time-step.
         The LQR controller applies an gain to the current state estimate 
         to determine the input signal at that time-step only.
-        Hence, the state prediction for multiple time-steps into the future is not important.
+        Hence, the state prediction for multiple time-steps into the future is not as important.
 
         \paragraph{}
         In contrast, the data-driven techniques result in a discrete state space model,
@@ -284,13 +284,32 @@
         For single pend
         plot theta prediction dmd vs havok va white-box
 
-        For double pend
-        plot theta prediction dmd vs havok va white-box
+        Note that the payload oscillations are damped slightly by the PID controller.
+        It appears that this damping is more complex than the linear damping model 
+        used to model the white-box model, since the actual swing amplitude 
+        does not linearly decrease as expected.
+        The damping effect is a function of the controller gains, 
+        the payload connection and the aerodynamic drag of the payload.
+        An advantage of the data-driven system identification techniques 
+        is that the effect of damping is inherently included in the estimated model 
+        without specifically estimating it.
+        In contrast, the white-box estimation technique requires a designed algorithm 
+        to estimate every parameter that effects the dynamics, 
+        namely the payload mass, cable length and damping coefficient
+
+
+        \paragraph{}
+        \input{system_id/plots/double_pend_prediction_black.tex}
+        \input{system_id/plots/double_pend_prediction_white.tex}
+        
+        \input{system_id/plots/FFT_amplitude.tex}
+        This FFT leads to an estimated cable length of \SI{0.458}{\metre}        
 
         \paragraph{}
         Since the a priori white-box model is based on a single pendulum model, 
         the dynamics described by the model are significantly different from the actual dynamics.
-        This has a detrimental effect on the control performance of a controller based on such a model.
+        This will have a detrimental effect on the control performance of a controller based on such a model,
+        since the controller will be designed for different plant than what it is controlling actually controlling.
         
         \input{system_id/plots/MAE_vs_Ntrain_double_pend}
 

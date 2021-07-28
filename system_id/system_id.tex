@@ -17,9 +17,16 @@
     For each approach, different estimation techniques are explained and applied to the quadrotor and payload system.
     The results of these techniques are then compared to each other.
 
-\input{system_id/white_black_box.tex}
-\input{system_id/plant.tex}
-\input{system_id/param_estimation.tex}
-\input{system_id/dmdc.tex}
-\input{system_id/havok.tex}
-\input{system_id/implementation.tex}
+    \input{system_id/white_black_box.tex}
+    \input{system_id/plant.tex}
+    \input{system_id/param_estimation.tex}
+    \input{system_id/dmdc.tex}
+    \input{system_id/havok.tex}
+    \input{system_id/implementation.tex}
+
+    \section{Conclusion}
+    DMD and HAVOK work very similarly with single pend.
+    HAVOK has slightly better prediction accuracy, but this small difference has neglible effect on control.
+    It is difficult to compare the white-box to the black-box models because the real effect will only be seen during control.
+    However it is clear that the accuracy of the white-box model degrades significantly 
+    when a payload that causes double pendulum dynamics.
