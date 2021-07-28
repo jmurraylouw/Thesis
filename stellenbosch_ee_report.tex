@@ -143,16 +143,16 @@
 \newcommand{\willem}[1]{\textcolor{red}{#1}}
 
 % Keep figure in section
-% \usepackage{placeins}
+\usepackage{placeins}
 
-% \let\Oldsection\section
-% \renewcommand{\section}{\FloatBarrier\Oldsection}
+\let\Oldsection\section
+\renewcommand{\section}{\FloatBarrier\Oldsection}
 
-% \let\Oldsubsection\subsection
-% \renewcommand{\subsection}{\FloatBarrier\Oldsubsection}
+\let\Oldsubsection\subsection
+\renewcommand{\subsection}{\FloatBarrier\Oldsubsection}
 
-% \let\Oldsubsubsection\subsubsection
-% \renewcommand{\subsubsection}{\FloatBarrier\Oldsubsubsection}
+\let\Oldsubsubsection\subsubsection
+\renewcommand{\subsubsection}{\FloatBarrier\Oldsubsubsection}
 
 % Glossary
 % \usepackage[acronym, nomain, nopostdot, nonumberlist, nogroupskip, toc, automake=false]{glossaries}
@@ -186,6 +186,13 @@
 % \input{system_id/plots/noise_vs_no_noise.tex}
 % \input{system_id/plots/havok_vs_dmd_noise.tex}
 % \input{system_id/plots/singular_values.tex}
+
+\input{system_id/plots/prediction_single_pend_black.tex}
+\input{system_id/plots/prediction_single_pend_white.tex}
+\input{system_id/plots/prediction_double_pend_black.tex}
+\input{system_id/plots/prediction_double_pend_white.tex}
+\input{system_id/plots/FFT_amplitude_single_pend.tex}
+\input{system_id/plots/FFT_amplitude_double_pend.tex}
 
 
 % \input{conclusion/conclusion.tex}

@@ -27,28 +27,28 @@
         
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = time, y = theta, col sep = comma] 
-        {system_id/csv/single_step_predictions_SITL_single_pos_step_m1_0.2_l1_m2_0.1_l2_0.3.csv.csv};
+        {system_id/csv/single_step_predictions_SITL_single_vel_step_m1_0.2_l1_m2_0.1_l2_0.3.csv.csv};
         \addlegendentry{Actual}
 
-        \addplot+[mark = none, style = solid, ultra thick] 
-        table[x = time, y = theta_dmd, col sep = comma] 
-        {system_id/csv/single_step_predictions_SITL_single_pos_step_m1_0.2_l1_m2_0.1_l2_0.3.csv.csv};
-        \addlegendentry{DMD}
-
-        \addplot+[mark = none, style = dashed, ultra thick] 
-        table[x = time, y = theta_havok, col sep = comma] 
-        {system_id/csv/single_step_predictions_SITL_single_pos_step_m1_0.2_l1_m2_0.1_l2_0.3.csv.csv};
-        \addlegendentry{HAVOK}
+        % \addplot+[mark = none, style = dashed, ultra thick] 
+        % table[x = time, y = theta_dmd, col sep = comma] 
+        % {system_id/csv/single_step_predictions_SITL_single_vel_step_m1_0.2_l1_m2_0.1_l2_0.3.csv.csv};
+        % \addlegendentry{DMD}
 
         % \addplot+[mark = none, style = dashed, ultra thick] 
-        % table[x = time, y = theta_white, col sep = comma] 
-        % {system_id/csv/single_step_predictions_SITL_single_pos_step_m1_0.2_l1_m2_0.1_l2_0.3.csv.csv};
-        % \addlegendentry{White-box}
+        % table[x = time, y = theta_havok, col sep = comma] 
+        % {system_id/csv/single_step_predictions_SITL_single_vel_step_m1_0.2_l1_m2_0.1_l2_0.3.csv.csv};
+        % \addlegendentry{HAVOK}
+
+        \addplot+[mark = none, style = dashed, ultra thick] 
+        table[x = time, y = theta_white, col sep = comma] 
+        {system_id/csv/single_step_predictions_SITL_single_vel_step_m1_0.2_l1_m2_0.1_l2_0.3.csv.csv};
+        \addlegendentry{White-box}
 
         \end{axis}
     \end{tikzpicture} 
     
-    \caption{Data-driven model predictions for a North velocity step input
-        ($m_1 =$~\SI{0.2}{\kilo\gram}, $l_1 =$~\SI{1}{\meter}, $m_2 =$~\SI{0.1}{\kilo\gram}, $l_2 =$~\SI{0.3}{\meter}).}
-    \label{fig:double_pend_predictions_black}
+    \caption{White-box model predictions of a double pendulum for a North velocity step input
+        ($m =$~\SI{0.3}{\kilo\gram}, $l =$~\SI{1}{\meter})}
+    \label{fig:prediction_double_pend_white}
 \end{figure}

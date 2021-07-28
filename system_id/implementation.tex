@@ -299,12 +299,18 @@
 
 
         \paragraph{}
-        \input{system_id/plots/double_pend_prediction_black.tex}
-        \input{system_id/plots/double_pend_prediction_white.tex}
+        \input{system_id/plots/prediction_single_pend_black.tex}
+        \input{system_id/plots/prediction_single_pend_white.tex}
         
-        \input{system_id/plots/FFT_amplitude.tex}
-        This FFT leads to an estimated cable length of \SI{0.458}{\metre}        
+        \input{system_id/plots/prediction_double_pend_black.tex}
+        \input{system_id/plots/prediction_double_pend_white.tex}
+        
+        \input{system_id/plots/FFT_amplitude_single_pend.tex}
+        The FFT of the single pendulum leads to an estimated cable length of \SI{1.19}{\metre}        
 
+        \input{system_id/plots/FFT_amplitude_double_pend.tex}
+        The FFT of the double pendulum leads to an estimated cable length of \SI{1.39}{\metre}
+        
         \paragraph{}
         Since the a priori white-box model is based on a single pendulum model, 
         the dynamics described by the model are significantly different from the actual dynamics.
