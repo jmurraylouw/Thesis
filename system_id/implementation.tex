@@ -26,16 +26,18 @@
         will also include the filtering effect of the EKF as it would in practical flights.
 
         \paragraph{Method overview}
-        The procedure used to generate data for the black-box techniques is as follows:
+        The procedure used to evaluate the black-box techniques is as follows:
         \begin{enumerate}
             \item Takeoff and hover with the qaudrotor
             \item Start logging input and output data
             \item Command a series of velocity step setpoints with random step sizes and time intervals
             \item Stop logging data
             \item Split data into separate training and testing periods
+            \item Build a model from the training data
+            \item Calculate a error metric for the model from the testing data
         \end{enumerate}
 
-        \paragraph{}
+        \paragraph{PID gains}
         The default PID velocity controller from PX4 is used during these simulation.
         The implemented controller gains are documented in Appendix~\ref{appen:pid_gains}.
         A ROS node is used to read and log the payload angle measurement from Gazebo and a different
@@ -70,12 +72,28 @@
         
         \input{system_id/plots/training_data.tex}
 
+        \paragraph{}
         Figure~\ref{fig:training_data} 
         shows an example of random velocity steps and the resulting velocity response used as training data.
         Using random velocity steps and time intervals prevents the system identification methods 
         from overfitting to a specific set of control conditions.
         The method should rather determine a generalised model 
         that works over a range of possible control conditions.
+
+        \paragraph{}
+        The data logged from simulation is then divided into testing and training data.
+        The training data is used by the system identification algorithms to generate a regression model 
+        and the model is then used to determine a prediction error metric over the unseen testing data.
+        It is common practice in model evaluations 
+        to use separate sets of data for training and testing.
+        This ensures that good predictions scores do not result from models that overfit to the training data. 
+        
+        \paragraph{}
+        The testing data spans a fixed length of time and taken from the start of the simulation period.
+        The training data is then allocated from the remainder of the data.
+        The same testing data is used to calculate error metrics for different models with different configurations
+        to ensure that the metric for each model is comparable. 
+        This error metric calculated from the testing data is used to evaluate and rank the performances of different models.       
 
         % \paragraph{Why velocity steps?}
         % As discussed before, the purpose of identifying a data-driven model of the plant dynamics 
@@ -89,23 +107,131 @@
         % However, for the 
         % In practice it is more common to command position step setpoints since a quadrotor delivers
 
-        \paragraph{Testing data}
-        Cross-validate
+    \subsection{Error metric}
 
-        \paragraph{Error metric}
-        Each state error signal is scaled by the reciprocal of the maximum value of that state variable in the training data.
-        % This is to provide a better representative error when taking the mean of state variable errors.
-        This is to ensure that a scale difference in the variable types create a bias in the error metric.
-        For example, the quadrotor velocity reaches values of \SI{3}{\metre/\second} but the payload swing angle has a maximum of only \SI[]{0.526}{\radian}.
-        The velocity prediction error is therefore inherently larger than the payload angle prediction error
-        and will bias the error metric towards favouring models with good velocity predictions.
-        The proposed scaled error metric ensures that the MAE of each state variable can be compared to each other.
-        It also provides an error metric that is better and unbiased representative of the model prediction performance across all state variables. 
+        \paragraph{}
+        It was decided to use an error metric based on predictions accuracy over a time horizon to quantify the performance of different models.
+        The prediction accuracy of the identified model is important 
+        because it will used for control optimisation over a prediction horizon in a discrete MPC.
+        Common error metrics used for regression models are MSE and MAE.
+        MSE penalises larger errors more than smaller errors, whereas MAE penalises all errors equally.
+        It was decided to use MAE because it provides a more intuitive error value than MSE 
+        and there is no motivation to penalise larger errors more in the measure of prediction accuracy for our use case.
+        MAE is calculated as:
+        % \begin{equation}
+        %     \bm{MAE} = \frac{1}{N_{run}} \cdot \sum_{k = 1}^{N_{run}} \left\lvert \bm{\hat{x_k}} - \bm{x_k} \right\rvert ,
+        % \end{equation}
+        \begin{equation}
+            \bm{MAE} = mean \left( \phantom{.} \left\lvert \bm{\hat{x_k}} - \bm{x_k} \right\rvert \phantom{.} \right),
+        \end{equation}
+        where 
+        % $N_{run}$ is the number of samples used in the prediction run,
+        $\bm{x_k}$ is the actual state vector at time-step $k$, 
+        $\bm{\hat{x_k}}$ is the state prediction, 
+        and 
+        $\bm{MAE}$ is a vector with the MAE of each state.
 
-        Add Information Criteria ??
-        AIC Brunton Kutz??
+        % \paragraph{}
+        % Other considered error metrics are IAE and ITAE which adds up error over the prediction period.
+        % IAE integrates the absolute error over time and weights all error equally.
+        % ITAE integrates the absolute error multiplied by time over time 
+        % hence errors that occur later in the prediction are weighted more than those that that occur earlier.
+        % MAE was chosen over these metrics 
+        % since it is closer to the loss function of the MPC than IAE or ITAE.
+        % Especially, ITAE achieves the opposite of what is desired because it penalises earlier errors less.
+        % For the MPC it is more important that early prediction errors are small since it will reoptimise later  
 
-    \subsection{Hyperparameters}
+        \paragraph{}
+        Other metrics which are more statistically rigorous in model selection 
+        than these error metrics are AIC and BIC.
+        These metrics are information criteria scores which compute the maximum log likelihood of the model 
+        and add a penalty based on the number of terms in the model.
+        Thereby they provide a quantitative way of performing a Pareto analysis, 
+        which aims to balance model complexity with model accuracy \cite{Mangan2017}.
+        It is generally better to use a parsimonious model, 
+        which has a low prediction error but is not overly complex.
+        This not only helps to avoid overfitting, but also ensure that the MPC optimisation problem 
+        is not too computational expensive for the available hardware and desired control frequency.
+        
+        \paragraph{}
+        However, computing the maximum log likelihood of each model involves numerous simulations per model.
+        This is computationally intractable and unpractical for model selection in our case 
+        since there is such a large number of hyperparameter combinations to compare, as explained in Section~\ref{sec:hyperparameters} 
+        Therefore MAE will be used to evaluate model performance, 
+        because it provides a good measure of a model prediction 
+        and it is computationally fast enough to perform for wide hyperparameter search.
+        AIC or BIC may be able to identify a slightly better model, 
+        but when used with the MPC this slight improvement in prediction accuracy 
+        will result in a negligible improvement in control performance
+
+        \paragraph{}
+        The prediction MAE of one model may differ significantly 
+        depending on the starting condition and length of prediction horizon
+        The prediction horizon used for the MAE is selected as \SI{20}{\second}
+        and is significantly longer than the desired MPC prediction horizon.
+        This ensures that models which may be marginally unstable are penalised heavily and are discarded in model selection. 
+        Some models have very accurate transient predictions, but prove to be unstable over a longer time horizon.
+        If the prediction horizon of the MAE is too short, these models may unreasonably high.
+        These models could result in unstable control at certain control conditions and are a safety hazard.
+
+        \murray{Maybe insert example of good initial prediction but bad long term ??}
+
+        \paragraph{}
+        Different starting conditions also have a large influence on the prediction score of a model.
+        Some models may have accurate predictions of transient behaviour, 
+        while being extremely bad at steady-state predictions.
+        This would result in an MPC controlling the plant well during the initial step response,
+        but becoming unstable during steady-state control.
+        In order to have a MPC that can control the plant during the different stages of a flight, 
+        a model needs to be selected with accurate predictions over a range of different control conditions.
+        
+        \paragraph{}
+        Therefore the error metric needs to include predictions from multiple starting conditions in the testing data.
+        The resulting testing procedure is to first specify a number of equispaced starting conditions within the testing data.
+        The model is then run multiple times for the length prediction horizon, stating with different initial conditions each time.
+        The MAE is determined for each run whereafter the average of these scores gives the final MAE score of the model.
+        In order to balance the variety of testing conditions with the computational time per error metric calculation, 
+        10 was selected as the number of different initial conditions use in the final MAE score. 
+        
+        \paragraph{}
+        The MAE of each state variable is calculated individually.
+        These cannot easily be combined into a single error value 
+        because the states have different units and different orders of magnitude.
+        However a single value is required to rank the overall prediction performance of different models 
+        and quantitatively select a model.
+        Therefore a weighted average of the MAE of each state is used as a single value 
+        to represent the prediction accuracy of the model.
+        This value is calculated as:
+        % \begin{equation}
+        %     metric = \frac{1}{n_x} \cdot \sum_{i = 1}^{n_x} \left( \frac{ \bm{MAE_i} }{ x_{i, max} } \right) 
+        % \end{equation}
+        \begin{equation}
+            metric = mean \left( \frac{ \bm{MAE_i} }{ x_{i, max} } \right) 
+        \end{equation}
+        where 
+        % $n_x$ is the number of states,
+        $\bm{MAE_i}$ is the MAE of the $i$\textsuperscript{th} state,
+        and
+        $x_{i, max}$ is the maximum absolute value of the $i$\textsuperscript{th} state in the testing data.
+
+        Explain what metric is now? in percentage??
+        Change csv plots to use scale by non-square root and see effect
+        Try use MASE?? https://towardsdatascience.com/mad-over-mape-a86a8d831447
+
+        This is the final error metric used to evaluate the model predictions 
+        in the sections to follow.
+
+        % \paragraph{}
+        % Each state error signal is scaled by the reciprocal of the maximum value of that state variable in the training data.
+        % % This is to provide a better representative error when taking the mean of state variable errors.
+        % This is to ensure that a scale difference in the variable types create a bias in the error metric.
+        % For example, the quadrotor velocity reaches values of \SI{3}{\metre/\second} but the payload swing angle has a maximum of only \SI[]{0.526}{\radian}.
+        % The velocity prediction error is therefore inherently larger than the payload angle prediction error
+        % and will bias the error metric towards favouring models with good velocity predictions.
+        % The proposed scaled error metric ensures that the MAE of each state variable can be compared to each other.
+        % It also provides an error metric that is better and unbiased representative of the model prediction performance across all state variables. 
+
+    \subsection{Hyperparameters} \label{sec:hyperparameters}
         As discussed in Section~\ref{sec:dmdc} and \ref{sec:havok} 
         DMDc and HAVOK are dependent on two hyperparameters: the number of delay-coordinates, $q$, and the SVD truncation rank, $p$.
 
@@ -116,7 +242,7 @@
         The more terms better chance to overfit, lower generalisation
         \input{system_id/plots/MAE_vs_q.tex}
 
-        % \input{system_id/plots/singular_values.tex}
+        \input{system_id/plots/singular_values.tex}
 
         Fixed size of data
         Fixed sample time
@@ -198,7 +324,7 @@
         However, since there is no direct measurement of $\dot{\theta}$, 
         numerical differentiation is performed on the noisy $\theta$ measurement to estimate $\dot{\theta}$. 
         This amplifies the noise and results in inaccurate $\dot{\theta}$ signal.
-        Total variation differentiation is implemented to estimate $\dot{\theta}$ from the noisy measurements more accurately. \cite{}
+        Total variation differentiation is implemented to estimate $\dot{\theta}$ from the noisy measurements more accurately.
         Figure~\ref{fig:payload_noise_diff} shows
         
         % \input{system_id/plots/payload_noise_diff.tex} // With TVDiff
