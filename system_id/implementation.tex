@@ -13,31 +13,81 @@
     \subsection{Methodology}
 
         \paragraph{Simulation environment}
-        
+        A SITL implementation of PX4 \cite{Meier2015} using the Gazebo simulator \cite{Koenig2004} is used to generate data
+        for system identification.
+        Testing these techniques with simulation data allow us to investigate a much larger range system configurations 
+        than possible with practical flights.
+        The simulation model used in Gazebo was verified in Chapter~\ref{chap:modelling}.
+        Using PX4 in SITL also ensures that the controller dynamics in simulation 
+        is as close as possible to practical flights since the same flight stack is used in both cases.
+        Gazebo also applies realistic measurement noise to the signals received by PX4, 
+        which applies an EKF for state estimation.
+        Therefore the the data seen by the system identification techniques 
+        will also include the filtering effect of the EKF as it would in practical flights.
 
         \paragraph{Method overview}
-        \murray{Maybe convert this to a flow diagram}
-
+        The procedure used to generate data for the black-box techniques is as follows:
         \begin{enumerate}
-            \item Takeoff and hover
-            \item Command a series of velocity step inputs with random step sizes and time intervals
-            \item Measure and save input and output data
-            \item Apply algorithm to data and generate model
+            \item Takeoff and hover with the qaudrotor
+            \item Start logging input and output data
+            \item Command a series of velocity step setpoints with random step sizes and time intervals
+            \item Stop logging data
+            \item Split data into separate training and testing periods
         \end{enumerate}
 
         \paragraph{}
+        The default PID velocity controller from PX4 is used during these simulation.
+        The implemented controller gains are documented in Appendix~\ref{appen:pid_gains}.
+        A ROS node is used to read and log the payload angle measurement from Gazebo and a different
+        ROS node is used to send the velocity setpoints to PX4 
+        through the MAVLink protocol with the ROS package, 'mavros'.
 
         \paragraph{Steps and intervals}
-        For the training period, different velocity step inputs are commanded with varying time intervals between step commands.
-        A algorithm schedules these velocity step commands, by assigning random step values and time-intervals within a specified range.
-        The velocity range is determined in simulation by iteratively increasing the maximum velocity step 
-        to a safe value where the quadrotor and payload system remain in stable flight.
-        The maximum time-interval is set to a value that allows the payload swing to reach a steady-state condition.
-        This ensures that the identified model includes transient and steady-state dynamics.
+        A algorithm schedules the series of velocity step commands 
+        by assigning random step values and time-intervals within a specified range.
+        Theses values are selected from a uniform distribution 
+        within the ranges specified in Table~\ref{tbl:input_ranges}
+        The maximum velocity step is determined in simulation by iteratively increasing the maximum velocity step 
+        to a safe value where the quadrotor remains in stable flight
+        and the payload angles do not swing out of control.
+        The time interval range is set iteratively to ensure 
+        that the generated data includes both transient and steady-state dynamics.
+ 
+        \begin{table}[!h]
+            \renewcommand{\arraystretch}{1.1}
+            \centering
+            \caption{Input data ranges.}
+            \begin{tabularx}{0.65\linewidth}{@{}lCCr@{}}
+                \toprule
+                         & Velocity step [\SI{}{\metre/\second}]  & Step time interval [\SI{}{\second}]\\
+                \midrule
+                Minimum  & 0                                    & 10\\
+                Maximum  & 3                                    & 25\\
+                \bottomrule
+            \end{tabularx}
+            \label{tbl:input_ranges}
+        \end{table}
+        
+        \input{system_id/plots/training_data.tex}
 
-        \paragraph{Why velocity steps?}
-        Velocity step commands are used in the training period because this 
-        Frequency decomposition stimulates the system for a large range of frequencies.
+        Figure~\ref{fig:training_data} 
+        shows an example of random velocity steps and the resulting velocity response used as training data.
+        Using random velocity steps and time intervals prevents the system identification methods 
+        from overfitting to a specific set of control conditions.
+        The method should rather determine a generalised model 
+        that works over a range of possible control conditions.
+
+        % \paragraph{Why velocity steps?}
+        % As discussed before, the purpose of identifying a data-driven model of the plant dynamics 
+        % is to use it in a MPC controller in the velocity loop, 
+        % therefore velocity inputs are used in the system identification process.
+        % It is a common technique to use a step responses for system identification \cite{Chen2011} because it exposes a 
+        % large range of frequency data in the system dynamics.
+        % In other data-driven techniques like Neural-Nets, it may be helpful to use a larger variety of input types.
+        % The input schedule may be generated by randomly switching between step, ramp and exponetional inputs 
+        % to further gaurd againts overfitting \cite{Kotze2021}.
+        % However, for the 
+        % In practice it is more common to command position step setpoints since a quadrotor delivers
 
         \paragraph{Testing data}
         Cross-validate
@@ -163,8 +213,8 @@
         This slight difference in prediciton performance has a negligible effect on control.
         
 
-        Input data needs to be adjusted.
-
+        \murray{Input data needs to be adjusted.}
+        \murray{What about disturbances}
         % \input{plot of SITL acc_sp}
     
 
