@@ -1,6 +1,19 @@
 \section{Implementation and results}
+
+    In order to test the system identification techniques,
+    numerous simulations were performed to investigate their performance 
+    with different system configurations.
+    Firstly, the influence of design parameters on the algorithm performance are explored.
+    These parameters include hyperparameters, the length of training data and the algorithm sample time.
+    The effect of conditions that are not determined by algorithm design are also explored, 
+    like measurement noise, and the physical properties of the payload.
+    Finally, the white-box and black-box techniques are tested on a dynamic payload 
+    which does not satisfy the assumptions of a simple pendulum.
+
     \subsection{Methodology}
+
         \paragraph{Simulation environment}
+        
 
         \paragraph{Method overview}
         \murray{Maybe convert this to a flow diagram}
@@ -106,9 +119,8 @@
         A model using $\theta$ needs to "learn" numerical differentiation and the effect of $\dot{\theta}$ on the other variables.
         A model using $\dot{\theta}$ only needs to consider its relationship with other variables.
 
-        \input{system_id/plots/MAE_vs_train_Simulink_angular_rate.tex}
-            \murray{Add plot of using thetaand dtheta??}
-            \murray{Redo this plot with SITL noise}
+        \input{system_id/plots/different_state_vectors.tex}
+
         \paragraph{}
         % Figure~\ref{} shows the prediction error of techniques using $\dot{\theta}$ or $\theta$ for different amounts of training data.
         For each length of training data, the hyperparameter combination producing the lowest prediction error was determined and used.
