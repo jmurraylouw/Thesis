@@ -109,14 +109,26 @@
 
     \subsection{Error metric}
 
+        \paragraph{}        
+        It is common practice is to select a model for a MPC based on k-step-ahead prediction errors \cite{Zhao2014}.
+        This is because the model is used to make k-step-ahead predictions during control optimisation.
+        When model error is dominated by variance error (caused by disturbances), 
+        it may be better to use one-step-prediction error \cite{Zhao2014}.
+        However for the quadrotor and payload case it is assumed that variance error 
+        (caused by under modelling) dominates the model error.
+
         \paragraph{}
-        It was decided to use an error metric based on predictions accuracy over a time horizon to quantify the performance of different models.
-        The prediction accuracy of the identified model is important 
-        because it will used for control optimisation over a prediction horizon in a discrete MPC.
-        Common error metrics used for regression models are MSE and MAE.
-        MSE penalises larger errors more than smaller errors, whereas MAE penalises all errors equally.
-        It was decided to use MAE because it provides a more intuitive error value than MSE 
-        and there is no motivation to penalise larger errors more in the measure of prediction accuracy for our use case.
+        Different metrics are used in literature to quantify prediction accuracy for different applications.
+        Very common, scale-dependant error metrics are MSE and MAE.
+        These metrics are dependant on the unit and scale of a variable, 
+        hence they cannot be used to compare predictions of different variables.
+        MSE ($l_2$~norm of error values) penalises larger errors more than smaller errors, 
+        whereas MAE ($l_1$~norm) penalises errors equally.
+        For our use case the $l_1$~norm provides a more intuitive metric than the $l_2$~norm
+        because it has the same unit as the prediction variable
+        and there is no motivation to penalise larger errors more than smaller errors for our use case.
+
+        \paragraph{}
         MAE is calculated as:
         % \begin{equation}
         %     \bm{MAE} = \frac{1}{N_{run}} \cdot \sum_{k = 1}^{N_{run}} \left\lvert \bm{\hat{x_k}} - \bm{x_k} \right\rvert ,
@@ -130,6 +142,50 @@
         $\bm{\hat{x_k}}$ is the state prediction, 
         and 
         $\bm{MAE}$ is a vector with the MAE of each state.
+        
+        \paragraph{}
+        Popular, scale-free error metrics, like MAPE, MRAE and MASE, are also based on the $l_1$~norm,
+        but are independent of the scale and units of a variable \cite{Hyndman2006}.
+        These metrics could therefore be used to compare predictions of different variables.
+        However, these metrics provide misleading comparisons for our use case.
+        MAPE expresses accuracy as the absolute ratio between the error and actual value at each time-step.
+        This results in undefined or extremely large values for the payload angle predictions becasue the state has a zero mean.
+        The velocity state variable has a non-zero mean, 
+        therefore the scale of the MAPE of velocity will significantly different from the MAPE of the payload angle.
+        
+        \paragraph{}
+        MRAE is also popular metric for comparing predictions models used with a MPC \cite{Kaiser2018b},
+        however, similarly to MAPE, it also results in undefined values for the payload swing angle.
+        MASE does not have this problem and can compare predictions of different variables well, 
+        because it expresses accuracy as the ratio between the MAE of the model prediction and the MAE of an in-sample
+        naïve forecast \cite{Hyndman2006}.
+        However, an in-sample forecast is a naïve prediction for a one-step-ahead prediction, 
+        but not for a k-step-ahead prediction.
+        Therefore MASE is not a helpful ratio for our use case.
+
+        \paragraph{}
+        NMAE\textsubscript{mm} is a scale-free error metric that can compare different variables in our use case.
+        It normalises the MAE of a variable by the range of that variable, 
+        thereby variables with different means or scales can be compared.
+        This value is calculated as:
+        % \begin{equation}
+        %     metric = \frac{1}{n_x} \cdot \sum_{i = 1}^{n_x} \left( \frac{ \bm{MAE_i} }{ x_{i, max} } \right) 
+        % \end{equation}
+        \begin{equation}
+            NMAE_{mm} = \frac{ MAE }{ x_{max} - x_{min} }
+        \end{equation}
+        where         
+        $x_{i, max}$ and $x_{i, min}$ are the maximum and minimum values 
+        of the considered variable in the testing data.
+
+        \paragraph{}
+        This results in an error metric for each predicted variable, 
+        but a single value is required per model 
+        to rank the overall accuracy of different models.
+        Therefore the average of the NMAE\textsubscript{mm} of all state variables is used as the single value 
+        representing the overall accuracy of a model.
+        This is the final error metric used to evaluate the model predictions 
+        in the sections to follow.
 
         % \paragraph{}
         % Other considered error metrics are IAE and ITAE which adds up error over the prediction period.
@@ -142,43 +198,46 @@
         % For the MPC it is more important that early prediction errors are small since it will reoptimise later  
 
         \paragraph{}
-        Other metrics which are more statistically rigorous in model selection 
-        than these error metrics are AIC and BIC.
-        These metrics are information criteria scores which compute the maximum log likelihood of the model 
-        and add a penalty based on the number of terms in the model.
+        Other criteria which are more statistically rigorous in model selection 
+        than error metrics are AIC and BIC scores.
+        % These are information criteria scores which compute the maximum log likelihood of the model 
+        % and add a penalty based on the number of terms in the model.
         Thereby they provide a quantitative way of performing a Pareto analysis, 
-        which aims to balance model complexity with model accuracy \cite{Mangan2017}.
-        It is generally better to use a parsimonious model, 
-        which has a low prediction error but is not overly complex.
-        This not only helps to avoid overfitting, but also ensure that the MPC optimisation problem 
-        is not too computational expensive for the available hardware and desired control frequency.
+        which balances model complexity with model accuracy \cite{Mangan2017}.
+        It is generally advantageous to use a parsimonious model, 
+        which has a low prediction error but is not overly complex, 
+        than a complex model with a slightly lower prediction error.
+        This not only helps to avoid overfitting, but also ensures that the MPC optimisation problem 
+        is not too computational expensive for the available hardware.
+        However, these scores require the computation of the maximum log likelihood of each model 
+        over numerous simulations.
+        This is computationally intractable and unpractical for our use case 
+        because of the large number of hyperparameter combinations to compare, 
+        as explained in Section~\ref{sec:hyperparameters}.
+        Therefore an error metric will rather be used to evaluate model accuracy.
         
-        \paragraph{}
-        However, computing the maximum log likelihood of each model involves numerous simulations per model.
-        This is computationally intractable and unpractical for model selection in our case 
-        since there is such a large number of hyperparameter combinations to compare, as explained in Section~\ref{sec:hyperparameters} 
-        Therefore MAE will be used to evaluate model performance, 
-        because it provides a good measure of a model prediction 
-        and it is computationally fast enough to perform for wide hyperparameter search.
-        AIC or BIC may be able to identify a slightly better model, 
-        but when used with the MPC this slight improvement in prediction accuracy 
-        will result in a negligible improvement in control performance
+        % because it provides a good measure of a model prediction 
+        % and it is computationally fast enough to perform a wide hyperparameter search.
+        % AIC or BIC may be able to identify a slightly better model, 
+        % but when used with the MPC this slight improvement in prediction accuracy 
+        % will result in a negligible improvement in control performance
 
         \paragraph{}
-        The prediction MAE of one model may differ significantly 
-        depending on the starting condition and length of prediction horizon
-        The prediction horizon used for the MAE is selected as \SI{20}{\second}
-        and is significantly longer than the desired MPC prediction horizon.
-        This ensures that models which may be marginally unstable are penalised heavily and are discarded in model selection. 
+        The error metric of one model may change significantly 
+        different starting conditions or prediction horizons.
+        The prediction horizon used for model analysis is selected as \SI{20}{\second}
+        which is at least twice as long as the desired MPC prediction horizon.
         Some models have very accurate transient predictions, but prove to be unstable over a longer time horizon.
-        If the prediction horizon of the MAE is too short, these models may unreasonably high.
-        These models could result in unstable control at certain control conditions and are a safety hazard.
+        If the prediction horizon is too short, these models may score unreasonably low error metrics.
+        Selecting these such a model could result in unstable control at certain control conditions.
+        Therefore a long prediction horizon is used for testing so that marginally unstable models 
+        are penalised heavily in model selection. 
 
         \murray{Maybe insert example of good initial prediction but bad long term ??}
 
         \paragraph{}
         Different starting conditions also have a large influence on the prediction score of a model.
-        Some models may have accurate predictions of transient behaviour, 
+        Some models may accurately predict transient behaviour, 
         while being extremely bad at steady-state predictions.
         This would result in an MPC controlling the plant well during the initial step response,
         but becoming unstable during steady-state control.
@@ -188,39 +247,13 @@
         \paragraph{}
         Therefore the error metric needs to include predictions from multiple starting conditions in the testing data.
         The resulting testing procedure is to first specify a number of equispaced starting conditions within the testing data.
-        The model is then run multiple times for the length prediction horizon, stating with different initial conditions each time.
-        The MAE is determined for each run whereafter the average of these scores gives the final MAE score of the model.
+        The model is then run multiple times for the length of the prediction horizon, 
+        stating with different initial conditions each time.
+        The NMAE\textsubscript{mm} is determined for each run, 
+        whereafter the average of these scores gives the final NMAE\textsubscript{mm} score of the model.
         In order to balance the variety of testing conditions with the computational time per error metric calculation, 
-        10 was selected as the number of different initial conditions use in the final MAE score. 
+        10 was selected as the number of initial conditions used in the final NMAE\textsubscript{mm} score. 
         
-        \paragraph{}
-        The MAE of each state variable is calculated individually.
-        These cannot easily be combined into a single error value 
-        because the states have different units and different orders of magnitude.
-        However a single value is required to rank the overall prediction performance of different models 
-        and quantitatively select a model.
-        Therefore a weighted average of the MAE of each state is used as a single value 
-        to represent the prediction accuracy of the model.
-        This value is calculated as:
-        % \begin{equation}
-        %     metric = \frac{1}{n_x} \cdot \sum_{i = 1}^{n_x} \left( \frac{ \bm{MAE_i} }{ x_{i, max} } \right) 
-        % \end{equation}
-        \begin{equation}
-            metric = mean \left( \frac{ \bm{MAE_i} }{ x_{i, max} } \right) 
-        \end{equation}
-        where 
-        % $n_x$ is the number of states,
-        $\bm{MAE_i}$ is the MAE of the $i$\textsuperscript{th} state,
-        and
-        $x_{i, max}$ is the maximum absolute value of the $i$\textsuperscript{th} state in the testing data.
-
-        Explain what metric is now? in percentage??
-        Change csv plots to use scale by non-square root and see effect
-        Try use MASE?? https://towardsdatascience.com/mad-over-mape-a86a8d831447
-
-        This is the final error metric used to evaluate the model predictions 
-        in the sections to follow.
-
         % \paragraph{}
         % Each state error signal is scaled by the reciprocal of the maximum value of that state variable in the training data.
         % % This is to provide a better representative error when taking the mean of state variable errors.
@@ -232,26 +265,70 @@
         % It also provides an error metric that is better and unbiased representative of the model prediction performance across all state variables. 
 
     \subsection{Hyperparameters} \label{sec:hyperparameters}
+        
+        \paragraph{}
         As discussed in Section~\ref{sec:dmdc} and \ref{sec:havok} 
-        DMDc and HAVOK are dependent on two hyperparameters: the number of delay-coordinates, $q$, and the SVD truncation rank, $p$.
+        DMDc and HAVOK models are dependent on two hyperparameters: 
+        the number of delay-coordinates, $q$, 
+        and the SVD truncation rank, $p$.
+        For each system identification run with different system parameters or a different length of training data,
+        a hyperparameter search is performed to find the combination of hyperparameters 
+        that results the lowest prediction error.
+        Firstly, a coarsely spaced grid search is performed with large intervals between tested hyperparameter values.
+        The range of tested hyperparameters is then reduced and a finer hyperparameter search is performed.
+        From numerous simulation iterations, the range of significant hyperparameter values is conservatively determined to be,
+        \begin{equation}
+            5 < q < 30, \phantom{--} 5 < p < 50
+        \end{equation}.
 
-        Parsimony
-        Pareto front
-        cite Data-Driven book
+        \input{system_id/plots/MAE_vs_q.tex} 
 
-        The more terms better chance to overfit, lower generalisation
-        \input{system_id/plots/MAE_vs_q.tex}
+        \paragraph{}
+        Figure~\ref{fig:NMAE_vs_q} shows the prediction error of DMDc and HAVOK models for different values of $q$.
+        For each value of a $q$, a new model is generated with every $p$ in the considered range 
+        and the lowest prediction error is plotted.
+        There is only a slight difference between the results of DMDc and HAVOK.
+        As expected, the models with the least number of terms have the highest prediction errors.
+        As the number of terms available to the model increases, the error decreases.
+        It is clear that there is a sharp decrease in prediction error for $2 < q < 6$, 
+        however there is no longer a significant decrease in error
+        as model complexity increases past $q > 12$.        
+
+        \paragraph{}
+        This `elbow' in the plot can be considered as the Pareto front, 
+        where there is a balance between model complexity and accuracy \cite{Mangan2017}.
+        It is desirable to select a parsimonious model on this front that has just enough free parameters 
+        to capture the plant dynamics and have good accuracy, 
+        without being overly complex \cite{Brunton2019b}.
+        These models are less prone to overfitting 
+        and also lead to lower computational complexity in the MPC optimisation problem.        
 
         \input{system_id/plots/singular_values.tex}
 
-        Fixed size of data
-        Fixed sample time
-        Fixed pendulum params
-        Talk about the "front"
-        Also about singular values
-        For each of the experiments shown in this chapter, a hyperparameters selected tuned to produced
+        \paragraph{}
+        Figure~\ref{fig:singular_values} plots the singular values of the SVD from a HAVOK model in a log scale.
+        The singular values of the SVD can be loosely interpreted as 
+        a measure of significance of the corresponding POD mode to the plant dynamics \cite{Brunton2019d}. 
+        That is, modes with higher singular values contain more relevant information about the plant dynamics 
+        than modes with lower singular values.
+        The $p$ number of significant singular values, 
+        which correspond to the POD modes used to reconstruct the observed dynamics,
+        are specifically shown in the plot.
+        The truncated singular values are also shown, which correspond to the discarded modes.
+        
+        \paragraph{}
+        The Pareto `elbow' is also visible in this plot where there is noticeable change in gradient
+        roughly at the split between significant and truncated values.
+        This change in gradient shows that after $p$ modes, 
+        there is a significant drop in information contributed per remaining mode.
+        Note that the number $p$ was selected from a hyperparameter search using an error metric
+        which did not consider the singular values.
+        This seems to confirm the notion that the Pareto optimal solution 
+        is often the most accurate representation of the actual dynamics \cite{Brunton2019d}.
 
     \subsection{Sample time}
+
+        \paragraph{}
         The sample time, $T_s$, used for system identification sets the sample time of the discrete model, 
         which determines the sample time of the MPC.
         Resampling strategies can enable the MPC to run at a different frequency to the discrete model but this adds unnecessary complexity to the control architecture.
@@ -260,9 +337,26 @@
         The MPC acts in the velocity loop and commands an acceleration setpoint.
         The default PID velocity controller runs at \SI{50}{\hertz} which corresponds to $T_s =~$\SI{0.02}{\second}.
         Due to the computational complexity of an MPC, the optimiser will struggle to run at \SI{50}{\hertz} on a quadrotor companion computer.
+        However, the controller needs to run as fast as possible 
+        to be significantly faster than any frequency in the quadrotor dynamics.
+        If the controller runs too slowly, it may result in poor flight performance or unstable control.
+
         \input{system_id/plots/MAE_vs_Ts_vs_L.tex}
-        This is because the  
-        % \input{system_id/plots/MAE_vs_Ts.tex}
+
+        \paragraph{}
+        Figure~\ref{fig:MAE_vs_Ts_vs_L} shows the MAE of different DMD models 
+        generated with a range of different sample times.
+        The cable length of the payload influences the frequency response of the plant.
+        Therefore Figure~\ref{fig:MAE_vs_Ts_vs_L} plots the experiment result 
+        for a different cable lengths to see if it has an effect on the prediction error of the models.
+
+        \paragraph{}
+        It appears that for $l =$~\SI{0.25}{\metre}, the prediction error increases for larger sample times.
+        This is because the shorter cable length results in a higher natural frequency of the payload,
+        hence a faster sample time is required for accurate system identification.
+        Note that for all considered cable lengths, the prediction error has a sharp decrease for 
+        $T_s >$~\SI{0.045}{\second}.
+        This is because
 
     \subsection{Choice of payload variable in the state vector}
         As discussed in Section~\ref{sec:plant_considered}, 
@@ -428,7 +522,7 @@
         Fixed size of data.
         Fixed sample time.
 
-    \subsection{Dynamic payload}
+    \subsection{Dynamic payload} \label{sec:dynamic_payload}
         Some payloads attached to the cable may not satisfy the assumptions made in Section~\ref{sec:plant_considered}.
         For example, if a long payload is attached to the cable, the CoM of the payload will be quite a distance below the attachment of the cable.
         This creates a double pendulum model with dynamics that differ significantly from a single pendulum.
