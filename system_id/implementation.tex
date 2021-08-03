@@ -368,8 +368,10 @@
         because it provides a good balance between being fast enough for the quadrotor dynamics and slow enough for a practical MPC implementation.
 
     \subsection{Choice of payload variable in the state vector}
+
+        \paragraph{}
         As discussed in Section~\ref{sec:plant_considered}, 
-        the equations of motion of a floating pendulum in continuous-time are dependent on $\dot{\theta}$ and $V_N$, 
+        the equations of motion in continuous-time of a floating pendulum are dependent on $\dot{\theta}$ and $V_N$, 
         but are not dependent on $\theta$.
         Therefore it is expected that 
         $
@@ -377,9 +379,10 @@
             V_N & \dot{\theta}
         \end{bmatrix}^T
         $
-        is used as the state vector for system identification.
+        will be used as the state vector for system identification.
         However, if $\dot{\theta}$ is not included in the state vector of a discrete model, 
-        it can still be represented with numerical differentiation like the backward Euler form,
+        it can still be represented with numerical differentiation of $\theta$.
+        An example of this is the backward Euler form,
         \begin{equation}
             \dot{\theta}_k = (\frac{1}{T_s}) \cdot \theta_k - (\frac{1}{T_s}) \cdot \theta_{k-1} .
         \end{equation}
@@ -389,21 +392,24 @@
                 V_N & \theta
             \end{bmatrix}^T
         $
-        in system identification.
+        for system identification.
 
         \paragraph{}
-        Based on the floating pendulum equations, it is expected that a model derived with $\dot{\theta}$ data 
+        Based on the floating pendulum equations, it is expected that a model derived from $\dot{\theta}$ data 
         will better approximate the actual dynamics than one using $\theta$.
-        This is because $\dot{\theta}$ contains more direct information about the dynamics compared to $\theta$.
-        A model using $\theta$ needs to "learn" numerical differentiation and the effect of $\dot{\theta}$ on the other variables.
-        A model using $\dot{\theta}$ only needs to consider its relationship with other variables.
+        This is because $\dot{\theta}$ is directly related to the dynamics, 
+        compared to $\theta$ which needs to be related to $\dot{\theta}$ to be relevant for the dynamics.
+        However, an experiment to compare the performances of these models shows that this has a  negligible effect.
 
         \input{system_id/plots/different_state_vectors.tex}
 
         \paragraph{}
-        % Figure~\ref{} shows the prediction error of techniques using $\dot{\theta}$ or $\theta$ for different amounts of training data.
-        For each length of training data, the hyperparameter combination producing the lowest prediction error was determined and used.
-        From this plot it is clear that models with $\theta$ produce more accurate predictions than those with $\dot{\theta}$.
+        Figure~\ref{fig:different_state_vectors} shows the prediction error of HAVOK models using $\dot{\theta}$ or $\theta$ 
+        for a range training data lengths.
+        Only for very short lengths of training data, do models using $\dot{\theta}$ outperform those using $\theta$.
+        For longer lengths of training data there is a negligible difference in prediction error between the methods.
+        Therefore $\theta$ will be used for system identification to avoid unnecessary complexity, 
+        since there is no direct measurement of $\dot{\theta}$ on the practical quadrotor.
 
     \subsection{Noise}
 
@@ -474,7 +480,9 @@
         The prediction error curves of the two methods are very simlar, with HAVOK producing slightly lower prediction errors than DMDc.
         However, this difference in error may be so small that it has a negligible effect on control.  
 
-    \subsection{Size of training data}
+    \subsection{Length of training data}
+    
+        \paragraph{}
         The length of training data used for system identification affects the quality of the model produced.
         In Figure~\ref{fig:SITL_MAE_vs_train_angular_rate} it is clear that prediction error decreases as the amount of training data increases.
         As more training data is used in the regression problem, 
