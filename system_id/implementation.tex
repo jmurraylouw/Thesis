@@ -12,7 +12,7 @@
 
     \subsection{Methodology}
 
-        \paragraph{Simulation environment}
+        \paragraph{}
         A SITL implementation of PX4 \cite{Meier2015} using the Gazebo simulator \cite{Koenig2004} is used to generate data
         for system identification.
         Testing these techniques with simulation data allow us to investigate a much larger range system configurations 
@@ -25,7 +25,7 @@
         Therefore the the data seen by the system identification techniques 
         will also include the filtering effect of the EKF as it would in practical flights.
 
-        \paragraph{Method overview}
+        \paragraph{}
         The procedure used to evaluate the black-box techniques is as follows:
         \begin{enumerate}
             \item Takeoff and hover with the qaudrotor
@@ -37,14 +37,14 @@
             \item Calculate a error metric for the model from the testing data
         \end{enumerate}
 
-        \paragraph{PID gains}
+        \paragraph{}
         The default PID velocity controller from PX4 is used during these simulation.
         The implemented controller gains are documented in Appendix~\ref{appen:pid_gains}.
         A ROS node is used to read and log the payload angle measurement from Gazebo and a different
         ROS node is used to send the velocity setpoints to PX4 
         through the MAVLink protocol with the ROS package, 'mavros'.
 
-        \paragraph{Steps and intervals}
+        \paragraph{}
         A algorithm schedules the series of velocity step commands 
         by assigning random step values and time-intervals within a specified range.
         Theses values are selected from a uniform distribution 
@@ -352,12 +352,12 @@
         The natural frequency of the payload pendulum is dependant on the cable length 
         and influences the frequency response of the plant.
         Therefore Figure~\ref{fig:MAE_vs_Ts_vs_L} plots the experiment result 
-        for a different cable lengths to see if it has an effect on the prediction error of the models.
+        for different cable lengths to see if it has an effect on the prediction error of the models.
 
         \paragraph{}
-        It appears that for $l =$~\SI{0.25}{\metre}, the prediction error increases for larger sample times.
-        This is because the shorter cable length results in a higher natural frequency of the payload,
-        hence a faster sample time is required for accurate system identification.
+        % It appears that for $l =$~\SI{0.25}{\metre}, the prediction error increases for larger sample times.
+        % This is because the shorter cable length results in a higher natural frequency of the payload,
+        % hence a faster sample time is required for accurate system identification.
         Note that for all considered cable lengths, the prediction error has a sharp decrease for 
         $T_s >$~\SI{0.045}{\second}.
         This may be because the model does not try to capture the small, high frequency oscilations in the dynamics
@@ -480,40 +480,6 @@
         The prediction error curves of the two methods are very simlar, with HAVOK producing slightly lower prediction errors than DMDc.
         However, this difference in error may be so small that it has a negligible effect on control.  
 
-    \subsection{Length of training data}
-    
-        \paragraph{}
-        The length of training data used for system identification affects the quality of the model produced.
-        In Figure~\ref{fig:SITL_MAE_vs_train_angular_rate} it is clear that prediction error decreases as the amount of training data increases.
-        As more training data is used in the regression problem, 
-        the determined model better approximates the actual dynamics because a large range of the dynamics is "seen" by the algorithm.
-        
-        % \input{low data prediction}
-        \paragraph{}
-        Models produced from data lengths as short as \SI{5}{\second} predict the movement of state variables surprisingly well.
-        % Figure~\ref{} shows prediction.
-        Note how the general shape of the prediction represents the training data, 
-        even though it contains a lot more high frequency oscillations.
-
-        \input{system_id/plots/MAE_diff.tex}
-
-        \paragraph{}
-        % Figure~\ref{} shows the MAE of prediction state derivative.
-        Define MAE diff with equation ??.
-        % From Figure~\ref{} it appears that at least \SI{}{} training data is required to produce models that represent the dynamics.
-
-        \paragraph{}
-        The models produced from HAVOK appear to produce slightly better prediction errors, however this small difference has a negligible effect on control performance.
-
-        \paragraph{}
-        % In Figure~\ref{fig:MAE_vs_train} it can be seen that after approximately \SI{??}{\second} 
-        the prediction error does not significantly improve with more training data.
-        It practice less training data is desirable because less flight time will be wasted on training a model before the quadrotor can fly with a updated controller.
-        Less training data also corresponds to lower memory usage on quadrotor hardware.
-        Such a slight improvement in prediction error also has a negligible effect on control performance and is therefore not worth the increased data requirement.
-        % Therefore, only \SI{??}{\second} of flight data will be used to train system identification models. 
-
-
     \subsection{System parameters}
             
         \paragraph{}
@@ -554,6 +520,58 @@
         % because more energy needs to be transferred to the payload to reach the height of the vehicle. 
         % The maximum cable length is selected as $l=~\SI{2}{\metre}$ by intuition 
         % since a cable much longer than this may not be practically useful for a drone delivery flight with the considered quadrotor.
+
+    \subsection{Length of training data}
+    
+        \paragraph{}
+        From the plots discussed in previous sections, 
+        it is obvious that the accuracy of a model is dependant 
+        on the length of training data exposed to the system identification algorithm.
+        The general relationship between length of training data and prediction error 
+        is illustrated in Figure~\ref{fig:system_parameters}.
+        For very short lengths of training data the prediction error is large, 
+        but as training length increases, the prediction error improves up to a point.
+        After this point, the prediction error slowly worsens with increasing lengths of training data.
+        
+        \paragraph{}
+        This trend may be counter-intuitive, because it is generally expected that more training data leads to better models.
+        The logic follows that more training data leads to less overfitting 
+        which leads to better test data predictions.
+        However, a phenomenon named `double-descent' occurs when the dimension of a regression model 
+        is near to the number of training samples \cite{Nakkiran2019}.
+        This is called an over-paramregression
+
+        \paragraph{}
+        However, it should be noted that the plot for $l =$~\SI{0.5}{\metre} in Figure~\ref{fig:different_lengths}
+        does not follow this general trend.
+        This may be because the short cable length corresponds to large swing angles and a high natural frequency.
+        The onboard PID controllers do not damp these oscillations as quickly 
+        as the smaller angle and lower frequency oscillations of longer cables.
+        Hence the algorithm needs to be exposed to more step responses to capture the steady-state behaviour of the plant,
+        since there is not enough information exposed in the first step responses of the training data.
+
+        \paragraph{}
+        Because the data-driven methods are linear regression algorithms, 
+        the peak accuracy is reached with a relatively short lengths of data.
+        It
+        As more training data is used in the regression problem, 
+        the determined model better approximates the actual dynamics because a large range of the dynamics is "seen" by the algorithm..
+
+        % \input{system_id/plots/MAE_diff.tex}
+
+        % \paragraph{}
+        % Figure~\ref{} shows the MAE of prediction state derivative.
+        % Define MAE diff with equation ??.
+        % From Figure~\ref{} it appears that at least \SI{}{} training data is required to produce models that represent the dynamics.
+
+        \paragraph{}
+        % In Figure~\ref{fig:MAE_vs_train} it can be seen that after approximately \SI{??}{\second} 
+        the prediction error does not significantly improve with more training data.
+        It practice less training data is desirable because less flight time will be wasted on training a model before the quadrotor can fly with a updated controller.
+        Less training data also corresponds to lower memory usage on quadrotor hardware.
+        Such a slight improvement in prediction error also has a negligible effect on control performance and is therefore not worth the increased data requirement.
+        % Therefore, only \SI{??}{\second} of flight data will be used to train system identification models. 
+
 
     \subsection{Dynamic payload} \label{sec:dynamic_payload}
         Some payloads attached to the cable may not satisfy the assumptions made in Section~\ref{sec:plant_considered}.
