@@ -537,41 +537,38 @@
         This trend may be counter-intuitive, because it is generally expected that more training data leads to better models.
         The logic follows that more training data leads to less overfitting 
         which leads to better test data predictions.
-        However, a phenomenon named `double-descent' occurs when the dimension of a regression model 
-        is near to the number of training samples \cite{Nakkiran2019}.
-        This is called an over-paramregression
+        However, a phenomenon named `double-descent' occurs when the dimension of a regression model, $D$ 
+        is near the number of training samples, $N_{train}$ \cite{Nakkiran2019}.
+        In this critical region at the transition between over-parameterized and under-parameterized models,
+        the prediction error initially decreases, then increases to a peak whereafter it decreases again \cite{Nakkiran2019}. 
+        
+        \paragraph{}
+        As discussed in Section~\ref{sec:hyperparameters}, the higher values of $q$ lead to better prediction errors.
+        The highest $q$ in the considered range is 30, which corresponds to a model dimension of 
+        \begin{equation}
+            D = (q \cdot n_x)^2 + (q \cdot n_x)(n_u) = (30 \cdot 2)^2 + (30 \cdot 2)(1) = 3660 .
+        \end{equation}
+        The length of training data corresponding to $D = N_{train} \cdot n_x$ at the transition between over- and under-parameterization is therefore:
+        \begin{equation}
+            T_{train} = N_{trian} \cdot T_s = \frac{3660}{2} \cdot \SI{0.03}{\second} = \SI{54.9}{\second} .
+        \end{equation}
+        This is within the range of considered training data lengths which explains why the `double-descent' phenomenon occurs. 
 
         \paragraph{}
-        However, it should be noted that the plot for $l =$~\SI{0.5}{\metre} in Figure~\ref{fig:different_lengths}
-        does not follow this general trend.
+        It should be noted that the plot for $l =$~\SI{0.5}{\metre} in Figure~\ref{fig:different_lengths}
+        does not follow the `double-descent' trend.
         This may be because the short cable length corresponds to large swing angles and a high natural frequency.
         The onboard PID controllers do not damp these oscillations as quickly 
         as the smaller angle and lower frequency oscillations of longer cables.
-        Hence the algorithm needs to be exposed to more step responses to capture the steady-state behaviour of the plant,
-        since there is not enough information exposed in the first step responses of the training data.
+        Hence there is not enough information exposed in the first few step responses of the training data and
+        the algorithm needs more step responses to accurately capture the steady-state behaviour of the plant.
 
         \paragraph{}
-        Because the data-driven methods are linear regression algorithms, 
-        the peak accuracy is reached with a relatively short lengths of data.
-        It
-        As more training data is used in the regression problem, 
-        the determined model better approximates the actual dynamics because a large range of the dynamics is "seen" by the algorithm..
-
-        % \input{system_id/plots/MAE_diff.tex}
-
-        % \paragraph{}
-        % Figure~\ref{} shows the MAE of prediction state derivative.
-        % Define MAE diff with equation ??.
-        % From Figure~\ref{} it appears that at least \SI{}{} training data is required to produce models that represent the dynamics.
-
-        \paragraph{}
-        % In Figure~\ref{fig:MAE_vs_train} it can be seen that after approximately \SI{??}{\second} 
-        the prediction error does not significantly improve with more training data.
-        It practice less training data is desirable because less flight time will be wasted on training a model before the quadrotor can fly with a updated controller.
-        Less training data also corresponds to lower memory usage on quadrotor hardware.
-        Such a slight improvement in prediction error also has a negligible effect on control performance and is therefore not worth the increased data requirement.
-        % Therefore, only \SI{??}{\second} of flight data will be used to train system identification models. 
-
+        In a practical implementations, training data is costly and it is desirable to use less training data.
+        Less training data means less flight time will be wasted on training a model before the quadrotor can fly with a updated controller.
+        Less training data also corresponds to lower memory usage on the quadrotor hardware and lower time-complexity for the algorithm.
+        Therefore it is not practical to increase the amount of training data to the under-parameterized region.
+        Hence, the amount of training data resulting in the lowest prediction error will be used per system identification run.
 
     \subsection{Dynamic payload} \label{sec:dynamic_payload}
         Some payloads attached to the cable may not satisfy the assumptions made in Section~\ref{sec:plant_considered}.
