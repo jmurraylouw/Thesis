@@ -329,24 +329,28 @@
     \subsection{Sample time}
 
         \paragraph{}
-        The sample time, $T_s$, used for system identification sets the sample time of the discrete model, 
+        The sample time, $T_s$, used for system identification is the sample time of the discrete model, 
         which determines the sample time of the MPC.
-        Resampling strategies can enable the MPC to run at a different frequency to the discrete model but this adds unnecessary complexity to the control architecture.
+        Resampling strategies can enable the MPC to run at a different frequency to the discrete model 
+        but this adds unnecessary complexity to the control architecture.
         
         \paragraph{}
         The MPC acts in the velocity loop and commands an acceleration setpoint.
         The default PID velocity controller runs at \SI{50}{\hertz} which corresponds to $T_s =~$\SI{0.02}{\second}.
-        Due to the computational complexity of an MPC, the optimiser will struggle to run at \SI{50}{\hertz} on a quadrotor companion computer.
+        Due to the computational complexity of an MPC, the optimiser will struggle to run at \SI{50}{\hertz} on a companion computer on a quadrotor.
         However, the controller needs to run as fast as possible 
-        to be significantly faster than any frequency in the quadrotor dynamics.
+        to have significant time-scale separation from the quadrotor dynamics.
         If the controller runs too slowly, it may result in poor flight performance or unstable control.
+        The highest natural frequency of the payload based on the range of physical parameters considered 
+        is~\SI{8.39}{\hertz} corresponding to a period of \SI{0.119}{\second}.
 
         \input{system_id/plots/MAE_vs_Ts_vs_L.tex}
 
         \paragraph{}
-        Figure~\ref{fig:MAE_vs_Ts_vs_L} shows the MAE of different DMD models 
+        Figure~\ref{fig:MAE_vs_Ts_vs_L} shows the prediction error of different DMD models 
         generated with a range of different sample times.
-        The cable length of the payload influences the frequency response of the plant.
+        The natural frequency of the payload pendulum is dependant on the cable length 
+        and influences the frequency response of the plant.
         Therefore Figure~\ref{fig:MAE_vs_Ts_vs_L} plots the experiment result 
         for a different cable lengths to see if it has an effect on the prediction error of the models.
 
@@ -356,7 +360,12 @@
         hence a faster sample time is required for accurate system identification.
         Note that for all considered cable lengths, the prediction error has a sharp decrease for 
         $T_s >$~\SI{0.045}{\second}.
-        This is because
+        This may be because the model does not try to capture the small, high frequency oscilations in the dynamics
+        at such slow sample times.
+        Hence the long term prediction of the models fits the general shape of the dynamics well and results in low errors.
+        However, this sample time is too slow for controlling the practical quadrotor.
+        $T_s =$~\SI{0.03}{\second} is selected as the sample time for system identification 
+        because it provides a good balance between being fast enough for the quadrotor dynamics and slow enough for a practical MPC implementation.
 
     \subsection{Choice of payload variable in the state vector}
         As discussed in Section~\ref{sec:plant_considered}, 
@@ -397,29 +406,51 @@
         From this plot it is clear that models with $\theta$ produce more accurate predictions than those with $\dot{\theta}$.
 
     \subsection{Noise}
+
         \paragraph{}
-        Measurement noise is \murray{Find reference for measurement noise definition}
-        This is bad for system identification because the output signals no longer represent the actual process
-        hides the actual dynamics of the system under  
-        The IMU, barometer, magnetometer and GPS sensors on the practical quadrotor are used for state estimation 
-        and all experience measurement noise.
-        The EKF performs sensor fusion and smooths out most of the measurement noise to provide a state estimate that is less noisy than raw sensor values.
+        Measurement noise is bad for system identification because it adds high frequency information to the output signals
+        which are not part of the actual dynamics.
+        On the practical quadrotor the IMU, barometer, magnetometer and GPS sensors experience measurement noise.
+        The EKF performs sensor fusion and smooths out most of the measurement noise 
+        to provide a state estimate that is less noisy than raw sensor values.
+        Therefore the output from the EKF is used for system identification.
         
         \paragraph{}
-        The potentiometer and ADC which measure the payload angle on the quadrotor alos has quite a lot of measurement noise.
-        However, this signal is not smoothed by an onboard EKF.
-        Figure~\ref{fig:payload_noise} shows the noisy payload angle measurement for a practical pendulum test while the quadrotor is held stationary.
-        For models using $\theta$ in the state vector instead of $\dot{\theta}$, 
-        this noisy signal can be smoothed with \murray{matlab smoother}.
-        Figure~\ref{fig:payload_noise_smoothed} compares the noisy payload angle measurement to the smoothed signal and actual payload angle for a simulated flight.
-        The is applied as band-limited white-noise and the noise power was iteratively adjusted to match that of the practical payload measurements.
+        The potentiometer and ADC which measure the payload angle on the quadrotor also has experience measurement noise.
+        This signal is not smoothed by an onboard EKF.
+        In simulation noise is applied to the payload angle as band-limited white-noise.
+        The applied noise power was iteratively adjusted to match that of the practical payload measurements.
+        The noisy signals from both the quadrotor EKF and payload swing angle are smoothed 
+        with a quadratic regression smoother from MATLAB\textsuperscript{\textregistered} before applying system identification.
+        The smoother uses a fixed window length of 20 samples which was selected iteratively 
+        to remove high frequency variation without loosing the general shape of the data.
         
         \paragraph{}
-        However, since there is no direct measurement of $\dot{\theta}$, 
-        numerical differentiation is performed on the noisy $\theta$ measurement to estimate $\dot{\theta}$. 
-        This amplifies the noise and results in inaccurate $\dot{\theta}$ signal.
-        Total variation differentiation is implemented to estimate $\dot{\theta}$ from the noisy measurements more accurately.
-        Figure~\ref{fig:payload_noise_diff} shows
+        The input signal used for system identification is affected by high and low frequency noise.
+        This enters the signal because the acceleration setpoint implementation depends on a noisy orientation vector.
+        which is determined from onboard sensors.
+        The high frequency noise is removed by the quadratic regression smoother, 
+        but the low frequency drift is more difficult to address.
+        Figure~\ref{fig} shows the North acceleration setpoint during the training period.
+        Without noise the signal should have a zero mean, 
+        however the signal mean shows a constant offset and slow drift.
+        
+        \paragraph{}
+        The constant offset may be due to an imbalance in the CoM of the quadrotor, 
+        so the integrators in the PID controllers add a offset to keep the vehicle steady.
+        The IMU may also have a constant measurement offset which affects the orientation vector and control signals.
+        The slow drift is due to low frequency sensor drift.
+        This is addressed by calculating a moving window mean and adjusting for the offset of the signal, 
+        which results in a zero mean input signal.
+        The moving window mean is then reapplied to the control signal of the MPC 
+        to readjust for the required offset.
+
+        % \paragraph{}
+        % However, since there is no direct measurement of $\dot{\theta}$, 
+        % numerical differentiation is performed on the noisy $\theta$ measurement to estimate $\dot{\theta}$. 
+        % This amplifies the noise and results in inaccurate $\dot{\theta}$ signal.
+        % Total variation differentiation is implemented to estimate $\dot{\theta}$ from the noisy measurements more accurately.
+        % Figure~\ref{fig:payload_noise_diff} shows
         
         % \input{system_id/plots/payload_noise_diff.tex} // With TVDiff
 
