@@ -424,6 +424,8 @@
         with a quadratic regression smoother from MATLAB\textsuperscript{\textregistered} before applying system identification.
         The smoother uses a fixed window length of 20 samples which was selected iteratively 
         to remove high frequency variation without loosing the general shape of the data.
+
+        \input{system_id/plots/acc_sp.tex}
         
         \paragraph{}
         The input signal used for system identification is affected by high and low frequency noise.
@@ -431,7 +433,7 @@
         which is determined from onboard sensors.
         The high frequency noise is removed by the quadratic regression smoother, 
         but the low frequency drift is more difficult to address.
-        Figure~\ref{fig} shows the North acceleration setpoint during the training period.
+        Figure~\ref{fig:acc_sp} shows the North acceleration setpoint during the training period.
         Without noise the signal should have a zero mean, 
         however the signal mean shows a constant offset and slow drift.
         
@@ -442,7 +444,7 @@
         The slow drift is due to low frequency sensor drift.
         This is addressed by calculating a moving window mean and adjusting for the offset of the signal, 
         which results in a zero mean input signal.
-        The moving window mean is then reapplied to the control signal of the MPC 
+        The moving window mean is then reapplied to the MPC control signal 
         to readjust for the required offset.
 
         % \paragraph{}
@@ -452,9 +454,7 @@
         % Total variation differentiation is implemented to estimate $\dot{\theta}$ from the noisy measurements more accurately.
         % Figure~\ref{fig:payload_noise_diff} shows
         
-        % \input{system_id/plots/payload_noise_diff.tex} // With TVDiff
-
-        Noise also affects model prediction accuracy and the length of training data required for adequate predictions. 
+        % \input{system_id/plots/payload_noise_diff.tex} // With TVDiff 
         
         \input{system_id/plots/noise_vs_no_noise.tex}
 
