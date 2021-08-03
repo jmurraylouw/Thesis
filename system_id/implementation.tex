@@ -531,7 +531,13 @@
         build from simulations with various values of $m_p$ and $l$.
         The plots are not shown for DMDc models because they are so similar to the HAVOK results.
 
-        From Figure~\ref{fig:system_parameters} it appears that 
+        \input{system_id/plots/system_parameters.tex}
+
+        From Figure~\ref{fig:different_lengths} it seems that there is not a great difference in prediction error 
+        for different cable length setups.
+        From Figure~\ref{fig:different_masses} it appears that $m_p$ has a greater effect on prediction error,
+        since there is a bigger difference in prediction error between plots of different $m_p$ values.
+        However, it is clear that the system identification method works for a range of different payload parameters.
 
         % When no external payload is attached, the connection device attached to the end of the cable is 
         % $m_p = \SI{0.01}{\kilo\gram}$.
@@ -548,18 +554,6 @@
         % because more energy needs to be transferred to the payload to reach the height of the vehicle. 
         % The maximum cable length is selected as $l=~\SI{2}{\metre}$ by intuition 
         % since a cable much longer than this may not be practically useful for a drone delivery flight with the considered quadrotor.
-        
-        \input{system_id/plots/system_parameters.tex}
-
-        % \paragraph{}
-        % Plot MAE vs l
-        % \input{system_id/plots/MAE_vs_Ntrain_vs_L_havok.tex}
-        % DMD shows the same trend revealed in Figure~\ref{fig:MAE_vs_Ntrain_vs_L_havok}.
-
-        % \paragraph{}
-        % Plot MAE vs m
-        % \input{system_id/plots/MAE_vs_Ntrain_vs_m_havok.tex}
-        % DMD shows the same trend revealed in Figure~\ref{fig:MAE_vs_Ntrain_vs_m_havok}.
 
     \subsection{Dynamic payload} \label{sec:dynamic_payload}
         Some payloads attached to the cable may not satisfy the assumptions made in Section~\ref{sec:plant_considered}.
