@@ -568,9 +568,12 @@
         Less training data means less flight time will be wasted on training a model before the quadrotor can fly with a updated controller.
         Less training data also corresponds to lower memory usage on the quadrotor hardware and lower time-complexity for the algorithm.
         Therefore it is not practical to increase the amount of training data to the under-parameterized region.
-        Hence, the amount of training data resulting in the lowest prediction error will be used per system identification run.
+        Hence, the critical region of training data lengths will be used and
+        the data length corresponding to the lowest prediction error will be selected per simulation.
 
     \subsection{Dynamic payload} \label{sec:dynamic_payload}
+        
+        \paragraph{}
         Some payloads attached to the cable may not satisfy the assumptions made in Section~\ref{sec:plant_considered}.
         For example, if a long payload is attached to the cable, the CoM of the payload will be quite a distance below the attachment of the cable.
         This creates a double pendulum model with dynamics that differ significantly from a single pendulum.
