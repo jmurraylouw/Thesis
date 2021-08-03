@@ -1,13 +1,13 @@
-\begin{figure}[h]
+\begin{subfigure}{0.45\columnwidth}
     \centering
     \begin{tikzpicture}
         \begin{axis}[            
             xlabel = Length of training data,
-            ylabel = MAE,
+            % ylabel = MAE,
             x unit = \si{\second},
             % y unit = \si{\second},
             xmin = 0,     xmax = 120,
-            ymin = 0.08,  ymax = 0.12,
+            ymin = 0.08,  ymax = 0.115,
             grid = major,
             legend cell align = left,
             legend pos = north east,
@@ -15,8 +15,8 @@
             legend style = {font = \scriptsize},
             label style = {font = \scriptsize},
             tick label style = {font = \scriptsize},
-            width = 0.45\columnwidth,
-            height = 0.5\columnwidth,
+            width = 0.9\columnwidth,
+            height = 0.9\columnwidth,
             % initialize Dark2
             cycle list/Dark2,
             % combine it with 'mark list*':
@@ -42,8 +42,7 @@
         
         \end{axis}
     \end{tikzpicture} 
-    
-    \caption{HAVOK prediction error using different payload masses with different lengths of noisy training data
-    ($l =$~\SI{1}{\metre}, $T_{train} =$~various??.)}
-    \label{fig:MAE_vs_Ntrain_vs_m_havok}
-\end{figure}
+
+    \caption{$l = $~\SI{1}{\metre}, with varying $m_p$}
+    \label{fig:different_masses}
+\end{subfigure}

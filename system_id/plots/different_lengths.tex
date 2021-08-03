@@ -1,4 +1,4 @@
-\begin{figure}[h]
+\begin{subfigure}{0.45\columnwidth}
     \centering
     \begin{tikzpicture}
         \begin{axis}[            
@@ -7,7 +7,7 @@
             x unit = \si{\second},
             % y unit = \si{\second},
             xmin = 0,     xmax = 120,
-            ymin = 0.08,  ymax = 0.12,
+            ymin = 0.08,  ymax = 0.115,
             grid = major,
             legend cell align = left,
             legend pos = north east,
@@ -15,8 +15,8 @@
             legend style = {font = \scriptsize},
             label style = {font = \scriptsize},
             tick label style = {font = \scriptsize},
-            width = 0.45\columnwidth,
-            height = 0.5\columnwidth,
+            width = 0.9\columnwidth,
+            height = 0.9\columnwidth,
             % initialize Dark2
             cycle list/Dark2,
             % combine it with 'mark list*':
@@ -43,7 +43,6 @@
         \end{axis}
     \end{tikzpicture} 
     
-    \caption{HAVOK prediction error using different cable lengths with different lengths of noisy training data
-    ($m =$~\SI{0.2}{\kilo\gram}, $T_{train} =$~various??.)}
-    \label{fig:MAE_vs_Ntrain_vs_L_havok}
-\end{figure}
+    \caption{$m_p = $~\SI{0.2}{\kilo\gram}, with varying $l$}
+    \label{fig:different_lengths}
+\end{subfigure}

@@ -516,55 +516,50 @@
 
     \subsection{System parameters}
             
-        Works across a range of parameters.
-
         \paragraph{}
-        The payload acting as a single floating pendulum, as described in Section~\ref{sec:plant_considered},
+        The suspended payload, as described in Section~\ref{sec:plant_considered},
         has two system parameters, $m_p$ and $l$.
-        For the practical quadrotor considered, the payload mass is limited to:
-        \begin{equation}
-            0.01 \leq m_p \leq \SI{0.4}{\kilo\gram} .
-        \end{equation}
-        When no external payload is attached, the connection device attached to the end of the cable is 
-        $m_p = \SI{0.01}{\kilo\gram}$.
-        % It becomes unsafe to Flying without a cable attached to the cable, or with a payload with a very small mass, 
-        % may become unsafe since the cable may not always  kept taut by the mass. 
-        On the other limit, $m_p = \SI{0.4}{\kilo\gram}$ is determined to be the maximum payload mass the quadrotor can carry safely 
-        based on the maximum thrust of the motors.
-
-        \paragraph{}
-        The cable length is limited to:
-        \begin{equation}
+        For the practical quadrotor considered, the payload mass is limited to,
+        $
+            0.1 \leq m_p \leq \SI{0.3}{\kilo\gram} ,
+        $
+        and the cable length is limited to:
+        $
             0.5 \leq l \leq \SI{2}{\metre} .
-        \end{equation}
-        A cable length shorter than \SI{0.5}{\metre} is quite impractical and may rather be attached as a rigid payload.
-        There are very few practical applications that may require a shorter cable length.
-        It is also unsafe to fly with a shorter cable length, 
-        since the payload may collide with the quadrotor during an uncontrolled swing.
-        A longer cable guards against a payload and vehicle collision, 
-        because more energy needs to be transferred to the payload to reach the height of the vehicle. 
-        The maximum cable length is selected as $l=~\SI{2}{\metre}$ by intuition 
-        since a cable much longer than this may not be practically useful for a drone delivery flight with the considered quadrotor.
+        $
+        Figure~\ref{fig:system_parameters} shows the prediction error of HAVOK models 
+        build from simulations with various values of $m_p$ and $l$.
+        The plots are not shown for DMDc models because they are so similar to the HAVOK results.
 
-        \paragraph{}
-        Plot MAE vs l
-        \input{system_id/plots/MAE_vs_Ntrain_vs_L_havok.tex}
-        DMD shows the same trend revealed in Figure~\ref{fig:MAE_vs_Ntrain_vs_L_havok}.
+        From Figure~\ref{fig:system_parameters} it appears that 
 
-        \paragraph{}
-        Plot MAE vs m
-        \input{system_id/plots/MAE_vs_Ntrain_vs_m_havok.tex}
-        DMD shows the same trend revealed in Figure~\ref{fig:MAE_vs_Ntrain_vs_m_havok}.
+        % When no external payload is attached, the connection device attached to the end of the cable is 
+        % $m_p = \SI{0.01}{\kilo\gram}$.
+        % % It becomes unsafe to Flying without a cable attached to the cable, or with a payload with a very small mass, 
+        % % may become unsafe since the cable may not always  kept taut by the mass. 
+        % On the other limit, $m_p = \SI{0.4}{\kilo\gram}$ is determined to be the maximum payload mass the quadrotor can carry safely 
+        % based on the maximum thrust of the motors.
 
-        \paragraph{}
-        % Not very conclusive
-        % \input{system_id/plots/MAE_vs_Ts_vs_L.tex}
-        % See how it affects Ts
-        % plot MAE vs Ts with contours of l
+        % A cable length shorter than \SI{0.5}{\metre} is quite impractical and may rather be attached as a rigid payload.
+        % There are very few practical applications that may require a shorter cable length.
+        % It is also unsafe to fly with a shorter cable length, 
+        % since the payload may collide with the quadrotor during an uncontrolled swing.
+        % A longer cable guards against a payload and vehicle collision, 
+        % because more energy needs to be transferred to the payload to reach the height of the vehicle. 
+        % The maximum cable length is selected as $l=~\SI{2}{\metre}$ by intuition 
+        % since a cable much longer than this may not be practically useful for a drone delivery flight with the considered quadrotor.
+        
+        \input{system_id/plots/system_parameters.tex}
 
-        Best hyperparameters.
-        Fixed size of data.
-        Fixed sample time.
+        % \paragraph{}
+        % Plot MAE vs l
+        % \input{system_id/plots/MAE_vs_Ntrain_vs_L_havok.tex}
+        % DMD shows the same trend revealed in Figure~\ref{fig:MAE_vs_Ntrain_vs_L_havok}.
+
+        % \paragraph{}
+        % Plot MAE vs m
+        % \input{system_id/plots/MAE_vs_Ntrain_vs_m_havok.tex}
+        % DMD shows the same trend revealed in Figure~\ref{fig:MAE_vs_Ntrain_vs_m_havok}.
 
     \subsection{Dynamic payload} \label{sec:dynamic_payload}
         Some payloads attached to the cable may not satisfy the assumptions made in Section~\ref{sec:plant_considered}.
