@@ -428,23 +428,22 @@
         \input{system_id/plots/acc_sp.tex}
         
         \paragraph{}
-        The input signal used for system identification is affected by high and low frequency noise.
-        This enters the signal because the acceleration setpoint implementation depends on a noisy orientation vector.
-        which is determined from onboard sensors.
-        The high frequency noise is removed by the quadratic regression smoother, 
-        but the low frequency drift is more difficult to address.
-        Figure~\ref{fig:acc_sp} shows the North acceleration setpoint during the training period.
-        Without noise the signal should have a zero mean, 
-        however the signal mean shows a constant offset and slow drift.
+        The input signal also needs to be smoothed to remove high frequency noise from the logged signal.
+        The quadratic regression smoother does not fit the shape of the input data well 
+        because of the sharp, non-differentiable edges in the acceleration setpoint signal.
+        Therefore a Gaussian-weighted moving average smoother 
+        from MATLAB\textsuperscript{\textregistered} is used for the input signal.
         
         \paragraph{}
-        The constant offset may be due to an imbalance in the CoM of the quadrotor, 
-        so the integrators in the PID controllers add a offset to keep the vehicle steady.
-        The IMU may also have a constant measurement offset which affects the orientation vector and control signals.
-        The slow drift is due to low frequency sensor drift.
-        This is addressed by calculating a moving window mean and adjusting for the offset of the signal, 
-        which results in a zero mean input signal.
-        The moving window mean is then reapplied to the MPC control signal 
+        Figure~\ref{fig:acc_sp} shows the North acceleration setpoint for a period of training data.
+        Without noise the acceleration setpoint should have a zero mean, 
+        however the signal mean shows a constant offset.
+        % This offset may be due to the integrators in the controllers correcting for an CoM imbalance to keep the vehicle steady.
+        The is due to a measurement offset in the IMU which causes a offset in the orientation vector 
+        and therefore affects the control signals.
+        The setpoint mean is calculated from the training data and subtracted from the signal to correct for the offset.
+        This results in a input signal with a zero mean.
+        The calculated mean is reapplied to the MPC control signal during implementation
         to readjust for the required offset.
 
         % \paragraph{}
@@ -458,16 +457,22 @@
         
         \input{system_id/plots/noise_vs_no_noise.tex}
 
+        Figure~\ref{fig:noise_vs_no_noise} compares the prediction errors of HAVOK models generated from data with or without noise.
+        The plot shows that when using short lengths of training data, 
+        the prediction errors are smaller for model generated with noiseless signals.
+        However, it appears that the prediction errors are almost equal with longer lengths of training data.
+        This is because with a short length of data, the signal variation or energy contributed of the noise is a significant part of the data
+        and has a strong influence on the model.
+        However, with longer lengths of data, the variation caused by the actual plant dynamics 
+        dominates the low energy contribution of the measurement noise. 
+        Hence, the noise has a smaller influence on the model.        
+        It also appears that at long training data lengths noise has a negligible effect on the prediction error of the resulting models.
+
         \input{system_id/plots/havok_vs_dmd_noise.tex}
 
-        HAVOK performs better than DMD.
-        This slight difference in prediciton performance has a negligible effect on control.
-        
-
-        \murray{Input data needs to be adjusted.}
-        \murray{What about disturbances}
-        % \input{plot of SITL acc_sp}
-    
+        Figure~\ref{fig:havok_vs_dmd_noise} compares the performance of HAVOK and DMDc model when using noisy data.
+        The prediction error curves of the two methods are very simlar, with HAVOK producing slightly lower prediction errors than DMDc.
+        However, this difference in error may be so small that it has a negligible effect on control.  
 
     \subsection{Size of training data}
         The length of training data used for system identification affects the quality of the model produced.
