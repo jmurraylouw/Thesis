@@ -543,16 +543,17 @@
         the prediction error initially decreases, then increases to a peak whereafter it decreases again \cite{Nakkiran2019}. 
         
         \paragraph{}
-        As discussed in Section~\ref{sec:hyperparameters}, the higher values of $q$ lead to better prediction errors.
+        A rough calculation confirms that the critical region of `double-descent' is applicable to our use case.
         The highest $q$ in the considered range is 30, which corresponds to a model dimension of 
         \begin{equation}
-            D = (q \cdot n_x)^2 + (q \cdot n_x)(n_u) = (30 \cdot 2)^2 + (30 \cdot 2)(1) = 3660 .
+            D = (q \cdot n_x)^2 + (q \cdot n_x)(n_u) = 3660 .
         \end{equation}
         The length of training data corresponding to $D = N_{train} \cdot n_x$ at the transition between over- and under-parameterization is therefore:
         \begin{equation}
-            T_{train} = N_{trian} \cdot T_s = \frac{3660}{2} \cdot \SI{0.03}{\second} = \SI{54.9}{\second} .
+            T_{train} = N_{trian} \cdot T_s = \SI{54.9}{\second} .
         \end{equation}
-        This is within the range of considered training data lengths which explains why the `double-descent' phenomenon occurs. 
+        This value is indeed within the range of considered training data lengths,
+        which explains why our training experiments experience this phenomenon.
 
         \paragraph{}
         It should be noted that the plot for $l =$~\SI{0.5}{\metre} in Figure~\ref{fig:different_lengths}
@@ -574,30 +575,38 @@
     \subsection{Dynamic payload} \label{sec:dynamic_payload}
         
         \paragraph{}
-        Some payloads attached to the cable may not satisfy the assumptions made in Section~\ref{sec:plant_considered}.
-        For example, if a long payload is attached to the cable, the CoM of the payload will be quite a distance below the attachment of the cable.
-        This creates a double pendulum model with dynamics that differ significantly from a single pendulum.
+        In Section~\ref{sec:param_estimation} it was shown that the white-box system identification method
+        perform well for the suspended payload use case.
+        It was also shown in \cite{Slabber2020} and \cite{Erasmus2020} that this method can be used 
+        in conjunction with LQR control to minimise payload swing angles.
+        However, many payloads do not satisfy the assumptions made in for the a priori model
+        which is detrimental to performance of white-box method.
+        For example, for an elongated payload attached to the cable the point mass assumption does not hold.
+        The CoM of the payload is well below the attachment point of the cable, 
+        which creates a double pendulum model which differs significantly from a single pendulum.
+        
+        \paragraph{}
         Figure~?? shows a practical double pendulum use case. 
-        In 2D this payload is better represented by the floating double pendulum modelled in Figure~??.
+        This payload is better represented in 2D by the double pendulum modelled in Figure~??, 
+        than the model defined in Section~\ref{sec:plant_considered}.
 
         \murray{insert picture a practical quad with long payload}
         \murray{insert diagram of double pend}
         
         \paragraph{}
-        It is a non-trivial task to compare the data-driven models with the white-box models,
-        because they are different forms and are used in different types of controllers.
-        The a white-box system identification technique determines a continuous state space model 
+        To determine whether the white-box or data-driven methods perform better with these payloads, 
+        the performance of these methods need to be compared to each other.
+        However, comparing these methods is a non-trivial task
+        because they result in different types of models which are used in different types of controllers.
+        The white-box system identification technique generates a continuous-time, state space model 
         which is used in an LQR controller. 
         This is in the form:
         \begin{equation}
             \dot{x} = A x + B u
         \end{equation}
-        For this model, it is important that the time-derivative estimate of the model 
-        at the current time-step 
-        is similar to the actual time-derivative of the system state at that time-step.
-        The LQR controller applies an gain to the current state estimate 
-        to determine the input signal at that time-step only.
-        Hence, the state prediction for multiple time-steps into the future is not as important.
+        For this model, the accuracy of the time-derivative estimate  
+        at the current time-step is important for control.
+        Hence, a k-step-ahead prediction error is not a good measure of performance for this model.
 
         \paragraph{}
         In contrast, the data-driven techniques result in a discrete state space model,
@@ -605,13 +614,10 @@
             x_{k+1} = A x_k + B u_k ,
         \end{equation} 
         which is used in a MPC.
-        Therefore the prediction accuracy of the model for multiple time-steps over a time horizon is important,
-        since the MPC optimises the control input based on this state prediction.
-        
-        \paragraph{}
-        Even though the models cannot easily be compared to each other, 
-        the performance of the controllers using these models can be compared.
-        This comparison will be investigated in % Chapter~\ref{chap:}
+        The k-step-ahead prediction accuracy of this model is important for the performance of the MPC.
+        Therefore comparing the performance of the controllers which use these models 
+        is a better approach than comparing the model accuracy.
+        This will be investigated in Chapter~\ref{chap:control_systems}.
 
         \paragraph{}
         For single pend

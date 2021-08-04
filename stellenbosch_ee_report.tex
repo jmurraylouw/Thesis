@@ -154,10 +154,6 @@
 \let\Oldsubsubsection\subsubsection
 \renewcommand{\subsubsection}{\FloatBarrier\Oldsubsubsection}
 
-% Copyright
-% \def\registered{{\ooalign{\hfil\raise .00ex\hbox{\scriptsize R}\hfil\crcr\mathhexbox20D}} % used as: $^\registered$
-% \def\tm{\leavevmode\hbox{$\rm {}^{TM}$}} % used as: $^\tm$
-
 % Glossary
 % \usepackage[acronym, nomain, nopostdot, nonumberlist, nogroupskip, toc, automake=false]{glossaries}
 %\loadglsentries{glossary}
@@ -180,8 +176,13 @@
 
 % Contents
 \input{introduction/introduction.tex}
+\input{lit_study/lit_study.tex}
 \input{modelling/modelling.tex}
 \input{system_id/system_id.tex}
+\input{control_systems/control_systems.tex}
+\input{system_overview/system_overview.tex}
+\input{results/results.tex}
+\input{conclusion/conclusion.tex}
 
 % \input{system_id/plots/MAE_vs_Ts.tex}
 % \input{system_id/plots/MAE_diff.tex}
@@ -191,15 +192,14 @@
 % \input{system_id/plots/havok_vs_dmd_noise.tex}
 % \input{system_id/plots/singular_values.tex}
 
-\input{system_id/plots/prediction_single_pend_black.tex}
-\input{system_id/plots/prediction_single_pend_white.tex}
-\input{system_id/plots/prediction_double_pend_black.tex}
-\input{system_id/plots/prediction_double_pend_white.tex}
-\input{system_id/plots/FFT_amplitude_single_pend.tex}
-\input{system_id/plots/FFT_amplitude_double_pend.tex}
+% \input{system_id/plots/prediction_single_pend_black.tex}
+% \input{system_id/plots/prediction_single_pend_white.tex}
+% \input{system_id/plots/prediction_double_pend_black.tex}
+% \input{system_id/plots/prediction_double_pend_white.tex}
+% \input{system_id/plots/FFT_amplitude_single_pend.tex}
+% \input{system_id/plots/FFT_amplitude_double_pend.tex}
 
 
-% \input{conclusion/conclusion.tex}
 
 % Bibliography
 \bibliography{Thesis.bib}
