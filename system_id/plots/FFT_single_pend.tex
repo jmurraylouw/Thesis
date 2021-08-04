@@ -1,13 +1,13 @@
-\begin{figure}[h]
+\begin{subfigure}{0.45\columnwidth}
     \centering
     \begin{tikzpicture}
         \begin{axis}[            
             xlabel = Frequency,
             ylabel = Amplitude,
-            x unit = \si{\hertz},
+            x unit = \si{\radian/\second},
             % y unit = \si{\second},
-            xmin = 0.3,  xmax = 1,
-            ymin = 0,    ymax = 0.012,
+            xmin = 0.3,     xmax = 1,
+            ymin = 0,  ymax = 0.012,
             grid = major,
             legend cell align = left,
             legend pos = north east,
@@ -16,7 +16,7 @@
             label style = {font = \scriptsize},
             tick label style = {font = \scriptsize},
             width = 0.95\columnwidth,
-            height = 0.5\columnwidth,
+            height = 0.95\columnwidth,
             % initialize Dark2
             cycle list/Dark2,
             % combine it with 'mark list*':
@@ -27,12 +27,11 @@
 
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = f, y = P1, col sep = comma] 
-        {system_id/csv/FFT_SITL_single_pos_step_m1_0.2_l1_m2_0.1_l2_0.3.csv.csv};
+        {system_id/csv/FFT_SITL_single_pos_step_m0.3_l1.csv.csv};
 
         \end{axis}
     \end{tikzpicture} 
     
-    \caption{ The single-sided amplitude spectrum of the FFT of the double pendulum swing angle
-    ($m_1 =$~\SI{0.2}{\kilo\gram}, $l_1 =$~\SI{1}{\meter}, $m_2 =$~\SI{0.1}{\kilo\gram}, $l_2 =$~\SI{0.3}{\meter}).}
-    % \label{fig:havok_vs_dmd_noise}
-\end{figure}
+    \caption{Single pendulum}
+    \label{fig:FFT_single_pend}
+\end{subfigure}

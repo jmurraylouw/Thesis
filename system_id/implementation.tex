@@ -493,11 +493,11 @@
         $
             0.5 \leq l \leq \SI{2}{\metre} .
         $
-        Figure~\ref{fig:system_parameters} shows the prediction error of HAVOK models 
+        Figure~\ref{fig:system_param_subfigs} shows the prediction error of HAVOK models 
         build from simulations with various values of $m_p$ and $l$.
         The plots are not shown for DMDc models because they are so similar to the HAVOK results.
 
-        \input{system_id/plots/system_parameters.tex}
+        \input{system_id/plots/system_param_subfigs.tex}
 
         From Figure~\ref{fig:different_lengths} it seems that there is not a great difference in prediction error 
         for different cable length setups.
@@ -578,12 +578,12 @@
         In Section~\ref{sec:param_estimation} it was shown that the white-box system identification method
         perform well for the suspended payload use case.
         It was also shown in \cite{Slabber2020} and \cite{Erasmus2020} that this method can be used 
-        in conjunction with LQR control to minimise payload swing angles.
+        in conjunction with LQR control to minimise swing angles of an unknown payload.
         However, many payloads do not satisfy the assumptions made in for the a priori model
         which is detrimental to performance of white-box method.
         For example, for an elongated payload attached to the cable the point mass assumption does not hold.
         The CoM of the payload is well below the attachment point of the cable, 
-        which creates a double pendulum model which differs significantly from a single pendulum.
+        which creates a double pendulum model that differs significantly from a single pendulum.
         
         \paragraph{}
         Figure~?? shows a practical double pendulum use case. 
@@ -594,61 +594,78 @@
         \murray{insert diagram of double pend}
         
         \paragraph{}
-        To determine whether the white-box or data-driven methods perform better with these payloads, 
-        the performance of these methods need to be compared to each other.
-        However, comparing these methods is a non-trivial task
-        because they result in different types of models which are used in different types of controllers.
-        The white-box system identification technique generates a continuous-time, state space model 
-        which is used in an LQR controller. 
-        This is in the form:
-        \begin{equation}
-            \dot{x} = A x + B u
-        \end{equation}
-        For this model, the accuracy of the time-derivative estimate  
-        at the current time-step is important for control.
-        Hence, a k-step-ahead prediction error is not a good measure of performance for this model.
+        Figure~\ref{fig:prediction_single_pend_white} shows the k-step-ahead prediction 
+        of a white-box models for a single pendulum simulation.
+        The exact $m_p$ is used for the model, but the cable length is estimated from a FFT of the payload swing angle 
+        as described in Section~\ref{sec:length_estimation}.
+        It is clear that the prediction is accurate for the first few oscillations, 
+        but the slight difference in frequency accumulates over time causing an increasingly large offset.
+        However, the general shape of the dynamics is still captured by the model.
+        Also note that the prediction oscillations are damped linearly 
+        but the actual oscillations experience non-linear damping.
+        This difference is an approximation error because the non-linear plant is modelled with a linear model. 
 
-        \paragraph{}
-        In contrast, the data-driven techniques result in a discrete state space model,
-        \begin{equation}
-            x_{k+1} = A x_k + B u_k ,
-        \end{equation} 
-        which is used in a MPC.
-        The k-step-ahead prediction accuracy of this model is important for the performance of the MPC.
-        Therefore comparing the performance of the controllers which use these models 
-        is a better approach than comparing the model accuracy.
-        This will be investigated in Chapter~\ref{chap:control_systems}.
-
-        \paragraph{}
-        For single pend
-        plot theta prediction dmd vs havok va white-box
-
-        Note that the payload oscillations are damped slightly by the PID controller.
-        It appears that this damping is more complex than the linear damping model 
-        used to model the white-box model, since the actual swing amplitude 
-        does not linearly decrease as expected.
-        The damping effect is a function of the controller gains, 
-        the payload connection and the aerodynamic drag of the payload.
-        An advantage of the data-driven system identification techniques 
-        is that the effect of damping is inherently included in the estimated model 
-        without specifically estimating it.
-        In contrast, the white-box estimation technique requires a designed algorithm 
-        to estimate every parameter that effects the dynamics, 
-        namely the payload mass, cable length and damping coefficient
-
-
-        \paragraph{}
-        \input{system_id/plots/prediction_single_pend_black.tex}
         \input{system_id/plots/prediction_single_pend_white.tex}
         
-        \input{system_id/plots/prediction_double_pend_black.tex}
+        \paragraph{}
+        Figure~\ref{fig:prediction_double_pend_white} also shows the k-step-ahead prediction 
+        of a white-box model, but this prediction is for a double pendulum simulation.
+        The cable length was estimated from the same method 
+        by calculating the FFT of the cable swing angle and identifying the dominant frequency.
+        Note how the prediction of the first oscillation is quite accurate and is similar to the initial swing of the single pendulum.
+        However, by the second swing, the double pendulum dynamics differ significantly from the model prediction.
+        The single pendulum oscillations seen in Figure~\ref{fig:prediction_single_pend_white} are regular
+        compared to double pendulum oscillations in Figure~\ref{fig:prediction_double_pend_white} which are noticeably irregular.
+        The a priori model expects regular, single frequency oscillations.
+        This can be seen in Figure~\ref{fig:prediction_double_pend_white} where the predicted peaks are equidistant.
+        However, the actual dynamics have a superposition of two frequencies due to the double pendulum payload.
+
         \input{system_id/plots/prediction_double_pend_white.tex}
         
-        \input{system_id/plots/FFT_amplitude_single_pend.tex}
-        The FFT of the single pendulum leads to an estimated cable length of \SI{1.19}{\metre}        
+        \paragraph{}
+        The FFT amplitude spectrum of the single pendulum is shown in Figure~\ref{fig:FFT_double_pend}.
+        This plot shows a single peak which corresponds to the natural frequency of the suspended payload.
+        Figure~\ref{fig:FFT_single_pend} shows the FFT amplitude spectrum of the double pendulum.
+        Two peaks are revealed in this plot 
+        which correspond to the two superimposed frequencies caused by the double pendulum.
+        The frequency content of the two plants are clearly different 
+        so the white-box model and parameter estimation techniques would need to be redesigned for these payloads specifically.
+        This is the great disadvantage of the white-box system identification technique.
+        For every model with different dynamics, a new technique needs to be designed and used.
+        In contrast, the proposed data-driven method provides a general solution 
+        for a large range of different payloads and dynamics.
 
-        \input{system_id/plots/FFT_amplitude_double_pend.tex}
-        The FFT of the double pendulum leads to an estimated cable length of \SI{1.39}{\metre}
+        % The FFT of the single pendulum leads to an estimated cable length of \SI{1.19}{\metre}        
+        % The FFT of the double pendulum leads to an estimated cable length of \SI{1.39}{\metre}
+        
+        \input{system_id/plots/FFT_subfigs.tex}
+
+        \paragraph{}
+        Figure~\ref{fig:prediction_single_pend_black} shows the prediction of the two data-driven methods
+        for a single pendulum simulation.
+        Note that there is less of a frequency difference in this prediction than the white-box prediction in 
+        Figure~\ref{fig:prediction_single_pend_white}.
+        The shape of the predicted damping is also more similar to the actual dynamics than the white-box prediction.
+        This may be because the data-driven methods effectively fit a higher order damping model to the dynamics,
+        compared to the simple, linear damping applied in the white-box model.
+
+        \paragraph{}
+        The damping seen in these plots is a complicated effect which depends on 
+        the payload connection, 
+        the aerodynamic drag, 
+        and
+        the controller gains.
+        An advantage of data-driven system identification techniques 
+        is that the effect of damping is inherently included in the estimated model 
+        without specifically estimating a damping coefficient.
+        In contrast, the white-box estimation technique requires the effect to be modelled a priori 
+        and a designed algorithm to estimate every parameter that effects the dynamics.
+
+        \input{system_id/plots/prediction_single_pend_black.tex}        
+        
+        \paragraph{}        
+
+        \input{system_id/plots/prediction_double_pend_black.tex}
         
         \paragraph{}
         Since the a priori white-box model is based on a single pendulum model, 
@@ -679,4 +696,31 @@
         is if a payload is attached rigidly to the quadrotor while also carrying a suspended payload.
         The payload mass estimation is based on the assumption that the quadrotor mass is known.
         However if a mass is rigidly attached to the vehicle, the effective quadrotor mass is changed and the RLS payload mass estimation is no longer accurate.
+
+        
+        
+        
+        \paragraph{}
+        To determine whether the white-box or data-driven methods perform better with these payloads, 
+        the performance of these methods need to be compared to each other.
+        However, comparing these methods is a non-trivial task
+        because they result in different types of models which are used in different types of controllers.
+        The white-box system identification technique generates a continuous-time, state space model 
+        which is used in an LQR controller. 
+        This is in the form:
+        \begin{equation}
+            \dot{x} = A x + B u
+        \end{equation}
+        For this model, the accuracy of the time-derivative estimate  
+        at the current time-step is important for control.
+        Hence, a k-step-ahead prediction error is not a good measure of performance for this model.
+        In contrast, the data-driven techniques result in a discrete state space model,
+        \begin{equation}
+            x_{k+1} = A x_k + B u_k ,
+        \end{equation} 
+        which is used in a MPC.
+        The k-step-ahead prediction accuracy of this model is important for the performance of the MPC.
+        Therefore comparing the performance of the controllers which use these models 
+        is a better approach than comparing the model accuracy.
+        This will be investigated in Chapter~\ref{chap:control_systems}.
 
