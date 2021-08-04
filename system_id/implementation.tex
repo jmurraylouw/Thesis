@@ -663,24 +663,31 @@
 
         \input{system_id/plots/prediction_single_pend_black.tex}        
         
-        \paragraph{}        
+        \paragraph{}
+        Figure~\ref{fig:prediction_double_pend_black} shows the prediction of the same data-driven methods 
+        but for a double pendulum simulation.
+        Notice how accurate the prediction is for the first \SI{20}{\second} of the plot.
+        In contrast to the white-box model, the black-box model oscillations follow the irregular, 
+        multi-frequency response of the actual dynamics.
+        The state-space model can approximate the multi-frequency dynamics of the plant 
+        because of the delay-coordinates in the model.
+        As expected, the prediction accuracy is also much better than the white-box models 
+        for both the single and double pendulum simulations. 
 
         \input{system_id/plots/prediction_double_pend_black.tex}
         
-        \paragraph{}
-        Since the a priori white-box model is based on a single pendulum model, 
-        the dynamics described by the model are significantly different from the actual dynamics.
-        This will have a detrimental effect on the control performance of a controller based on such a model,
-        since the controller will be designed for different plant than what it is controlling actually controlling.
+        The double pendulum plant involves a hidden state variable, 
+        because the unmeasured angle of the second pendulum 
+        is required to fully describe the state of the system.
+        The DMDc and HAVOK models can still approximate the dynamics without measuring this state variable
+        because of the delay embedding and Taken's Embedding Theorem \cite{Kamb2020}.
+        
+        `Takens' Embedding Theorem asserts that when the states of a hidden dynamical system are confined to a low-dimensional attractor, complete information about the states can be preserved in the observed time-series output through the delay coordinate map. However, the conditions for the theorem to hold ignore the effects of noise and time-series analysis'
+        \cite{Yap2014}
         
         \input{system_id/plots/MAE_vs_Ntrain_double_pend}
 
-        \paragraph{}
-        For each of these payload cases, a different parameter estimation based techniques would needs to be designed for effective control.
-        This is undesirable for practical drone deliveries, especially when the type of paylaod is not known well in advance or changes regularly.
-        A data-driven technique provides a more general solution since it accommodates a larger range of payload types and does not require a prioir modelling information.
-        
-        plot hyperparameterss MAE. Not how much more delays are required
+        Not how much more delays are required
         
         Takens theorum.
         Add DMD to plot
