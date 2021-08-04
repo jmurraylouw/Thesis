@@ -1,14 +1,24 @@
 \section{White-box and black-box techniques}
 
+    \paragraph{}
+    Models determined from data-driven system identification methods are generally called black-box models.
+    This is because the user figuratively cannot ``see inside the box" 
+    to understand the inner-workings of the model.
+    The user is only concerned with the inputs and output of the model
+    In contrast, models determined from a priori modelling are referred to as white-box models.
+    The user understand the physics and inner workings of these models, 
+    because the dynamics are manually programmed into the model by the user.
+
     \subsection{White-box techniques}
 
         \paragraph{} 
         The underlying physics of a white-box model is understood by the user because    
-        they are determined from first principles.
+        it is determined from first principles.
         This is done by modelling physical processes with techniques like Lagrangian mechanics or Newton equations.
-        With system identification techniques that use these models, 
+        For system identification techniques that use these models, 
         the mathematical relations between system parameters are predefined in the modelling phase.
-        The system identification process is therefore reduced to parameter estimation to determine values for parameters used in die model.
+        The system identification process is therefore reduced to parameter estimation 
+        which determines values for parameters used in die model.
 
         \paragraph{} 
         This approach is used by \cite{Erasmus2020} and \cite{Slabber2020} for swing damping control of a quadrotor with an unknown suspended payload.
@@ -32,8 +42,9 @@
 
     \subsection{Black-box techniques}
 
+        \paragraph{}
         Data-driven system identification methods produce black-box models.
-        In contrast to white-box models, black-box models do not require predefined mathematical relations between system parameters.
+        These models do not require predefined mathematical relations between system parameters.
         % The user only considers what goes into, and comes out of, the black-box.
         % Something imagery about why it is called black box
         No prior knowledge of the physics of the system are considered and no modelling assumptions are made.
@@ -66,10 +77,10 @@
         These techniques and their implementation are explained in the sections below.
         Each technique is considered for use in a velocity controller in the North direction
 
-        \paragraph{Considered controller}
+        \paragraph{}
         % As discussed in \ref{sec:linear_model}, the payload has minimal effect on quadrotor attitude because it is attached near the CoM of the vehicle.
         % Therefore the attitude states are excluded from the system identification model.
-        The model identified by DMDc will be used to design a longitudinal velocity controller.
+        The model identified by DMDc or HAVOK will be used to design a longitudinal velocity controller.
         As shown in \ref{fig:system_id_plant}, the plant considered for system identification includes the dynamics of the inner loop, attitude controllers.
         The swing damping controllers which will utilise the identified model act only in the translational velocity loop.
         Because of the large time-scale separation between the inner and outer loop controllers, 

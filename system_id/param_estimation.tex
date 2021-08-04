@@ -1,24 +1,54 @@
 \section{Parameter estimation} \label{sec:param_estimation}
 
-\subsection{Predetermined linear model}
-    The motivation for paramater estimation is to determine unknown parameter values required by the predetermined model.
-    This model was derived a prioiri in Section~\ref{sec:linear_model}.
+    \paragraph{}
+    The purpose of parameter estimation is to determine unknown parameter values required by the predetermined model.
+    This model was derived a priori in Section~\ref{sec:linear_model}.
+    The unknown parameters in the model include the payload mass, $m_p$ and the cable length, $l$.
+    Two seperate methods used to estimate each of these paramaters.
+    These methods were used by \cite{Erasmus2020} and \cite{Slabber2020} 
+    with a LQR controller to apply swing damping control of a quadrotor with an unknown suspended payload.
     
 \subsection{Payload mass estimation}
-    RLS
-    Cannot work if quadrotor mass also changes, because assume that $m_q$ is known.
+
+    \paragraph{}
+    RLS is used by \cite{Erasmus2020} and \cite{Slabber2020} to estimate the payload mass.
+    Because it is assumed that the quadrotor mass is known, 
+    the payload mass can be estimated from the additional trust required during hover.
+    In both \cite{Erasmus2020} and \cite{Slabber2020} it is demonstrated 
+    that RLS is very accurate for the payload mass estimation of a system nearly identical to the one considered in this work.
+    To compare the white-box and black-box techniques with more clarity, 
+    it will therefore be assumed that the method estimates $m_p$ with perfect accuracy.
+    This isolates any inaccuracies in the white-box model to 
+    either the a priori modelling or the cable length estimation.
+
+    \paragraph{}
+    It should be noted however that this method is dependant on the assumption 
+    that the vehicle mass is known and remains unchanged.
+    The method will clearly be inaccurate if a unknown mass is added to the quadrotor 
+    in conjunction with the suspended payload.
+    In this case the mass estimation method will have to be completely redesigned.
+    This is an inherent problem of the white-box techniques.
+    The parameter estimation methods are designed for specific modelling assumptions 
+    and are not adaptable to different types of payload loadings.
+    In contrast, data-driven techniques are adaptable to different payload loadings 
+    because it does not depend on a priori modelling assumptions.
 
 \subsection{Cable length estimation} \label{sec:length_estimation}
-    The cable length is estimated from the measurement of natural frequency of the swinging payload.
+
+    \paragraph{}
+    The cable length is estimated from the measurement of the natural frequency of the swinging payload.
     As described by
     \cite{bisgaard},
     the natural frequency is given by:
     \begin{equation} \label{eq:nat_freq}
         \omega_n = \sqrt{ \frac{g}{l} \cdot \frac{m_q + m_p}{m_q}}
     \end{equation}
-    The natural frequency is measured by performing a FFT on the payload swing angle response after a position step by the quadrotor.
+    The natural frequency is measured by performing a FFT on the payload swing angle response 
+    after a position step by the quadrotor.
     The dominant frequency identified by the FFT during free swing is the natural frequency of the payload.
+    This method is applied successfully by \cite{Erasmus2020} and \cite{Slabber2020} for cable length estimation.
     
+    \paragraph{}
     \ref{fig:pos_step_angle}
     shows the payload swing angle after the system is stimulated by a position step setpoint.
     As shown in 
@@ -27,6 +57,7 @@
     This is to minimise the effect of the quadrotor controllers on the swing angle frequency 
     by excluding the transient response in the FFT.
 
+    \paragraph{}
     \ref{fig:fft} 
     shows the resulting amplitude spectrum of the payload swing angle response.
     The dominant frequency is clearly identified as ??.
