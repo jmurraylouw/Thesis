@@ -25,23 +25,39 @@
     \input{system_id/implementation.tex}
 
     \section{Conclusion}
-    DMD and HAVOK work very similarly with single pend.
-    HAVOK has slightly better prediction accuracy, but this small difference has neglible effect on control.
-    It is difficult to compare the white-box to the black-box models because the real effect will only be seen during control.
-    However it is clear that the accuracy of the white-box model degrades significantly 
-    when a payload that causes double pendulum dynamics.
 
-    The major advantage of the data-driven approach which was demonstrated in this section 
-    is that the method was applied to different dynamical systems   
+        \paragraph{}
+        DMDc and HAVOK produce very similar prediction errors for a range of different simulation conditions.
+        HAVOK generally has slightly lower errors, but this may have a negligible effect on control.
+        DMDc will be used in the remainder of this work 
+        because the algorithm has been studied more, is less computationally complex and provides similar performance to HAVOK.
+        These data-driven methods were shown to produce accurate predictions of the payload dynamics 
+        with a practical length of training data, sample time and noise level.
+        This proves to be promising for practical implementation with a MPC on a quadrotor companion computer.
+        The data-driven methods also proved to provide accurate prediction with a range of different payload parameters
+        and even with payloads that act as a double pendulum.
+        In contrast, the considered white-box system identification technique 
+        failed to identify a relevant model for the double pendulum dynamics.
+        Therefore the data-driven approach provides a more general system identification method 
+        that can be used for a range of different suspended payloads without being redesigned for specific dynamics.
 
-    \paragraph{}
-    For each of these payload cases, a different parameter estimation based techniques would needs to be designed for effective control.
-    This is undesirable for practical drone deliveries, especially when the type of paylaod is not known well in advance or changes regularly.
-    A data-driven technique provides a more general solution since it accommodates a larger range of payload types and does not require a prioir modelling information.
-        
-    \paragraph{}
-    Since the a priori white-box model is based on a single pendulum model, 
-    the dynamics described by the model are significantly different from the actual dynamics.
-    This will have a detrimental effect on the control performance of a controller based on such a model,
-    since the controller will be designed for different plant than what it is controlling actually controlling.
+        % DMD and HAVOK work very similarly with single pend.
+        % HAVOK has slightly better prediction accuracy, but this small difference has neglible effect on control.
+        % It is difficult to compare the white-box to the black-box models because the real effect will only be seen during control.
+        % However it is clear that the accuracy of the white-box model degrades significantly 
+        % when a payload that causes double pendulum dynamics.
+
+        % The major advantage of the data-driven approach which was demonstrated in this section 
+        % is that the method was applied to different dynamical systems   
+
+        % \paragraph{}
+        % For each of these payload cases, a different parameter estimation based techniques would needs to be designed for effective control.
+        % This is undesirable for practical drone deliveries, especially when the type of paylaod is not known well in advance or changes regularly.
+        % A data-driven technique provides a more general solution since it accommodates a larger range of payload types and does not require a prioir modelling information.
+            
+        % \paragraph{}
+        % Since the a priori white-box model is based on a single pendulum model, 
+        % the dynamics described by the model are significantly different from the actual dynamics.
+        % This will have a detrimental effect on the control performance of a controller based on such a model,
+        % since the controller will be designed for different plant than what it is controlling actually controlling.
        
