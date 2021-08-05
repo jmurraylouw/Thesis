@@ -1,6 +1,6 @@
 \section{Parameter estimation} \label{sec:param_estimation}
 
-    \paragraph{}
+    \paragraph
     The purpose of parameter estimation is to determine unknown parameter values required by the predetermined model.
     This model was derived a priori in Section~\ref{sec:linear_model}.
     The unknown parameters in the model include the payload mass, $m_p$ and the cable length, $l$.
@@ -10,7 +10,7 @@
     
 \subsection{Payload mass estimation}
 
-    \paragraph{}
+    \paragraph
     RLS is used by \cite{Erasmus2020} and \cite{Slabber2020} to estimate the payload mass.
     Because it is assumed that the quadrotor mass is known, 
     the payload mass can be estimated from the additional trust required during hover.
@@ -21,7 +21,7 @@
     This isolates any inaccuracies in the white-box model to 
     either the a priori modelling or the cable length estimation.
 
-    \paragraph{}
+    \paragraph
     It should be noted however that this method is dependant on the assumption 
     that the vehicle mass is known and remains unchanged.
     The method will clearly be inaccurate if a unknown mass is added to the quadrotor 
@@ -35,7 +35,7 @@
 
 \subsection{Cable length estimation} \label{sec:length_estimation}
 
-    \paragraph{}
+    \paragraph
     The cable length is estimated from the measurement of the natural frequency of the swinging payload.
     As described by
     \cite{Bisgaard2008}, the natural frequency is given by:
@@ -52,7 +52,7 @@
     Therefore the damped natural frequency closely approximates the natural frequency.
     This method is applied successfully by \cite{Erasmus2020} and \cite{Slabber2020} for cable length estimation.
     
-    \paragraph{}
+    \paragraph
     Figure~\ref{fig:pos_step_single_pend} shows the payload swing angle response 
     to a position step setpoint.
     The first few seconds of the step response are excluded from the FFT 
@@ -60,7 +60,7 @@
     in the natural frequency measurement.
     \ref{fig:FFT_pos_step} shows the resulting single-sided amplitude spectrum of the FFT of this data.
     
-    \paragraph{}
+    \paragraph
     The dominant frequency is clearly identified by the peak at \SI{0.520}{\radian/\second}.
     Since $m_q$, $m_p$ and $g$ are known, and $\omega_n$ has been measured, 
     $l$ can be determined from (\ref{eq:nat_freq}).

@@ -1,7 +1,7 @@
 \section{Dynamic mode decomposition with control}
 \label{sec:dmdc}
     
-    \paragraph{Intro}        
+    \paragraph        
     DMD is a linear regression technique that can be used to approximate a non-linear dynamical system \cite{Tu2014}.
     It uses temporal measurements of system outputs to reconstruct system dynamics without prior modelling assumptions.
     DMDc is an adaptation of DMD that also accounts for control inputs \cite{Proctor2016c}.
@@ -9,7 +9,7 @@
     Note that this implementation is a slight adaptation of DMDc, and includes time-delay-embedding of multiple observables. 
     \cite{Korda2018b} and \cite{Arbabi2018} use time-delay-embedding in their DMD adaptions in similar ways.
 
-    \paragraph{State space model}
+    \paragraph
     DMD produces a linear, discrete state-space model of the system dynamics.
     Discrete measurements, $\bm{x}_k$, of the continuous time observable, $\bm{x}(t)$, are used, 
     where $\bm{x}_k = \bm{x}(k T_s)$, and $T_s$ is the sampling time of the model.    
@@ -26,7 +26,7 @@
     \end{equation}
     $\bm{d}_k \in \R^{(n_x)(q)}$ and where $q$ is the number of delay-coordinates used in the model.
     
-    \paragraph{}
+    \paragraph
     The discrete state-space model is therefore defined as:
     \begin{equation} \label{eq:dmd_state_space}
         \bm{x}_{k+1} = \bm{A} \bm{x}_k + \bm{A}_d \bm{d}_k + \bm{B} \bm{u}_k ,
@@ -35,14 +35,14 @@
     \( \bm{A}_1 \in \R^{(q \cdot n_x) \times (q \cdot n_x)} \) is the state delay system matrix and 
     \( \bm{B} \in \R^{n_x \times n_u} \) is the input matrix.
     
-    \paragraph{Training data}
+    \paragraph
     The training data consists of full-state measurements, $\bm{x}_k$, and corresponding inputs, $\bm{u}_k$, 
     taken at regular intervals of $\Delta t = T_s$, during a simulated flight with Cascaded PID control.
     In a practical flight, these time-series measurements need to be saved in memory because it is usd as a single batch by DMD.
     Note that DMD can be applied in a recursive manner as described in \cite{Noack2016}, 
     However this implementation is not considered because memory size will not be a limitation since a companion computer will be used.
     
-    \paragraph{Data matrices}
+    \paragraph
     The training data is collected into the following matrices:
     \begin{align} \label{eq:dmd_matrices}
         \bm{X^\prime} = & \phantom{.} \left [
@@ -96,7 +96,7 @@
     \end{equation} 
     where $\bm{\Omega}$ contains the state and control data, and $\bm{G}$ represents the system and input matrices.
     
-    \paragraph{SVD}
+    \paragraph
     A SVD is performed on $\bm{\Omega}$ resulting in:
     \(
         \bm{\Omega} = \bm{U} \bm{\Sigma} \bm{V}^T
@@ -114,7 +114,7 @@
     where $\phantom{.} \Tilde{ } \phantom{.}$ represents rank-$p$ truncation.
     \murray{maybe insert colour pictures showing matrices}        
 
-    \paragraph{}
+    \paragraph
     By combining (\ref{eq:tilde_svd}) with the over-constrained equality in (\ref{eq:G_Omega}), 
     the least-squared solution, $\bm{G}$, can be found with:
     \begin{equation}

@@ -3,12 +3,12 @@
     
     \murray{q = number of delays, from here up}
     
-    \paragraph{}
+    \paragraph
     HAVOK is a data-driven, regression technique that provides a connection between DMD and Koopman operator theory \cite{Brunton2017a, Champion2019}. 
     We have adapted the standard HAVOK algorithm slightly to account for the effect of control and to extract a discrete, linear model that approximates the behaviour of a controlled dynamical system.
     In this section, a brief overview is provided for this implementation and expansion of \mbox{HAVOK}.
     % 
-    \paragraph{}
+    \paragraph
     The extracted discrete state-space model is defined as:
     \begin{equation} \label{eq:havoc_state_space}
         \bm{a}_{k+1} = \Tilde{\bm{A}} \bm{a}_k + \Tilde{\bm{B}} \bm{u}_k ,
@@ -18,7 +18,7 @@
     and \( \Tilde{\bm{B}} \in \R^{(q \cdot n_x) \times n_u} \) is the input matrix. 
     Here, $\Tilde{\phantom{a}}$ is used to differentiate these matrices from $\bm{A}$ and $\bm{B}$ used in DMDc.
     % 
-    \paragraph{}
+    \paragraph
     The original HAVOK algorithm, developed by \cite{Brunton2017}, constructs a Hankel matrix from output variables only. 
     In order to incorporate the effect of control, an extended Hankel matrix, $\bm{\Pi}$, is created by appending a matrix of inputs to a Hankel matrix of measurements:
     \begin{equation} \label{eq:pi_hankel}
@@ -38,7 +38,7 @@
     It is important to note that the model extracted by HAVOK depends on the choice of hyperparameters, $p$ and $q$.
     The number of samples in the training data, $N_{train} = w + q -1$, also influences the accuracy of the model.
     % 
-    \paragraph{}
+    \paragraph
     The columns of $\Tilde{\bm{V}}$ are the most significant principal components of the system dynamics \cite{Kamb2020}.
     This matrix, $\Tilde{\bm{V}}$, can be considered to contain a time-series of the pseudo-state, $\bm{v}$, such that
     \(
