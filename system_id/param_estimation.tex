@@ -4,7 +4,7 @@
     The purpose of parameter estimation is to determine unknown parameter values required by the predetermined model.
     This model was derived a priori in Section~\ref{sec:linear_model}.
     The unknown parameters in the model include the payload mass, $m_p$ and the cable length, $l$.
-    Two seperate methods used to estimate each of these paramaters.
+    Two separate methods used to estimate each of these parameters.
     These methods were used by \cite{Erasmus2020} and \cite{Slabber2020} 
     with a LQR controller to apply swing damping control of a quadrotor with an unknown suspended payload.
     
@@ -38,33 +38,40 @@
     \paragraph{}
     The cable length is estimated from the measurement of the natural frequency of the swinging payload.
     As described by
-    \cite{bisgaard},
-    the natural frequency is given by:
+    \cite{Bisgaard2008}, the natural frequency is given by:
     \begin{equation} \label{eq:nat_freq}
-        \omega_n = \sqrt{ \frac{g}{l} \cdot \frac{m_q + m_p}{m_q}}
+        \omega_n = \sqrt{ \frac{g}{l} \cdot \frac{m_q + m_p}{m_q}} .
     \end{equation}
+    The cable length can clearly be calculated from (\ref{eq:nat_freq}) if the other parameters are known.
     The natural frequency is measured by performing a FFT on the payload swing angle response 
     after a position step by the quadrotor.
-    The dominant frequency identified by the FFT during free swing is the natural frequency of the payload.
+    The dominant frequency identified by the FFT during free swing is an approximation 
+    of the natural frequency of the payload.
+    Note that the measured frequency actually corresponds to the damped natural frequency, 
+    but it is assumed that the damping during free swing is negligible.
+    Therefore the damped natural frequency closely approximates the natural frequency.
     This method is applied successfully by \cite{Erasmus2020} and \cite{Slabber2020} for cable length estimation.
     
     \paragraph{}
-    \ref{fig:pos_step_angle}
-    shows the payload swing angle after the system is stimulated by a position step setpoint.
-    As shown in 
-    \ref{fig:pos_step_angle}
-    the first few seconds of the step response are not used in the FFT.
-    This is to minimise the effect of the quadrotor controllers on the swing angle frequency 
-    by excluding the transient response in the FFT.
-
-    \paragraph{}
-    \ref{fig:fft} 
-    shows the resulting amplitude spectrum of the payload swing angle response.
-    The dominant frequency is clearly identified as ??.
-    Since $m_q$ and $g$ is known, and $m_p$ and $\omega_n$ has been estimated, $l$ can now be determined from
-    \ref{eq:nat_freq}.
-    In this case the estimated length is ??, compared to the actual length of ??.
+    Figure~\ref{fig:pos_step_single_pend} shows the payload swing angle response 
+    to a position step setpoint.
+    The first few seconds of the step response are excluded from the FFT 
+    to minimise the effect of the transient response due to the quadrotor controllers 
+    in the natural frequency measurement.
+    \ref{fig:FFT_pos_step} shows the resulting single-sided amplitude spectrum of the FFT of this data.
     
-    Frequency resolution ??
-    error for different lengths??
+    \paragraph{}
+    The dominant frequency is clearly identified by the peak at \SI{0.520}{\radian/\second}.
+    Since $m_q$, $m_p$ and $g$ are known, and $\omega_n$ has been measured, 
+    $l$ can be determined from (\ref{eq:nat_freq}).
+    For this simulation the estimated length is \SI{0.953}{\metre}.
+    The actual cable length is \SI{1}{\metre}, therefore this estimation has an error of 4.7\%.
+    As documented \cite{Erasmus2020} and \cite{Slabber2020}, this error is acceptable
+    and still results in effective control when implemented in a LQR.
+    It is also shown by \cite{Erasmus2020} and \cite{Slabber2020} that this estimation method 
+    is effective for a range of different payloads.
+
+    \input{system_id/plots/FFT_pos_step_subfigs}
+
+    
 

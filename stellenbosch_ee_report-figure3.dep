@@ -1,3 +1,2 @@
-stellenbosch_ee_report-figure3.pdf: system_id/csv/MAE_vs_Ts_SITL_x_vel_noise_l0-5_m0-2.csv_dmd_angle.csv
-stellenbosch_ee_report-figure3.pdf: system_id/csv/MAE_vs_Ts_SITL_x_vel_noise_l1_m0-2.csv_dmd_angle.csv
-stellenbosch_ee_report-figure3.pdf: system_id/csv/MAE_vs_Ts_SITL_x_vel_noise_l2_m0-2.csv_dmd_angle.csv
+stellenbosch_ee_report-figure3.pdf: system_id/csv/MAE_vs_q_SITL_x_vel_noise_longer_times_q.csv_dmd_angle_Ttrain_60.csv
+stellenbosch_ee_report-figure3.pdf: system_id/csv/MAE_vs_q_SITL_x_vel_noise_longer_times_q.csv_havok_angle_Ttrain_60.csv
