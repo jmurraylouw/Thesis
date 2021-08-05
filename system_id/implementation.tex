@@ -584,14 +584,20 @@
         For example, for an elongated payload attached to the cable the point mass assumption does not hold.
         The CoM of the payload is well below the attachment point of the cable, 
         which creates a double pendulum model that differs significantly from a single pendulum.
-        
-        \paragraph
-        Figure~?? shows a practical double pendulum use case. 
-        This payload is better represented in 2D by the double pendulum modelled in Figure~??, 
-        than the model defined in Section~\ref{sec:plant_considered}.
+        Such a payload is better represented in 2D by the double pendulum modelled in Figure~\ref{fig:double_pend}, 
+        than the model defined in Figure~\ref{fig:floating_pend}.
 
-        \murray{insert picture a practical quad with long payload}
-        \murray{insert diagram of double pend}
+        \begin{figure}[htb]
+            \centering
+            \includegraphics[width=0.5\linewidth]{double_pend.png}            
+            \caption{Double pendulum model representing an elongated suspended payload}
+            \label{fig:double_pend}
+        \end{figure}
+        
+        % \paragraph
+        % Figure~?? shows a practical double pendulum use case. 
+        % \murray{insert picture a practical quad with long payload} ??
+        % \murray{insert diagram of double pend}
         
         \paragraph
         Figure~\ref{fig:prediction_single_pend_white} shows the k-step-ahead prediction 

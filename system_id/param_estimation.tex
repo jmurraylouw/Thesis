@@ -1,12 +1,16 @@
 \section{Parameter estimation} \label{sec:param_estimation}
 
     \paragraph
-    The purpose of parameter estimation is to determine unknown parameter values required by the predetermined model.
-    This model was derived a priori in Section~\ref{sec:linear_model}.
+    The purpose of parameter estimation is to determine unknown parameter values 
+    required by a predetermined, white-box model.
+    The identified model is used to design a LQR controller,
+    therefore the model needs to be a linear, continuos time, state-space form.
+    This model was derived and linearised a priori in Section~\ref{sec:linear_model}.
     The unknown parameters in the model include the payload mass, $m_p$ and the cable length, $l$.
-    Two separate methods used to estimate each of these parameters.
-    These methods were used by \cite{Erasmus2020} and \cite{Slabber2020} 
-    with a LQR controller to apply swing damping control of a quadrotor with an unknown suspended payload.
+    Two separate methods are used to estimate each of these parameters.
+    These methods were also used by \cite{Erasmus2020} and \cite{Slabber2020} 
+    to design a LQR controller and implement swing damping control 
+    of a quadrotor with an unknown suspended payload.
     
 \subsection{Payload mass estimation}
 

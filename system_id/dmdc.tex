@@ -21,10 +21,11 @@
     \begin{equation}
         \bm{d}_{k} = 
         \begin{bmatrix}
-            \bm{x}_{k-1} & \bm{x}_{k-2} & \cdots & \bm{x}_{k-q}
+            \bm{x}_{k-1} & \bm{x}_{k-2} & \cdots & \bm{x}_{k-q+1}
         \end{bmatrix}^T ,
     \end{equation}
-    $\bm{d}_k \in \R^{(n_x)(q)}$ and where $q$ is the number of delay-coordinates used in the model.
+    $\bm{d}_k \in \R^{(n_x)(q-1)}$ and where $q$ is the number of delay-coordinates 
+    (including the current time-step) used in the model.
     
     \paragraph
     The discrete state-space model is therefore defined as:
@@ -32,7 +33,7 @@
         \bm{x}_{k+1} = \bm{A} \bm{x}_k + \bm{A}_d \bm{d}_k + \bm{B} \bm{u}_k ,
     \end{equation}
     \( \bm{A} \in \R^{n_x \times n_x} \) is the system matrix, 
-    \( \bm{A}_1 \in \R^{(q \cdot n_x) \times (q \cdot n_x)} \) is the state delay system matrix and 
+    \( \bm{A}_1 \in \R^{(q-1) \cdot n_x ~ \times ~ (q-1) \cdot n_x} \) is the state delay system matrix and 
     \( \bm{B} \in \R^{n_x \times n_u} \) is the input matrix.
     
     \paragraph
@@ -47,19 +48,19 @@
     \begin{align} \label{eq:dmd_matrices}
         \bm{X^\prime} = & \phantom{.} \left [
             \begin{array}{*{5}{@{}M{\mycolwd}@{}}}
-                    \bm{x}_{q+2} & \bm{x}_{q+3} & \bm{x}_{q+4} & \cdots & \bm{x}_{w+q+1}
+                    \bm{x}_{q+1} & \bm{x}_{q+2} & \bm{x}_{q+3} & \cdots & \bm{x}_{w+q}
             \end{array}
         \right ] , \nonumber \\
         %
         \bm{X} \phantom{''} = & \phantom{.} \left [
             \begin{array}{*{5}{@{}M{\mycolwd}@{}}}
-                \bm{x}_{q+1} & \bm{x}_{q+2} & \bm{x}_{q+3} & \cdots & \bm{x}_{w+q}                      
+                \bm{x}_{q} & \bm{x}_{q+1} & \bm{x}_{q+2} & \cdots & \bm{x}_{w+q-1}                      
             \end{array}
         \right ] , \nonumber \\
         % 
         \bm{X}_d \phantom{'} = & \phantom{'} \left [
             \begin{array}{*{5}{@{}M{\mycolwd}@{}}}
-                \bm{x}_{q} & \bm{x}_{q+1} & \bm{x}_{q+2} & \cdots & \bm{x}_{w+q-1} \\
+                \bm{x}_{q-1} & \bm{x}_{q+0} & \bm{x}_{q+1} & \cdots & \bm{x}_{w+q-2} \\
                 \vdots   & \vdots   & \vdots   & \ddots & \vdots \\
                 \bm{x}_2 & \bm{x}_3 & \bm{x}_4 & \cdots & \bm{x}_{w+1} \\
                 \bm{x}_1 & \bm{x}_2 & \bm{x}_3 & \cdots & \bm{x}_{w} \\                       
@@ -72,7 +73,6 @@
             \end{array}
         \right ] ,
     \end{align}
-
     where $w$ is the number of columns in the matrices, 
     $\bm{X^\prime}$ is the matrix $\bm{X}$ shifted forward by one time-step, 
     $\bm{X}_d$ is the matrix with delay states, 

@@ -6,7 +6,7 @@
             ylabel = Payload angle,
             x unit = \si{\second},
             y unit = \si{\radian},
-            xmin = 0,   xmax = 20,
+            xmin = 0,   xmax = 15,
             ymin = -0.8,  ymax = 0.8,
             grid = major,
             legend cell align = left,
@@ -24,6 +24,7 @@
                 Dark2\nextlist
             }
         ]
+        
         \pgfplotsset{cycle list shift=1}
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = time, y = theta, col sep = comma] 
