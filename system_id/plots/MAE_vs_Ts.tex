@@ -3,7 +3,7 @@
     \begin{tikzpicture}
         \begin{axis}[            
             xlabel = Ts,
-            ylabel = MAE,
+            ylabel = NMAE\textsubscript{mm},
             % x unit = \si{\second},
             % y unit = \si{\second},
             xmin = 0,     xmax = 0.07,
@@ -26,12 +26,12 @@
         ]
 
         \addplot+[mark = none, style = solid, ultra thick] 
-        table[x = Ts, y = MAE_mean, col sep = comma] 
+        table[x = Ts, y = NMAE_mean, col sep = comma] 
         {system_id/csv/NMAE_vs_Ts_SITL_x_vel_noise_longer_times_Ts.csv_dmd_angle.csv};
         \addlegendentry{DMD}
         
         \addplot+[mark = none, style = solid, ultra thick] 
-        table[x = Ts, y = MAE_mean, col sep = comma] 
+        table[x = Ts, y = NMAE_mean, col sep = comma] 
         {system_id/csv/NMAE_vs_Ts_SITL_x_vel_noise_longer_times_Ts.csv_havok_angle.csv};
         \addlegendentry{HAVOK}
 
