@@ -1,13 +1,12 @@
 \section{Implementation and results}
 
-    In order to test the system identification techniques,
-    numerous simulations were performed to investigate their performance 
-    with different system configurations.
-    Firstly, the influence of design parameters on the algorithm performance are explored.
+    \paragraph
+    Numerous simulations were performed with different system configurations to investigate the performance of these system identification techniques.
+    Firstly, the influence of design parameters on the algorithm performance will be discussed.
     These parameters include hyperparameters, the length of training data and the algorithm sample time.
-    The effect of conditions that are not determined by algorithm design are also explored, 
+    The effect of conditions that are not determined by algorithm design will also be explored, 
     like measurement noise, and the physical properties of the payload.
-    Finally, the white-box and black-box techniques are tested on a dynamic payload 
+    Finally, the white-box and black-box techniques will be tested on a dynamic payload 
     which does not satisfy the assumptions of a simple pendulum.
 
     \subsection{Methodology}
@@ -233,7 +232,7 @@
         Therefore a long prediction horizon is used for testing so that marginally unstable models 
         are penalised heavily in model selection. 
 
-        \murray{Maybe insert example of good initial prediction but bad long term ??}
+        % \murray{Maybe insert example of good initial prediction but bad long term ??}
 
         \paragraph
         Different starting conditions also have a large influence on the prediction score of a model.
