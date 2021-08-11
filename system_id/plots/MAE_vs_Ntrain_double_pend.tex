@@ -27,12 +27,12 @@
         
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = T_train, y = MAE_mean, col sep = comma] 
-        {system_id/csv/MAE_vs_Ntrain_SITL_x_vel_noise_l1_m0-3.csv_havok_angle.csv};
+        {system_id/csv/NMAE_vs_Ntrain_SITL_x_vel_noise_l1_m0-3.csv_havok_angle.csv};
         \addlegendentry{single pendulum - $m =$~\SI{0.3}{\kilo\gram}, $l =$~\SI{1}{\metre},}
         
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = T_train, y = MAE_mean, col sep = comma] 
-        {system_id/csv/MAE_vs_Ntrain_SITL_x_vel_noise_m1_0.2_l1_m2_0.1_l2_0.3.csv_havok_angle.csv};
+        {system_id/csv/NMAE_vs_Ntrain_SITL_x_vel_noise_m1_0.2_l1_m2_0.1_l2_0.3.csv_havok_angle.csv};
         \addlegendentry{double pendulum - $m_1 =$~\SI{0.2}{\kilo\gram}, $m_1 =$~\SI{0.1}{\kilo\gram}, $l_1 =$~\SI{1}{\metre}, $l_2 =$~\SI{0.3}{\metre}}
         
         \end{axis}

@@ -3,7 +3,7 @@
     \begin{tikzpicture}
         \begin{axis}[            
             xlabel = Length of training data,
-            ylabel = MAE of North velocity prediction,
+            ylabel = MAE of velocity prediction,
             x unit = \si{\second},
             % y unit = \si{\second},
             xmin = 0,     xmax = 100,
@@ -27,12 +27,12 @@
          
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = T_train, y = MAE_1, col sep = comma] 
-        {system_id/csv/MAE_vs_Ntrain_SITL_x_vel_noise_l1_m0-2_state_vector.csv_havok_angle.csv};
+        {system_id/csv/NMAE_vs_Ntrain_SITL_x_vel_noise_l1_m0-2_state_vector.csv_havok_angle.csv};
         \addlegendentry{Using $\bm{\theta}$}
         
         \addplot+[mark = none, style = dashed, ultra thick] 
         table[x = T_train, y = MAE_1, col sep = comma] 
-        {system_id/csv/MAE_vs_Ntrain_SITL_x_vel_noise_l1_m0-2_state_vector.csv_havok_angular_rate.csv};
+        {system_id/csv/NMAE_vs_Ntrain_SITL_x_vel_noise_l1_m0-2_state_vector.csv_havok_angular_rate.csv};
         \addlegendentry{Using $\bm{\dot{\theta}}$}
 
         \end{axis}

@@ -27,12 +27,12 @@
 
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = Ts, y = MAE_mean, col sep = comma] 
-        {system_id/csv/MAE_vs_Ts_SITL_x_vel_noise_longer_times_Ts.csv_dmd_angle.csv};
+        {system_id/csv/NMAE_vs_Ts_SITL_x_vel_noise_longer_times_Ts.csv_dmd_angle.csv};
         \addlegendentry{DMD}
         
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = Ts, y = MAE_mean, col sep = comma] 
-        {system_id/csv/MAE_vs_Ts_SITL_x_vel_noise_longer_times_Ts.csv_havok_angle.csv};
+        {system_id/csv/NMAE_vs_Ts_SITL_x_vel_noise_longer_times_Ts.csv_havok_angle.csv};
         \addlegendentry{HAVOK}
 
         \end{axis}
