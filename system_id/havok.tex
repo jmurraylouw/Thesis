@@ -117,7 +117,7 @@
     \).
     This extraction is illustrated in Figure~\ref{fig:havok_decomposition}, 
     where different blocks represent different groups of matrix entries.
-    \begin{figure}[h]
+    \begin{figure}[htb]
         \includegraphics[scale = 0.55]{havok_decomposition.png}
         \centering
         \caption{Illustration of the extraction of $\Tilde{\bm{A}}$ and $\Tilde{\bm{B}}$ from (\ref{eq:v_ss_a})}
@@ -136,10 +136,10 @@
     HAVOK does not produce these exact values in $\Tilde{\bm{A}}$ and $\Tilde{\bm{B}}$. 
     By forcing each of these matrix entries to 1 or 0, the state-prediction performance of the model is improved.
         
-    \begin{figure}[h]
+    \begin{figure}[htb]
         \includegraphics[scale = 0.75]{havok_force_entries.png}
         \centering
-        \caption{Illustration of }
+        \caption{Illustration of forcing the known values in HAVOK matrices}
         \label{fig:havok_force_entries}
     \end{figure}
 
