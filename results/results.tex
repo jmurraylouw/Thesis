@@ -3,10 +3,56 @@
 \chapter{Implementation and results}
 \label{chap:results}
 
-    \section{LQR}
-    \section{MPC}
-    \section{Dynamic payload}
     \section{System identification with practical data}
+
+        \subsection{Methodology}
+            Method for generating data
+            picture of practical flight single and double
+            Discuss difference between SITL and prac
+                Noise 
+                wind
+                CoM
+            plot hover of prac vs SITL vel-sp.z = 0
+
+        \subsection{Length of training data}
+            plot NMAE vs Ttrain
+            Difference between SITl and practical (same input steps)
+            This is due to wind disturbance
+            Plot wind vs less wind vs no wind
+
+            single pend vs double pend
+
+        \subsection{Hyperparameters}
+            plot NMAE vs q
+            Difference between SITl and practical (same input steps)
+            This is due to wind disturbance
+            Plot wind vs less wind vs no wind
+            
+        \subsection{System parameters}
+            Show that practical data also works for different system parameters
+            plot NMAE vs Ttrain
+
+        \subsection{Extended dimensions}
+            plot error vs T-train for  XY
+            plot error vs T-train for  XYZ
+
+        \subsection{Predictions}
+            Single pendulum
+            Plot 4 showing good and bad
+
+            Double pendulum
+            Plot 4 showing good and bad
+
+    \section{LQR}
+        \subsection{Single pendulum}
+        \subsection{Double pendulum}
+
+    \section{MPC}
+        \subsection{Single pendulum}
+        \subsection{Double pendulum}
+
     \section{HIL}
+
+    \section{Conclusion}
 
 
