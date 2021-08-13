@@ -2,12 +2,12 @@
     \centering
     \begin{tikzpicture}
         \begin{axis}[            
-            xlabel = Length of training data,
-            ylabel = NMAE\textsubscript{mm},
-            x unit = \si{\second},
-            % y unit = \si{\second},
-            xmin = 5,     xmax = 120,
-            ymin = 0.032,  ymax = 0.057,
+            xlabel = {Number of delay-coordinates, $q$},
+            ylabel = $\overline{NMAE}_{mm}$ \phantom{~},
+            % x unit = \si{\second},
+            y unit = \%,
+            xmin = 5,     xmax = 80,
+            ymin = 3.2,  ymax = 7.5,
             grid = major,
             legend cell align = left,
             legend pos = north east,
@@ -26,19 +26,19 @@
         ]
 
         \addplot+[mark = none, style = solid, ultra thick] 
-        table[x = T_train, y = NMAE_mean, col sep = comma] 
-        {system_id/csv/NMAE_vs_Ntrain_SITL_x_vel_noise_longer_times.csv_dmd_angle.csv};
+        table[x = q, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
+        {results/csv/NMAE_vs_q_Prac_2021-08-12_03_manual_x_vel_steps_2mps_q.csv_dmd_angle.csv};
         \addlegendentry{DMD}
 
         \addplot+[mark = none, style = solid, ultra thick] 
-        table[x = T_train, y = NMAE_mean, col sep = comma] 
-        {system_id/csv/NMAE_vs_Ntrain_SITL_x_vel_noise_longer_times.csv_havok_angle.csv};
+        table[x = q, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
+        {results/csv/NMAE_vs_q_Prac_2021-08-12_03_manual_x_vel_steps_2mps_q.csv_havok_angle.csv};
         \addlegendentry{HAVOK}
 
         \end{axis}
     \end{tikzpicture} 
     
-    \caption{DMD and HAVOK prediction errors for different lengths of noisy training data
-    ($m =$~\SI{0.2}{\kilo\gram}, $l =$~\SI{0.5}{\meter}, $T_s =$~\SI{0.03}{\second}).}
-    \label{fig:havok_vs_dmd_noise}
+    \caption{DMD and HAVOK prediction errors for different number of delays included in the model
+    ($m =$~\SI{0.206}{\kilo\gram}, $l =$~\SI{1}{\meter}, $T_s =$~\SI{0.03}{\second}).}
+    \label{fig:havok_vs_dmd_q_2mps}
 \end{figure}
