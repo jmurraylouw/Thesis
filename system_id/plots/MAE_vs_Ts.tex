@@ -3,11 +3,11 @@
     \begin{tikzpicture}
         \begin{axis}[            
             xlabel = Ts,
-            ylabel = NMAE\textsubscript{mm},
+            ylabel = $\overline{NMAE}$ \phantom{~},
             % x unit = \si{\second},
-            % y unit = \si{\second},
+            y unit = \%,
             xmin = 0,     xmax = 0.07,
-            ymin = 0.085,  ymax = 0.125,
+            ymin = 8.5,  ymax = 12.5,
             grid = major,
             legend cell align = left,
             legend pos = north east,
@@ -26,12 +26,12 @@
         ]
 
         \addplot+[mark = none, style = solid, ultra thick] 
-        table[x = Ts, y = NMAE_mean, col sep = comma] 
+        table[x = Ts, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
         {system_id/csv/NMAE_vs_Ts_SITL_x_vel_noise_longer_times_Ts.csv_dmd_angle.csv};
         \addlegendentry{DMD}
         
         \addplot+[mark = none, style = solid, ultra thick] 
-        table[x = Ts, y = NMAE_mean, col sep = comma] 
+        table[x = Ts, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
         {system_id/csv/NMAE_vs_Ts_SITL_x_vel_noise_longer_times_Ts.csv_havok_angle.csv};
         \addlegendentry{HAVOK}
 

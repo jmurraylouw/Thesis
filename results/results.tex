@@ -3,60 +3,99 @@
 \chapter{Implementation and results}
 \label{chap:results}
 
-    \section{System identification with practical data}
+    \section{Parameter estimation with practical data}
+        \subsection{Mass estimation}
+        \subsection{Simple payload cable length estimation}
+        \subsection{Complex payload cable length estimation}
 
-        \subsection{Methodology}
-            Method for generating data
-            picture of practical flight single and double
-            Discuss difference between SITL and prac
-                Noise 
-                wind
-                CoM
-            plot hover of prac vs SITL vel-sp.z = 0
+    \section{Data-driven system identification with practical data}
 
-        \subsection{Length of training data}
+        \FloatBarrier\subsection{Methodology}
+            \begin{itemize}
+                \item Method for generating data
+                \item Plot example of training data
+                \item picture of practical flight single and double
+                \item Discuss difference between SITL and prac
+                \begin{itemize}
+                    \item Noise 
+                    \item wind
+                    \item CoM
+                \end{itemize}
+                \item plot hover of prac vs SITL to show noise and disturbance
+            \end{itemize}
+
+            \paragraph
+            In Chapter~\ref{chap:system_id} it was noted that the optimal length of training data 
+            often only included 2 velocity steps responses.
+            This means the models were trained on a very small sample of step sizes 
+            and need to extrapolate the dynamics of other step sizes.
+        
+            
+        \FloatBarrier\subsection{Length of training data}
             plot NMAE vs Ttrain
+            \begin{itemize}
+                \item Plot strong wind vs less wind vs no wind
+                \item HAVOK vs DMD
+                \item Plot single pend vs double pend
+            \end{itemize}
+
             \input{results/plots/havok_vs_dmd_Ttrain_2mps.tex}
             \input{results/plots/wind_Ttrain.tex}
 
-            Difference between SITl and practical (same input steps)
-            This is due to wind disturbance
-            Plot wind vs less wind vs no wind
-
-            single pend vs double pend
-
-        \subsection{Hyperparameters}
+        \FloatBarrier\subsection{Hyperparameters}
             plot NMAE vs q
-            \input{results/plots/havok_vs_dmd_q_2mps.tex}
 
+            \input{results/plots/havok_vs_dmd_q_2mps.tex}
             \input{results/plots/prac_singular_values.tex}
-            
+
             Difference between SITl and practical (same input steps)
             This is due to wind disturbance
             Plot wind vs less wind vs no wind
             
-        \subsection{System parameters}
-            Show that practical data also works for different system parameters
-            plot NMAE vs Ttrain
+        \FloatBarrier\subsection{System parameters}
 
-        \subsection{Extended dimensions}
-            plot error vs T-train for  XY
-            plot error vs T-train for  XYZ
+            \paragraph
+            The proposed data-driven techniques work for a range of different
+        Show that practical data works for different system parameters
 
-        \subsection{Predictions}
-            Single pendulum
-            Plot 4 showing good and bad
+        \paragraph
+        Plot NMAE vs Ttrain - 1 graph
+        \begin{itemize}
+            \item m = 0.2 kg    l = 1 m  
+            \item m = 0.2 kg    l = 2 m
+            \item l = 1 m       m = 0.3 kg
+            \item l = 1 m       m = 0.1 kg
+        \end{itemize}
 
-            Double pendulum
-            Plot 4 showing good and bad
+        \FloatBarrier\subsection{Predictions}
+        \begin{itemize}
+            \item Single pendulum: Plot 4 in grid showing good and bad
+            \item Double pendulum: Plot 4 in grid showing good and bad
+        \end{itemize}
+
+        \FloatBarrier\subsection{Extended dimensions}
+        \begin{itemize}
+            \item plot error vs T-train for XY
+            \item plot predictions
+            \item plot error vs T-train for XYZ
+        \end{itemize}
+            
+            
+
+
+            
+            
 
     \section{LQR}
-        \subsection{Single pendulum}
-        \subsection{Double pendulum}
+        \FloatBarrier\subsection{Single pendulum}
+        \begin{itemize}
+            \item 
+        \end{itemize}
+        \FloatBarrier\subsection{Double pendulum}
 
     \section{MPC}
-        \subsection{Single pendulum}
-        \subsection{Double pendulum}
+        \FloatBarrier\subsection{Single pendulum}
+        \FloatBarrier\subsection{Double pendulum}
 
     \section{HIL}
 

@@ -14,15 +14,15 @@
         \paragraph
         A SITL implementation of PX4 \cite{Meier2015} using the Gazebo simulator \cite{Koenig2004} is used to generate data
         for system identification.
-        Testing these techniques with simulation data allow us to investigate a much larger range system configurations 
+        Testing these techniques with simulation data allow us to investigate a much larger range of system configurations 
         than possible with practical flights.
         The simulation model used in Gazebo was verified in Chapter~\ref{chap:modelling}.
         Using PX4 in SITL also ensures that the controller dynamics in simulation 
         is as close as possible to practical flights since the same flight stack is used in both cases.
-        Gazebo also applies realistic measurement noise to the signals received by PX4, 
-        which applies an EKF for state estimation.
+        Gazebo applies realistic measurement noise to the signals received by PX4 
+        and the PX4 flight stack applies an EKF for state estimation.
         Therefore the the data seen by the system identification techniques 
-        will also include the filtering effect of the EKF as it would in practical flights.
+        include the same EKF filtering as practical flight data.
 
         \paragraph
         The procedure used to evaluate the black-box techniques is as follows:
@@ -39,10 +39,10 @@
         \paragraph
         The default PID velocity controller from PX4 is used during these simulation.
         The implemented controller gains are documented in Appendix~\ref{appen:pid_gains}.
-        A ROS node is used to read and log the payload angle measurement from Gazebo and a different
-        ROS node is used to send the velocity setpoints to PX4 
-        through the MAVLink protocol with the ROS package, 'mavros'.
-
+        A ROS node is used to read and log the payload angle measurement from Gazebo 
+        and a different ROS node is used to send velocity setpoints to PX4 
+        with the MAVLink protocol through the popular ROS package, 'mavros'.
+        
         \paragraph
         A algorithm schedules the series of velocity step commands 
         by assigning random step values and time-intervals within a specified range.
@@ -88,11 +88,14 @@
         This ensures that good predictions scores do not result from models that overfit to the training data. 
         
         \paragraph
-        The testing data spans a fixed length of time and taken from the start of the simulation period.
-        The training data is then allocated from the remainder of the data.
-        The same testing data is used to calculate error metrics for different models with different configurations
-        to ensure that the metric for each model is comparable. 
-        This error metric calculated from the testing data is used to evaluate and rank the performances of different models.       
+        The testing data spans a fixed length of time and is taken from the start of the simulation period.
+        The training data is then extracted from the remainder of the data.
+        The same setpoint schedules are used to generate this data for different simulations
+        to ensure that the metrics determined from different simulations are comparable. 
+        The error metric calculated from the testing data is used to evaluate and rank the performances of each models.       
+        % It is important to note that the testing data contains steps sizes and intervals not captured in the training data.
+        % Write about generalisable models and that different steps sizes??
+        % Edit this part ??
 
         % \paragraph
         % As discussed before, the purpose of identifying a data-driven model of the plant dynamics 
@@ -158,32 +161,34 @@
         MASE does not have this problem and can compare predictions of different variables well, 
         because it expresses accuracy as the ratio between the MAE of the model prediction and the MAE of an in-sample
         naïve forecast \cite{Hyndman2006}.
-        However, an in-sample forecast is a naïve prediction for a one-step-ahead prediction, 
+        However, an in-sample forecast is a na{\"i}ve prediction for a one-step-ahead prediction, 
         but not for a k-step-ahead prediction.
         Therefore MASE is not a helpful ratio for our use case.
 
         \paragraph
-        NMAE\textsubscript{mm} is a scale-free error metric that can compare different variables in our use case.
-        It normalises the MAE of a variable by the range of that variable, 
-        thereby variables with different means or scales can be compared.
+        NMAE (Normalised Mean Absolute Error) is a scale-free error metric which provides a fair comparison for different variables in our use case.
+        In this work NMAE normalises the MAE of a variable by the range of that variable, 
+        thereby variables with different ranges or different means can be compared.
         This value is calculated as:
         % \begin{equation}
         %     metric = \frac{1}{n_x} \cdot \sum_{i = 1}^{n_x} \left( \frac{ \bm{MAE_i} }{ x_{i, max} } \right) 
         % \end{equation}
         \begin{equation}
-            NMAE_{mm} = \frac{ MAE }{ x_{max} - x_{min} }
+            NMAE = \frac{ MAE }{ x_{max} - x_{min} }
         \end{equation}
         where         
         $x_{i, max}$ and $x_{i, min}$ are the maximum and minimum values 
         of the considered variable in the testing data.
+        % ?? Write about what this error means
+        % ?? write that it is understood as percentage
 
         \paragraph
         This results in an error metric for each predicted variable, 
         but a single value is required per model 
         to rank the overall accuracy of different models.
-        Therefore the average of the NMAE\textsubscript{mm} of all state variables
+        Therefore the average of the NMAE of all state variables
         is used as the single value representing the overall accuracy of a model
-        and is denoted as $\overline{NMAE}_{mm}$.
+        and is denoted as $\overline{NMAE}$.
         This is the final error metric used to evaluate the model predictions 
         in the sections to follow.
 
@@ -249,10 +254,10 @@
         The resulting testing procedure is to first specify a number of equispaced starting conditions within the testing data.
         The model is then run multiple times for the length of the prediction horizon, 
         stating with different initial conditions each time.
-        The NMAE\textsubscript{mm} is determined for each run, 
-        whereafter the average of these scores gives the final NMAE\textsubscript{mm} score of the model.
+        The NMAE is determined for each run, 
+        whereafter the average of these scores gives the final NMAE score of the model.
         In order to balance the variety of testing conditions with the computational time per error metric calculation, 
-        10 was selected as the number of initial conditions used in the final NMAE\textsubscript{mm} score. 
+        10 was selected as the number of initial conditions used in the final NMAE score. 
         
         % \paragraph
         % Each state error signal is scaled by the reciprocal of the maximum value of that state variable in the training data.

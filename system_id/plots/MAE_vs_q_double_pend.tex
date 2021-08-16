@@ -3,11 +3,11 @@
     \begin{tikzpicture}
         \begin{axis}[            
             xlabel = {Number of delay-coordinates, $q$},
-            ylabel = NMAE\textsubscript{mm},
+            ylabel = $\overline{NMAE}$ \phantom{~},
             % x unit = \si{\second},
-            % y unit = \si{\second},
+            y unit = \%
             xmin = 6,     xmax = 50,
-            ymin = 0.03,  ymax = 0.065,
+            ymin = 3,  ymax = 6.5,
             grid = major,
             legend cell align = left,
             legend pos = north east,
@@ -26,12 +26,12 @@
         ]
         
         \addplot+[mark = none, style = solid, ultra thick] 
-        table[x = q, y = NMAE_mean, col sep = comma] 
+        table[x = q, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
         {system_id/csv/NMAE_vs_q_SITL_x_vel_noise_m1_0.2_l1_m2_0.1_l2_0.3_Train_70.csv_dmd_angle.csv};
         \addlegendentry{DMD}
         
         \addplot+[mark = none, style = solid, ultra thick] 
-        table[x = q, y = NMAE_mean, col sep = comma] 
+        table[x = q, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
         {system_id/csv/NMAE_vs_q_SITL_x_vel_noise_m1_0.2_l1_m2_0.1_l2_0.3_Train_70.csv_havok_angle.csv};
         \addlegendentry{HAVOK}
 

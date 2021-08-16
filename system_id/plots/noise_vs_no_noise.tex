@@ -3,11 +3,11 @@
     \begin{tikzpicture}
         \begin{axis}[            
             xlabel = Length of training data,
-            ylabel = NMAE\textsubscript{mm},
+            ylabel = $\overline{NMAE}$ \phantom{~},
             x unit = \si{\second},
-            % y unit = \si{\second},
+            y unit = \%,
             xmin = 5,     xmax = 120,
-            ymin = 0.032,  ymax = 0.057,
+            ymin = 3.2,  ymax = 5.7,
             grid = major,
             legend cell align = left,
             legend pos = north east,
@@ -26,12 +26,12 @@
         ]
 
         \addplot+[mark = none, style = solid, ultra thick] 
-        table[x = T_train, y = NMAE_mean, col sep = comma] 
+        table[x = T_train, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
         {system_id/csv/NMAE_vs_Ntrain_SITL_x_vel_no_noise_longer_times.csv_havok_angle.csv};
         \addlegendentry{Without noise}
 
         \addplot+[mark = none, style = solid, ultra thick] 
-        table[x = T_train, y = NMAE_mean, col sep = comma] 
+        table[x = T_train, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
         {system_id/csv/NMAE_vs_Ntrain_SITL_x_vel_noise_longer_times.csv_havok_angle.csv};
         \addlegendentry{With noise}
 
