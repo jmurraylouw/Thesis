@@ -80,22 +80,56 @@
             \item plot error vs T-train for XYZ
         \end{itemize}
             
-            
+    \section{Swing damping control systems}
 
+        \paragraph
+        After the system identification phase, active swing damping control can be applied
+        to the quadrotor and payload system.
+        The control architectures are summarised in Table~\ref{tbl:controller_summary} 
+        by pairing the system identification techniques along with the appropriate controllers.
+        It was firstly shown in Chapter~\ref{chap:system_id} that the system identifcation techniques worked in simulation.
+        Emphasise that control is now applied in full SITL simulation.
 
-            
-            
+        \paragraph
+        MATLAB is used to generate a MPC ROS node 
+        This ROS node receives state feedback from the Gazebo simulator,
+        computes the optimal control action,
+        and send the setpoint to PX4 through the package 'mavros'.
 
-    \section{LQR}
+        \begin{table}[!h]
+            \renewcommand{\arraystretch}{1.1}
+            \centering
+            \caption{Summary of the system identification techniques paired with the active damping controllers.}
+            \begin{tabularx}{0.75\linewidth}{@{}lll@{}}
+                \toprule
+                \multicolumn{2}{c}{\textbf{System identification}}   & \textbf{Controller} \\
+                \cmidrule(lr){1-2}
+                Category    & Algorithm                     & \\
+                \midrule
+                White-box   & RLS mass estimator, and       & LQR \\
+                            & FFT cable length estimator    & \\
+                Black-box   & DMDc, or                      & MPC \\
+                            & HAVOK                         & \\
+                \bottomrule
+            \end{tabularx}
+            \label{tbl:controller_summary}
+        \end{table}
+        
+
         \FloatBarrier\subsection{Single pendulum}
-        \begin{itemize}
-            \item 
-        \end{itemize}
+
+            \begin{itemize}
+                \item plot MPC vs LQR v PID (no wind)
+                \item plot DMDc vs HAVOK (DMD - Havok)
+                \item plot with wind disturbacne control
+            \end{itemize}
+
         \FloatBarrier\subsection{Double pendulum}
 
-    \section{MPC}
-        \FloatBarrier\subsection{Single pendulum}
-        \FloatBarrier\subsection{Double pendulum}
+            \begin{itemize}
+                \item plot MPC vs LQR v PID (no wind)
+                \item plot with wind disturbacne control
+            \end{itemize}
 
     \section{HIL}
 
