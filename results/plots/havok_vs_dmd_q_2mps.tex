@@ -6,8 +6,8 @@
             ylabel = $\overline{NMAE}$ \phantom{~},
             % x unit = \si{\second},
             y unit = \%,
-            xmin = 5,     xmax = 80,
-            ymin = 3.2,  ymax = 12,
+            xmin = 5,     xmax = 90,
+            ymin = 3.5,  ymax = 7.5,
             grid = major,
             legend cell align = left,
             legend pos = north east,
@@ -27,18 +27,29 @@
 
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = q, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
-        {results/csv/NMAE_vs_q_Prac_2021-08-20_03_l-1_mp-0.2_wind-0.5_q.csv_dmd_angle.csv};
+        {results/csv/NMAE_vs_q_Prac_2021-08-12_03_manual_x_vel_steps_2mps_q.csv_dmd_angle.csv};
         \addlegendentry{DMD}
 
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = q, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
-        {results/csv/NMAE_vs_q_Prac_2021-08-20_03_l-1_mp-0.2_wind-0.5_q.csv_havok_angle.csv};
+        {results/csv/NMAE_vs_q_Prac_2021-08-12_03_manual_x_vel_steps_2mps_q.csv_havok_angle.csv};
         \addlegendentry{HAVOK}
+
+        % \addplot+[mark = none, style = solid, ultra thick] 
+        % table[x = q, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
+        % {results/csv/NMAE_vs_q_Prac_2021-08-20_03_l-1_mp-0.2_wind-0.5_q.csv_dmd_angle.csv};
+        % \addlegendentry{DMD}
+
+        % \addplot+[mark = none, style = solid, ultra thick] 
+        % table[x = q, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
+        % {results/csv/NMAE_vs_q_Prac_2021-08-20_03_l-1_mp-0.2_wind-0.5_q.csv_havok_angle.csv};
+        % \addlegendentry{HAVOK}
+
 
         \end{axis}
     \end{tikzpicture} 
     
     \caption{DMD and HAVOK prediction errors for different number of delays included in the model
-    ($m =$~\SI{0.206}{\kilo\gram}, $l =$~\SI{1}{\meter}, $T_s =$~\SI{0.03}{\second}, wind speed = \SI{0.5}{\metre/\second}).}
+    ($m =$~\SI{0.206}{\kilo\gram}, $l =$~\SI{1}{\meter}, $T_s =$~\SI{0.03}{\second}, wind speed = \SI{2}{\metre/\second}).}
     \label{fig:havok_vs_dmd_q_2mps}
 \end{figure}

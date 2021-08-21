@@ -5,7 +5,10 @@
 
     \section{Parameter estimation with practical data}
         \subsection{Mass estimation}
-        \subsection{Simple payload cable length estimation}
+
+        \FloatBarrier\subsection{Simple payload cable length estimation}
+            \input{results/plots/FFT_pos_step_subfigs_prac.tex}
+        
         \subsection{Complex payload cable length estimation}
 
     \section{Data-driven system identification with practical data}
@@ -123,16 +126,25 @@
         \FloatBarrier\subsection{Hyperparameters}
             
             \paragraph
-            As discussed in Section~\ref{sec:sec:hyperparameters}, 
-            the prediction error improves with an increasing number of delay-coordinates, but reaches 
+            As discussed in Section~\ref{sec:hyperparameters}, 
+            the prediction error generally improves with an increasing number of delay-coordinates 
+            because the number of parameters in the model increases.
+            However, the prediction error reaches a pareto optimum, 
+            after which the error does not significantly decrease with an increasing number of terms anymore.
+            Figure~\ref{fig:havok_vs_dmd_q_2mps} shows the prediction error as a function of the number of delay-coordinates
+            for practical flight data.
+            Even though the pareto elbow is not as smooth and clear as models build from simulation data, 
+            the elbow can still be identified.            
+            % Note that the pareto elbow is not as smooth and clear as shown in Section~\ref{sec:hyperparameters}.
+            % This may due to random 
+            % The pareto optimal models for practical data have significantly more delay-coordinates than
 
             \input{results/plots/havok_vs_dmd_q_2mps.tex}
 
-            \input{results/plots/prac_singular_values.tex}
-
-            Difference between SITl and practical (same input steps)
-            This is due to wind disturbance
-            Plot wind vs less wind vs no wind
+            % \input{results/plots/prac_singular_values.tex}
+            % Difference between SITl and practical (same input steps)
+            % This is due to wind disturbance
+            % Plot wind vs less wind vs no wind
             
         \FloatBarrier\subsection{System parameters}
 
@@ -141,23 +153,37 @@
             that the system identification methods work for a range of different payload parameters.
             Figure~\ref{fig:prac_system_params} shows the prediction error for different payloads with practical data.
             This shows that the proposed methods also work in practice with different payloads.
+            The `double-descent' trend is clearly seen in all of the plots, 
+            where the prediction error increases slightly after a specific length of training data,            
             
-            % \input{results/plots/prac_system_params.tex}
-
-            \paragraph
-            Plot NMAE vs Ttrain - 1 graph
-            \begin{itemize}
-                \item m = 0.2 kg    l = 1 m  
-                \item m = 0.2 kg    l = 2 m
-                \item l = 1 m       m = 0.3 kg
-                \item l = 1 m       m = 0.1 kg
-            \end{itemize}
+            \input{results/plots/prac_system_params.tex}
 
         \FloatBarrier\subsection{Predictions}
+
+            \begin{figure}
+                \captionsetup[subfigure]{justification=centering}
+                \centering
+                \input{results/plots/prediction_theta_1.tex} % subfigure
+                \input{results/plots/prediction_theta_1.tex} % subfigure
+                \caption{ DMD model predictions with test data
+                ().}
+                \label{fig:prediction_theta}  
+            \end{figure}
+
+            Single pendulum: 
             \begin{itemize}
-                \item Single pendulum: Plot 4 in grid showing good and bad
-                \item Double pendulum: Plot 4 in grid showing good and bad
+                \item Plot 2 showing good theta
+                \item Plot 2 showing good velocity
+                \item Plot theta and velocity with bad prediction
             \end{itemize}
+
+            \paragraph
+            Double pendulum: 
+            \begin{itemize}
+                \item Plot 2 showing good theta
+                \item Plot 2 showing good velocity
+            \end{itemize}
+            Photo of practical double pendulum
 
             Predictions drift because of the changing acceleration setpoint vector required.
             plot hover of prac vs SITL to show noise and disturbance
@@ -168,7 +194,7 @@
         %         \item plot predictions
         %         \item plot error vs T-train for XYZ
         %     \end{itemize}
-        % Maybe add this is there is time??
+        %     Maybe add this is there is time??
             
     \section{Swing damping control systems}
 

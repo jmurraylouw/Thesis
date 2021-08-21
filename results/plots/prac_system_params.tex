@@ -1,0 +1,48 @@
+\begin{figure}[htb]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[            
+            xlabel = Length of training data,
+            ylabel = $\overline{NMAE}$ \phantom{~},
+            x unit = \si{\second},
+            y unit = \%,
+            xmin = 5,     xmax = 120,
+            ymin = 2.8,  ymax = 7.8,
+            grid = major,
+            legend cell align = left,
+            legend pos = north east,
+            grid style = dashed,
+            legend style = {font = \scriptsize},
+            label style = {font = \scriptsize},
+            tick label style = {font = \scriptsize},
+            width = 0.95\columnwidth,
+            height = 0.5\columnwidth,
+            % initialize Dark2
+            cycle list/Dark2,
+            % combine it with 'mark list*':
+            cycle multiindex* list = {
+                Dark2\nextlist
+            }
+        ]
+         
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = T_train, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
+        {results/csv/NMAE_vs_Ntrain_Prac_2021-08-20_01_l-1_mp-0.1_wind-0.5.csv_dmd_angle.csv};
+        \addlegendentry{$m =$~\SI{0.1}{\kilo\gram}, $l = $~\SI{1}{\metre}}
+        
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = T_train, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
+        {results/csv/NMAE_vs_Ntrain_Prac_2021-08-20_02_l-2_mp-0.3-wind-0.5.csv_dmd_angle.csv};
+        \addlegendentry{$m =$~\SI{0.3}{\kilo\gram}, $l = $~\SI{2}{\metre}}
+        
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = T_train, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
+        {results/csv/NMAE_vs_Ntrain_Prac_2021-08-20_03_l-1_mp-0.2_wind-0.5.csv_dmd_angle.csv};
+        \addlegendentry{$m =$~\SI{0.2}{\kilo\gram}, $l = $~\SI{1}{\metre}}
+        
+        \end{axis}
+    \end{tikzpicture} 
+
+    \caption{DMD prediction error as a function of training data length for different payload parameters}
+    \label{fig:prac_system_params}
+\end{figure}
