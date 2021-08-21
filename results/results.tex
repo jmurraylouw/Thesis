@@ -107,8 +107,11 @@
             \paragraph
             HAVOK and DMD perform similarly
             Figure~\ref{fig:havok_vs_dmd_Ttrain_2mps} shows the prediction error of DMD and HAVOK models
-            Also plot DMD vs HAVOK for high winds ??
+            
             \input{results/plots/havok_vs_dmd_Ttrain_2mps.tex}
+
+            Also plot DMD vs HAVOK for high winds ??
+            
 
             plot NMAE vs Ttrain
             \begin{itemize}
@@ -116,13 +119,15 @@
                 \item HAVOK vs DMD
                 \item Plot single pend vs double pend
             \end{itemize}
-
-            \input{results/plots/havok_vs_dmd_Ttrain_2mps.tex}
             
         \FloatBarrier\subsection{Hyperparameters}
-            plot NMAE vs q
+            
+            \paragraph
+            As discussed in Section~\ref{sec:sec:hyperparameters}, 
+            the prediction error improves with an increasing number of delay-coordinates, but reaches 
 
             \input{results/plots/havok_vs_dmd_q_2mps.tex}
+
             \input{results/plots/prac_singular_values.tex}
 
             Difference between SITl and practical (same input steps)
@@ -132,33 +137,38 @@
         \FloatBarrier\subsection{System parameters}
 
             \paragraph
-            The proposed data-driven techniques work for a range of different
-        Show that practical data works for different system parameters
+            It was shown with multiple simulations in Section~\ref{sec:system_params} 
+            that the system identification methods work for a range of different payload parameters.
+            Figure~\ref{fig:prac_system_params} shows the prediction error for different payloads with practical data.
+            This shows that the proposed methods also work in practice with different payloads.
+            
+            % \input{results/plots/prac_system_params.tex}
 
-        \paragraph
-        Plot NMAE vs Ttrain - 1 graph
-        \begin{itemize}
-            \item m = 0.2 kg    l = 1 m  
-            \item m = 0.2 kg    l = 2 m
-            \item l = 1 m       m = 0.3 kg
-            \item l = 1 m       m = 0.1 kg
-        \end{itemize}
+            \paragraph
+            Plot NMAE vs Ttrain - 1 graph
+            \begin{itemize}
+                \item m = 0.2 kg    l = 1 m  
+                \item m = 0.2 kg    l = 2 m
+                \item l = 1 m       m = 0.3 kg
+                \item l = 1 m       m = 0.1 kg
+            \end{itemize}
 
         \FloatBarrier\subsection{Predictions}
-        \begin{itemize}
-            \item Single pendulum: Plot 4 in grid showing good and bad
-            \item Double pendulum: Plot 4 in grid showing good and bad
-        \end{itemize}
+            \begin{itemize}
+                \item Single pendulum: Plot 4 in grid showing good and bad
+                \item Double pendulum: Plot 4 in grid showing good and bad
+            \end{itemize}
 
-        Predictions drift because of the changing acceleration setpoint vector required.
-        plot hover of prac vs SITL to show noise and disturbance
+            Predictions drift because of the changing acceleration setpoint vector required.
+            plot hover of prac vs SITL to show noise and disturbance
 
-        \FloatBarrier\subsection{Extended dimensions}
-        \begin{itemize}
-            \item plot error vs T-train for XY
-            \item plot predictions
-            \item plot error vs T-train for XYZ
-        \end{itemize}
+        % \FloatBarrier\subsection{Extended dimensions}
+        %     \begin{itemize}
+        %         \item plot error vs T-train for XY
+        %         \item plot predictions
+        %         \item plot error vs T-train for XYZ
+        %     \end{itemize}
+        % Maybe add this is there is time??
             
     \section{Swing damping control systems}
 

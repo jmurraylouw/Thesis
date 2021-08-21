@@ -4,9 +4,9 @@
         \begin{axis}[            
             xlabel = Ts,
             ylabel = $\overline{NMAE}$ \phantom{~},
-            % x unit = \si{\second},
+            x unit = \si{\milli\second},
             y unit = \%,
-            xmin = 2,  xmax = 5,
+            xmin = 5,  xmax = 50,
             ymin = 3,  ymax = 5.5,
             grid = major,
             legend cell align = left,
@@ -15,7 +15,7 @@
             legend style = {font = \scriptsize},
             label style = {font = \scriptsize},
             tick label style = {font = \scriptsize},
-            width = 0.45\columnwidth,
+            width = 0.6\columnwidth,
             height = 0.5\columnwidth,
             % initialize Dark2
             cycle list/Dark2,
@@ -31,17 +31,17 @@
         % \addlegendentry{$l =$~\SI{0.25}{\metre}}
         
         \addplot+[mark = none, style = solid, ultra thick] 
-        table[x = Ts, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
+        table[x expr = {\thisrow{Ts}*1000}, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
         {system_id/csv/NMAE_vs_Ts_SITL_x_vel_noise_l0-5_m0-2.csv_dmd_angle.csv};
         \addlegendentry{$l =$~\SI{0.5}{\metre}}
         
         \addplot+[mark = none, style = solid, ultra thick] 
-        table[x = Ts, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
+        table[x expr = {\thisrow{Ts}*1000}, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
         {system_id/csv/NMAE_vs_Ts_SITL_x_vel_noise_l1_m0-2.csv_dmd_angle.csv};
         \addlegendentry{$l =$~\SI{1}{\metre}}
         
         \addplot+[mark = none, style = solid, ultra thick] 
-        table[x = Ts, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
+        table[x expr = {\thisrow{Ts}*1000}, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
         {system_id/csv/NMAE_vs_Ts_SITL_x_vel_noise_l2_m0-2.csv_dmd_angle.csv};
         \addlegendentry{$l =$~\SI{2}{\metre}}
         
