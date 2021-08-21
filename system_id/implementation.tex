@@ -9,12 +9,12 @@
     Finally, the white-box and black-box techniques will be tested on a dynamic payload 
     which does not satisfy the assumptions of a simple pendulum.
 
-    \subsection{Methodology}
+    \subsection{Methodology} \label{sec:sys_id_methodology}
 
         \paragraph
         A SITL implementation of PX4 \cite{Meier2015} using the Gazebo simulator \cite{Koenig2004} is used to generate data
         for system identification.
-        Testing these techniques with simulation data allow us to investigate a much larger range of system configurations 
+        Testing these techniques with simulation data allows us to investigate a much larger range of system configurations 
         than possible with practical flights.
         The simulation model used in Gazebo was verified in Chapter~\ref{chap:modelling}.
         Using PX4 in SITL also ensures that the controller dynamics in simulation 
@@ -33,7 +33,7 @@
             \item Stop logging data
             \item Split data into separate training and testing periods
             \item Build a model from the training data
-            \item Calculate a error metric for the model from the testing data
+            \item Calculate an error metric for the model from the testing data
         \end{enumerate}
 
         \paragraph
@@ -526,7 +526,7 @@
         % The maximum cable length is selected as $l=~\SI{2}{\metre}$ by intuition 
         % since a cable much longer than this may not be practically useful for a drone delivery flight with the considered quadrotor.
 
-    \subsection{Length of training data}
+    \subsection{Length of training data} \label{sec:sys_id_length_of_data}
     
         \paragraph
         From the plots discussed in previous sections, 

@@ -10,28 +10,89 @@
 
     \section{Data-driven system identification with practical data}
 
+        \paragraph
+        It was shown that the simulation environment 
+        In Chapter~\ref{chap:system_id} it was shown that the data-driven methods 
+        build accurate state prediction models for the considered system.
+        It was also shown in Chapter~\ref{chap:modelling} that the simulation environment is a realistic representation of the practical system.
+        However, there are still differences between simulations and practical flight.
+        Therefore the data-driven algorithms are applied to practical flight data in this chapter 
+        to investigate their performance in a practical implementation.
+
         \FloatBarrier\subsection{Methodology}
-            \begin{itemize}
-                \item Method for generating data
-                \item Plot example of training data
-                \item picture of practical flight single and double
-                \item Discuss difference between SITL and prac
-                \begin{itemize}
-                    \item Noise 
-                    \item wind
-                    \item CoM
-                \end{itemize}
-                \item plot hover of prac vs SITL to show noise and disturbance
-            \end{itemize}
 
             \paragraph
-            In Chapter~\ref{chap:system_id} it was noted that the optimal length of training data 
-            often only included 2 velocity steps responses.
-            This means the models were trained on a very small sample of step sizes 
-            and need to extrapolate the dynamics of other step sizes.
+            The methodology used to generate data with practical flights 
+            follows the same general procedure as specified for simulation data in Section~\ref{sec:sys_id_methodology}:
+            \begin{enumerate}
+                \item Data logging starts when the quadrotor is armed
+                \item Takeoff and hover with the qaudrotor
+                \item Command velocity step setpoints
+                \item Land the quadrotor
+                \item Data logging stops when the quadrotor is disarmed
+                \item Download data log from the quadrotor
+                \item Split data into separate training and testing periods
+                \item Build a model from the training data
+                \item Calculate an error metric for the model from the testing data
+            \end{enumerate}
+
+            \begin{figure}[!htb]
+                \centering
+                \includegraphics[width=0.5\linewidth]{honeybee_with_payload.jpg}
+                \caption{Practical flight with Honeybee and a suspended payload}
+                \label{fig:honeybee_with_payload}
+            \end{figure}
+
+            Figure~\ref{fig:honeybee_with_payload} shows Honeybee in flight with a suspended payload.
+            Numerous flights were performed with different 
+            payload masses, 
+            cable lengths, 
+            wind conditions, 
+            and even with a more complex elongated payload.
+            The system identification methods were then performed on the data resulting from this range of different use cases.
+            The major differences between the simulations and practical flights involve the attachment of the payload and wind disturbances.
+            In simulation, the payload cable is attached to the exact CoM of the quadrotor.
+            However, due to practical constraints, the cable is attached slightly below the CoM of Honeybee.
+            Practical flights are also influenced by wind disturbances, therefore this effect is also investigated in the sections below.
+            In this chapter, wind conditions are referenced by the wind speed recorded by the website, www.yr.no, 
+            for the hour of day of the flight.
+            
+            % \begin{itemize}
+            %     \item Method for generating data
+            %     \item Plot example of training data
+            %     \item picture of practical flight single and double
+            %     \item Discuss difference between SITL and prac
+            %     \begin{itemize}
+            %         \item Noise 
+            %         \item wind
+            %         \item CoM
+            %     \end{itemize}
+            %     \item plot hover of prac vs SITL to show noise and disturbance
+            % \end{itemize}
+
+            % \paragraph
+            % In Chapter~\ref{chap:system_id} it was noted that the optimal length of training data 
+            % often only included 2 velocity steps responses.
+            % This means the models were trained on a very small sample of step sizes 
+            % and need to extrapolate the dynamics of other step sizes.
         
             
         \FloatBarrier\subsection{Length of training data}
+
+            \paragraph
+            As discussed in Section~\ref{sec:sys_id_length_of_data}, 
+            the length of training data used in the model has a large effect on prediction accuracy.
+            The length of training data required for accurate models is largely influenced by the amount of wind disturbance during flight.
+            Figure~\ref{fig:wind_Ttrain} shows prediction error as a function of training data length for different wind conditions.
+
+
+            \input{results/plots/wind_Ttrain.tex}
+            
+            
+            Figure~\ref{fig:havok_vs_dmd_Ttrain_2mps} shows the prediction error of DMD and HAVOK models
+
+            \input{results/plots/havok_vs_dmd_Ttrain_2mps.tex}
+
             plot NMAE vs Ttrain
             \begin{itemize}
                 \item Plot strong wind vs less wind vs no wind
@@ -40,8 +101,7 @@
             \end{itemize}
 
             \input{results/plots/havok_vs_dmd_Ttrain_2mps.tex}
-            \input{results/plots/wind_Ttrain.tex}
-
+            
         \FloatBarrier\subsection{Hyperparameters}
             plot NMAE vs q
 
@@ -72,6 +132,9 @@
             \item Single pendulum: Plot 4 in grid showing good and bad
             \item Double pendulum: Plot 4 in grid showing good and bad
         \end{itemize}
+
+        Predictions drift because of the changing acceleration setpoint vector required.
+        plot hover of prac vs SITL to show noise and disturbance
 
         \FloatBarrier\subsection{Extended dimensions}
         \begin{itemize}
