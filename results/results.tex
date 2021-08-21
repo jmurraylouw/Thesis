@@ -84,13 +84,30 @@
             the length of training data used in the model has a large effect on prediction accuracy.
             The length of training data required for accurate models is largely influenced by the amount of wind disturbance during flight.
             Figure~\ref{fig:wind_Ttrain} shows prediction error as a function of training data length for different wind conditions.
+            Its clear that the prediction error decreases with increasing wind speeds.
+            It appears that for wind speeds lower than \SI{2}{\metre/\second}, 
+            the minimum prediction error is not significantly improved with decreasing wind speeds.
+            This may be because the flight dynamics is not significantly affected at such low wind speeds.
+            
+            \paragraph
+            Wind adds an unmeasured input, also referred to as process noise, to the plant and this is not accounted for in the model.
+            As discussed in Section~\ref{sec:noise}, the constant offset is subtracted from the acceleration setpoint data, 
+            which results in a signal with a zero mean.
+            This accounts for the constant component in the acceleration setpoint signal required to counteract the mean force of the wind.
+            However, the wind speed deviates randomly from the mean speed which results in random process noise in the plant.
 
-
+            % \paragraph
+            % It appears that for higher wind speeds, 
+            % the prediction error does not reach a peak value within the considered range of training data lengths.
+            
+            % This is expected, since the algorithms require longer lengths of training data to  
+            
             \input{results/plots/wind_Ttrain.tex}
             
-            
+            \paragraph
+            HAVOK and DMD perform similarly
             Figure~\ref{fig:havok_vs_dmd_Ttrain_2mps} shows the prediction error of DMD and HAVOK models
-
+            Also plot DMD vs HAVOK for high winds ??
             \input{results/plots/havok_vs_dmd_Ttrain_2mps.tex}
 
             plot NMAE vs Ttrain

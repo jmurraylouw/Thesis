@@ -1,2 +1,0 @@
-stellenbosch_ee_report-figure22.pdf: results/csv/Singular_values_Prac_2021-08-12_03_manual_x_vel_steps_2mps_q.csv_havok_angle_Ttrain_50_q91_p52.csv
-stellenbosch_ee_report-figure22.pdf: results/csv/Singular_values_Prac_2021-08-12_03_manual_x_vel_steps_2mps_q.csv_havok_angle_Ttrain_50_q91_p52_trunc.csv

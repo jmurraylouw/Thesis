@@ -1,0 +1,2 @@
+figures/stellenbosch_ee_report-figure20.pdf: results/csv/NMAE_vs_Ntrain_Prac_2021-08-12_03_manual_x_vel_steps_2mps.csv_dmd_angle.csv
+figures/stellenbosch_ee_report-figure20.pdf: results/csv/NMAE_vs_Ntrain_Prac_2021-08-12_03_manual_x_vel_steps_2mps.csv_havok_angle.csv
