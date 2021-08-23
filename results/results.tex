@@ -3,7 +3,75 @@
 \chapter{Implementation and results}
 \label{chap:results}
 
-    \section{Parameter estimation with practical data}
+    \paragraph
+    \begin{itemize}
+        \item Refer to previous chapters with simulations
+        \item Difference between simulation and practicalities
+        \item This chapter examines the performance of these methods on practical data
+        \item It also investigates whether the models produced by these system identification methods can be used for effective swing damping control.
+        \item Furthermore, the feasibility of practically implementing the proposed control architectures is explored.
+
+    \end{itemize}
+
+    \FloatBarrier\section{Methodology}
+
+        \paragraph
+        The methodology used to generate data with practical flights 
+        follows the same general procedure as specified for simulation data in Section~\ref{sec:sys_id_methodology}:
+        \begin{enumerate}
+            \item Data logging starts when the quadrotor is armed
+            \item Takeoff and hover with the qaudrotor
+            \item Command velocity step setpoints
+            \item Land the quadrotor
+            \item Data logging stops when the quadrotor is disarmed
+            \item Download data log from the quadrotor
+            \item Split data into separate training and testing periods
+            \item Build a model from the training data
+            \item Calculate an error metric for the model from the testing data
+        \end{enumerate}
+
+        \begin{figure}[!htb]
+            \centering
+            \includegraphics[width=0.5\linewidth]{honeybee_with_payload.jpg}
+            \caption{Practical flight with Honeybee and a suspended payload}
+            \label{fig:honeybee_with_payload}
+        \end{figure}
+
+        Figure~\ref{fig:honeybee_with_payload} shows Honeybee in flight with a suspended payload.
+        Numerous flights were performed with different 
+        payload masses, 
+        cable lengths, 
+        wind conditions, 
+        and even with a more complex elongated payload.
+        The system identification methods were then performed on the data resulting from this range of different use cases.
+        The major differences between the simulations and practical flights involve the attachment of the payload and wind disturbances.
+        In simulation, the payload cable is attached to the exact CoM of the quadrotor.
+        However, due to practical constraints, the cable is attached slightly below the CoM of Honeybee.
+        Practical flights are also influenced by wind disturbances, therefore this effect is also investigated in the sections below.
+        In this chapter, wind conditions are referenced by the wind speed recorded by the website, www.yr.no, 
+        for the hour of day of the flight.
+        
+        % \begin{itemize}
+        %     \item Method for generating data
+        %     \item Plot example of training data
+        %     \item picture of practical flight single and double
+        %     \item Discuss difference between SITL and prac
+        %     \begin{itemize}
+        %         \item Noise 
+        %         \item wind
+        %         \item CoM
+        %     \end{itemize}
+        %     \item plot hover of prac vs SITL to show noise and disturbance
+        % \end{itemize}
+
+        % \paragraph
+        % In Chapter~\ref{chap:system_id} it was noted that the optimal length of training data 
+        % often only included 2 velocity steps responses.
+        % This means the models were trained on a very small sample of step sizes 
+        % and need to extrapolate the dynamics of other step sizes.
+        
+    \FloatBarrier\section{Parameter estimation with practical data}
+        
         \subsection{Mass estimation}
 
         \FloatBarrier\subsection{Simple payload cable length estimation}
@@ -11,7 +79,7 @@
         
         \subsection{Complex payload cable length estimation}
 
-    \section{Data-driven system identification with practical data}
+    \FloatBarrier\section{Data-driven system identification with practical data}
 
         \paragraph
         It was shown that the simulation environment 
@@ -22,64 +90,6 @@
         Therefore the data-driven algorithms are applied to practical flight data in this chapter 
         to investigate their performance in a practical implementation.
 
-        \FloatBarrier\subsection{Methodology}
-
-            \paragraph
-            The methodology used to generate data with practical flights 
-            follows the same general procedure as specified for simulation data in Section~\ref{sec:sys_id_methodology}:
-            \begin{enumerate}
-                \item Data logging starts when the quadrotor is armed
-                \item Takeoff and hover with the qaudrotor
-                \item Command velocity step setpoints
-                \item Land the quadrotor
-                \item Data logging stops when the quadrotor is disarmed
-                \item Download data log from the quadrotor
-                \item Split data into separate training and testing periods
-                \item Build a model from the training data
-                \item Calculate an error metric for the model from the testing data
-            \end{enumerate}
-
-            \begin{figure}[!htb]
-                \centering
-                \includegraphics[width=0.5\linewidth]{honeybee_with_payload.jpg}
-                \caption{Practical flight with Honeybee and a suspended payload}
-                \label{fig:honeybee_with_payload}
-            \end{figure}
-
-            Figure~\ref{fig:honeybee_with_payload} shows Honeybee in flight with a suspended payload.
-            Numerous flights were performed with different 
-            payload masses, 
-            cable lengths, 
-            wind conditions, 
-            and even with a more complex elongated payload.
-            The system identification methods were then performed on the data resulting from this range of different use cases.
-            The major differences between the simulations and practical flights involve the attachment of the payload and wind disturbances.
-            In simulation, the payload cable is attached to the exact CoM of the quadrotor.
-            However, due to practical constraints, the cable is attached slightly below the CoM of Honeybee.
-            Practical flights are also influenced by wind disturbances, therefore this effect is also investigated in the sections below.
-            In this chapter, wind conditions are referenced by the wind speed recorded by the website, www.yr.no, 
-            for the hour of day of the flight.
-            
-            % \begin{itemize}
-            %     \item Method for generating data
-            %     \item Plot example of training data
-            %     \item picture of practical flight single and double
-            %     \item Discuss difference between SITL and prac
-            %     \begin{itemize}
-            %         \item Noise 
-            %         \item wind
-            %         \item CoM
-            %     \end{itemize}
-            %     \item plot hover of prac vs SITL to show noise and disturbance
-            % \end{itemize}
-
-            % \paragraph
-            % In Chapter~\ref{chap:system_id} it was noted that the optimal length of training data 
-            % often only included 2 velocity steps responses.
-            % This means the models were trained on a very small sample of step sizes 
-            % and need to extrapolate the dynamics of other step sizes.
-        
-            
         \FloatBarrier\subsection{Length of training data}
 
             \paragraph
