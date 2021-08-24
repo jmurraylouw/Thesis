@@ -91,10 +91,10 @@
         The data-driven technique is not readjusted for an added vehicle mass, 
         since the whole model is estimated instead of specific parameters.
 
-        \FloatBarrier\subsection{Simple payload cable length estimation}
+        \FloatBarrier\subsection{Simple pendulum cable length estimation}
             \input{results/plots/FFT_pos_step_subfigs_prac.tex}
         
-        \subsection{Complex payload cable length estimation}
+        \subsection{Dynamic payload cable length estimation}
 
     \FloatBarrier\section{Data-driven system identification with practical data}
 
@@ -206,6 +206,26 @@
 
         \FloatBarrier\subsection{Dynamic payload} 
 
+            \paragraph
+            As mentioned in Chapter~\ref{chap:system_id}, 
+            one of the disadvantages of the white-box system identification approach
+            is that it relies heavily on a priori modeling assumptions.
+            When a payload is attached that deviates from the white-box modelling assumptions, 
+            the performance of the system identification method decreases.
+            However, the performance of the data-driven methods can handle this deviation
+            because it does not rely on these assumptions.
+
+            \paragraph
+            One of the main assumptions of the white-box model considered in Section~\ref{sec:param_estimation},
+            is that the suspended payload is a point mass.
+            This reduced the considered suspended payload system to a simple pendulum.
+            Figure~\ref{fig:practical_double_pendulum} shows a practical dynamic payload 
+            which deviates significantly from this assumption.
+            It shows a photo of an elongated payload 
+            suspended from Honeybee during a practical flight.
+            The mass distribution causes a relative rotation of the payload with respect to the suspended cable,
+            which significantly affects the flight dynamics.
+
             \begin{figure}[!htb]
                 \centering
                 \includegraphics[width=0.6\linewidth]{practical_double_pendulum_2.jpg}
@@ -213,8 +233,25 @@
                 \label{fig:practical_double_pendulum}
             \end{figure}
 
+            \paragraph
+            Theta prediction.
+
             \input{results/plots/prac_pediction_double_pend_theta_black.tex}
             
+            \paragraph
+            Vel prediction.
+            Note that the prediction is propagated from an initial condition and the given input data only.
+            The model does not use state measurements to readjust after the initial condition is taken.
+            Because the model prediction matches the practical testing data so closely,
+            it is expected that this model can effectively be used for a practical MPC implementation. 
+
+            % As discussed in Chapter~\ref{chap:control_systems}, 
+            % this prediction model can be used in an MPC to optimise the control input to actively damp the payload swing angles.
+            % It was also noted in Chapter~\ref{chap:control_systems} that the accuracy of the model 
+            % has a direct impact on the performance of the controller.
+            % Because the model prediction matches the practical testing data so closely,
+            % it is expected that this model will 
+
             \input{results/plots/prac_pediction_double_pend_vel_black.tex}
             
             \paragraph
@@ -222,11 +259,9 @@
             \begin{itemize}
                 \item Plot theta
                 \item Plot velocity
+                \item Plot theta prediction of white-box model
             \end{itemize}
             
-            Predictions drift because of the changing acceleration setpoint vector required.
-            plot hover of prac vs SITL to show noise and disturbance
-
         % \FloatBarrier\subsection{Extended dimensions}
         %     \begin{itemize}
         %         \item plot error vs T-train for XY
