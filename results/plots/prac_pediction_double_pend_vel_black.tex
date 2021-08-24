@@ -1,0 +1,49 @@
+\begin{figure}[htb]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[            
+            xlabel = Time,
+            ylabel = Payload angle,
+            x unit = \si{\second},
+            y unit = \si{\degree},
+            xmin = 0,   xmax = 20,
+            ymin = -2.5,  ymax = 2.5,
+            grid = major,
+            legend cell align = left,
+            legend pos = north east,
+            grid style = dashed,
+            legend style = {font = \scriptsize},
+            label style = {font = \scriptsize},
+            tick label style = {font = \scriptsize},
+            width = 0.95\columnwidth,
+            height = 0.5\columnwidth,
+            % initialize Dark2
+            cycle list/Dark2,
+            % combine it with 'mark list*':
+            cycle multiindex* list = {
+                Dark2\nextlist
+            }
+        ]
+        
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = time, y = vel, col sep = comma] 
+        {results/csv/step_predictions_Prac_2021-08-23_04_double_pend_m1_0.2_m2_0.1_l1-0.5_l2_0.62_wind-0.5.csv_dmd_201.csv};
+        \addlegendentry{Measured}
+
+        \addplot+[mark = none, style = dashed, ultra thick] 
+        table[x = time, y = vel_hat, col sep = comma] 
+        {results/csv/step_predictions_Prac_2021-08-23_04_double_pend_m1_0.2_m2_0.1_l1-0.5_l2_0.62_wind-0.5.csv_dmd_201.csv};
+        \addlegendentry{DMD prediction}
+
+        % \addplot+[mark = none, style = solid, ultra thick] 
+        % table[x = time, y = theta, col sep = comma] 
+        % {results/csv/step_predictions_Prac_2021-08-23_04_double_pend_m1_0.2_m2_0.1_l1-0.5_l2_0.62_wind-0.5.csv_dmd_201.csv};
+        % \addlegendentry{White-box model}
+
+        \end{axis}
+    \end{tikzpicture} 
+    
+    \caption{Data-driven $V_N$ model predictions of a double pendulum for a North velocity step input
+        ($m_1 =$~\SI{0.2}{\kilo\gram}, $l_1 =$~\SI{0.5}{\meter}, $m_2 =$~\SI{0.1}{\kilo\gram}, $l_2 =$~\SI{0.6}{\meter})}
+    \label{fig:prac_pediction_double_pend_theta_black}
+\end{figure}

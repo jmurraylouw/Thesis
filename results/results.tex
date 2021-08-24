@@ -14,10 +14,16 @@
     \end{itemize}
 
     \FloatBarrier\section{Methodology}
+        
+        \paragraph
+        As discussed in Chapter~\ref{chap:system_id}, the methodology to generate practical data for the parameter estimation techniques involves two different flight stages.
+        Firstly, the quadrotor hovers with the suspended payload to gather hover thrust data to estimate the payload mass.
+        Then the quadrotor is commanded with a position step setpoint 
+        to stimulate the swinging payload system for cable length estimation.
 
         \paragraph
-        The methodology used to generate data with practical flights 
-        follows the same general procedure as specified for simulation data in Section~\ref{sec:sys_id_methodology}:
+        For the data-driven techniques, the methodology used to generate training and testing data from practical flights
+        also follows the same general procedure as specified for simulation data in Section~\ref{sec:sys_id_methodology}:
         \begin{enumerate}
             \item Data logging starts when the quadrotor is armed
             \item Takeoff and hover with the qaudrotor
@@ -203,18 +209,21 @@
             \begin{figure}[!htb]
                 \centering
                 \includegraphics[width=0.6\linewidth]{practical_double_pendulum_2.jpg}
-                \caption{Practical flight with an elongated pendulum attached to Honeybee}
+                \caption{Practical flight with an suspended elongated payload attached to Honeybee}
                 \label{fig:practical_double_pendulum}
             \end{figure}
 
+            \input{results/plots/prac_pediction_double_pend_theta_black.tex}
+            
+            \input{results/plots/prac_pediction_double_pend_vel_black.tex}
+            
             \paragraph
             Double pendulum: 
             \begin{itemize}
-                \item Plot 2 showing good theta
-                \item Plot 2 showing good velocity
+                \item Plot theta
+                \item Plot velocity
             \end{itemize}
-            Photo of practical double pendulum
-
+            
             Predictions drift because of the changing acceleration setpoint vector required.
             plot hover of prac vs SITL to show noise and disturbance
 
