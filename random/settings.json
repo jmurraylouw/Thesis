@@ -1,0 +1,198 @@
+{
+	"workbench.iconTheme": "vscode-icons",
+	"vsicons.dontShowNewVersionMessage": true,
+	"window.zoomLevel": 0,
+	"search.exclude": {
+		"**/aerotenna": true,
+		"**/airmind": true,
+		"**/atlflight": true,
+		"**/av": true,
+		"**/beaglebone": true,
+		"**/bitcraze": true,
+		"**/cuav": true,
+		"**/cubepilot": true,
+		"**/emlid": true,
+		"**/fmu-v2": true,
+		"**/fmu-v3": true,
+		"**/fmu-v4": true,
+		"**/fmu-v4pro": true,
+		"**/fmu-v5x": true,
+		"**/fmu-v6x": true,
+		"**/holybro": true,
+		"**/intel": true,
+		"**/io-v2": true,
+		"**/modalai": true,
+		"**/mro": true,
+		"**/nxp": true,
+		"**/omnibus": true,
+		"**/raspberrypi": true,
+		"**/spracing": true,
+		"**/uvify": true
+	},
+	"latex-workshop.view.pdf.viewer": "browser",
+	"python.experiments.optOutFrom": [
+		"pythonJediLSP"
+	],
+	"latex-workshop.latex.autoBuild.run": "onSave",
+	"cSpell.userWords": [
+		"Hyperparameters",
+		"quadrotor",
+		"setpoint"
+	],
+	"latex-workshop.latex.tools": [
+
+
+		{
+			"name": "latexmk",
+			"command": "latexmk",
+			"args": [
+				"-shell-escape",
+				"-synctex=1",
+				"-interaction=nonstopmode",
+				"-file-line-error",
+				"-pdf",
+				"-outdir=%OUTDIR%",
+				"%DOC%"
+			],
+			"env": {}
+		},
+		{
+			"name": "lualatexmk",
+			"command": "latexmk",
+			"args": [
+				"-shell-escape",
+				"-synctex=1",
+				"-interaction=nonstopmode",
+				"-file-line-error",
+				"-lualatex",
+				"-outdir=%OUTDIR%",
+				"%DOC%"
+			],
+			"env": {}
+		},
+		{
+			"name": "latexmk_rconly",
+			"command": "latexmk",
+			"args": [
+				"%DOC%"
+			],
+			"env": {}
+		},
+		{
+			"name": "pdflatex",
+			"command": "pdflatex",
+			"args": [
+				"-shell-escape",
+				"-synctex=1",
+				"-interaction=nonstopmode",
+				"-file-line-error",
+				"%DOC%"
+			],
+			"env": {}
+		},
+		{
+			"name": "bibtex",
+			"command": "bibtex",
+			"args": [
+				"%DOCFILE%"
+			],
+			"env": {}
+		},
+		{
+			"name": "rnw2tex",
+			"command": "Rscript",
+			"args": [
+				"-e",
+				"knitr::opts_knit$set(concordance = TRUE); knitr::knit('%DOCFILE_EXT%')"
+			],
+			"env": {}
+		},
+		{
+			"name": "jnw2tex",
+			"command": "julia",
+			"args": [
+				"-e",
+				"using Weave; weave(\"%DOC_EXT%\", doctype=\"tex\")"
+			],
+			"env": {}
+		},
+		{
+			"name": "jnw2texmintex",
+			"command": "julia",
+			"args": [
+				"-e",
+				"using Weave; weave(\"%DOC_EXT%\", doctype=\"texminted\")"
+			],
+			"env": {}
+		},
+		{
+			"name": "tectonic",
+			"command": "tectonic",
+			"args": [
+				"--synctex",
+				"--keep-logs",
+				"%DOC%.tex"
+			],
+			"env": {}
+		},
+		{
+            "name": "makeglossaries",
+            "command": "makeglossaries",
+            "args": [
+              "%DOCFILE%"
+            ]
+        }
+	],
+	"latex-workshop.latex.recipes": [
+
+
+		{
+			"name": "pdflatex ➞ bibtex ➞ makeglossaries ➞ pdflatex × 2",
+			"tools": [
+				"pdflatex",
+				"makeglossaries",
+				"bibtex",
+				"pdflatex",
+				"pdflatex"
+			]
+		},
+		{
+			"name": "latexmk 🔃",
+			"tools": [
+				"latexmk"
+			]
+		},
+		{
+			"name": "latexmk (latexmkrc)",
+			"tools": [
+				"latexmk_rconly"
+			]
+		},
+		{
+			"name": "latexmk (lualatex)",
+			"tools": [
+				"lualatexmk"
+			]
+		},
+		{
+			"name": "Compile Rnw files",
+			"tools": [
+				"rnw2tex",
+				"latexmk"
+			]
+		},
+		{
+			"name": "Compile Jnw files",
+			"tools": [
+				"jnw2tex",
+				"latexmk"
+			]
+		},
+		{
+			"name": "tectonic",
+			"tools": [
+				"tectonic"
+			]
+		}
+	]
+}

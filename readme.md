@@ -21,3 +21,9 @@ You can also use alternative small-cap headings by:
   uncommenting the subsequent code block for the alternative headings.
 - (Un)commenting the appropriate line for formatting the title in the
   `frontmatter/title_page.tex` file.
+
+Help
+----
+I used VS Code with the extension Latex-Workshop to write and compile my Thesis.
+My settings.json file is in the folder "random".
+Note the change in latex recipes and tools in order to have the glossary working

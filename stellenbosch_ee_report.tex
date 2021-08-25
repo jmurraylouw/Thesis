@@ -146,8 +146,9 @@
 \newcommand{\willem}[1]{\textcolor{red}{#1}}
 
 % Glossary
-% \usepackage[acronym, nomain, nopostdot, nonumberlist, nogroupskip, toc, automake=false]{glossaries}
-\usepackage[acronym]{glossaries}
+\usepackage[acronym, nomain, nopostdot, nonumberlist, nogroupskip, toc, automake=false]{glossaries}
+% \usepackage[acronym]{glossaries}
+\makeglossaries
 \loadglsentries{glossary.tex}
 
 % Keep figure in section
@@ -166,10 +167,6 @@
 \let\Oldparagraph\paragraph
 \renewcommand{\paragraph}{\Oldparagraph{} \noindent \hspace{5pt}}
 
-% Glossary
-% \usepackage[acronym, nomain, nopostdot, nonumberlist, nogroupskip, toc, automake=false]{glossaries}
-%\loadglsentries{glossary}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
@@ -182,10 +179,11 @@
 % \input{frontmatter/declaration}
 % \input{frontmatter/abstract}
 \tableofcontents
-% \listoffigures
-% \listoftables
-\printglossary[type=\acronymtype]
-% \input{frontmatter/nomenclature}
+\listoffigures
+\listoftables
+\input{frontmatter/symbols}
+\printglossary[type=\acronymtype, title={List of abbreviations}, style=super]
+
 \newpage
 \pagenumbering{arabic}
 
