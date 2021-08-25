@@ -37,7 +37,7 @@
         \end{enumerate}
 
         \paragraph
-        The default PID velocity controller from PX4 is used during these simulation.
+        The default \gls{PID} velocity controller from PX4 is used during these simulation.
         The implemented controller gains are documented in Appendix~\ref{appen:pid_gains}.
         A ROS node is used to read and log the payload angle measurement from Gazebo 
         and a different ROS node is used to send velocity setpoints to PX4 
@@ -99,7 +99,7 @@
 
         % \paragraph
         % As discussed before, the purpose of identifying a data-driven model of the plant dynamics 
-        % is to use it in a MPC controller in the velocity loop, 
+        % is to use it in a \gls{MPC} controller in the velocity loop, 
         % therefore velocity inputs are used in the system identification process.
         % It is a common technique to use a step responses for system identification \cite{Chen2011} because it exposes a 
         % large range of frequency data in the system dynamics.
@@ -112,7 +112,7 @@
     \subsection{Error metric}
 
         \paragraph        
-        It is common practice is to select a model for a MPC based on k-step-ahead prediction errors \cite{Zhao2014}.
+        It is common practice is to select a model for a \gls{MPC} based on k-step-ahead prediction errors \cite{Zhao2014}.
         This is because the model is used to make k-step-ahead predictions during control optimisation.
         When model error is dominated by variance error (caused by disturbances), 
         it may be better to use one-step-prediction error \cite{Zhao2014}.
@@ -156,7 +156,7 @@
         therefore the scale of the MAPE of velocity will significantly different from the MAPE of the payload angle.
         
         \paragraph
-        MRAE is also popular metric for comparing predictions models used with a MPC \cite{Kaiser2018b},
+        MRAE is also popular metric for comparing predictions models used with a \gls{MPC} \cite{Kaiser2018b},
         however, similarly to MAPE, it also results in undefined values for the payload swing angle.
         MASE does not have this problem and can compare predictions of different variables well, 
         because it expresses accuracy as the ratio between the MAE of the model prediction and the MAE of an in-sample
@@ -166,8 +166,8 @@
         Therefore MASE is not a helpful ratio for our use case.
 
         \paragraph
-        NMAE (Normalised Mean Absolute Error) is a scale-free error metric which provides a fair comparison for different variables in our use case.
-        In this work NMAE normalises the MAE of a variable by the range of that variable, 
+        \gls{NMAE} (Normalised Mean Absolute Error) is a scale-free error metric which provides a fair comparison for different variables in our use case.
+        In this work \gls{NMAE} normalises the MAE of a variable by the range of that variable, 
         thereby variables with different ranges or different means can be compared.
         This value is calculated as:
         % \begin{equation}
@@ -198,9 +198,9 @@
         % ITAE integrates the absolute error multiplied by time over time 
         % hence errors that occur later in the prediction are weighted more than those that that occur earlier.
         % MAE was chosen over these metrics 
-        % since it is closer to the loss function of the MPC than IAE or ITAE.
+        % since it is closer to the loss function of the \gls{MPC} than IAE or ITAE.
         % Especially, ITAE achieves the opposite of what is desired because it penalises earlier errors less.
-        % For the MPC it is more important that early prediction errors are small since it will reoptimise later  
+        % For the \gls{MPC} it is more important that early prediction errors are small since it will reoptimise later  
 
         \paragraph
         Other criteria which are more statistically rigorous in model selection 
@@ -212,7 +212,7 @@
         It is generally advantageous to use a parsimonious model, 
         which has a low prediction error but is not overly complex, 
         than a complex model with a slightly lower prediction error.
-        This not only helps to avoid overfitting, but also ensures that the MPC optimisation problem 
+        This not only helps to avoid overfitting, but also ensures that the \gls{MPC} optimisation problem 
         is not too computational expensive for the available hardware.
         However, these scores require the computation of the maximum log likelihood of each model 
         over numerous simulations.
@@ -224,14 +224,14 @@
         % because it provides a good measure of a model prediction 
         % and it is computationally fast enough to perform a wide hyperparameter search.
         % AIC or BIC may be able to identify a slightly better model, 
-        % but when used with the MPC this slight improvement in prediction accuracy 
+        % but when used with the \gls{MPC} this slight improvement in prediction accuracy 
         % will result in a negligible improvement in control performance
 
         \paragraph
         The error metric of one model may change significantly
         different starting conditions or prediction horizons.
         The prediction horizon used for model analysis is selected as \SI{20}{\second}
-        which is at least twice as long as the desired MPC prediction horizon.
+        which is at least twice as long as the desired \gls{MPC} prediction horizon.
         Some models have very accurate transient predictions, but prove to be unstable over a longer time horizon.
         If the prediction horizon is too short, these models may score unreasonably low error metrics.
         Selecting these such a model could result in unstable control at certain control conditions.
@@ -244,9 +244,9 @@
         Different starting conditions also have a large influence on the prediction score of a model.
         Some models may accurately predict transient behaviour, 
         while being extremely bad at steady-state predictions.
-        This would result in an MPC controlling the plant well during the initial step response,
+        This would result in an \gls{MPC} controlling the plant well during the initial step response,
         but becoming unstable during steady-state control.
-        In order to have a MPC that can control the plant during the different stages of a flight, 
+        In order to have a \gls{MPC} that can control the plant during the different stages of a flight, 
         a model needs to be selected with accurate predictions over a range of different control conditions.
         
         \paragraph
@@ -254,10 +254,10 @@
         The resulting testing procedure is to first specify a number of equispaced starting conditions within the testing data.
         The model is then run multiple times for the length of the prediction horizon, 
         stating with different initial conditions each time.
-        The NMAE is determined for each run, 
-        whereafter the average of these scores gives the final NMAE score of the model.
+        The \gls{NMAE} is determined for each run, 
+        whereafter the average of these scores gives the final \gls{NMAE} score of the model.
         In order to balance the variety of testing conditions with the computational time per error metric calculation, 
-        10 was selected as the number of initial conditions used in the final NMAE score. 
+        10 was selected as the number of initial conditions used in the final \gls{NMAE} score. 
         
         % \paragraph
         % Each state error signal is scaled by the reciprocal of the maximum value of that state variable in the training data.
@@ -273,9 +273,9 @@
         
         \paragraph
         As discussed in Section~\ref{sec:dmdc} and \ref{sec:havok} 
-        DMDc and HAVOK models are dependent on two hyperparameters: 
+        \gls{DMDc} and \gls{HAVOK} models are dependent on two hyperparameters: 
         the number of delay-coordinates, $q$, 
-        and the SVD truncation rank, $p$.
+        and the \gls{SVD} truncation rank, $p$.
         For each system identification run with different system parameters or a different length of training data,
         a hyperparameter search is performed to find the combination of hyperparameters 
         that results the lowest prediction error.
@@ -289,10 +289,10 @@
         \input{system_id/plots/MAE_vs_q.tex} 
 
         \paragraph
-        Figure~\ref{fig:NMAE_vs_q} shows the prediction error of DMDc and HAVOK models for different values of $q$.
+        Figure~\ref{fig:NMAE_vs_q} shows the prediction error of \gls{DMDc} and \gls{HAVOK} models for different values of $q$.
         For each value of a $q$, a new model is generated with every $p$ in the considered range 
         and the lowest prediction error is plotted.
-        There is only a slight difference between the results of DMDc and HAVOK.
+        There is only a slight difference between the results of \gls{DMDc} and \gls{HAVOK}.
         As expected, the models with the least number of terms have the highest prediction errors.
         As the number of terms available to the model increases, the error decreases.
         It is clear that there is a sharp decrease in prediction error for $2 < q < 6$, 
@@ -306,13 +306,13 @@
         to capture the plant dynamics and have good accuracy, 
         without being overly complex \cite{Brunton2019b}.
         These models are less prone to overfitting 
-        and also lead to lower computational complexity in the MPC optimisation problem.        
+        and also lead to lower computational complexity in the \gls{MPC} optimisation problem.        
 
         \input{system_id/plots/singular_values.tex}
 
         \paragraph
-        Figure~\ref{fig:singular_values} plots the singular values of the SVD from a HAVOK model in a log scale.
-        The singular values of the SVD can be loosely interpreted as 
+        Figure~\ref{fig:singular_values} plots the singular values of the \gls{SVD} from a \gls{HAVOK} model in a log scale.
+        The singular values of the \gls{SVD} can be loosely interpreted as 
         a measure of significance of the corresponding POD mode to the plant dynamics \cite{Brunton2019d}. 
         That is, modes with higher singular values contain more relevant information about the plant dynamics 
         than modes with lower singular values.
@@ -335,14 +335,14 @@
 
         \paragraph
         The sample time, $T_s$, used for system identification is the sample time of the discrete model, 
-        which determines the sample time of the MPC.
-        Resampling strategies can enable the MPC to run at a different frequency to the discrete model 
+        which determines the sample time of the \gls{MPC}.
+        Resampling strategies can enable the \gls{MPC} to run at a different frequency to the discrete model 
         but this adds unnecessary complexity to the control architecture.
         
         \paragraph
-        The MPC acts in the velocity loop and commands an acceleration setpoint.
-        The default PID velocity controller runs at \SI{50}{\hertz} which corresponds to $T_s =~$\SI{0.02}{\second}.
-        Due to the computational complexity of an MPC, the optimiser will struggle to run at \SI{50}{\hertz} on a companion computer on a quadrotor.
+        The \gls{MPC} acts in the velocity loop and commands an acceleration setpoint.
+        The default \gls{PID} velocity controller runs at \SI{50}{\hertz} which corresponds to $T_s =~$\SI{0.02}{\second}.
+        Due to the computational complexity of an \gls{MPC}, the optimiser will struggle to run at \SI{50}{\hertz} on a companion computer on a quadrotor.
         However, the controller needs to run as fast as possible 
         to have significant time-scale separation from the quadrotor dynamics.
         If the controller runs too slowly, it may result in poor flight performance or unstable control.
@@ -352,7 +352,7 @@
         \input{system_id/plots/MAE_vs_Ts_vs_L.tex}
 
         \paragraph
-        Figure~\ref{fig:MAE_vs_Ts_vs_L} shows the prediction error of different DMD models 
+        Figure~\ref{fig:MAE_vs_Ts_vs_L} shows the prediction error of different \gls{DMD} models 
         generated with a range of different sample times.
         The natural frequency of the payload pendulum is dependant on the cable length 
         and influences the frequency response of the plant.
@@ -370,7 +370,7 @@
         Hence the long term prediction of the models fits the general shape of the dynamics well and results in low errors.
         However, this sample time is too slow for controlling the practical quadrotor.
         $T_s =$~\SI{0.03}{\second} is selected as the sample time for system identification 
-        because it provides a good balance between being fast enough for the quadrotor dynamics and slow enough for a practical MPC implementation.
+        because it provides a good balance between being fast enough for the quadrotor dynamics and slow enough for a practical \gls{MPC} implementation.
 
     \subsection{Choice of payload variable in the state vector}
 
@@ -409,7 +409,7 @@
         \input{system_id/plots/different_state_vectors.tex}
 
         \paragraph
-        Figure~\ref{fig:different_state_vectors} shows the prediction error of HAVOK models using $\dot{\theta}$ or $\theta$ 
+        Figure~\ref{fig:different_state_vectors} shows the prediction error of \gls{HAVOK} models using $\dot{\theta}$ or $\theta$ 
         for a range training data lengths.
         Only for very short lengths of training data, do models using $\dot{\theta}$ outperform those using $\theta$.
         For longer lengths of training data there is a negligible difference in prediction error between the methods.
@@ -449,12 +449,12 @@
         Figure~\ref{fig:acc_sp} shows the North acceleration setpoint for a period of training data.
         Without noise the acceleration setpoint should have a zero mean, 
         however the signal mean shows a constant offset.
-        % This offset may be due to the integrators in the controllers correcting for an CoM imbalance to keep the vehicle steady.
+        % This offset may be due to the integrators in the controllers correcting for an \gls{CoM} imbalance to keep the vehicle steady.
         The is due to a measurement offset in the IMU which causes a offset in the orientation vector 
         and therefore affects the control signals.
         The setpoint mean is calculated from the training data and subtracted from the signal to correct for the offset.
         This results in a input signal with a zero mean.
-        The calculated mean is reapplied to the MPC control signal during implementation
+        The calculated mean is reapplied to the \gls{MPC} control signal during implementation
         to readjust for the required offset.
 
         % \paragraph
@@ -468,7 +468,7 @@
         
         \input{system_id/plots/noise_vs_no_noise.tex}
 
-        Figure~\ref{fig:noise_vs_no_noise} compares the prediction errors of HAVOK models generated from data with or without noise.
+        Figure~\ref{fig:noise_vs_no_noise} compares the prediction errors of \gls{HAVOK} models generated from data with or without noise.
         The plot shows that when using short lengths of training data, 
         the prediction errors are smaller for model generated with noiseless signals.
         However, it appears that the prediction errors are almost equal with longer lengths of training data.
@@ -481,8 +481,8 @@
 
         \input{system_id/plots/havok_vs_dmd_noise.tex}
 
-        Figure~\ref{fig:havok_vs_dmd_noise} compares the performance of HAVOK and DMDc model when using noisy data.
-        The prediction error curves of the two methods are very simlar, with HAVOK producing slightly lower prediction errors than DMDc.
+        Figure~\ref{fig:havok_vs_dmd_noise} compares the performance of \gls{HAVOK} and \gls{DMDc} model when using noisy data.
+        The prediction error curves of the two methods are very simlar, with \gls{HAVOK} producing slightly lower prediction errors than \gls{DMDc}.
         However, this difference in error may be so small that it has a negligible effect on control.  
 
     \subsection{System parameters} \label{sec:system_params}
@@ -498,9 +498,9 @@
         $
             0.5 \leq l \leq \SI{2}{\metre} .
         $
-        Figure~\ref{fig:system_param_subfigs} shows the prediction error of HAVOK models 
+        Figure~\ref{fig:system_param_subfigs} shows the prediction error of \gls{HAVOK} models 
         build from simulations with various values of $m_p$ and $l$.
-        The plots are not shown for DMDc models because they are so similar to the HAVOK results.
+        The plots are not shown for \gls{DMDc} models because they are so similar to the \gls{HAVOK} results.
 
         \input{system_id/plots/system_param_subfigs.tex}
 
@@ -564,7 +564,7 @@
         It should be noted that the plot for $l =$~\SI{0.5}{\metre} in Figure~\ref{fig:different_lengths}
         does not follow the `double-descent' trend.
         This may be because the short cable length corresponds to large swing angles and a high natural frequency.
-        The onboard PID controllers do not damp these oscillations as quickly 
+        The onboard \gls{PID} controllers do not damp these oscillations as quickly 
         as the smaller angle and lower frequency oscillations of longer cables.
         Hence there is not enough information exposed in the first few step responses of the training data and
         the algorithm needs more step responses to accurately capture the steady-state behaviour of the plant.
@@ -583,13 +583,13 @@
         In Section~\ref{sec:param_estimation} it was shown that the white-box system identification method
         perform well for the suspended payload use case.
         It was also shown in \cite{Slabber2020} and \cite{Erasmus2020} that this method can be used 
-        in conjunction with LQR control to minimize swing angles of an unknown payload.
+        in conjunction with \gls{LQR} control to minimize swing angles of an unknown payload.
         However, many payloads do not satisfy the assumptions made in for the a priori model
         which is detrimental to performance of white-box method.
         For example, for an elongated payload attached to the cable the point mass assumption does not hold.
-        The CoM of the payload is well below the attachment point of the cable, 
+        The \gls{CoM} of the payload is well below the attachment point of the cable, 
         which creates a double pendulum model that differs significantly from a simple pendulum.
-        Such a payload is better represented in 2D by the double pendulum modelled in Figure~\ref{fig:double_pend}, 
+        Such a payload is better represented in \gls{2D} by the double pendulum modelled in Figure~\ref{fig:double_pend}, 
         than the model defined in Figure~\ref{fig:floating_pend}.
 
         \begin{figure}[htb]
@@ -692,7 +692,7 @@
         The double pendulum plant involves a hidden state variable, 
         because the unmeasured angle of the second pendulum 
         is required to fully describe the state of the system.
-        However, the DMDc and HAVOK models are still able to approximate the dynamics quite accurately 
+        However, the \gls{DMDc} and \gls{HAVOK} models are still able to approximate the dynamics quite accurately 
         without measuring this state variable.
         This is due to the extent of the delay embedding of the models \cite{Kamb2020}.
         Figure~\ref{fig:MAE_vs_q_double_pend} shows the prediction error 
@@ -701,8 +701,8 @@
         than for a single pendulum showed in Figure~\ref{fig:NMAE_vs_q}.
         This is because the dynamics are more complex 
         and model needs a lot more parameters to account for the hidden state variable.
-        % Also note that HAVOK seems to mostly produces slightly lower errors for low values of $q$,
-        % but DMDc and HAVOK produce very similar
+        % Also note that \gls{HAVOK} seems to mostly produces slightly lower errors for low values of $q$,
+        % but \gls{DMDc} and \gls{HAVOK} produce very similar
                 
         \input{system_id/plots/MAE_vs_q_double_pend}
 
@@ -736,7 +736,7 @@
         % However, comparing these methods is a non-trivial task
         % because they result in different types of models which are used in different types of controllers.
         % The white-box system identification technique generates a continuous-time, state space model 
-        % which is used in an LQR controller. 
+        % which is used in an \gls{LQR} controller. 
         % This is in the form:
         % \begin{equation}
         %     \dot{x} = A x + B u
@@ -748,8 +748,8 @@
         % \begin{equation}
         %     x_{k+1} = A x_k + B u_k ,
         % \end{equation} 
-        % which is used in a MPC.
-        % The k-step-ahead prediction accuracy of this model is important for the performance of the MPC.
+        % which is used in a \gls{MPC}.
+        % The k-step-ahead prediction accuracy of this model is important for the performance of the \gls{MPC}.
         % Therefore comparing the performance of the controllers which use these models 
         % is a better approach than comparing the model accuracy.
         % This will be investigated in Chapter~\ref{chap:control_systems}.

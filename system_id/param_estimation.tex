@@ -3,13 +3,13 @@
     \paragraph
     The purpose of parameter estimation is to determine unknown values 
     required by a predetermined, white-box model.
-    The identified model is used to design a LQR controller and
+    The identified model is used to design a \gls{LQR} controller and
     therefore needs to be in a linear, continuos-time, state-space form.
     This model was derived and linearised a priori in Section~\ref{sec:linear_model}.
     The unknown parameters in the model include the payload mass, $m_p$ and the cable length, $l$.
     Two separate methods are used to estimate each of these parameters.
     This method was used by \cite{Erasmus2020} and \cite{Slabber2020} 
-    to design a LQR controller and implement swing damping control 
+    to design a \gls{LQR} controller and implement swing damping control 
     of a quadrotor with an unknown suspended payload.
     
 \subsection{Payload mass estimation}
@@ -71,7 +71,7 @@
     The estimated length for this simulation is \SI{0.953}{\metre}.
     The actual cable length is \SI{1}{\metre}, therefore this estimation has an error of 4.7\%.
     As documented \cite{Erasmus2020} and \cite{Slabber2020}, an error of this magnitude is acceptably small
-    and still results in effective control with a LQR.
+    and still results in effective control with a \gls{LQR}.
     It is also shown by \cite{Erasmus2020} and \cite{Slabber2020} that this estimation method 
     is effective for a range of different payloads.
 

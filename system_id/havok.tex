@@ -2,13 +2,13 @@
 \label{sec:havok}
     
     \paragraph
-    HAVOK is a data-driven, regression technique that provides a connection 
-    between DMD and Koopman operator theory \cite{Brunton2017a, Champion2019}. 
-    We have adapted the standard HAVOK algorithm slightly to account for the effect of control and to extract a discrete, linear model that approximates the behaviour of a controlled dynamical system.
-    In this section, a brief overview is provided for this implementation and adaptation of HAVOK.
+    \gls{HAVOK} is a data-driven, regression technique that provides a connection 
+    between \gls{DMD} and Koopman operator theory \cite{Brunton2017a, Champion2019}. 
+    We have adapted the standard \gls{HAVOK} algorithm slightly to account for the effect of control and to extract a discrete, linear model that approximates the behaviour of a controlled dynamical system.
+    In this section, a brief overview is provided for this implementation and adaptation of \gls{HAVOK}.
     % 
     \paragraph
-    A defining characteristic of HAVOK is that it uses multiple delay-coordinates (i.e. $\bm{x}_{k-1}, \bm{x}_{k-2}$, etc.) 
+    A defining characteristic of \gls{HAVOK} is that it uses multiple delay-coordinates (i.e. $\bm{x}_{k-1}, \bm{x}_{k-2}$, etc.) 
     in the system identification process.
     To fit this into the standard state-space format, an extended state vector is defined as:
     \begin{equation}
@@ -23,11 +23,11 @@
     \end{equation}
     where \( \Tilde{\bm{A}} \in \R^{(q \cdot n_x) \times (q \cdot n_x)} \) is the system matrix, 
     and \( \Tilde{\bm{B}} \in \R^{(q \cdot n_x) \times n_u} \) is the input matrix. 
-    Here, $\Tilde{\phantom{a}}$ is used to differentiate these matrices from $\bm{A}$ and $\bm{B}$ used in DMDc.
+    Here, $\Tilde{\phantom{a}}$ is used to differentiate these matrices from $\bm{A}$ and $\bm{B}$ used in \gls{DMDc}.
     % 
     \paragraph
-    The original HAVOK algorithm, developed by \cite{Brunton2017}, constructs a Hankel matrix from output variables only. 
-    In this work, the standard HAVOK algorithm has been adapted to incorporate the effect of control.
+    The original \gls{HAVOK} algorithm, developed by \cite{Brunton2017}, constructs a Hankel matrix from output variables only. 
+    In this work, the standard \gls{HAVOK} algorithm has been adapted to incorporate the effect of control.
     An extended Hankel matrix, $\bm{\Pi}$, is created by appending a matrix of inputs to a Hankel matrix of measurements:
     \begin{equation} \label{eq:pi_hankel}
         \bm{\Pi} = \phantom{.} \left [
@@ -38,12 +38,12 @@
         \right ] ,
     \end{equation}
     where $w$ is the number of columns in $\bm{\Pi}$.
-    A truncated SVD of this Hankel matrix results in following approximation:
+    A truncated \gls{SVD} of this Hankel matrix results in following approximation:
     \begin{equation} \label{eq:havok_svd_tilde}
         \bm{\Pi} \approx \Tilde{\bm{U}} \Tilde{\bm{\Sigma}} \Tilde{\bm{V}}^T ,
     \end{equation}
     where $\Tilde{\phantom{a}}$ represents rank-$p$ truncation.
-    It is important to note that the model extracted by HAVOK depends on the choice of hyperparameters ($p$ and $q$),
+    It is important to note that the model extracted by \gls{HAVOK} depends on the choice of hyperparameters ($p$ and $q$),
     and the number of training samples ($N_{train} = w + q -1$).
     
     \paragraph
@@ -60,7 +60,7 @@
     \begin{equation} \label{eq:v_ss}
         \bm{v}_{k+1} = \bm{\Lambda} \bm{v}_k .
     \end{equation}
-    HAVOK determines the best fit linear operator $\bm{\Lambda}$ that maps the pseudo-state $\bm{v}_k$ to $\bm{v}_{k+1}$.
+    \gls{HAVOK} determines the best fit linear operator $\bm{\Lambda}$ that maps the pseudo-state $\bm{v}_k$ to $\bm{v}_{k+1}$.
     In order to setup an over-determined equality for (\ref{eq:v_ss}), $\Tilde{\bm{V}}^T$ is divided into two matrices:
     \begin{align} \label{eq:v1v2}
         \bm{V}_1 &= \left [
@@ -133,18 +133,18 @@
     corresponds to a entry of 1 in the $\Tilde{\bm{A}}$ matrix.
     This is fixed by the model format and is not a function of the system dynamics.
     Due to the least-squares fitting and the coordinate transformation of the algorithm, 
-    HAVOK does not produce these exact values in $\Tilde{\bm{A}}$ and $\Tilde{\bm{B}}$. 
+    \gls{HAVOK} does not produce these exact values in $\Tilde{\bm{A}}$ and $\Tilde{\bm{B}}$. 
     By forcing each of these matrix entries to 1 or 0, the state-prediction performance of the model is improved.
         
     \begin{figure}[htb]
         \includegraphics[scale = 0.75]{havok_force_entries.png}
         \centering
-        \caption{Illustration of forcing the known values in HAVOK matrices}
+        \caption{Illustration of forcing the known values in \gls{HAVOK} matrices}
         \label{fig:havok_force_entries}
     \end{figure}
 
     \paragraph
-    Finally, the improved $\Tilde{\bm{A}}$ and $\Tilde{\bm{B}}$ are inserted into (\ref{eq:havok_state_space}) to render the HAVOK model.
+    Finally, the improved $\Tilde{\bm{A}}$ and $\Tilde{\bm{B}}$ are inserted into (\ref{eq:havok_state_space}) to render the \gls{HAVOK} model.
     
 
 

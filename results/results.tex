@@ -52,8 +52,8 @@
         and even with a more complex elongated payload.
         The system identification methods were then performed on the data resulting from this range of different use cases.
         The major differences between the simulations and practical flights involve the attachment of the payload and wind disturbances.
-        In simulation, the payload cable is attached to the exact CoM of the quadrotor.
-        However, due to practical constraints, the cable is attached slightly below the CoM of Honeybee.
+        In simulation, the payload cable is attached to the exact \gls{CoM} of the quadrotor.
+        However, due to practical constraints, the cable is attached slightly below the \gls{CoM} of Honeybee.
         Practical flights are also influenced by wind disturbances, therefore this effect is also investigated in the sections below.
         In this chapter, wind conditions are referenced by the wind speed recorded by the website, www.yr.no, 
         for the hour of day of the flight.
@@ -66,7 +66,7 @@
         %     \begin{itemize}
         %         \item Noise 
         %         \item wind
-        %         \item CoM
+        %         \item \gls{CoM}
         %     \end{itemize}
         %     \item plot hover of prac vs SITL to show noise and disturbance
         % \end{itemize}
@@ -135,18 +135,18 @@
             \input{results/plots/wind_Ttrain.tex}
             
             \paragraph
-            HAVOK and DMD perform similarly
-            Figure~\ref{fig:havok_vs_dmd_Ttrain_2mps} shows the prediction error of DMD and HAVOK models
+            \gls{HAVOK} and \gls{DMD} perform similarly
+            Figure~\ref{fig:havok_vs_dmd_Ttrain_2mps} shows the prediction error of \gls{DMD} and \gls{HAVOK} models
             
             \input{results/plots/havok_vs_dmd_Ttrain_2mps.tex}
 
-            Also plot DMD vs HAVOK for high winds ??
+            Also plot \gls{DMD} vs \gls{HAVOK} for high winds ??
             
 
-            plot NMAE vs Ttrain
+            plot \gls{NMAE} vs Ttrain
             \begin{itemize}
                 \item Plot strong wind vs less wind vs no wind
-                \item HAVOK vs DMD
+                \item \gls{HAVOK} vs \gls{DMD}
                 \item Plot single pend vs double pend
             \end{itemize}
             
@@ -203,7 +203,7 @@
             This method can easily be extended to damp the swing angle in both the $x$ and $y$ directions.
             Show new control vector and new state vector.
             Talk about steps given.
-            Figure~\ref{fig:xy_predictions} DMD predictions
+            Figure~\ref{fig:xy_predictions} \gls{DMD} predictions
 
             \begin{figure}
                 \captionsetup[subfigure]{justification=centering}
@@ -257,10 +257,10 @@
             Note that the prediction is propagated from an initial condition and the given input data only.
             The model does not use state measurements to readjust after the initial condition is taken.
             Because the model prediction matches the practical testing data so closely,
-            it is expected that this model can effectively be used for a practical MPC implementation. 
+            it is expected that this model can effectively be used for a practical \gls{MPC} implementation. 
 
             % As discussed in Chapter~\ref{chap:control_systems}, 
-            % this prediction model can be used in an MPC to optimise the control input to actively damp the payload swing angles.
+            % this prediction model can be used in an \gls{MPC} to optimise the control input to actively damp the payload swing angles.
             % It was also noted in Chapter~\ref{chap:control_systems} that the accuracy of the model 
             % has a direct impact on the performance of the controller.
             % Because the model prediction matches the practical testing data so closely,
@@ -295,7 +295,7 @@
         Emphasise that control is now applied in full SITL simulation.
 
         \paragraph
-        MATLAB is used to generate a MPC ROS node 
+        MATLAB is used to generate a \gls{MPC} ROS node 
         This ROS node receives state feedback from the Gazebo simulator,
         computes the optimal control action,
         and send the setpoint to PX4 through the package 'mavros'.
@@ -324,9 +324,9 @@
 
             \begin{itemize}
                 \item subplot prediction of data driven model. subplot prediction of white-box model
-                \item plot MPC vs LQR v PID (no wind) step = 1 m/s
-                \item plot MPC vs LQR v PID (no wind) step = 2 m/s
-                \item plot DMDc vs HAVOK (DMD - Havok)
+                \item plot \gls{MPC} vs \gls{LQR} v \gls{PID} (no wind) step = 1 m/s
+                \item plot \gls{MPC} vs \gls{LQR} v \gls{PID} (no wind) step = 2 m/s
+                \item plot \gls{DMDc} vs \gls{HAVOK} (\gls{DMD} - Havok)
                 \item plot with wind disturbacne control
             \end{itemize}
 
@@ -334,8 +334,8 @@
 
             \begin{itemize}
                 \item subplot prediction of data driven model. subplot prediction of white-box model
-                \item plot MPC vs LQR v PID (no wind)
-                \item plot DMDc vs HAVOK (DMD - Havok)
+                \item plot \gls{MPC} vs \gls{LQR} v \gls{PID} (no wind)
+                \item plot \gls{DMDc} vs \gls{HAVOK} (\gls{DMD} - Havok)
             \end{itemize}
 
     \section{HIL}

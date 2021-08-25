@@ -2,18 +2,18 @@
  
     % Gebruik dalk hierdie par erens??
     % \paragraph
-    % As discussed in \ref{sec:linear_model}, the payload is attached near the CoM of the vehicle 
+    % As discussed in \ref{sec:linear_model}, the payload is attached near the \gls{CoM} of the vehicle 
     % and has a minimal effect on the attitude dynamics.
     % The swing damping controllers are therefore applied in the translational velocity loop
     % and the original attitude controls are used for inner loop controllers.
     % Therefore the attitude state variables of the quadrtotor are excluded from the system identification model.
 
-    % The model identified by DMDc or HAVOK will be used to design a longitudinal velocity controller.
+    % The model identified by \gls{DMDc} or \gls{HAVOK} will be used to design a longitudinal velocity controller.
     % As shown in \ref{fig:system_id_plant}, the plant considered for system identification includes the dynamics of the inner loop, attitude controllers.
     % The swing damping controllers which will utilise the identified model act only in the translational velocity loop.
     % Because of the large time-scale separation between the inner and outer loop controllers, 
     % the attitude states have a negilable effect on the plant dynamics seen by the velocity controller.
-    % As discussed in Section~\ref{sec:linear_model}, the payload minimally effects the quadrotor attitude because it is attached near the CoM of the vehicle.
+    % As discussed in Section~\ref{sec:linear_model}, the payload minimally effects the quadrotor attitude because it is attached near the \gls{CoM} of the vehicle.
     % Therefore the attitude states are excluded from the system identification model.
 
     \paragraph
@@ -41,7 +41,7 @@
     During pure longitudinal velocity setpoints the quadrotor experiences negligible altitude changes due the swinging payload.
     This is due to speed of the altitude controllers and the weak coupling between the payload angle and the altitude dynamics.
     The plant seen by the system identification process therefore mimics the common pendulum-on-a-cart model.
-    A schematic of this 2D plant is shown in Figure \ref{fig:floating_pend}.
+    A schematic of this \gls{2D} plant is shown in Figure \ref{fig:floating_pend}.
     In the following sections, simulations of the full quadrotor and payload system will be performed
     and different methods will be applied to identify different models of this plant.
 
