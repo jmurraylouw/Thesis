@@ -4,7 +4,8 @@
 \usepackage[left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
 
 % Font and text
-\usepackage[british,afrikaans]{babel}
+% \usepackage[british,afrikaans]{babel}
+\usepackage[british]{babel}
 \usepackage{microtype}
 \usepackage{setspace}
 \usepackage{lmodern}
@@ -12,6 +13,7 @@
 \newcommand{\myemph}[1]{{\sffamily\bfseries#1}}
 \sloppy
 \onehalfspacing
+\selectlanguage{british}
 
 % Headings
 \usepackage[raggedright,sf,bf]{titlesec}
@@ -142,6 +144,10 @@
 \usepackage{xcolor}
 \newcommand{\murray}[1]{\textcolor{blue}{#1}}
 \newcommand{\willem}[1]{\textcolor{red}{#1}}
+
+% Glossary
+\usepackage[acronym, nomain, nopostdot, nonumberlist, nogroupskip, toc, automake=false]{glossaries}
+\loadglsentries{frontmatter/glossary.tex}
 
 % Keep figure in section
 \usepackage{placeins}
