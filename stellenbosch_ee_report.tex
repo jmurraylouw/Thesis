@@ -179,10 +179,15 @@
 % \input{frontmatter/declaration}
 % \input{frontmatter/abstract}
 \tableofcontents
+
+\renewcommand{\listfigurename}{List of figures}
 \listoffigures
+
+\renewcommand{\listtablename}{List of tables}
 \listoftables
+
 \input{frontmatter/symbols}
-\printglossary[type=\acronymtype, title={List of abbreviations}, style=super]
+\printglossary[type=\acronymtype, title={Abbreviations}, style=super]
 
 \newpage
 \pagenumbering{arabic}

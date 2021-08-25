@@ -81,20 +81,26 @@
         
         \subsection{Mass estimation}
 
-        As discussed in Chapter~\ref{chap:system_id}, for this method to work, the mass of the quadrotor needs to be known.
-        If a heavier battery or an extra accessory is added to the vehicle, 
-        the new vehicle mass will first have to be estimated in a separate flight, before the payload can be attached.
-        This is one of the disadvantages of the white-box modelling with parameter estimation based techniques.
-        The method is designed with a specific system in mind 
-        and needs to be adjusted and redesigned for every deviation from the the pre-assumed configuration.
-        In contrast, the data-driven technique is a general solution which works for a much wider range of system configurations.
-        The data-driven technique is not readjusted for an added vehicle mass, 
-        since the whole model is estimated instead of specific parameters.
+            As discussed in Chapter~\ref{chap:system_id}, for this method to work, the mass of the quadrotor needs to be known.
+            If a heavier battery or an extra accessory is added to the vehicle, 
+            the new vehicle mass will first have to be estimated in a separate flight, before the payload can be attached.
+            This is one of the disadvantages of the white-box modelling with parameter estimation based techniques.
+            The method is designed with a specific system in mind 
+            and needs to be adjusted and redesigned for every deviation from the the pre-assumed configuration.
+            In contrast, the data-driven technique is a general solution which works for a much wider range of system configurations.
+            The data-driven technique is not readjusted for an added vehicle mass, 
+            since the whole model is estimated instead of specific parameters.
 
-        \FloatBarrier\subsection{Simple pendulum cable length estimation}
-            \input{results/plots/FFT_pos_step_subfigs_prac.tex}
+        \FloatBarrier\subsection{Simple payload cable length estimation}
+            
+            \paragraph
+
+                
+            \input{results/plots/cable_length_vs_train_time.tex}
+
+            \input{results/plots/cable_length_vs_train_time_wind.tex}
         
-        \subsection{Dynamic payload cable length estimation}
+        \FloatBarrier\subsection{Dynamic payload cable length estimation}
 
     \FloatBarrier\section{Data-driven system identification with practical data}
 

@@ -1,0 +1,49 @@
+\begin{figure}[htb]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[            
+            xlabel = Length of training data,
+            ylabel = Estimated cable length,
+            x unit = \si{\second},
+            y unit = \%,
+            xmin = 0,       xmax = 15,
+            ymin = -100,     ymax = 300,
+            grid = major,
+            legend cell align = left,
+            legend pos = north east,
+            grid style = dashed,
+            legend style = {font = \scriptsize},
+            label style = {font = \scriptsize},
+            tick label style = {font = \scriptsize},
+            width = 0.95\columnwidth,
+            height = 0.5\columnwidth,
+            % initialize Dark2
+            cycle list/Dark2,
+            % combine it with 'mark list*':
+            cycle multiindex* list = {
+                Dark2\nextlist
+            }
+        ]
+        
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = train_time, y = percentage_error, col sep = comma] 
+        {results/csv/cable_length_vs_train_time_Prac_2021-08-20_03_l-1_mp-0.2_wind-0.5.csv_10_1.csv};
+        \addlegendentry{wind speed $\approx~$\SI{0.5}{\metre/\second}}
+
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = train_time, y = percentage_error, col sep = comma] 
+        {results/csv/cable_length_vs_train_time_Prac_2021-08-12_03_manual_x_vel_steps_2mps.csv_10_1.csv};
+        \addlegendentry{wind speed $\approx~$\SI{2}{\metre/\second}}
+
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = train_time, y = percentage_error, col sep = comma] 
+        {results/csv/cable_length_vs_train_time_Prac_2021-08-12_02_manual_x_vel_steps_4mps.csv_10_1.csv};
+        \addlegendentry{wind speed $\approx~$\SI{4}{\metre/\second}}
+
+        \end{axis}
+    \end{tikzpicture} 
+    
+    \caption{Influence of wind on cable length estimation error as a function of length of training data
+        ($m_p =$~\SI{0.2}{\kilo\gram}, $l =$~\SI{1}{\meter})}
+    \label{fig:cable_length_vs_train_time_wind}
+\end{figure}
