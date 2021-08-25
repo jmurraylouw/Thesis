@@ -210,20 +210,20 @@
             This method can easily be extended to damp the swing angle in both the $x$ and $y$ directions.
             Show new control vector and new state vector.
             Talk about steps given.
-            Figure~\ref{fig:} DMD predictions
+            Figure~\ref{fig:xy_predictions} DMD predictions
 
-            \input{results/plots/prac_pediction_xy_theta_x.tex}
-            \input{results/plots/prac_pediction_xy_theta_y.tex}
-            \input{results/plots/prac_pediction_xy_vel_x.tex}
-            \input{results/plots/prac_pediction_xy_vel_y.tex}
+            \begin{figure}
+                \captionsetup[subfigure]{justification=centering}
+                \centering
+                \input{results/plots/prac_pediction_xy_theta_x.tex} % subfigure
+                \input{results/plots/prac_pediction_xy_theta_y.tex} % subfigure
+                \input{results/plots/prac_pediction_xy_vel_x.tex} % subfigure
+                \input{results/plots/prac_pediction_xy_vel_y.tex} % subfigure
+                \caption{Data-driven predictions of practical data for a model with both North and East axis dynamics}
+                \label{fig:xy_predictions}  
+            \end{figure}
 
-            \begin{itemize}
-                \item plot error vs q
-                \item convert to subfigs
-                \item correct y label
-                \item dashed prediction
-            \end{itemize}
-        %     Maybe add this is there is time??
+        %     Maybe add plot error vs q if there is time??
 
         \FloatBarrier\subsection{Dynamic payload} 
 
@@ -291,7 +291,7 @@
         %     \end{itemize}
         %     Maybe add this is there is time??
             
-    \section{Swing damping control systems}
+    \FloatBarrier\section{Swing damping control systems}
 
         \paragraph
         After the system identification phase, active swing damping control can be applied

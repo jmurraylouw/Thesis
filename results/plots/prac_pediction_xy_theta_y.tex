@@ -1,13 +1,13 @@
-\begin{figure}[htb]
+\begin{subfigure}{\columnwidth}
     \centering
     \begin{tikzpicture}
         \begin{axis}[            
             xlabel = Time,
-            ylabel = Payload angle,
+            ylabel = East axis payload angle,
             x unit = \si{\second},
             y unit = \si{\degree},
             xmin = 0,   xmax = 20,
-            ymin = -20,  ymax = 25,
+            ymin = -20,  ymax = 20,
             grid = major,
             legend cell align = left,
             legend pos = north east,
@@ -16,7 +16,7 @@
             label style = {font = \scriptsize},
             tick label style = {font = \scriptsize},
             width = 0.95\columnwidth,
-            height = 0.5\columnwidth,
+            height = 0.3\columnwidth,
             % initialize Dark2
             cycle list/Dark2,
             % combine it with 'mark list*':
@@ -28,17 +28,12 @@
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = time, y = theta_y, col sep = comma] 
         {results/csv/step_predictions_Prac_2021-08-23_02_l-0.5_mp-0.2_wind-0.5_XY_steps.csv_dmd_746.csv};
-        \addlegendentry{Measured}
-
-        \addplot+[mark = none, style = solid, ultra thick] 
+        
+        \addplot+[mark = none, style = dashed, ultra thick] 
         table[x = time, y = theta_y_hat, col sep = comma] 
         {results/csv/step_predictions_Prac_2021-08-23_02_l-0.5_mp-0.2_wind-0.5_XY_steps.csv_dmd_746.csv};
-        \addlegendentry{DMD prediction}
-
+        
         \end{axis}
     \end{tikzpicture} 
     
-    \caption{Practical flight data and model predictions for the North and East directions
-        ($m_p =$~\SI{0.2}{\kilo\gram}, $l =$~\SI{0.5}{\meter})}
-    \label{fig:prac_pediction_xy_theta_y}
-\end{figure}
+\end{subfigure}
