@@ -15,11 +15,11 @@
 \subsection{Payload mass estimation}
 
     \paragraph
-    RLS is used by \cite{Erasmus2020} and \cite{Slabber2020} to estimate the payload mass.
+    \gls{RLS} is used by \cite{Erasmus2020} and \cite{Slabber2020} to estimate the payload mass.
     It is assumed that the quadrotor mass is known before flight, 
     therefore the payload mass can be estimated from the additional trust required during hover.
     In both \cite{Erasmus2020} and \cite{Slabber2020} it is demonstrated 
-    that RLS is very accurate for a system nearly identical to the one considered in this work.
+    that \gls{RLS} is very accurate for a system nearly identical to the one considered in this work.
     To compare other aspects of the white-box and black-box techniques with more clarity, 
     it will therefore be assumed that the method estimates $m_p$ with perfect accuracy.
     This isolates any inaccuracies in the white-box model to 
@@ -47,9 +47,9 @@
         \omega_n = \sqrt{ \frac{g}{l} \cdot \frac{m_q + m_p}{m_q}} .
     \end{equation}
     The cable length can clearly be calculated from (\ref{eq:nat_freq}) if the other parameters are known.
-    The natural frequency is measured by performing a FFT on the payload swing angle response 
+    The natural frequency is measured by performing a \gls{FFT} on the payload swing angle response 
     after a position step by the quadrotor.
-    The dominant frequency identified by the FFT during free swing is an approximate measurement
+    The dominant frequency identified by the \gls{FFT} during free swing is an approximate measurement
     of the natural frequency of the payload.
     Note that the measured frequency actually corresponds to the damped natural frequency, 
     but it is assumed that damping during free swing is negligible.
@@ -59,10 +59,10 @@
     \paragraph
     Figure~\ref{fig:pos_step_single_pend} shows the payload swing angle response 
     to a position step setpoint.
-    The first few seconds of the step response are excluded from the FFT 
+    The first few seconds of the step response are excluded from the \gls{FFT} 
     to minimise the effect of the transient response and the quadrotor controllers 
     on the natural frequency measurement.
-    Figure~\ref{fig:FFT_pos_step} shows the resulting single-sided amplitude spectrum of the FFT of this data.
+    Figure~\ref{fig:FFT_pos_step} shows the resulting single-sided amplitude spectrum of the \gls{FFT} of this data.
     
     \paragraph
     The dominant frequency is clearly identified by the peak at \SI{0.520}{\radian/\second}.

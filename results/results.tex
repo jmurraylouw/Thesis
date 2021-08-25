@@ -62,13 +62,13 @@
         %     \item Method for generating data
         %     \item Plot example of training data
         %     \item picture of practical flight single and double
-        %     \item Discuss difference between SITL and prac
+        %     \item Discuss difference between \gls{SITL} and prac
         %     \begin{itemize}
         %         \item Noise 
         %         \item wind
         %         \item \gls{CoM}
         %     \end{itemize}
-        %     \item plot hover of prac vs SITL to show noise and disturbance
+        %     \item plot hover of prac vs \gls{SITL} to show noise and disturbance
         % \end{itemize}
 
         % \paragraph
@@ -292,11 +292,11 @@
         The control architectures are summarised in Table~\ref{tbl:controller_summary} 
         by pairing the system identification techniques along with the appropriate controllers.
         It was firstly shown in Chapter~\ref{chap:system_id} that the system identifcation techniques worked in simulation.
-        Emphasise that control is now applied in full SITL simulation.
+        Emphasise that control is now applied in full \gls{SITL} simulation.
 
         \paragraph
-        MATLAB is used to generate a \gls{MPC} ROS node 
-        This ROS node receives state feedback from the Gazebo simulator,
+        MATLAB is used to generate a \gls{MPC} \gls{ROS} node 
+        This \gls{ROS} node receives state feedback from the Gazebo simulator,
         computes the optimal control action,
         and send the setpoint to PX4 through the package 'mavros'.
 
@@ -338,7 +338,7 @@
                 \item plot \gls{DMDc} vs \gls{HAVOK} (\gls{DMD} - Havok)
             \end{itemize}
 
-    \section{HIL}
+    \section{HITL}
 
     \section{Conclusion}
 

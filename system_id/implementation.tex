@@ -12,17 +12,17 @@
     \subsection{Methodology} \label{sec:sys_id_methodology}
 
         \paragraph
-        A SITL implementation of PX4 \cite{Meier2015} using the Gazebo simulator \cite{Koenig2004} is used to generate data
+        A \gls{SITL} implementation of the PX4 Autopilot \cite{Meier2015} using the Gazebo simulator \cite{Koenig2004} is used to generate data
         for system identification.
         Testing these techniques with simulation data allows us to investigate a much larger range of system configurations 
         than possible with practical flights.
         The simulation model used in Gazebo was verified in Chapter~\ref{chap:modelling}.
-        Using PX4 in SITL also ensures that the controller dynamics in simulation 
+        Using PX4 in \gls{SITL} also ensures that the controller dynamics in simulation 
         is as close as possible to practical flights since the same flight stack is used in both cases.
         Gazebo applies realistic measurement noise to the signals received by PX4 
-        and the PX4 flight stack applies an EKF for state estimation.
+        and the PX4 flight stack applies an \gls{EKF} for state estimation.
         Therefore the the data seen by the system identification techniques 
-        include the same EKF filtering as practical flight data.
+        include the same \gls{EKF} filtering as practical flight data.
 
         \paragraph
         The procedure used to evaluate the black-box techniques is as follows:
@@ -39,9 +39,9 @@
         \paragraph
         The default \gls{PID} velocity controller from PX4 is used during these simulation.
         The implemented controller gains are documented in Appendix~\ref{appen:pid_gains}.
-        A ROS node is used to read and log the payload angle measurement from Gazebo 
-        and a different ROS node is used to send velocity setpoints to PX4 
-        with the MAVLink protocol through the popular ROS package, 'mavros'.
+        A \gls{ROS} node is used to read and log the payload angle measurement from Gazebo 
+        and a different \gls{ROS} node is used to send velocity setpoints to PX4 
+        with the MAVLink protocol through the popular \gls{ROS} package, 'mavros'.
         
         \paragraph
         A algorithm schedules the series of velocity step commands 
@@ -121,10 +121,10 @@
 
         \paragraph
         Different metrics are used in literature to quantify prediction accuracy for different applications.
-        Very common, scale-dependant error metrics are MSE and MAE.
+        Very common, scale-dependant error metrics are \gls{MSE} and MAE.
         These metrics are dependant on the unit and scale of a variable, 
         hence they cannot be used to compare predictions of different variables.
-        MSE ($l_2$~norm of error values) penalises larger errors more than smaller errors, 
+        \gls{MSE} ($l_2$~norm of error values) penalises larger errors more than smaller errors, 
         whereas MAE ($l_1$~norm) penalises errors equally.
         For our use case the $l_1$~norm provides a more intuitive metric than the $l_2$~norm
         because it has the same unit as the prediction variable
@@ -146,24 +146,24 @@
         $\bm{MAE}$ is a vector with the MAE of each state.
         
         \paragraph
-        Popular, scale-free error metrics, like MAPE, MRAE and MASE, are also based on the $l_1$~norm,
+        Popular, scale-free error metrics, like \gls{MAPE}, \gls{MRAE} and \gls{MASE}, are also based on the $l_1$~norm,
         but are independent of the scale and units of a variable \cite{Hyndman2006}.
         These metrics could therefore be used to compare predictions of different variables.
         However, these metrics provide misleading comparisons for our use case.
-        MAPE expresses accuracy as the absolute ratio between the error and actual value at each time-step.
+        \gls{MAPE} expresses accuracy as the absolute ratio between the error and actual value at each time-step.
         This results in undefined or extremely large values for the payload angle predictions becasue the state has a zero mean.
         The velocity state variable has a non-zero mean, 
-        therefore the scale of the MAPE of velocity will significantly different from the MAPE of the payload angle.
+        therefore the scale of the \gls{MAPE} of velocity will significantly different from the \gls{MAPE} of the payload angle.
         
         \paragraph
-        MRAE is also popular metric for comparing predictions models used with a \gls{MPC} \cite{Kaiser2018b},
-        however, similarly to MAPE, it also results in undefined values for the payload swing angle.
-        MASE does not have this problem and can compare predictions of different variables well, 
+        \gls{MRAE} is also popular metric for comparing predictions models used with a \gls{MPC} \cite{Kaiser2018b},
+        however, similarly to \gls{MAPE}, it also results in undefined values for the payload swing angle.
+        \gls{MASE} does not have this problem and can compare predictions of different variables well, 
         because it expresses accuracy as the ratio between the MAE of the model prediction and the MAE of an in-sample
-        naïve forecast \cite{Hyndman2006}.
-        However, an in-sample forecast is a na{\"i}ve prediction for a one-step-ahead prediction, 
+        naive forecast \cite{Hyndman2006}.
+        However, an in-sample forecast is a naive prediction for a one-step-ahead prediction, 
         but not for a k-step-ahead prediction.
-        Therefore MASE is not a helpful ratio for our use case.
+        Therefore \gls{MASE} is not a helpful ratio for our use case.
 
         \paragraph
         \gls{NMAE} (Normalised Mean Absolute Error) is a scale-free error metric which provides a fair comparison for different variables in our use case.
@@ -204,7 +204,7 @@
 
         \paragraph
         Other criteria which are more statistically rigorous in model selection 
-        than error metrics are AIC and BIC scores.
+        than error metrics are \gls{AIC} and \gls{BIC} scores.
         % These are information criteria scores which compute the maximum log likelihood of the model 
         % and add a penalty based on the number of terms in the model.
         Thereby they provide a quantitative way of performing a Pareto analysis, 
@@ -223,7 +223,7 @@
         
         % because it provides a good measure of a model prediction 
         % and it is computationally fast enough to perform a wide hyperparameter search.
-        % AIC or BIC may be able to identify a slightly better model, 
+        % \gls{AIC} or \gls{BIC} may be able to identify a slightly better model, 
         % but when used with the \gls{MPC} this slight improvement in prediction accuracy 
         % will result in a negligible improvement in control performance
 
@@ -313,11 +313,11 @@
         \paragraph
         Figure~\ref{fig:singular_values} plots the singular values of the \gls{SVD} from a \gls{HAVOK} model in a log scale.
         The singular values of the \gls{SVD} can be loosely interpreted as 
-        a measure of significance of the corresponding POD mode to the plant dynamics \cite{Brunton2019d}. 
+        a measure of significance of the corresponding \gls{POD} mode to the plant dynamics \cite{Brunton2019d}. 
         That is, modes with higher singular values contain more relevant information about the plant dynamics 
         than modes with lower singular values.
         The $p$ number of significant singular values, 
-        which correspond to the POD modes used to reconstruct the observed dynamics,
+        which correspond to the \gls{POD} modes used to reconstruct the observed dynamics,
         are specifically shown in the plot.
         The truncated singular values are also shown, which correspond to the discarded modes.
         
@@ -421,17 +421,17 @@
         \paragraph
         Measurement noise is bad for system identification because it adds high frequency information to the output signals
         which are not part of the actual dynamics.
-        On the practical quadrotor the IMU, barometer, magnetometer and GPS sensors experience measurement noise.
-        The EKF performs sensor fusion and smooths out most of the measurement noise 
+        On the practical quadrotor the \gls{IMU}, barometer, magnetometer and \gls{GPS} sensors experience measurement noise.
+        The \gls{EKF} performs sensor fusion and smooths out most of the measurement noise 
         to provide a state estimate that is less noisy than raw sensor values.
-        Therefore the output from the EKF is used for system identification.
+        Therefore the output from the \gls{EKF} is used for system identification.
         
         \paragraph
-        The potentiometer and ADC which measure the payload angle on the quadrotor also has experience measurement noise.
-        This signal is not smoothed by an onboard EKF.
+        The potentiometer and \gls{ADC} which measure the payload angle on the quadrotor also has experience measurement noise.
+        This signal is not smoothed by an onboard \gls{EKF}.
         In simulation noise is applied to the payload angle as band-limited white-noise.
         The applied noise power was iteratively adjusted to match that of the practical payload measurements.
-        The noisy signals from both the quadrotor EKF and payload swing angle are smoothed 
+        The noisy signals from both the quadrotor \gls{EKF} and payload swing angle are smoothed 
         with a quadratic regression smoother from MATLAB\textsuperscript{\textregistered} before applying system identification.
         The smoother uses a fixed window length of 20 samples which was selected iteratively 
         to remove high frequency variation without loosing the general shape of the data.
@@ -450,7 +450,7 @@
         Without noise the acceleration setpoint should have a zero mean, 
         however the signal mean shows a constant offset.
         % This offset may be due to the integrators in the controllers correcting for an \gls{CoM} imbalance to keep the vehicle steady.
-        The is due to a measurement offset in the IMU which causes a offset in the orientation vector 
+        The is due to a measurement offset in the \gls{IMU} which causes a offset in the orientation vector 
         and therefore affects the control signals.
         The setpoint mean is calculated from the training data and subtracted from the signal to correct for the offset.
         This results in a input signal with a zero mean.
@@ -607,7 +607,7 @@
         \paragraph
         Figure~\ref{fig:prediction_single_pend_white} shows the k-step-ahead prediction 
         of a white-box models for a single pendulum simulation.
-        The exact $m_p$ is used for the model, but the cable length is estimated from a FFT of the payload swing angle 
+        The exact $m_p$ is used for the model, but the cable length is estimated from a \gls{FFT} of the payload swing angle 
         as described in Section~\ref{sec:length_estimation}.
         It is clear that the prediction is accurate for the first few oscillations, 
         but the slight difference in frequency accumulates over time causing an increasingly large offset.
@@ -622,7 +622,7 @@
         Figure~\ref{fig:prediction_double_pend_white} also shows the k-step-ahead prediction 
         of a white-box model, but this prediction is for a double pendulum simulation.
         The cable length was estimated from the same method 
-        by calculating the FFT of the cable swing angle and identifying the dominant frequency.
+        by calculating the \gls{FFT} of the cable swing angle and identifying the dominant frequency.
         Note how the prediction of the first oscillation is quite accurate and is similar to the initial swing of the single pendulum.
         However, by the second swing, the double pendulum dynamics differ significantly from the model prediction.
         The single pendulum oscillations seen in Figure~\ref{fig:prediction_single_pend_white} are regular
@@ -634,9 +634,9 @@
         \input{system_id/plots/prediction_double_pend_white.tex}
         
         \paragraph
-        The FFT amplitude spectrum of the single pendulum is shown in Figure~\ref{fig:FFT_double_pend}.
+        The \gls{FFT} amplitude spectrum of the single pendulum is shown in Figure~\ref{fig:FFT_double_pend}.
         This plot shows a single peak which corresponds to the natural frequency of the suspended payload.
-        Figure~\ref{fig:FFT_single_pend} shows the FFT amplitude spectrum of the double pendulum.
+        Figure~\ref{fig:FFT_single_pend} shows the \gls{FFT} amplitude spectrum of the double pendulum.
         Two peaks are revealed in this plot 
         which correspond to the two superimposed frequencies caused by the double pendulum.
         The frequency content of the two plants are clearly different 
@@ -646,8 +646,8 @@
         In contrast, the proposed data-driven method provides a general solution 
         for a large range of different payloads and dynamics.
 
-        % The FFT of the single pendulum leads to an estimated cable length of \SI{1.19}{\metre}        
-        % The FFT of the double pendulum leads to an estimated cable length of \SI{1.39}{\metre}
+        % The \gls{FFT} of the single pendulum leads to an estimated cable length of \SI{1.19}{\metre}        
+        % The \gls{FFT} of the double pendulum leads to an estimated cable length of \SI{1.39}{\metre}
         
         \input{system_id/plots/FFT_subfigs.tex}
 
@@ -728,7 +728,7 @@
         % Another payload case that will cause inaccuracies in estimated white-box model 
         % is if a payload is attached rigidly to the quadrotor while also carrying a suspended payload.
         % The payload mass estimation is based on the assumption that the quadrotor mass is known.
-        % However if a mass is rigidly attached to the vehicle, the effective quadrotor mass is changed and the RLS payload mass estimation is no longer accurate.
+        % However if a mass is rigidly attached to the vehicle, the effective quadrotor mass is changed and the \gls{RLS} payload mass estimation is no longer accurate.
         
         % \paragraph
         % To determine whether the white-box or data-driven methods perform better with these payloads, 

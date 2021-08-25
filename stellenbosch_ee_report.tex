@@ -146,8 +146,9 @@
 \newcommand{\willem}[1]{\textcolor{red}{#1}}
 
 % Glossary
-\usepackage[acronym, nomain, nopostdot, nonumberlist, nogroupskip, toc, automake=false]{glossaries}
-\loadglsentries{frontmatter/glossary.tex}
+% \usepackage[acronym, nomain, nopostdot, nonumberlist, nogroupskip, toc, automake=false]{glossaries}
+\usepackage[acronym]{glossaries}
+\loadglsentries{glossary.tex}
 
 % Keep figure in section
 \usepackage{placeins}
@@ -183,6 +184,7 @@
 \tableofcontents
 % \listoffigures
 % \listoftables
+\printglossary[type=\acronymtype]
 % \input{frontmatter/nomenclature}
 \newpage
 \pagenumbering{arabic}
