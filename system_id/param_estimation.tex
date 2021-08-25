@@ -10,13 +10,13 @@
     Two separate methods are used to estimate each of these parameters.
     This method was used by \cite{Erasmus2020} and \cite{Slabber2020} 
     to design a \gls{LQR} controller and implement swing damping control 
-    of a quadrotor with an unknown suspended payload.
+    of a mulitrotor with an unknown suspended payload.
     
 \subsection{Payload mass estimation}
 
     \paragraph
     \gls{RLS} is used by \cite{Erasmus2020} and \cite{Slabber2020} to estimate the payload mass.
-    It is assumed that the quadrotor mass is known before flight, 
+    It is assumed that the mulitrotor mass is known before flight, 
     therefore the payload mass can be estimated from the additional trust required during hover.
     In both \cite{Erasmus2020} and \cite{Slabber2020} it is demonstrated 
     that \gls{RLS} is very accurate for a system nearly identical to the one considered in this work.
@@ -28,7 +28,7 @@
     \paragraph
     It should be noted however that this method is dependant on the assumption 
     that the vehicle mass is known and remains unchanged.
-    The method will clearly be inaccurate if a unknown mass is added to the quadrotor 
+    The method will clearly be inaccurate if a unknown mass is added to the mulitrotor 
     in conjunction with the suspended payload.
     Common practical examples of this include adding a camera to the vehicle or using a different battery for a different flight range.
     In these cases the mass estimation method will have to be redesigned.
@@ -48,7 +48,7 @@
     \end{equation}
     The cable length can clearly be calculated from (\ref{eq:nat_freq}) if the other parameters are known.
     The natural frequency is measured by performing a \gls{FFT} on the payload swing angle response 
-    after a position step by the quadrotor.
+    after a position step by the mulitrotor.
     The dominant frequency identified by the \gls{FFT} during free swing is an approximate measurement
     of the natural frequency of the payload.
     Note that the measured frequency actually corresponds to the damped natural frequency, 
@@ -60,7 +60,7 @@
     Figure~\ref{fig:pos_step_single_pend} shows the payload swing angle response 
     to a position step setpoint.
     The first few seconds of the step response are excluded from the \gls{FFT} 
-    to minimise the effect of the transient response and the quadrotor controllers 
+    to minimise the effect of the transient response and the mulitrotor controllers 
     on the natural frequency measurement.
     Figure~\ref{fig:FFT_pos_step} shows the resulting single-sided amplitude spectrum of the \gls{FFT} of this data.
     

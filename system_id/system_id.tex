@@ -13,7 +13,7 @@
 
     \paragraph
     This chapter discusses these system identification approaches and describes the differences between them.
-    For each approach, specific estimation techniques are explained and applied to the quadrotor and payload system.
+    For each approach, specific estimation techniques are explained and applied to the mulitrotor and payload system.
     The results of these techniques are then compared to each other.
 
     \input{system_id/white_black_box.tex}
@@ -32,7 +32,7 @@
         because the algorithm has been studied more, is less computationally complex and provides similar performance to \gls{HAVOK}.
         These data-driven methods were shown to produce accurate predictions of the payload dynamics 
         with a practical length of training data, sample time and noise level.
-        This proves to be promising for practical implementation with a \gls{MPC} on a quadrotor companion computer.
+        This proves to be promising for practical implementation with a \gls{MPC} on a mulitrotor companion computer.
         The data-driven methods also proved to provide accurate prediction with a range of different payload parameters
         and even with payloads that act as a double pendulum.
         In contrast, the considered white-box system identification technique 

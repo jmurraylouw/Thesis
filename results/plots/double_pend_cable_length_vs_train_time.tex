@@ -1,0 +1,37 @@
+\begin{figure}[htb]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[            
+            xlabel = Length of training data,
+            ylabel = Estimated cable length,
+            x unit = \si{\second},
+            y unit = \si{\metre},
+            xmin = 0,   xmax = 10,
+            ymin = 0,   ymax = 4,
+            grid = major,
+            legend cell align = left,
+            legend pos = north east,
+            grid style = dashed,
+            legend style = {font = \scriptsize},
+            label style = {font = \scriptsize},
+            tick label style = {font = \scriptsize},
+            width = 0.95\columnwidth,
+            height = 0.5\columnwidth,
+            % initialize Dark2
+            cycle list/Dark2,
+            % combine it with 'mark list*':
+            cycle multiindex* list = {
+                Dark2\nextlist
+            }
+        ]
+
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = train_time, y = estimated_length, col sep = comma] 
+        {results/csv/cable_length_vs_train_time_Prac_2021-08-23_01_l-0.5_mp-0.2_wind-0.5.csv_10_0.5.csv};
+        
+        \end{axis}
+    \end{tikzpicture} 
+    
+    \caption{}
+    \label{fig:double_pend_cable_length_vs_train_time}
+\end{figure}

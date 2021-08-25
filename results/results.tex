@@ -4,33 +4,43 @@
 \label{chap:results}
 
     \paragraph
-    \begin{itemize}
-        \item Refer to previous chapters with simulations
-        \item Difference between simulation and practicalities
-        \item This chapter examines the performance of these methods on practical data
-        \item It also investigates whether the models produced by these system identification methods can be used for effective swing damping control.
-        \item Furthermore, the feasibility of practically implementing the proposed control architectures is explored.
+    In previous chapters it was shown from simulation data that both the white-box and black-box system identifcation techniques
+    generated models that accurately capture the dynamics of a multirotor with a suspended payload.
+    However, practical flights may differ significantly from simulations, which may affect the performance of these techniques.
+    Wind causes a complex, unmeasured disturbance which influences the flight of a multirotor, 
+    but was not considered during simulation.
+    Wind applies randomly fluctuating forces to the vehicle, payload and cable which and can be difficult to model accurately.
+    It is also very difficult to determine accurate drag coefficients of the practical system.
 
-    \end{itemize}
+    \paragraph
+    In this chapter the system identification techniques will be applied to practical flight data and their performance will be evaluated.
+    Practical flight data with a dynamic payload will also used 
+    to compare the performance of white-box and black-box techniques on this use case.
+    Furthermore it will be investigated whether the models produced by these techniques
+    can be used in the proposed controllers to effectively damp the payload oscillations in simulation.
+    The performance of the controllers will be evaluated for a range of different system configurations.
+    HITL simualtions will also be performed to determine whether the proposed hardware 
+    can handle the computational complexity of the controllers.
+    Finally, it will be determined whether the proposed control architectures are feasable for practical flights.
 
     \FloatBarrier\section{Methodology}
         
         \paragraph
         As discussed in Chapter~\ref{chap:system_id}, the methodology to generate practical data for the parameter estimation techniques involves two different flight stages.
-        Firstly, the quadrotor hovers with the suspended payload to gather hover thrust data to estimate the payload mass.
-        Then the quadrotor is commanded with a position step setpoint 
+        Firstly, the mulitrotor hovers with the suspended payload to gather hover thrust data to estimate the payload mass.
+        Then the mulitrotor is commanded with a position step setpoint 
         to stimulate the swinging payload system for cable length estimation.
 
         \paragraph
         For the data-driven techniques, the methodology used to generate training and testing data from practical flights
         also follows the same general procedure as specified for simulation data in Section~\ref{sec:sys_id_methodology}:
         \begin{enumerate}
-            \item Data logging starts when the quadrotor is armed
+            \item Data logging starts when the mulitrotor is armed
             \item Takeoff and hover with the qaudrotor
             \item Command velocity step setpoints
-            \item Land the quadrotor
-            \item Data logging stops when the quadrotor is disarmed
-            \item Download data log from the quadrotor
+            \item Land the mulitrotor
+            \item Data logging stops when the mulitrotor is disarmed
+            \item Download data log from the mulitrotor
             \item Split data into separate training and testing periods
             \item Build a model from the training data
             \item Calculate an error metric for the model from the testing data
@@ -52,7 +62,7 @@
         and even with a more complex elongated payload.
         The system identification methods were then performed on the data resulting from this range of different use cases.
         The major differences between the simulations and practical flights involve the attachment of the payload and wind disturbances.
-        In simulation, the payload cable is attached to the exact \gls{CoM} of the quadrotor.
+        In simulation, the payload cable is attached to the exact \gls{CoM} of the mulitrotor.
         However, due to practical constraints, the cable is attached slightly below the \gls{CoM} of Honeybee.
         Practical flights are also influenced by wind disturbances, therefore this effect is also investigated in the sections below.
         In this chapter, wind conditions are referenced by the wind speed recorded by the website, www.yr.no, 
@@ -79,22 +89,27 @@
         
     \FloatBarrier\section{Parameter estimation with practical data}
         
-        \subsection{Mass estimation}
-
-            As discussed in Chapter~\ref{chap:system_id}, for this method to work, the mass of the quadrotor needs to be known.
-            If a heavier battery or an extra accessory is added to the vehicle, 
-            the new vehicle mass will first have to be estimated in a separate flight, before the payload can be attached.
-            This is one of the disadvantages of the white-box modelling with parameter estimation based techniques.
-            The method is designed with a specific system in mind 
-            and needs to be adjusted and redesigned for every deviation from the the pre-assumed configuration.
-            In contrast, the data-driven technique is a general solution which works for a much wider range of system configurations.
-            The data-driven technique is not readjusted for an added vehicle mass, 
-            since the whole model is estimated instead of specific parameters.
+        %% ?? Add this if there is time
+        % \subsection{Mass estimation} 
+        
+        %     As discussed in Chapter~\ref{chap:system_id}, for this method to work, the mass of the mulitrotor needs to be known.
+        %     If a heavier battery or an extra accessory is added to the vehicle, 
+        %     the new vehicle mass will first have to be estimated in a separate flight, before the payload can be attached.
+        %     This is one of the disadvantages of the white-box modelling with parameter estimation based techniques.
+        %     The method is designed with a specific system in mind 
+        %     and needs to be adjusted and redesigned for every deviation from the the pre-assumed configuration.
+        %     In contrast, the data-driven technique is a general solution which works for a much wider range of system configurations.
+        %     The data-driven technique is not readjusted for an added vehicle mass, 
+        %     since the whole model is estimated instead of specific parameters.
 
         \FloatBarrier\subsection{Simple payload cable length estimation}
             
             \paragraph
-
+            The \gls{PE} for the cable length estimation is calculated as,
+            \begin{equation}
+                PE = \frac{ l_{actual} - l_{estimated} }{ l_{actual} } \times 100 \%,
+            \end{equation}
+            where $l_{actual}$ is the actual cable length and $l_{estimated}$ is the estimated cable length.
                 
             \input{results/plots/cable_length_vs_train_time.tex}
 
@@ -102,6 +117,10 @@
         
         \FloatBarrier\subsection{Dynamic payload cable length estimation}
 
+            \paragraph
+
+            \input{results/plots/double_pend_cable_length_vs_train_time.tex}
+            
     \FloatBarrier\section{Data-driven system identification with practical data}
 
         \paragraph
@@ -294,7 +313,7 @@
 
         \paragraph
         After the system identification phase, active swing damping control can be applied
-        to the quadrotor and payload system.
+        to the mulitrotor and payload system.
         The control architectures are summarised in Table~\ref{tbl:controller_summary} 
         by pairing the system identification techniques along with the appropriate controllers.
         It was firstly shown in Chapter~\ref{chap:system_id} that the system identifcation techniques worked in simulation.
