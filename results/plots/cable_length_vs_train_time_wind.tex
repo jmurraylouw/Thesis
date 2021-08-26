@@ -37,8 +37,13 @@
 
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = train_time, y = percentage_error, col sep = comma] 
-        {results/csv/cable_length_vs_train_time_Prac_2021-08-12_02_manual_x_vel_steps_4mps.csv_10_1.csv};
+        {results/csv/cable_length_vs_train_time_Prac_2021-08-12_02_manual_x_vel_steps_4mps.csv_20_1.csv};
         \addlegendentry{wind speed $\approx~$\SI{4}{\metre/\second}}
+
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = train_time, y = percentage_error, col sep = comma] 
+        {results/csv/cable_length_vs_train_time_Prac_2021-08-26_01_l-1_mp-0.2_wind-6.csv_10_1.csv};
+        \addlegendentry{wind speed $\approx~$\SI{6}{\metre/\second}}
 
         \end{axis}
     \end{tikzpicture} 
