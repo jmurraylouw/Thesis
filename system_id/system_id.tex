@@ -4,17 +4,20 @@
 \label{chap:system_id}
 
     \paragraph
-    System identification is the process of creating a mathematical model of a dynamical system by using input and output measurements of that system.
-    Two major approaches are used to represent the dynamics of such a system:
+    System identification is the process of creating a mathematical model of a dynamical system 
+    by using input and output measurements of that system.
+    In this work a mathematical model of the multirotor and suspended payload system is required for swing damping control.
+    The two major approaches to system identification are:
     \begin{enumerate}
         \item A priori mathematical modelling with parameter estimation
         \item Data-driven system identification
     \end{enumerate}
 
     \paragraph
-    This chapter discusses these system identification approaches and describes the differences between them.
-    For each approach, specific estimation techniques are explained and applied to the mulitrotor and payload system.
-    The results of these techniques are then compared to each other.
+    This chapter will discuss these approaches and describe the differences between them.
+    For each approach, specific estimation techniques 
+    will be applied to simulation data of the mulitrotor and payload system.
+    The results of these techniques will then be discussed.
 
     \input{system_id/white_black_box.tex}
     \input{system_id/plant.tex}

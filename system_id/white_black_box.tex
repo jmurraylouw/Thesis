@@ -3,24 +3,22 @@
     \paragraph
     Models determined from data-driven system identification methods are generally called black-box models.
     The user is only concerned with the inputs and output of the model
-    and does not determine mathematical relationships from theoretical deductions.
-    In contrast, white-box models are determined from a priori modelling.
-    The user understands the physics of white-box models 
-    because the dynamics are manually programmed into the model by the user.
+    and does not need to derive mathematical relationships from theoretical deductions.
+    In contrast, white-box models are determined from a priori modelling and
+    the user defines the physics of white-box models.
 
     \subsection{White-box techniques}
 
         \paragraph 
-        The underlying physics of a white-box model is understood by the user because    
-        it is determined from first principles.
-        This is done by modelling physical processes with techniques like Lagrangian mechanics or Newton equations.
-        For system identification techniques that use these models, 
-        the mathematical relations between system parameters are predefined in the modelling phase.
+        The underlying physics of a white-box model is usually determined from first principles.
+        This is done by modelling physical processes with techniques such as Lagrangian or Newton mechanics.
+        Hence, the mathematical relations between system parameters in the model are predefined in the modelling phase.
         The system identification process is therefore reduced to parameter estimation 
-        which determines values for the parameters used in die model.
+        which determines the best fit values of the system parameters.
 
         \paragraph 
-        This approach is used by \cite{Erasmus2020} and \cite{Slabber2020} for swing damping control of a mulitrotor with an unknown suspended payload.
+        This approach is used by \cite{Erasmus2020} and \cite{Slabber2020} for system identification 
+        for swing damping control of a mulitrotor with an unknown suspended payload.
         The system was modelled as two rigid bodies connected by a link and the following assumptions were made regarding the suspended payload:
         \begin{itemize}
             \item The payload is a point mass.
