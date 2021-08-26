@@ -142,9 +142,18 @@
             \paragraph
             Figure~\ref{fig:cable_length_vs_train_time_wind} shows the \gls{PE} of cable length estimation 
             for flights with different wind conditions.
-            All flights were performed with the same payload parameters.
+            These flights were all performed with the same payload parameters.
+            It appears that the wind speed does affect the parameter estimation, 
+            since the estimation error differs significantly for different wind speeds.
+            This may be due to the variable damping effect the controllers have on the payload at different wind speeds.
+            From the considered flights, it appears that the largest \gls{PE} occurs at the highest wind speed, 
+            and the lowest \gls{PE} at the lowest wind speed.
+            However, there are not enough flights to identify a trend conclusively.
 
             \input{results/plots/cable_length_vs_train_time_wind.tex}
+
+            Note that the estimation \gls{PE} converges for flights with different wind speeds.
+            Therefore it appears that a dominantoscillation frequency
         
         \FloatBarrier\subsection{Dynamic payload cable length estimation}
 
