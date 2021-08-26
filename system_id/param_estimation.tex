@@ -48,21 +48,25 @@
     \end{equation}
     The cable length can clearly be calculated from (\ref{eq:nat_freq}) if the other parameters are known.
     The natural frequency is measured by performing a \gls{FFT} on the payload swing angle response 
-    after a position step by the mulitrotor.
+    after a velocity step by the mulitrotor.
     The dominant frequency identified by the \gls{FFT} during free swing is an approximate measurement
     of the natural frequency of the payload.
-    Note that the measured frequency actually corresponds to the damped natural frequency, 
-    but it is assumed that damping during free swing is negligible.
-    Therefore the damped natural frequency closely approximates the natural frequency.
+    Note that the measured frequency actually corresponds to the damped natural frequency.
+    The swing angle damping is caused by 
+    the velocity controller, 
+    friction at the attachment of the cable to the drone,
+    and air drag.
+    However it is assumed that the damping coefficient is small enough for
+    the damped natural frequency to closely approximate the theoretical natural frequency.
     % This method is applied successfully by \cite{Erasmus2020} and \cite{Slabber2020} for cable length estimation.
     
     \paragraph
-    Figure~\ref{fig:pos_step_single_pend} shows the payload swing angle response 
+    Figure~\ref{fig:vel_step_single_pend} shows the payload swing angle response 
     to a position step setpoint.
     The first few seconds of the step response are excluded from the \gls{FFT} 
     to minimise the effect of the transient response and the mulitrotor controllers 
     on the natural frequency measurement.
-    Figure~\ref{fig:FFT_pos_step} shows the resulting single-sided amplitude spectrum of the \gls{FFT} of this data.
+    Figure~\ref{fig:FFT_vel_step} shows the resulting single-sided amplitude spectrum of the \gls{FFT} of this data.
     
     \paragraph
     The dominant frequency is clearly identified by the peak at \SI{0.520}{\radian/\second}.
@@ -75,7 +79,7 @@
     It is also shown by \cite{Erasmus2020} and \cite{Slabber2020} that this estimation method 
     is effective for a range of different payloads.
 
-    \input{system_id/plots/FFT_pos_step_subfigs}
+    \input{system_id/plots/FFT_vel_step_subfigs}
 
     
 

@@ -4,31 +4,32 @@
 \label{chap:results}
 
     \paragraph
-    In previous chapters it was shown from simulation data that both the white-box and black-box system identifcation techniques
-    generated models that accurately capture the dynamics of a multirotor with a suspended payload.
+    In previous chapters it was shown with simulation data that both the white-box and black-box system identifcation techniques
+    accurately represent the dynamics of a multirotor with a suspended payload.
     However, practical flights may differ significantly from simulations, which may affect the performance of these techniques.
-    Wind causes a complex, unmeasured disturbance which influences the flight of a multirotor, 
+    For example, wind causes an unmeasured disturbance which influences the flight of a multirotor, 
     but was not considered during simulation.
-    Wind applies randomly fluctuating forces to the vehicle, payload and cable which and can be difficult to model accurately.
-    It is also very difficult to determine accurate drag coefficients of the practical system.
+    Wind disturbance involves randomly fluctuating forces 
+    which are applied to the vehicle, payload and cable.
+    It is also very difficult to model these forces accurately and determine accurate drag coefficients of the practical system.
 
     \paragraph
-    In this chapter the system identification techniques will be applied to practical flight data and their performance will be evaluated.
-    Practical flight data with a dynamic payload will also used 
-    to compare the performance of white-box and black-box techniques on this use case.
-    Furthermore it will be investigated whether the models produced by these techniques
-    can be used in the proposed controllers to effectively damp the payload oscillations in simulation.
-    The performance of the controllers will be evaluated for a range of different system configurations.
+    In this chapter the system identification techniques will be applied to practical flight data.
+    The performance of the techniques will also be evaluated for practical flights with a dynamic payload.
+    Furthermore, the suitability of the system identification models
+    for swing damping control will be investigated in simulation.
+    The performance of the swing damping controllers will be evaluated for a range of different system configurations.
     HITL simualtions will also be performed to determine whether the proposed hardware 
-    can handle the computational complexity of the controllers.
+    can handle the computational complexity of these controllers.
     Finally, it will be determined whether the proposed control architectures are feasable for practical flights.
 
     \FloatBarrier\section{Methodology}
         
         \paragraph
-        As discussed in Chapter~\ref{chap:system_id}, the methodology to generate practical data for the parameter estimation techniques involves two different flight stages.
-        Firstly, the mulitrotor hovers with the suspended payload to gather hover thrust data to estimate the payload mass.
-        Then the mulitrotor is commanded with a position step setpoint 
+        As discussed in Chapter~\ref{chap:system_id}, 
+        generating data for the parameter estimation techniques involves two flight stages.
+        Firstly, the mulitrotor hovers with the suspended payload to gather data for payload mass estimation.
+        Then the mulitrotor is commanded with a velocity step setpoint 
         to stimulate the swinging payload system for cable length estimation.
 
         \paragraph
