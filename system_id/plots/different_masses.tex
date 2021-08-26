@@ -28,17 +28,17 @@
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = T_train, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
         {system_id/csv/NMAE_vs_Ntrain_SITL_x_vel_noise_l1_m0-1.csv_havok_angle.csv};
-        \addlegendentry{$m =$~\SI{0.1}{\kilo\gram}}
+        \addlegendentry{$m_p =$~\SI{0.1}{\kilo\gram}}
         
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = T_train, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
         {system_id/csv/NMAE_vs_Ntrain_SITL_x_vel_noise_l1_m0-2.csv_havok_angle.csv};
-        \addlegendentry{$m =$~\SI{0.2}{\kilo\gram}}
+        \addlegendentry{$m_p =$~\SI{0.2}{\kilo\gram}}
         
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = T_train, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
         {system_id/csv/NMAE_vs_Ntrain_SITL_x_vel_noise_l1_m0-3.csv_havok_angle.csv};
-        \addlegendentry{$m =$~\SI{0.3}{\kilo\gram}} 
+        \addlegendentry{$m_p =$~\SI{0.3}{\kilo\gram}} 
         
         \end{axis}
     \end{tikzpicture} 

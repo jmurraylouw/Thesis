@@ -28,7 +28,7 @@
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = T_train, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
         {system_id/csv/NMAE_vs_Ntrain_SITL_x_vel_noise_l1_m0-3.csv_havok_angle.csv};
-        \addlegendentry{single pendulum - $m =$~\SI{0.3}{\kilo\gram}, $l =$~\SI{1}{\metre},}
+        \addlegendentry{single pendulum - $m_p =$~\SI{0.3}{\kilo\gram}, $l =$~\SI{1}{\metre},}
         
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = T_train, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
