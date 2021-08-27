@@ -31,7 +31,7 @@
         Firstly, the mulitrotor hovers with the suspended payload to gather data for payload mass estimation.
         Then a velocity step setpoint is commanded
         to stimulate the swinging payload system and gather data for cable length estimation.
-        The same methodology is followed for both simulated and practical flights.
+        Hence, the same methodology that was followed simulated flights will be used for practical flights.
 
         \paragraph
         For the data-driven techniques, the generation of practical training and testing data
@@ -148,23 +148,61 @@
             This may be due to the variable damping effect the controllers have on the payload at different wind speeds.
             From the considered flights, it appears that the largest \gls{PE} occurs at the highest wind speed, 
             and the lowest \gls{PE} at the lowest wind speed.
-            However, there are not enough flights to identify a trend conclusively.
+            However, too few flights with different wind conditions are considered to identify a trend conclusively.
 
             \input{results/plots/cable_length_vs_train_time_wind.tex}
 
-            Note that the estimation \gls{PE} converges for flights with different wind speeds.
-            Therefore it appears that a dominantoscillation frequency
+            \paragraph
+            Note that the estimation \gls{PE} converges for each considered flights with a different wind speed,
+            even with wind speeds up to \SI{6}{\metre/\second}.
+            Therefore a dominant oscillation frequency emerges from each flight, 
+            even when the multirotor is heavily affected by wind.
+            % ?? Maybe add this if there is time: and show effect of effective length vs actual length in system id chapter.
+            % As discussed in Section~\ref{sec:param_estimation}, 
+            % the effective cable length corresponding to the dominant frequency is more important
         
         \FloatBarrier\subsection{Dynamic payload cable length estimation}
 
             \paragraph
+            As discussed in Chapter~\ref{chap:system_id}, 
+            the dynamical equations in a white-box model are fixed in the a priori modelling phase.
+            The model is then completed with values from parameter estimation.
+            However, when the dynamics of the observed system differs from the pre-determined model,
+            the paramter estimation algorithms still determine a naive, best-fit value for the pre-determined model.
+            
+            \begin{figure}
+                \captionsetup[subfigure]{justification=centering}
+                \centering
+                \input{results/plots/FFT_vel_step_double_pend.tex} % subfigure
+                \input{results/plots/FFT_double_pend.tex} % subfigure
+                \caption{Data from a velocity step response with a dynamic payload 
+                ($m_1 =$~\SI{0.2}{\kilo\gram}, $l_1 =$~\SI{0.5}{\meter}, $m_2 =$~\SI{0.1}{\kilo\gram}, $l_2 =$~\SI{0.6}{\meter}).}
+                \label{fig:FFT_double_pend_prac_subfigs}  
+            \end{figure}
+
+            \paragraph
+            Figure~\ref{fig:FFT_vel_step_double_pend} shows a snapshot of payload angle data from a practical flight with a dynamic payload.
+            Two superimposed frequencies clearly visible in the oscillations due to the double pendulum action of the elongated pendulum.
+            Two peaks corresponding to these two frequencies can be identified 
+            from the resulting FFT amplitude spectrum in Figure~\ref{fig:FFT_double_pend}.
+            The cable length estimation uses the frequency of the dominant peak 
+            and calculates the effective length corresponding to that frequency.
+            This models a simple pendulum plant that best matches the dynamic payload oscillations. 
+
+            \paragraph
+            Figure~\ref{fig:double_pend_cable_length_vs_train_time} shows the estimated cable length 
+            as a function of length of trainning data for a practical dynamic payload.
+            Note how the estimated length converges as the length of training data increases.
+            As the size of the payload swing angles decrease due to damping, 
+            the relative oscillations of the elongated payload also decrease.
+            Therefore the effect of the superimposed higher frequency oscillations in the angle data is less prominant 
+            and the system dynamics approximate a simple pendulum more closely.
 
             \input{results/plots/double_pend_cable_length_vs_train_time.tex}
             
     \FloatBarrier\section{Data-driven system identification with practical data}
 
         \paragraph
-        It was shown that the simulation environment 
         In Chapter~\ref{chap:system_id} it was shown that the data-driven methods 
         build accurate state prediction models for the considered system.
         It was also shown in Chapter~\ref{chap:modelling} that the simulation environment is a realistic representation of the practical system.

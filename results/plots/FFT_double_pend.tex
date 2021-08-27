@@ -1,0 +1,37 @@
+\begin{subfigure}[t]{0.45\columnwidth}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[            
+            xlabel = Frequency,
+            ylabel = Amplitude,
+            x unit = \si{\hertz},
+            % y unit = \si{\second},
+            xmin = 0.3,  xmax = 1.7,
+            ymin = 0,    ymax = 0.8,
+            grid = major,
+            legend cell align = left,
+            legend pos = north east,
+            grid style = dashed,
+            legend style = {font = \scriptsize},
+            label style = {font = \scriptsize},
+            tick label style = {font = \scriptsize},
+            width = 0.95\columnwidth,
+            height = 0.95\columnwidth,
+            % initialize Dark2
+            cycle list/Dark2,
+            % combine it with 'mark list*':
+            cycle multiindex* list = {
+                Dark2\nextlist
+            }
+        ]
+
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = f, y = P1, col sep = comma] 
+        {results/csv/FFT_vel_step_Prac_2021-08-23_04_double_pend_m1_0.2_m2_0.1_l1-0.5_l2_0.62_wind-0.5.csv.csv};
+
+        \end{axis}
+    \end{tikzpicture} 
+    
+    \caption{FFT amplitude spectrum}
+    \label{fig:FFT_double_pend}
+\end{subfigure}
