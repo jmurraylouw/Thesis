@@ -28,7 +28,7 @@
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = Ts, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
         {system_id/csv/NMAE_vs_Ts_SITL_x_vel_noise_longer_times_Ts.csv_dmd_angle.csv};
-        \addlegendentry{DMD}
+        \addlegendentry{DMDc}
         
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = Ts, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
@@ -38,7 +38,7 @@
         \end{axis}
     \end{tikzpicture} 
     
-    \caption{\gls{DMD} and \gls{HAVOK} predictions error for different sample times of noisy training data
+    \caption{\gls{DMDc} and \gls{HAVOK} predictions error for different sample times of noisy training data
     ($m_p =$~\SI{0.2}{\kilo\gram}, $l =$~\SI{0.5}{\meter}, $T_{train} =$~\SI{60}{\second}.)}
     % \label{fig:havok_vs_dmd_noise}
 \end{figure}

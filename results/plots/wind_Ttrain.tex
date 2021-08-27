@@ -6,8 +6,8 @@
             ylabel = $\overline{NMAE}$ \phantom{~},
             x unit = \si{\second},
             y unit = \%,
-            xmin = 5,     xmax = 120,
-            ymin = 3.2,  ymax = 15,
+            xmin = 5,  xmax = 120,
+            ymin = 2,  ymax = 18,
             grid = major,
             legend cell align = left,
             legend pos = north east,
@@ -27,11 +27,6 @@
 
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = T_train, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
-        {results/csv/NMAE_vs_Ntrain_Prac_2021-08-20_03_l-1_mp-0.2_wind-0.5.csv_dmd_angle.csv};
-        \addlegendentry{0.5 m/s winds}
-
-        \addplot+[mark = none, style = solid, ultra thick] 
-        table[x = T_train, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
         {results/csv/NMAE_vs_Ntrain_Prac_2021-08-12_03_manual_x_vel_steps_2mps.csv_dmd_angle.csv};
         \addlegendentry{2 m/s winds}
 
@@ -48,7 +43,7 @@
         \end{axis}
     \end{tikzpicture} 
     
-    \caption{Effect of wind on \gls{DMD} prediction errors for different lengths of practical training data
+    \caption{\gls{DMDc} prediction errors as a function of length of training data for practical data with different wind conditions
     ($m_p =$~\SI{0.2}{\kilo\gram}, $l =$~\SI{1}{\meter}, $T_s =$~\SI{0.03}{\second}).}
     \label{fig:wind_Ttrain}
 \end{figure}

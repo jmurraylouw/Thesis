@@ -203,18 +203,19 @@
     \FloatBarrier\section{Data-driven system identification with practical data}
 
         \paragraph
-        In Chapter~\ref{chap:system_id} it was shown that the data-driven methods 
-        build accurate state prediction models for the considered system.
-        It was also shown in Chapter~\ref{chap:modelling} that the simulation environment is a realistic representation of the practical system.
+        In Chapter~\ref{chap:system_id} it was shown that \gls{DMDc} and \gls{HAVOK} 
+        build accurate state prediction models for the considered system in simulation.
+        It was also shown in Chapter~\ref{chap:modelling} that the simulation environment 
+        is a realistic representation of the practical system.
         However, there are still differences between simulations and practical flight.
-        Therefore the data-driven algorithms are applied to practical flight data in this chapter 
+        Therefore the data-driven algorithms will be applied to practical flight data in this chapter 
         to investigate their performance in a practical implementation.
 
-        \FloatBarrier\subsection{Length of training data}
+        \FloatBarrier\subsection{Length of training data} \label{sec:length_train_data_prac}
 
             \paragraph
             As discussed in Section~\ref{sec:sys_id_length_of_data}, 
-            the length of training data used in the model has a large effect on prediction accuracy.
+            the length of training data used in a model has a large effect on prediction accuracy.
             The length of training data required for accurate models is largely influenced by the amount of wind disturbance during flight.
             Figure~\ref{fig:wind_Ttrain} shows prediction error as a function of training data length for different wind conditions.
             Wind conditions are referenced here by the wind speed recorded by the website, www.yr.no, 
@@ -224,12 +225,21 @@
             the minimum prediction error is not significantly improved with decreasing wind speeds.
             This may be because the flight dynamics is not significantly affected at such low wind speeds.
             
+            \input{results/plots/wind_Ttrain.tex}
+
             \paragraph
-            Wind adds an unmeasured input, also referred to as process noise, to the plant and this is not accounted for in the model.
-            As discussed in Section~\ref{sec:noise}, the constant offset is subtracted from the acceleration setpoint data, 
+            Wind adds an unmeasured disturbance (also referred to as process noise) to the plant which is not accounted for in the model.
+            This disturbance consists of a mean force and random fluctuations in the force, 
+            which are applied to the vehicle, cable and payload.
+            The mean force applied to the multirotor 
+            results in a constant offset in the acceleration setpoint data 
+            as the velocity controller integrators compensates for the disturbance.
+            For system identification, the constant offset is subtracted from the acceleration setpoint data, 
             which results in a signal with a zero mean.
             This accounts for the constant component in the acceleration setpoint signal required to counteract the mean force of the wind.
-            However, the wind speed deviates randomly from the mean speed which results in random process noise in the plant.
+            % ??  As shown in Figure~\ref{fig:}, this greatly reduces the prediction error.
+            However, the wind speed also deviates randomly from the mean speed.
+            This results in random process noise in the plant which is not removed from the measured data.
 
             % \paragraph
             % It appears that for higher wind speeds, 
@@ -237,35 +247,33 @@
             
             % This is expected, since the algorithms require longer lengths of training data to  
             
-            \input{results/plots/wind_Ttrain.tex}
+            
             
             \paragraph
-            \gls{HAVOK} and \gls{DMD} perform similarly
-            Figure~\ref{fig:havok_vs_dmd_Ttrain_2mps} shows the prediction error of \gls{DMD} and \gls{HAVOK} models
-            
+            Figure~\ref{fig:havok_vs_dmd_Ttrain_2mps} compares the prediction error of \gls{DMDc} and \gls{HAVOK} models 
+            as a function of length of training data.
+            It is evident that the two techniques produce similar prediction errors with practical data.
+            In Chapter~\ref{chap:system_id} it was shown with simulation data 
+            that \gls{HAVOK} produces slightly lower prediction errors thatn \gls{DMDc}.
+            Figure~\ref{fig:havok_vs_dmd_Ttrain_2mps} comfirms this observation for practical data.
+            However, this error difference is very small 
+            and will probably not effect the performance of the controllers using these models.
+
             \input{results/plots/havok_vs_dmd_Ttrain_2mps.tex}
 
-            Also plot \gls{DMD} vs \gls{HAVOK} for high winds ??
-            
-
-            plot \gls{NMAE} vs Ttrain
-            \begin{itemize}
-                \item Plot strong wind vs less wind vs no wind
-                \item \gls{HAVOK} vs \gls{DMD}
-                \item Plot single pend vs double pend
-            \end{itemize}
+            Also plot \gls{DMDc} vs \gls{HAVOK} for high winds ??
             
         \FloatBarrier\subsection{Hyperparameters}
             
             \paragraph
             As discussed in Section~\ref{sec:hyperparameters}, 
-            the prediction error generally improves with an increasing number of delay-coordinates 
+            the prediction error generally improves for a higher number of delay-coordinates 
             because the number of parameters in the model increases.
             However, the prediction error reaches a pareto optimum, 
             after which the error does not significantly decrease with an increasing number of terms anymore.
             Figure~\ref{fig:havok_vs_dmd_q_2mps} shows the prediction error as a function of the number of delay-coordinates
             for practical flight data.
-            Even though the pareto elbow is not as smooth and clear as models build from simulation data, 
+            Even though the pareto elbow is not as smooth and clear as with simulation data, 
             the elbow can still be identified.            
             % Note that the pareto elbow is not as smooth and clear as shown in Section~\ref{sec:hyperparameters}.
             % This may due to random 
@@ -283,24 +291,59 @@
             \paragraph
             It was shown with multiple simulations in Section~\ref{sec:system_params} 
             that the system identification methods work for a range of different payload parameters.
-            Figure~\ref{fig:prac_system_params} shows the prediction error for different payloads with practical data.
-            This shows that the proposed methods also work in practice with different payloads.
-            The `double-descent' trend is clearly seen in all of the plots, 
-            where the prediction error increases slightly after a specific length of training data,            
+            Figure~\ref{fig:prac_system_params} shows the prediction error for different payloads with practical data. 
+            Only \gls{DMDc} predictions are plotted here because HAVOK predictions are so similar.
+            This shows that the proposed methods also work in practice with different payload configurations.
+            The `double-descent' trend is clearly seen in the plots 
+            where the prediction error increases slightly after a specific length of training data.            
             
             \input{results/plots/prac_system_params.tex}
 
-        \FloatBarrier\subsection{Predictions}
+            \paragraph
+            Recall that the models producing these predictions do not use a priori information about the plant. 
+            Only input and output measurements are used in the model generation. 
+            Hence the effect of system paramaters such as 
+            multirotor mass, 
+            payload mass, 
+            cable length, 
+            and damping coefficients 
+            are inherintly included in the estimated model.
+            Therefore these other parameters can also be varied 
+            and the system identification algorithm will still be able to determine a prediction model of the system.
+
+        \FloatBarrier\subsection{State predictions}
 
             \paragraph
-            Notice how the prediction deviates more from the measured value as time progresses.
-            This is because of the build up, discrete, initial condition 
+            Figure~\ref{fig:prac_pediction_single_pend_theta_black} 
+            shows the measured and predicted payload angle data of a suspended payload for a velocity step in a practical flight.
+            Note that the model was generated from training data but is tested with a separate set of previously unseen, testing data.
+            Figure~\ref{fig:prac_pediction_single_pend_theta_black} plots the state prediction against testing data.
+            For each prediction run, the model starts with an initial condition, $\bm{x}_{0}$.
+            The state vector of each future time-step, $\bm{x}_{k+1}$, 
+            is propogated from the previous state vector, $\bm{x}_{k}$, 
+            and the input vector logged for that time-step, $\bm{u}_{k}$.
+            Each of these time-step predictions results in a small error which accumulates as the prediction horizon increases.
+            Therefore the prediction error increases as time progresses, as shown in Figure~\ref{fig:prac_pediction_single_pend_theta_black}.
 
             \input{results/plots/prac_pediction_single_pend_theta_black.tex}
 
             \paragraph
-            
+            Figure~\ref{fig:prac_pediction_single_pend_vel_black} 
+            shows the measured and predicted North velocity of the same flight.
+            The oscillations in the velocity response due to the swinging payload is clearly visible in this plot.
+            The model predicts the frequency and size of these oscillations reasonably well.
+            Note that prediction of the payload angle is significantly easier than predicting the velocity response.
+            The payload angle prediction inherantly oscillates around a zero mean.
+            However, the velocity response has a non-zero mean 
+            and depends on numerical integration of the acceleration setpoint data.
+            A slight error in the correction of the setpoint offset 
+            (discussed in Section~\ref{sec:noise} and Section~\ref{sec:length_train_data_prac})
+            may result in a large error in the velocity prediction due to a build up in integration error.
+            However, despite this challenge, the model accurately predicts the velocity step size of the practical data.
+
             \input{results/plots/prac_pediction_single_pend_vel_black.tex}
+
+            % ?? if there is time. Plot prediction of vel with wind
         
         \FloatBarrier\subsection{Extended dimensions}
 
@@ -308,7 +351,7 @@
             This method can easily be extended to damp the swing angle in both the $x$ and $y$ directions.
             Show new control vector and new state vector.
             Talk about steps given.
-            Figure~\ref{fig:xy_predictions} \gls{DMD} predictions
+            Figure~\ref{fig:xy_predictions} \gls{DMDc} predictions
 
             \begin{figure}
                 \captionsetup[subfigure]{justification=centering}
@@ -431,7 +474,7 @@
                 \item subplot prediction of data driven model. subplot prediction of white-box model
                 \item plot \gls{MPC} vs \gls{LQR} v \gls{PID} (no wind) step = 1 m/s
                 \item plot \gls{MPC} vs \gls{LQR} v \gls{PID} (no wind) step = 2 m/s
-                \item plot \gls{DMDc} vs \gls{HAVOK} (\gls{DMD} - Havok)
+                \item plot \gls{DMDc} vs \gls{HAVOK} (\gls{DMDc} - Havok)
                 \item plot with wind disturbacne control
             \end{itemize}
 
@@ -440,7 +483,7 @@
             \begin{itemize}
                 \item subplot prediction of data driven model. subplot prediction of white-box model
                 \item plot \gls{MPC} vs \gls{LQR} v \gls{PID} (no wind)
-                \item plot \gls{DMDc} vs \gls{HAVOK} (\gls{DMD} - Havok)
+                \item plot \gls{DMDc} vs \gls{HAVOK} (\gls{DMDc} - Havok)
             \end{itemize}
 
     \section{HITL}
