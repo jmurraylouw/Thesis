@@ -1,0 +1,44 @@
+\begin{figure}[!htb]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[            
+            xlabel = Time,
+            ylabel = North velocity,
+            x unit = \si{\second},
+            y unit = \si{\metre/\second},
+            xmin = 0,   xmax = 200,
+            ymin = -2.5,  ymax = 2.5,
+            grid = major,
+            legend cell align = left,
+            legend pos = north east,
+            grid style = dashed,
+            legend style = {font = \scriptsize},
+            label style = {font = \scriptsize},
+            tick label style = {font = \scriptsize},
+            width = 0.95\columnwidth,
+            height = 0.5\columnwidth,
+            % initialize Dark2
+            cycle list/Dark2,
+            % combine it with 'mark list*':
+            cycle multiindex* list = {
+                Dark2\nextlist
+            }
+        ]
+        
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = time, y = vel_sp, col sep = comma] 
+        {system_id/csv/training_data_SITL_x_vel_noise_l1_m0-2.csv.csv};
+        \addlegendentry{$V_{N,sp}$}
+        
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = time, y = vel, col sep = comma] 
+        {system_id/csv/training_data_SITL_x_vel_noise_l1_m0-2.csv.csv};
+        \addlegendentry{$V_N$}
+
+        \end{axis}
+    \end{tikzpicture} 
+    
+    \caption{Example of training data with random velocity step inputs
+        ($m_p =$~\SI{0.2}{\kilo\gram}, $l =$~\SI{1}{\meter})}
+    \label{fig:training_data_altitude}
+\end{figure}

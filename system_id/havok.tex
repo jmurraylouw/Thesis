@@ -2,10 +2,20 @@
 \label{sec:havok}
     
     \paragraph
-    \gls{HAVOK} is a data-driven, regression technique that provides a connection 
-    between \gls{DMD} and Koopman operator theory \cite{Brunton2017a, Champion2019}. 
-    We have adapted the standard \gls{HAVOK} algorithm slightly to account for the effect of control and to extract a discrete, linear model that approximates the behaviour of a controlled dynamical system.
-    In this section, a brief overview is provided for this implementation and adaptation of \gls{HAVOK}.
+    \gls{HAVOK} is a data-driven, regression technique that provides a different approximation
+    of the Koopman operator than \gls{DMD} \cite{Brunton2017a, Champion2019}. 
+    The Koopman operator is a method of representing finite-dimensional nonlinear dynamics
+    in terms of an infinite-dimensional linear operator \cite{Brunton2017a}.
+    However, an infinite-dimensional linear operator is not very useful for practical implementation.
+    \gls{DMD} provides a limited approximation of the Koopman operator, because it is based on linear measurements only.
+    \gls{HAVOK} was developed to improve the Koopman approximation of \gls{DMD} by using intrinsic measurement coordinates based on the time-history of the system \cite{Brunton2017a}.
+    
+    \paragraph
+    The original formulation of \gls{HAVOK} is only defined for uncontrolled dynamical systems \cite{Brunton2017a}.
+    In this work, we have adapted the standard \gls{HAVOK} algorithm to account for the effect of control.
+    This implementation well be refered to as \gls{HAVOKc} 
+    \gls{HAVOKc} results in a discrete, linear model that approximates the behaviour of a controlled dynamical system.
+    In this section, a brief overview is provided of this implementation of \gls{HAVOKc}.
     % 
     \paragraph
     A defining characteristic of \gls{HAVOK} is that it uses multiple delay-coordinates (i.e. $\bm{x}_{k-1}, \bm{x}_{k-2}$, etc.) 
@@ -43,7 +53,7 @@
         \bm{\Pi} \approx \Tilde{\bm{U}} \Tilde{\bm{\Sigma}} \Tilde{\bm{V}}^T ,
     \end{equation}
     where $\Tilde{\phantom{a}}$ represents rank-$p$ truncation.
-    It is important to note that the model extracted by \gls{HAVOK} depends on the choice of hyperparameters ($p$ and $q$),
+    It is important to note that the model extracted by \gls{HAVOKc} depends on the choice of hyperparameters ($p$ and $q$),
     and the number of training samples ($N_{train} = w + q -1$).
     
     \paragraph
@@ -60,8 +70,8 @@
     \begin{equation} \label{eq:v_ss}
         \bm{v}_{k+1} = \bm{\Lambda} \bm{v}_k .
     \end{equation}
-    \gls{HAVOK} determines the best fit linear operator $\bm{\Lambda}$ that maps the pseudo-state $\bm{v}_k$ to $\bm{v}_{k+1}$.
-    In order to setup an over-determined equality for (\ref{eq:v_ss}), $\Tilde{\bm{V}}^T$ is divided into two matrices:
+    \gls{HAVOKc} determines the best fit linear operator $\bm{\Lambda}$ that maps the pseudo-state $\bm{v}_k$ to $\bm{v}_{k+1}$.
+    In order to setup an over-determined equality for Equation~\ref{eq:v_ss}, $\Tilde{\bm{V}}^T$ is divided into two matrices:
     \begin{align} \label{eq:v1v2}
         \bm{V}_1 &= \left [
             \begin{array}{*{5}{@{}M{\mycolwd}@{}}} 
@@ -75,12 +85,12 @@
         \right ] ,
     \end{align} 
     where $\bm{V}_2$ is $\bm{V}_1$ advanced a single step forward in time.
-    The matrices from Equation (\ref{eq:v1v2}) are now combined with Equation (\ref{eq:v_ss}) and the best fit $\bm{\Lambda}$ is determined with the Moore-Penrose pseudoinverse:
+    The matrices from Equation~\ref{eq:v1v2} are now combined with Equation~\ref{eq:v_ss} and the best fit $\bm{\Lambda}$ is determined with the Moore-Penrose pseudoinverse:
     \begin{equation} \label{eq:v_dmd}
         \bm{V}_2 = \bm{\Lambda} \bm{V}_1 \phantom{---} \Rightarrow \phantom{---} \bm{\Lambda} \approx \bm{V}_1 \bm{V}_1^{\dagger}
     \end{equation}
     % 
-    It can be shown from Equation (\ref{eq:havok_svd_tilde}) that Equation (\ref{eq:v_ss}) is transformed from the eigen-time-delay coordinate system to the original coordinate system as the following:
+    It can be shown from Equation~\ref{eq:havok_svd_tilde} that Equation~\ref{eq:v_ss} is transformed from the eigen-time-delay coordinate system to the original coordinate system as the following:
     \begin{equation} \label{eq:v_ss_a} 
         \begin{bmatrix}
             \bm{a}_{k+1}  \\  \bm{u}_{k+1} 
@@ -120,7 +130,7 @@
     \begin{figure}[htb]
         \includegraphics[scale = 0.55]{havok_decomposition.png}
         \centering
-        \caption{Illustration of the extraction of $\Tilde{\bm{A}}$ and $\Tilde{\bm{B}}$ from (\ref{eq:v_ss_a})}
+        \caption{Illustration of the extraction of $\Tilde{\bm{A}}$ and $\Tilde{\bm{B}}$ from Equation~\ref{eq:v_ss_a}}
         \label{fig:havok_decomposition}
     \end{figure}
     
@@ -133,18 +143,18 @@
     corresponds to a entry of 1 in the $\Tilde{\bm{A}}$ matrix.
     This is fixed by the model format and is not a function of the system dynamics.
     Due to the least-squares fitting and the coordinate transformation of the algorithm, 
-    \gls{HAVOK} does not produce these exact values in $\Tilde{\bm{A}}$ and $\Tilde{\bm{B}}$. 
+    \gls{HAVOKc} does not produce these exact values in $\Tilde{\bm{A}}$ and $\Tilde{\bm{B}}$. 
     By forcing each of these matrix entries to 1 or 0, the state-prediction performance of the model is improved.
         
     \begin{figure}[htb]
         \includegraphics[scale = 0.75]{havok_force_entries.png}
         \centering
-        \caption{Illustration of forcing the known values in \gls{HAVOK} matrices}
+        \caption{Illustration of forcing the known values in \gls{HAVOKc} matrices}
         \label{fig:havok_force_entries}
     \end{figure}
 
     \paragraph
-    Finally, the improved $\Tilde{\bm{A}}$ and $\Tilde{\bm{B}}$ are inserted into (\ref{eq:havok_state_space}) to render the \gls{HAVOK} model.
+    Finally, the improved $\Tilde{\bm{A}}$ and $\Tilde{\bm{B}}$ are inserted into Equation~\ref{eq:havok_state_space} to render the \gls{HAVOKc} model.
     
 
 

@@ -17,21 +17,23 @@
     account for input delay and state delay in the system.
     Input delay refers to the time delay involved with transporting a control signal to a system, 
     whereas state delay refers to time-separated interactions between system variables \cite{Chen1999}.
-    Hence, we define an state delay vector as:
+    Hence, we define a state delay vector as:
     \begin{equation}
         \bm{d}_{k} = 
         \begin{bmatrix}
             \bm{x}_{k-1} & \bm{x}_{k-2} & \cdots & \bm{x}_{k-q+1}
         \end{bmatrix}^T ,
     \end{equation}
-    $\bm{d}_k \in \R^{(n_x)(q-1)}$ and where $q$ is the number of delay-coordinates 
-    (including the current time-step) used in the model.
+    where 
+    $q$ is the number of delay-coordinates 
+    (including the current time-step) used in the model, and $\bm{d}_k \in \R^{(n_x)(q-1)}$.
     
     \paragraph
     The discrete state-space model is therefore defined as:
     \begin{equation} \label{eq:dmd_state_space}
         \bm{x}_{k+1} = \bm{A} \bm{x}_k + \bm{A}_d \bm{d}_k + \bm{B} \bm{u}_k ,
     \end{equation}
+    where
     \( \bm{A} \in \R^{n_x \times n_x} \) is the system matrix, 
     \( \bm{A}_1 \in \R^{(q-1) \cdot n_x ~ \times ~ (q-1) \cdot n_x} \) is the state delay system matrix and 
     \( \bm{B} \in \R^{n_x \times n_u} \) is the input matrix.
@@ -39,9 +41,9 @@
     \paragraph
     The training data consists of full-state measurements, $\bm{x}_k$, and corresponding inputs, $\bm{u}_k$, 
     taken at regular intervals of $\Delta t = T_s$, during a simulated flight with Cascaded \gls{PID} control.
-    In a practical flight, these time-series measurements need to be saved in memory because it is used as a single batch by \gls{DMD}.
-    Note that \gls{DMD} can be applied in a recursive manner as described in \cite{Noack2016}, 
-    However this implementation is not considered because memory size will not be a limitation since a companion computer will be used.
+    In a practical flight, these time-series measurements need to be saved in memory because it is processed as a single batch by \gls{DMD}.
+    Note that \gls{DMD} can be applied in a recursive manner as described in \cite{Noack2016}.
+    However this implementation is not considered because a companion computer with significant memory size can be used.
     
     \paragraph
     The training data is collected into the following matrices:
@@ -77,13 +79,13 @@
     $\bm{X^\prime}$ is the matrix $\bm{X}$ shifted forward by one time-step, 
     $\bm{X}_d$ is the matrix with delay states, 
     and $\bm{\Upsilon}$ is the matrix of inputs.
-    Equation (\ref{eq:dmd_state_space}) can be combined with the matrices in Equation (\ref{eq:dmd_matrices}) to produce:
+    Equation~\ref{eq:dmd_state_space} can be combined with the matrices in Equation~\ref{eq:dmd_matrices} to produce:
     \begin{equation}
         \bm{X^\prime} = \bm{A} \bm{X} + \bm{A}_d \bm{X}_d + \bm{B} \bm{\Upsilon} .
     \end{equation}
     Note that the primary objective of \gls{DMDc} is to determine the best fit model matrices, $\bm{A}$, $\bm{A}_d$ and $\bm{B}$, 
     given the data in $\bm{X^\prime}$, $\bm{X}$, $\bm{X}_d$, and $\bm{\Upsilon}$ \cite{Proctor2016c}.
-    In order to group the unknowns into a single matrix, (\ref{eq:dmd_state_space}) is manipulated into the form,
+    In order to group the unknowns into a single matrix, Equation~\ref{eq:dmd_state_space} is manipulated into the form,
     \begin{equation} \label{eq:G_Omega}
         \bm{X^\prime} =   
         \begin{bmatrix} 
@@ -116,12 +118,12 @@
     % \murray{maybe insert colour pictures showing matrices ??}        
 
     \paragraph
-    By combining (\ref{eq:tilde_svd}) with the over-constrained equality in (\ref{eq:G_Omega}), 
+    By combining Equation~\ref{eq:tilde_svd} with the over-constrained equality in Equation~\ref{eq:G_Omega}, 
     the least-squared solution, $\bm{G}$, can be found with:
     \begin{equation}
         \bm{G} \approx \bm{X^\prime} \Tilde{\bm{V}} \Tilde{\bm{\Sigma}}^{-1} \Tilde{\bm{U}} .
     \end{equation}
-    By reversing \ref{eq:G_Omega}, $\bm{G}$ can now be separated into:
+    By reversing Equation~\ref{eq:G_Omega}, $\bm{G}$ can now be separated into:
     \(
         \bm{G} = \begin{bmatrix} \bm{A} & \bm{A}_d & \bm{B} \end{bmatrix}.
     \)

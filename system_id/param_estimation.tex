@@ -4,34 +4,34 @@
     The purpose of parameter estimation is to determine unknown values 
     required by a predetermined, white-box model.
     The identified model is used to design a \gls{LQR} controller and
-    therefore needs to be in a linear, continuos-time, state-space form.
+    therefore needs to be in a linear, continuous-time, state-space form.
     This model was derived and linearised a priori in Section~\ref{sec:linear_model}.
     The unknown parameters in the model include the payload mass, $m_p$ and the cable length, $l$.
     Two separate methods are used to estimate each of these parameters.
     This method was used by \cite{Erasmus2020} and \cite{Slabber2020} 
     to design a \gls{LQR} controller and implement swing damping control 
-    of a mulitrotor with an unknown suspended payload.
+    of a multirotor with an unknown suspended payload.
     
 \subsection{Payload mass estimation}
 
     \paragraph
     \gls{RLS} is used by \cite{Erasmus2020} and \cite{Slabber2020} to estimate the payload mass.
-    It is assumed that the mulitrotor mass is known before flight, 
+    It is assumed that the multirotor mass is known before a flight, 
     therefore the payload mass can be estimated from the additional trust required during hover.
     In both \cite{Erasmus2020} and \cite{Slabber2020} it is demonstrated 
     that \gls{RLS} is very accurate for a system nearly identical to the one considered in this work.
     To compare other aspects of the white-box and black-box techniques with more clarity, 
-    it will therefore be assumed that the method estimates $m_p$ with perfect accuracy.
+    it will be assumed that the method estimates $m_p$ with perfect accuracy.
     This isolates any inaccuracies in the white-box model to 
     either the a priori modelling or the cable length estimation.
 
     \paragraph
     It should be noted however that this method is dependant on the assumption 
     that the vehicle mass is known and remains unchanged.
-    The method will clearly be inaccurate if a unknown mass is added to the mulitrotor 
+    The method will clearly be inaccurate if an unknown mass is added to the multirotor 
     in conjunction with the suspended payload.
     Common practical examples of this include adding a camera to the vehicle or using a different battery for a different flight range.
-    In these cases the mass estimation method will have to be redesigned.
+    In these cases, the mass estimation method will have to be redesigned.
     This is an inherent problem of the white-box techniques.
     The parameter estimation methods are designed for specific modelling assumptions 
     and are not adaptable to different types of payload loadings.
@@ -46,17 +46,17 @@
     \begin{equation} \label{eq:nat_freq}
         \omega_n = \sqrt{ \frac{g}{l} \cdot \frac{m_q + m_p}{m_q}} .
     \end{equation}
-    The cable length can clearly be calculated from (\ref{eq:nat_freq}) if the other parameters are known.
+    The cable length can clearly be calculated from Equation~\ref{eq:nat_freq} if the other parameters are known.
     The natural frequency is measured by performing a \gls{FFT} on the payload swing angle response 
-    after a velocity step by the mulitrotor.
+    after a velocity step by the multirotor.
     The dominant frequency identified by the \gls{FFT} during free swing is an approximate measurement
     of the natural frequency of the payload.
-    Note that the measured frequency actually corresponds to the damped natural frequency.
+    Note that the measured frequency rather corresponds to the damped natural frequency.
     The swing angle damping is caused by 
     the velocity controller, 
     friction at the attachment of the cable to the drone,
     and air drag.
-    However it is assumed that the damping coefficient is small enough for
+    However, it is assumed that the damping coefficient is small enough for
     the damped natural frequency to closely approximate the theoretical natural frequency.
     % This method is applied successfully by \cite{Erasmus2020} and \cite{Slabber2020} for cable length estimation.
     
@@ -64,14 +64,14 @@
     Figure~\ref{fig:vel_step_single_pend} shows the payload swing angle response 
     to a position step setpoint.
     The first few seconds of the step response are excluded from the \gls{FFT} 
-    to minimise the effect of the transient response and the mulitrotor controllers 
+    to minimise the effect of the transient response and the multirotor controllers 
     on the natural frequency measurement.
     Figure~\ref{fig:FFT_vel_step} shows the resulting single-sided amplitude spectrum of the \gls{FFT} of this data.
     
     \paragraph
     The dominant frequency is clearly identified by the peak at \SI{0.520}{\radian/\second}.
     Since $m_q$, $m_p$ and $g$ are known, and $\omega_n$ has been measured, 
-    $l$ can be determined from (\ref{eq:nat_freq}).
+    $l$ can be determined from Equation~\ref{eq:nat_freq}.
     The estimated length for this simulation is \SI{0.953}{\metre}.
     The actual cable length is \SI{1}{\metre}, therefore this estimation has an error of 4.7\%.
     As documented \cite{Erasmus2020} and \cite{Slabber2020}, an error of this magnitude is acceptably small

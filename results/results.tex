@@ -28,7 +28,7 @@
         \paragraph
         As discussed in Chapter~\ref{chap:system_id}, 
         generating data for the parameter estimation techniques involves two flight stages.
-        Firstly, the mulitrotor hovers with the suspended payload to gather data for payload mass estimation.
+        Firstly, the multirotor hovers with the suspended payload to gather data for payload mass estimation.
         Then a velocity step setpoint is commanded
         to stimulate the swinging payload system and gather data for cable length estimation.
         Hence, the same methodology that was followed simulated flights will be used for practical flights.
@@ -37,12 +37,12 @@
         For the data-driven techniques, the generation of practical training and testing data
         also follows the same general methodolgy as simulated flights:
         \begin{enumerate}
-            \item Data logging starts when the mulitrotor is armed
+            \item Data logging starts when the multirotor is armed
             \item Takeoff and hover with the qaudrotor
             \item Command velocity step setpoints
-            \item Land the mulitrotor
-            \item Data logging stops when the mulitrotor is disarmed
-            \item Download data log from the mulitrotor
+            \item Land the multirotor
+            \item Data logging stops when the multirotor is disarmed
+            \item Download data log from the multirotor
             \item Split data into separate training and testing periods
             \item Build a model from the training data
             \item Perform model predictions over the testing data to calculate an error metric
@@ -59,7 +59,7 @@
         
         \paragraph
         The major differences between the simulated and practical flights involve the attachment of the payload and wind disturbances.
-        In simulation, the payload cable is attached to the exact \gls{CoM} of the mulitrotor.
+        In simulation, the payload cable is attached to the exact \gls{CoM} of the multirotor.
         However for practical flights the cable is attached slightly below the \gls{CoM} of Honeybee due to mechanical constraints.
         Practical flights are also influenced by wind disturbances which was not considered in simulation.
         The measurement noise experienced by a practical multirotor may also differ from the noise models used in simulation.
@@ -102,7 +102,7 @@
         %% ?? Add this if there is time
         % \subsection{Mass estimation} 
         
-        %     As discussed in Chapter~\ref{chap:system_id}, for this method to work, the mass of the mulitrotor needs to be known.
+        %     As discussed in Chapter~\ref{chap:system_id}, for this method to work, the mass of the multirotor needs to be known.
         %     If a heavier battery or an extra accessory is added to the vehicle, 
         %     the new vehicle mass will first have to be estimated in a separate flight, before the payload can be attached.
         %     This is one of the disadvantages of the white-box modelling with parameter estimation based techniques.
@@ -203,7 +203,7 @@
     \FloatBarrier\section{Data-driven system identification with practical data}
 
         \paragraph
-        In Chapter~\ref{chap:system_id} it was shown that \gls{DMDc} and \gls{HAVOK} 
+        In Chapter~\ref{chap:system_id} it was shown that \gls{DMDc} and \gls{HAVOKc} 
         build accurate state prediction models for the considered system in simulation.
         It was also shown in Chapter~\ref{chap:modelling} that the simulation environment 
         is a realistic representation of the practical system.
@@ -249,12 +249,12 @@
             \input{results/plots/havok_vs_dmd_Ttrain_2mps.tex}
 
             \paragraph
-            Figure~\ref{fig:havok_vs_dmd_Ttrain_2mps} compares the prediction errors of \gls{DMDc} and \gls{HAVOK} models.
+            Figure~\ref{fig:havok_vs_dmd_Ttrain_2mps} compares the prediction errors of \gls{DMDc} and \gls{HAVOKc} models.
             It is evident that the two techniques produce similar prediction errors for different wind conditions.
             The difference in prediction error is very small 
             and will probably not effect the performance of the controllers using these models.
             This shows that the minor difference in the implementation of the algorithms has a negilible effect on the resultant models.
-            The \gls{DMDc} implementation is therefore prefered over \gls{HAVOK} due to a lower computational complexity.
+            The \gls{DMDc} implementation is therefore prefered over \gls{HAVOKc} due to a lower computational complexity.
 
             
         \FloatBarrier\subsection{Hyperparameters}
@@ -470,7 +470,7 @@
 
         \paragraph
         After the system identification phase, active swing damping control can be applied
-        to the mulitrotor and payload system.
+        to the multirotor and payload system.
         The control architectures are summarised in Table~\ref{tbl:controller_summary} 
         by pairing the system identification techniques along with the appropriate controllers.
         It was firstly shown in Chapter~\ref{chap:system_id} that the system identifcation techniques worked in simulation.
@@ -508,7 +508,7 @@
                 \item subplot prediction of data driven model. subplot prediction of white-box model
                 \item plot \gls{MPC} vs \gls{LQR} v \gls{PID} (no wind) step = 1 m/s
                 \item plot \gls{MPC} vs \gls{LQR} v \gls{PID} (no wind) step = 2 m/s
-                \item plot \gls{DMDc} vs \gls{HAVOK} (\gls{DMDc} - Havok)
+                \item plot \gls{DMDc} vs \gls{HAVOKc} (\gls{DMDc} - Havok)
                 \item plot with wind disturbacne control
             \end{itemize}
 
@@ -517,7 +517,7 @@
             \begin{itemize}
                 \item subplot prediction of data driven model. subplot prediction of white-box model
                 \item plot \gls{MPC} vs \gls{LQR} v \gls{PID} (no wind)
-                \item plot \gls{DMDc} vs \gls{HAVOK} (\gls{DMDc} - Havok)
+                \item plot \gls{DMDc} vs \gls{HAVOKc} (\gls{DMDc} - Havok)
             \end{itemize}
 
     \section{HITL}

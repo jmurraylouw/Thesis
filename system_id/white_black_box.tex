@@ -18,15 +18,15 @@
 
         \paragraph 
         This approach is used by \cite{Erasmus2020} and \cite{Slabber2020} for system identification 
-        for swing damping control of a mulitrotor with an unknown suspended payload.
+        for swing damping control of a multirotor with an unknown suspended payload.
         The system was modelled as two rigid bodies connected by a link and the following assumptions were made regarding the suspended payload:
         \begin{itemize}
             \item The payload is a point mass.
             \item The link is massless.
             \item The link is rigid.
-            \item The link is attached to the \gls{CoM} of the mulitrotor.
+            \item The link is attached to the \gls{CoM} of the multirotor.
         \end{itemize}
-        The only unknown parameters in the mulitrotor and payload model is the payload mass and the link length.
+        The only unknown parameters in the multirotor and payload model is the payload mass and the link length.
         These parameters are first estimated and then inserted into the predefined, linearised model.
         This model is used by a \gls{LQR} controller to damp swing angles while also controlling the vehicle.
 
@@ -44,9 +44,9 @@
         Therefore the white-box approach works well for systems with predictable physics, 
         however is not very adaptable to systems that deviate from the predefined dynamics.
         The payload considered by \cite{Erasmus2020} and \cite{Slabber2020} is limited to a small rigid mass 
-        suspended from the mulitrotor by a non-stretching cable. 
+        suspended from the multirotor by a non-stretching cable. 
         In this configuration it was shown that a \gls{LQR} controller 
-        successfully controls a mulitrotor and minimises the payload swing angles.
+        successfully controls a multirotor and minimises the payload swing angles.
         However, if a payload or cable is used that violates one of the modelling assumptions, 
         the predefined model no longer accurately represents the system.
         Many payloads considered for practical drone deliveries do not conform to these assumptions.
@@ -90,27 +90,27 @@
         Dynamical models can be categorised as either non-linear or linear models.
         Non-linear models are often more accurate than linear models 
         because real-world system mostly contain non-linear dynamics.
-        The dynamics of a mulitrotor and suspended payload are also non-linear.
-        % Examples of black box models with mulitrotors and payloads in literature ???
+        The dynamics of a multirotor and suspended payload are also non-linear.
+        % Examples of black box models with multirotors and payloads in literature ???
 
         \paragraph
         However, non-linear models are inherently more complex than linear models. 
         Controllers based on non-linear models are usually more computationally complex than those with linear models.
-        The control architectures used for mulitrotors in practical applications are mostly implemented on onboard hardware.
+        The control architectures used for multirotors in practical applications are mostly implemented on onboard hardware.
         Therefore there is value in low-complexity, linear models because these may be simple enough to execute on low cost hardware.
         % trade-off between accuracy and complexity.??
-        Non-linear models may require control implementations that are too computationally expensive and may not be practically realisable on the available hardware on a mulitrotor.
+        Non-linear models may require control implementations that are too computationally expensive and may not be practically realisable on the available hardware on a multirotor.
         
         \paragraph
-        \gls{DMDc} and \gls{HAVOK} are the two data-driven system identification methods investigated in this work. 
+        \gls{DMDc} and \gls{HAVOKc} are the two data-driven system identification methods investigated in this work. 
         These are linear regression techniques that produce linear models that approximate non-linear dynamics.
         Non-linear data-driven techniques like Neural Networks and SINDy \cite{Brunton2016a} 
         may produce models that are more accurate than linear techniques.
         However the gain in accuracy will be at the cost of a greater computational complexity.
         % \murray{Name more techniques ??}
-        \gls{DMDc} and \gls{HAVOK} are less computationally complex 
+        \gls{DMDc} and \gls{HAVOKc} are less computationally complex 
         and their models are suitable for linear \gls{MPC}, 
         which is significantly faster than non-linear \gls{MPC}.
-        This is desirable for a practical mulitrotor implementation, where onboard computational power is limited.
+        This is desirable for a practical multirotor implementation, where onboard computational power is limited.
 
     % \subsection{Comparison of the techniques} ??

@@ -8,24 +8,24 @@
     % and the original attitude controls are used for inner loop controllers.
     % Therefore the attitude state variables of the quadrtotor are excluded from the system identification model.
 
-    % The model identified by \gls{DMDc} or \gls{HAVOK} will be used to design a longitudinal velocity controller.
+    % The model identified by \gls{DMDc} or \gls{HAVOKc} will be used to design a longitudinal velocity controller.
     % As shown in \ref{fig:system_id_plant}, the plant considered for system identification includes the dynamics of the inner loop, attitude controllers.
     % The swing damping controllers which will utilise the identified model act only in the translational velocity loop.
     % Because of the large time-scale separation between the inner and outer loop controllers, 
     % the attitude states have a negilable effect on the plant dynamics seen by the velocity controller.
-    % As discussed in Section~\ref{sec:linear_model}, the payload minimally effects the mulitrotor attitude because it is attached near the \gls{CoM} of the vehicle.
+    % As discussed in Section~\ref{sec:linear_model}, the payload minimally effects the multirotor attitude because it is attached near the \gls{CoM} of the vehicle.
     % Therefore the attitude states are excluded from the system identification model.
 
     \paragraph
     Only the North velocity controller will be considered in this section. 
-    Because of the symmetry of the mulitrotor, this controller can then duplicated for East velocity control.
+    Because of the symmetry of the multirotor, this controller can then duplicated for East velocity control.
     The resulting input vector of the system identification plant is given by,
     \begin{equation}
         \bm{u} = \begin{bmatrix}
             A_{N,sp}
         \end{bmatrix} .
     \end{equation}
-    For swing damping control, the controllers require state feedback from both the mulitrotor and payload,
+    For swing damping control, the controllers require state feedback from both the multirotor and payload,
     hence the state vector of the considered plant is,
     \begin{equation}
         \bm{x} = \begin{bmatrix}
@@ -37,12 +37,15 @@
 
     \paragraph
     Note that position is not included in the state vector because it does not affect the velocity controller.
-    Also note that the inner loop controllers handle the attitude dynamics of the mulitrotor.
-    During pure longitudinal velocity setpoints the mulitrotor experiences negligible altitude changes due the swinging payload.
-    This is due to speed of the altitude controllers and the weak coupling between the payload angle and the altitude dynamics.
+    Also note that the inner loop controllers handle the attitude dynamics of the multirotor.
+    During simulations of pure longitudinal velocity setpoints, 
+    it was observed that the multirotor experiences negligible altitude changes due the swinging payload.
+    % ?? This will be discussed in Section~\ref{sec:}
+    % This is due to the speed of the altitude controllers and the weak coupling between the payload angle and the altitude dynamics, 
+    % discussed in Chapter~\ref{chap:modelling}.
     The plant seen by the system identification process therefore mimics the common pendulum-on-a-cart model.
     A schematic of this \gls{2D} plant is shown in Figure \ref{fig:floating_pend}.
-    In the following sections, simulations of the full mulitrotor and payload system will be performed
+    In the following sections, simulations of the full multirotor and payload system will be performed
     and different methods will be applied to identify different models of this plant.
 
     \begin{figure}[htb]
@@ -56,7 +59,7 @@
     % were derived with Lagrangian mechanics in Chapter~\ref{chap:modelling}. 
 
     % From this derivation it is clear that the angular velocity of the payload, $\dot{\theta}$, is required to described the system dynamics.
-    % However, $\dot{\theta}$ is not measured directly on the considered practical mulitrotor setup.
+    % However, $\dot{\theta}$ is not measured directly on the considered practical multirotor setup.
     % Instead, the payload angle, $\theta$, is measured by a potentiometer attached to a \gls{ADC} on Honeybee as described in Chapter \ref{chap:exp_design}.
     % As expected, this measurement is extremely noisy.
     % \murray{Maybe insert figure to show noise}

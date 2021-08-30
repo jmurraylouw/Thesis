@@ -16,7 +16,7 @@
     \paragraph
     This chapter will discuss these approaches and describe the differences between them.
     For each approach, specific estimation techniques 
-    will be applied to simulation data of the mulitrotor and payload system.
+    will be applied to simulation data of the multirotor and payload system.
     The results of these techniques will then be discussed.
 
     \input{system_id/white_black_box.tex}
@@ -29,13 +29,13 @@
     \section{Conclusion}
 
         \paragraph
-        \gls{DMDc} and \gls{HAVOK} produce very similar prediction errors for a range of different simulation conditions.
-        \gls{HAVOK} generally has slightly lower errors, but this may have a negligible effect on control.
+        \gls{DMDc} and \gls{HAVOKc} produce very similar prediction errors for a range of different simulation conditions.
+        \gls{HAVOKc} generally has slightly lower errors, but this may have a negligible effect on control.
         \gls{DMDc} will be used in the remainder of this work 
-        because the algorithm has been studied more, is less computationally complex and provides similar performance to \gls{HAVOK}.
+        because the algorithm has been studied more, is less computationally complex and provides similar performance to \gls{HAVOKc}.
         These data-driven methods were shown to produce accurate predictions of the payload dynamics 
         with a practical length of training data, sample time and noise level.
-        This proves to be promising for practical implementation with a \gls{MPC} on a mulitrotor companion computer.
+        This proves to be promising for practical implementation with a \gls{MPC} on a multirotor companion computer.
         The data-driven methods also proved to provide accurate prediction with a range of different payload parameters
         and even with payloads that act as a double pendulum.
         In contrast, the considered white-box system identification technique 
@@ -43,8 +43,8 @@
         Therefore the data-driven approach provides a more general system identification method 
         that can be used for a range of different suspended payloads without being redesigned for specific dynamics.
 
-        % \gls{DMDc} and \gls{HAVOK} work very similarly with single pend.
-        % \gls{HAVOK} has slightly better prediction accuracy, but this small difference has neglible effect on control.
+        % \gls{DMDc} and \gls{HAVOKc} work very similarly with single pend.
+        % \gls{HAVOKc} has slightly better prediction accuracy, but this small difference has neglible effect on control.
         % It is difficult to compare the white-box to the black-box models because the real effect will only be seen during control.
         % However it is clear that the accuracy of the white-box model degrades significantly 
         % when a payload that causes double pendulum dynamics.
