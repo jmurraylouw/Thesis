@@ -1,4 +1,4 @@
-\section{Hankel alternative view of Koopman} 
+\section{Hankel alternative view of Koopman with control} 
 \label{sec:havok}
     
     \paragraph
@@ -16,7 +16,7 @@
     This implementation well be refered to as \gls{HAVOKc} 
     \gls{HAVOKc} results in a discrete, linear model that approximates the behaviour of a controlled dynamical system.
     In this section, a brief overview is provided of this implementation of \gls{HAVOKc}.
-    % 
+    
     \paragraph
     A defining characteristic of \gls{HAVOK} is that it uses multiple delay-coordinates (i.e. $\bm{x}_{k-1}, \bm{x}_{k-2}$, etc.) 
     in the system identification process.
@@ -29,11 +29,11 @@
     \paragraph
     The resulting discrete state-space model is therefore in the form,
     \begin{equation} \label{eq:havok_state_space}
-        \bm{a}_{k+1} = \Tilde{\bm{A}} \bm{a}_k + \Tilde{\bm{B}} \bm{u}_k ,
+        \bm{a}_{k+1} = \bm{A}_H \bm{a}_k + \bm{B}_H \bm{u}_k ,
     \end{equation}
-    where \( \Tilde{\bm{A}} \in \R^{(q \cdot n_x) \times (q \cdot n_x)} \) is the system matrix, 
-    and \( \Tilde{\bm{B}} \in \R^{(q \cdot n_x) \times n_u} \) is the input matrix. 
-    Here, $\Tilde{\phantom{a}}$ is used to differentiate these matrices from $\bm{A}$ and $\bm{B}$ used in \gls{DMDc}.
+    where \( \bm{A}_H \in \R^{(q \cdot n_x) \times (q \cdot n_x)} \) is the system matrix, 
+    and \( \bm{B}_H \in \R^{(q \cdot n_x) \times n_u} \) is the input matrix. 
+    Here, the subscript of $\bm{A}_H$ and $\bm{B}_H$ is used to differentiate these matrices from $\bm{A}$ and $\bm{B}$ used in \gls{DMDc}.
     % 
     \paragraph
     The original \gls{HAVOK} algorithm, developed by \cite{Brunton2017}, constructs a Hankel matrix from output variables only. 
@@ -101,7 +101,7 @@
         \end{bmatrix} .
     \end{equation}    
     % 
-    % This form is used to extract $\Tilde{\bm{A}}$ and $\Tilde{\bm{B}}$ from the matrix,
+    % This form is used to extract $\bm{A}_H$ and $\bm{B}_H$ from the matrix,
     % \( 
     %     (\Tilde{\bm{U}} \Tilde{\bm{\Sigma}}) \bm{\Lambda} (\Tilde{\bm{U}}  \Tilde{\bm{\Sigma}})^{\dagger}
     % \), in the following way:
@@ -111,7 +111,7 @@
     %     \end{bmatrix}
     %     \phantom{.} = \phantom{.} 
     %     \begin{bmatrix}
-    %         \Tilde{\bm{A}} \phantom{.....} \Tilde{\bm{B}} \\
+    %         \bm{A}_H \phantom{.....} \bm{B}_H \\
     %         \textit{(discarded)}
     %     \end{bmatrix}
     %     \phantom{.}
@@ -121,7 +121,7 @@
     % \end{equation}    
     
     \paragraph
-    $\Tilde{\bm{A}}$ and $\Tilde{\bm{B}}$ can now be extracted from the matrix,
+    $\bm{A}_H$ and $\bm{B}_H$ can now be extracted from the matrix,
     \( 
         (\Tilde{\bm{U}} \Tilde{\bm{\Sigma}}) \bm{\Lambda} (\Tilde{\bm{U}}  \Tilde{\bm{\Sigma}})^{\dagger}
     \).
@@ -130,7 +130,7 @@
     \begin{figure}[htb]
         \includegraphics[scale = 0.55]{havok_decomposition.png}
         \centering
-        \caption{Illustration of the extraction of $\Tilde{\bm{A}}$ and $\Tilde{\bm{B}}$ from Equation~\ref{eq:v_ss_a}}
+        \caption{Illustration of the extraction of $\bm{A}_H$ and $\bm{B}_H$ from Equation~\ref{eq:v_ss_a}}
         \label{fig:havok_decomposition}
     \end{figure}
     
@@ -140,10 +140,10 @@
     Also note that the state vector, $\bm{a}_k$, includes delay-coordinates, therefore some matrix entries are independent of the dynamics.
     This is illustrated in Figure~\ref{fig:havok_force_entries} for an example model with $q = 4$.
     For example, the mapping of $\bm{x}_k$ in the state vector to $\bm{x}_k$ in the predicted state vector
-    corresponds to a entry of 1 in the $\Tilde{\bm{A}}$ matrix.
+    corresponds to a entry of 1 in the $\bm{A}_H$ matrix.
     This is fixed by the model format and is not a function of the system dynamics.
     Due to the least-squares fitting and the coordinate transformation of the algorithm, 
-    \gls{HAVOKc} does not produce these exact values in $\Tilde{\bm{A}}$ and $\Tilde{\bm{B}}$. 
+    \gls{HAVOKc} does not produce these exact values in $\bm{A}_H$ and $\bm{B}_H$. 
     By forcing each of these matrix entries to 1 or 0, the state-prediction performance of the model is improved.
         
     \begin{figure}[htb]
@@ -154,7 +154,7 @@
     \end{figure}
 
     \paragraph
-    Finally, the improved $\Tilde{\bm{A}}$ and $\Tilde{\bm{B}}$ are inserted into Equation~\ref{eq:havok_state_space} to render the \gls{HAVOKc} model.
+    Finally, the improved $\bm{A}_H$ and $\bm{B}_H$ are inserted into Equation~\ref{eq:havok_state_space} to render the \gls{HAVOKc} model.
     
 
 
