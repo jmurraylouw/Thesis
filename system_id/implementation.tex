@@ -1,8 +1,12 @@
 \section{Implementation and results}
 
     \paragraph
-    Numerous simulations were performed with different system configurations to investigate the performance of these system identification techniques.
-    Firstly, the influence of design parameters on the algorithm performance will be discussed.
+    In this section, the techniques introduced in 
+    Section~\ref{sec:param_estimation}, 
+    \ref{sec:dmdc}, 
+    and \ref{sec:havok} 
+    will be applied to simulation data.
+    Firstly, the influence of the design parameters on the algorithm performance will be discussed.
     These parameters include hyperparameters, the length of training data and the algorithm sample time.
     The effect of conditions that are not determined by algorithm design will also be explored, 
     like measurement noise, and the physical properties of the payload.
@@ -153,10 +157,11 @@
         \end{equation}
         where 
         % $N_{run}$ is the number of samples used in the prediction run,
+        $\bm{MAE}$ is a vector with the MAE of each state,
         $\bm{x_k}$ is the actual state vector at time-step $k$, 
         $\bm{\hat{x_k}}$ is the state prediction, 
         and 
-        $\bm{MAE}$ is a vector with the MAE of each state.
+        $\bm{\hat{x_k}}$ is the state prediction.
         
         \paragraph
         Popular, scale-free error metrics, like \gls{MAPE}, \gls{MRAE} and \gls{MASE}, are also based on the $l_1$~norm,

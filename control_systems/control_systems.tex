@@ -18,3 +18,58 @@
         QP solver
         C+ generation
 
+    \FloatBarrier\section{Implentation and results}
+
+        \paragraph
+        After the system identification phase, active swing damping control can be applied
+        to the multirotor and payload system.
+        The control architectures are summarised in Table~\ref{tbl:controller_summary} 
+        by pairing the system identification techniques along with the appropriate controllers.
+        It was firstly shown in Chapter~\ref{chap:system_id} that the system identifcation techniques worked in simulation.
+        Emphasise that control is now applied in a full \gls{SITL} simulation.
+
+        \paragraph
+        MATLAB is used to generate a \gls{MPC} \gls{ROS} node 
+        This \gls{ROS} node receives state feedback from the Gazebo simulator,
+        computes the optimal control action,
+        and sends the setpoint to PX4 through the package 'mavros'.
+
+        \begin{table}[!h]
+            \renewcommand{\arraystretch}{1.1}
+            \centering
+            \caption{Summary of the system identification techniques paired with the active damping controllers.}
+            \begin{tabularx}{0.75\linewidth}{@{}lll@{}}
+                \toprule
+                \multicolumn{2}{c}{\textbf{System identification}}   & \textbf{Controller} \\
+                \cmidrule(lr){1-2}
+                Category    & Algorithm                     & \\
+                \midrule
+                White-box   & RLS mass estimator, and       & LQR \\
+                            & FFT cable length estimator    & \\
+                Black-box   & DMDc, or                      & MPC \\
+                            & HAVOK                         & \\
+                \bottomrule
+            \end{tabularx}
+            \label{tbl:controller_summary}
+        \end{table}
+        
+
+        \FloatBarrier\subsection{Single pendulum}
+
+            \begin{itemize}
+                \item subplot prediction of data driven model. subplot prediction of white-box model
+                \item plot \gls{MPC} vs \gls{LQR} v \gls{PID} (no wind) step = 1 m/s
+                \item plot \gls{MPC} vs \gls{LQR} v \gls{PID} (no wind) step = 2 m/s
+                \item plot \gls{DMDc} vs \gls{HAVOKc} (\gls{DMDc} - Havok)
+                \item plot with wind disturbacne control
+            \end{itemize}
+
+        \FloatBarrier\subsection{Double pendulum}
+
+            \begin{itemize}
+                \item subplot prediction of data driven model. subplot prediction of white-box model
+                \item plot \gls{MPC} vs \gls{LQR} v \gls{PID} (no wind)
+                \item plot \gls{DMDc} vs \gls{HAVOKc} (\gls{DMDc} - Havok)
+            \end{itemize}
+
+    

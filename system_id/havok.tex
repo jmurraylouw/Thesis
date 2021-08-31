@@ -145,6 +145,7 @@
     Due to the least-squares fitting and the coordinate transformation of the algorithm, 
     \gls{HAVOKc} does not produce these exact values in $\bm{A}_H$ and $\bm{B}_H$. 
     By forcing each of these matrix entries to 1 or 0, the state-prediction performance of the model is improved.
+    Finally, the improved $\bm{A}_H$ and $\bm{B}_H$ are inserted into Equation~\ref{eq:havok_state_space} to render the \gls{HAVOKc} model.
         
     \begin{figure}[htb]
         \includegraphics[scale = 0.75]{havok_force_entries.png}
@@ -153,9 +154,8 @@
         \label{fig:havok_force_entries}
     \end{figure}
 
-    \paragraph
-    Finally, the improved $\bm{A}_H$ and $\bm{B}_H$ are inserted into Equation~\ref{eq:havok_state_space} to render the \gls{HAVOKc} model.
-    
+    % \paragraph
+    % ?? High level comparison of DMDc and HAVOKc
 
 
 
