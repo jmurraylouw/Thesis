@@ -6,22 +6,21 @@
     \paragraph
     In previous chapters it was shown with simulation data that both the white-box and black-box system identifcation techniques
     accurately represent the dynamics of a multirotor with a suspended payload.
-    However, practical flights may differ significantly from simulations, which may affect the performance of these techniques.
+    However, practical flights may differ significantly from simulations, which would affect the performance of these techniques.
     For example, wind causes an unmeasured disturbance which influences the flight of a multirotor, 
-    but was not considered during simulation.
-    Wind disturbance involves randomly fluctuating forces 
-    which are applied to the vehicle, payload and cable.
-    It is also very difficult to model these forces accurately and determine accurate drag coefficients of the practical system.
-
+    but this disturbance was not considered in simulation.
+    The practical dynamics and sensor noise may also differ from the simulation model, which further motivates the need for practical data.
+    
     \paragraph
-    In this chapter the system identification techniques will be applied to practical flight data.
-    The performance of the techniques will also be evaluated for practical flights with a dynamic payload.
-    Furthermore, the suitability of the system identification models
-    for swing damping control will be investigated in simulation.
-    The performance of the swing damping controllers will be evaluated for a range of different system configurations.
+    In this chapter, the system identification techniques will be applied to practical flight data.
+    The effect of different system configurations and wind conditions on the performance of these techniques will be investiagted.
+    These techniques will also be applied and evaluated with a practical dynamic payload.
+    % Furthermore, the suitability of the system identification models
+    % for swing damping control will be investigated in simulation.
+    % The performance of the swing damping controllers will be evaluated for a range of different system configurations.
+    Finally, it will be determined whether the proposed system identification with control architectures are feasable for practical flights.
     HITL simualtions will also be performed to determine whether the proposed hardware 
     can handle the computational complexity of these controllers.
-    Finally, it will be determined whether the proposed control architectures are feasable for practical flights.
 
     \FloatBarrier\section{Methodology}
         
@@ -219,6 +218,7 @@
             to the considered system which is detrimental to system identification.
             This disturbance consists of a randomly fluctuating force
             applied to the vehicle, cable and payload.
+            It is very difficult to model these forces accurately and determine accurate drag coefficients of the practical system for a realistic simulation .
             The mean force applied to the multirotor by the wind
             affects the mean offset in acceleration setpoint data 
             because the velocity controller integrators compensates for the disturbance.
