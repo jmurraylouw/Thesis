@@ -194,16 +194,24 @@
             This results in a simple pendulum model that best matches the dynamic payload oscillations. 
 
             \input{results/plots/double_pend_cable_length_vs_train_time.tex}
-
+            
             \paragraph
             Figure~\ref{fig:double_pend_cable_length_vs_train_time} shows the estimated cable length 
             as a function of the length of training data for a practical dynamic payload.
             Note how the estimated length converges after a sufficient length of training data.
-            As the size of the payload swing angles decreases due to damping, 
+            Figure~\ref{fig:prediction_double_pend_white_prac} shows the measured payload angle for this flight.
+            The estimated cable length is \SI{1.03}{\metre}, which is used in the white-box model.
+            The resulting payload angle prediction is also plotted in Figure~\ref{fig:prediction_double_pend_white_prac}.
+
+            \input{results/plots/prediction_double_pend_white_prac.tex}
+            
+            \paragraph
+            As the size of the payload swing angles decrease due to damping, 
             the relative oscillations of the elongated payload also decrease.
             Therefore the effect of the superimposed higher frequency oscillations become less prominent and the system dynamics approximate a simple pendulum more closely.
 
             
+
             
     \FloatBarrier\section{Data-driven system identification with practical data}
 
