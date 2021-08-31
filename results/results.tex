@@ -136,11 +136,12 @@
             which affects the oscillation frequency of the payload.
             Hence, an incorrect length is estimated from the frequency peak identified in the \gls{FFT}, but this length still corresponds to the dominant oscillation frequency.
             
-            % \input{results/plots/prediction_single_pend_white_prac.tex}
+            \input{results/plots/prediction_single_pend_white_prac.tex}
 
-            Figure~\ref{fig:prediction_single_pend_white_prac} compares the actual payload angle to the predicted payload angle of the white-box model for a practical flight. 
+            Figure~\ref{fig:prediction_single_pend_white_prac} compares the actual payload angle to the predicted angle of the white-box model for a practical flight. 
             The cable length estimation from the data in this plot has a \gls{PE} of 34.2~\%.
-            Recall from Chapter~\ref{chap:system_id} that the damping coefficient is not estimated, but a manually tuned value is used.
+            It is clear that the prediction differs significantly from the actual data, in magnitude and in frequency.
+            % Recall from Chapter~\ref{chap:system_id} that the damping coefficient is not estimated, but a manually tuned value is used.
 
             \input{results/plots/cable_length_vs_train_time_wind.tex}
 
