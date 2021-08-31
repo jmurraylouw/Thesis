@@ -120,7 +120,7 @@
                 PE = \frac{ l_{estimated} - l_{actual} }{ l_{actual} } \times 100 \% ,
             \end{equation}
             where $l_{actual}$ is the actual cable length and $l_{estimated}$ is the estimated cable length.
-            \gls{PE} can be interpretted as the percentage of the actual length by which the estimated length differs from the actual length.
+            The \gls{PE} can be interpretted as the percentage of the actual length by which the estimated length differs from the actual length.
             
             \input{results/plots/cable_length_vs_train_time.tex}
 
@@ -134,31 +134,32 @@
             These errors may be due to the large difference between the theoretical and the damped natural frequency.
             It appears that the \gls{PID} controllers damp the payload oscillations significantly, 
             which affects the oscillation frequency of the payload.
-            Hence, an incorrect length is estimated from the frequency peak identified in the \gls{FFT}, but this length still corresponds to the dominant oscillation frequency.
+            Hence, an incorrect length is estimated from the frequency peak identified in the \gls{FFT}.
             
             \input{results/plots/prediction_single_pend_white_prac.tex}
 
+            \paragraph
             Figure~\ref{fig:prediction_single_pend_white_prac} compares the actual payload angle to the predicted angle of the white-box model for a practical flight. 
-            The cable length estimation from the data in this plot has a \gls{PE} of 34.2~\%.
-            It is clear that the prediction differs significantly from the actual data, in magnitude and in frequency.
+            The cable length estimated from this flight is \SI{0.617}{\metre} resulting in a \gls{PE} of 23.4~\%.
+            It is clear that the prediction differs significantly from the actual data in magnitude and in frequency.
+            This large difference is expected at such large swing angles, because the model was a linearised with the small angle approximation (as discussed in Chapter~\ref{chap:modelling}).
+            Therefore, the actual non-linear dynamics differ significantly from the linearised model for this data.
+            % ?? However, as discussed in Chapter~\ref{chap:control_systems}, the LQR controller which utillises the white-box model is quite robust against model uncertainty and may still result in acceptable control with such a model.
             % Recall from Chapter~\ref{chap:system_id} that the damping coefficient is not estimated, but a manually tuned value is used.
 
             \input{results/plots/cable_length_vs_train_time_wind.tex}
 
             \paragraph
-            Figure~\ref{fig:cable_length_vs_train_time_wind} shows the \gls{PE} of cable length estimation 
-            for flights with different wind conditions.
+            Figure~\ref{fig:cable_length_vs_train_time_wind} shows the \gls{PE} of cable length estimation for flights with different wind conditions.
             These flights were all performed with the same payload.
             It appears that the wind speed affects the parameter estimation results since the estimation error differs significantly for different wind speeds.
             This may be due to the variable damping effect the controllers have on the payload at different wind speeds.
             From the considered flights, it appears that the largest \gls{PE} occurs at the highest wind speed, 
             and the lowest \gls{PE} at the lowest wind speed.
-            However, only a few different wind speeds are considered and a trend cannot be identified conclusively from this small sample.
-
-            % \input{results/plots/white_prediction_single_pend_wind.tex}
+            However, only a few different wind speeds were tested and a trend cannot be identified conclusively from this small sample.
 
             \paragraph
-            Note that the estimation \gls{PE} converges for each considered flight with a different wind speed,
+            Note in Figure~\ref{fig:cable_length_vs_train_time_wind} that the estimation \gls{PE} converges for each considered flight with a different wind speed,
             even with wind speeds up to \SI{6}{\metre/\second}.
             Therefore a dominant oscillation frequency emerges from each flight, 
             even when the multirotor is heavily affected by wind.
@@ -192,15 +193,17 @@
             The cable length estimation method uses the frequency of the dominant peak and calculates the effective length corresponding to that frequency.
             This results in a simple pendulum model that best matches the dynamic payload oscillations. 
 
+            \input{results/plots/double_pend_cable_length_vs_train_time.tex}
+
             \paragraph
             Figure~\ref{fig:double_pend_cable_length_vs_train_time} shows the estimated cable length 
-            as a function of length of trainning data for a practical dynamic payload.
-            Note how the estimated length converges as the length of training data increases.
+            as a function of the length of training data for a practical dynamic payload.
+            Note how the estimated length converges after a sufficient length of training data.
             As the size of the payload swing angles decreases due to damping, 
             the relative oscillations of the elongated payload also decrease.
-            Therefore the effect of the superimposed higher frequency oscillations are less prominent and the system dynamics approximate a simple pendulum more closely.
+            Therefore the effect of the superimposed higher frequency oscillations become less prominent and the system dynamics approximate a simple pendulum more closely.
 
-            \input{results/plots/double_pend_cable_length_vs_train_time.tex}
+            
             
     \FloatBarrier\section{Data-driven system identification with practical data}
 
