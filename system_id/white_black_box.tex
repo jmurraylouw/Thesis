@@ -37,7 +37,7 @@
         Therefore, white-box system identification methods are often less computationally complex
         and can easily be applied on low cost hardware.
         Due to the lower complexity, 
-        paramater estimation algorithms often require shorter lengths of training data 
+        parameter estimation algorithms often require shorter lengths of training data 
         than data-driven methods to produce accurate models.
 
         \paragraph 
@@ -52,7 +52,7 @@
         Many payloads considered for practical drone deliveries do not conform to these assumptions.
         Since the controller is dependent on this model, 
         the mismatch between the model and actual dynamics may result in undesirable controller behaviour.
-        Therefore a new model and paramater estimation technique will need to be derived 
+        Therefore a new model and parameter estimation technique will need to be derived 
         for every use case that deviates significantly from the a priori model.
 
     \subsection{Black-box techniques}
@@ -69,14 +69,14 @@
         \paragraph
         A disadvantage of the data-driven system identifcation approach is its computational complexity.
         Data-driven algorithms generally have a much higher computational complexity than parameter estimation techniques.
-        This is expected since a lot more model paramater values are generated 
+        This is expected since a lot more model parameter values are generated 
         to populate a black-box model than a predefined white-box model.
         In the multirotor use case, this may mean that more expensive computational hardware is required 
-        to implement a data-driven method compared to paramater estimation methods.
+        to implement a data-driven method compared to parameter estimation methods.
         Also, most data-driven methods have hyperparameters that affect the performance of the method 
         and need to be tuned for a specific use case.
         This can be done automatically, but this process increases the computational demand on the hardware.
-        Furthermore, data-driven methods generally require more training data than paramater estimation methods.
+        Furthermore, data-driven methods generally require more training data than parameter estimation methods.
         This means that more flight time is wasted on system identification before an updated controller can be activated.
         
         \paragraph

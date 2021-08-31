@@ -31,7 +31,7 @@
         \paragraph
         The procedure used to evaluate the black-box techniques is as follows:
         \begin{enumerate}
-            \item Takeoff and hover with the qaudrotor
+            \item Takeoff and hover with the multirotor
             \item Start logging input and output data
             \item Command a series of velocity step setpoints with random step sizes and time intervals
             \item Stop logging data
@@ -275,7 +275,7 @@
         The \gls{NMAE} is determined for each run, 
         whereafter the average of these scores gives the final \gls{NMAE} score of the model.
         In order to balance the variety of testing conditions with the computational time per error metric calculation, 
-        10 was selected as the number of initial conditions used in the final \gls{NMAE} score. 
+        10 prediction runs with different initial conditions used in the final \gls{NMAE} score. 
         
         % \paragraph
         % Each state error signal is scaled by the reciprocal of the maximum value of that state variable in the training data.

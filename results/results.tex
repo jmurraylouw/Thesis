@@ -4,51 +4,49 @@
 \label{chap:results}
 
     \paragraph
-    In previous chapters it was shown with simulation data that both the white-box and black-box system identifcation techniques
+    In previous chapters, it was shown with simulation data that both the white-box and black-box system identification models can
     accurately represent the dynamics of a multirotor with a suspended payload.
     However, practical flights may differ significantly from simulations, which would affect the performance of these techniques.
-    For example, wind causes an unmeasured disturbance which influences the flight of a multirotor, 
-    but this disturbance was not considered in simulation.
+    Wind is a common cause of unmeasured disturbances that influences the flight of a multirotor, 
+    but this disturbance was not considered in simulations.
     The practical dynamics and sensor noise may also differ from the simulation model, which further motivates the need for practical data.
     
     \paragraph
     In this chapter, the system identification techniques will be applied to practical flight data.
-    The effect of different system configurations and wind conditions on the performance of these techniques will be investiagted.
+    The effect of different system configurations and wind conditions on the performance of these techniques will be investigated.
     These techniques will also be applied and evaluated with a practical dynamic payload.
     % Furthermore, the suitability of the system identification models
-    % for swing damping control will be investigated in simulation.
+    % for swing damping control will be investigated in simulations.
     % The performance of the swing damping controllers will be evaluated for a range of different system configurations.
-    Finally, it will be determined whether the proposed system identification with control architectures are feasable for practical flights.
-    HITL simualtions will also be performed to determine whether the proposed hardware 
-    can handle the computational complexity of these controllers.
-
+    HITL simulations will also be performed to determine whether the proposed hardware can handle the computational complexity of these algorithms.
+    Finally, the practical feasibility of the proposed system identification and control architectures will be discussed.
+    
     \FloatBarrier\section{Methodology}
         
         \paragraph
         As discussed in Chapter~\ref{chap:system_id}, 
-        generating data for the parameter estimation techniques involves two flight stages.
+        generating data for the parameter estimation techniques involves two distinct flight stages.
         Firstly, the multirotor hovers with the suspended payload to gather data for payload mass estimation.
-        Then a velocity step setpoint is commanded
-        to stimulate the swinging payload system and gather data for cable length estimation.
-        Hence, the same methodology that was followed simulated flights will be used for practical flights.
+        A velocity step setpoint is then commanded to stimulate the swinging payload system for cable length estimation.
+        Hence, the same methodology used for simulations will be used for practical flights.
 
         \paragraph
         For the data-driven techniques, the generation of practical training and testing data
-        also follows the same general methodolgy as simulated flights:
+        also follows the same general methodology as simulated flights:
         \begin{enumerate}
             \item Data logging starts when the multirotor is armed
-            \item Takeoff and hover with the qaudrotor
+            \item Takeoff and hover with the multirotor
             \item Command velocity step setpoints
             \item Land the multirotor
             \item Data logging stops when the multirotor is disarmed
-            \item Download data log from the multirotor
-            \item Split data into separate training and testing periods
+            \item Download the data log from the multirotor
+            \item Split the data into separate training and testing periods
             \item Build a model from the training data
             \item Perform model predictions over the testing data to calculate an error metric
         \end{enumerate}
 
         \paragraph
-        Figure~\ref{fig:honeybee_with_payload} shows Honeybee with a suspended payload during a practical flight.
+        Figure~\ref{fig:honeybee_with_payload} shows the Honeybee multirotor with a suspended payload during a practical flight.
         Numerous flights were performed with different 
         payload masses, 
         cable lengths, 
@@ -58,11 +56,11 @@
         
         \paragraph
         The major differences between the simulated and practical flights involve the attachment of the payload and wind disturbances.
-        In simulation, the payload cable is attached to the exact \gls{CoM} of the multirotor.
-        However for practical flights the cable is attached slightly below the \gls{CoM} of Honeybee due to mechanical constraints.
-        Practical flights are also influenced by wind disturbances which was not considered in simulation.
-        The measurement noise experienced by a practical multirotor may also differ from the noise models used in simulation.
-        Therefore this effect is also investigated in the sections below.
+        In simulations, the payload cable is attached to the exact \gls{CoM} of the multirotor.
+        However, for practical flights the cable is attached slightly below the \gls{CoM} of Honeybee due to mechanical constraints.
+        Practical flights are also influenced by wind disturbances which were not considered in simulations.
+        The measurement noise experienced by a practical multirotor may also differ from the noise models used in simulations.
+        Therefore this effect will also be investigated in the sections below.
 
         \begin{figure}[!htb]
             \centering
@@ -95,7 +93,7 @@
         \paragraph
         In Section~\ref{sec:param_estimation}, parameter estimation was performed with simulation data.
         It was shown that the models with the estimated parameter values provide reasonably accurate representations of the simulated dynamics.
-        In this section practical flight data is used for paramater estimation.
+        In this section, practical flight data will be used for parameter estimation.
         The effect of wind on the parameter estimation techniques will also be investigated.
         
         %% ?? Add this if there is time
@@ -104,7 +102,7 @@
         %     As discussed in Chapter~\ref{chap:system_id}, for this method to work, the mass of the multirotor needs to be known.
         %     If a heavier battery or an extra accessory is added to the vehicle, 
         %     the new vehicle mass will first have to be estimated in a separate flight, before the payload can be attached.
-        %     This is one of the disadvantages of the white-box modelling with parameter estimation based techniques.
+        %     This is one of the disadvantages of white-box modelling with parameter estimation based techniques.
         %     The method is designed with a specific system in mind 
         %     and needs to be adjusted and redesigned for every deviation from the the pre-assumed configuration.
         %     In contrast, the data-driven technique is a general solution which works for a much wider range of system configurations.
@@ -114,15 +112,17 @@
         \FloatBarrier\subsection{Simple payload cable length estimation}
             
             \paragraph
-            As discussed in Section~\ref{sec:length_estimation}, an \gls{FFT} of the payload oscillations 
-            is used to estimate the natural frequency of the suspended payload, 
-            and the natural frequency is used to calculate the estimated cable length.
-            \gls{PE} is the error metric used to quantify the estimation accuracy.
+            As discussed in Section~\ref{sec:length_estimation}, an \gls{FFT} of the payload angle data is used to estimate the natural frequency of the suspended payload, 
+            which is used to estimate the cable length.
+            \gls{PE} will be used as the error metric to quantify the estimation accuracy.
             The \gls{PE} of the cable length estimation is calculated as,
             \begin{equation}
-                PE = \frac{ l_{actual} - l_{estimated} }{ l_{actual} } \times 100 \% ,
+                PE = \frac{ l_{estimated} - l_{actual} }{ l_{actual} } \times 100 \% ,
             \end{equation}
             where $l_{actual}$ is the actual cable length and $l_{estimated}$ is the estimated cable length.
+            \gls{PE} can be interpretted as the percentage of the actual length by which the estimated length differs from the actual length.
+            
+            \input{results/plots/cable_length_vs_train_time.tex}
 
             \paragraph
             Figure~\ref{fig:cable_length_vs_train_time} shows the \gls{PE} of the cable length estimation 
@@ -130,29 +130,34 @@
             Note that for each payload configuration, 
             the estimation converges to a constant error after a sufficient length of training data.
             %% ?? Add length of training data required to all techniques to compare white-box length to black box length
-            For these payload configurations the converged \gls{PE} ranges from 18.9~\% to 32.4~\%.
-            These errors may be due to the large difference between theoretical and the damped natural frequency.
+            For these payload configurations, the converged \gls{PE} ranges from 18.9~\% to 32.4~\%.
+            These errors may be due to the large difference between the theoretical and the damped natural frequency.
             It appears that the \gls{PID} controllers damp the payload oscillations significantly, 
-            which changes oscillation frequency of the payload.
-            Hence, an incorrect length is calculated from the frequency peak identified in the \gls{FFT}.
+            which affects the oscillation frequency of the payload.
+            Hence, an incorrect length is estimated from the frequency peak identified in the \gls{FFT}, but this length still corresponds to the dominant oscillation frequency.
             
-            \input{results/plots/cable_length_vs_train_time.tex}
+            % \input{results/plots/prediction_single_pend_white_prac.tex}
 
-            \paragraph
-            Figure~\ref{fig:cable_length_vs_train_time_wind} shows the \gls{PE} of cable length estimation 
-            for flights with different wind conditions.
-            These flights were all performed with the same payload parameters.
-            It appears that the wind speed does affect the parameter estimation, 
-            since the estimation error differs significantly for different wind speeds.
-            This may be due to the variable damping effect the controllers have on the payload at different wind speeds.
-            From the considered flights, it appears that the largest \gls{PE} occurs at the highest wind speed, 
-            and the lowest \gls{PE} at the lowest wind speed.
-            However, too few flights with different wind conditions are considered to identify a trend conclusively.
+            Figure~\ref{fig:prediction_single_pend_white_prac} compares the actual payload angle to the predicted payload angle of the white-box model for a practical flight. 
+            The cable length estimation from the data in this plot has a \gls{PE} of 34.2~\%.
+            Recall from Chapter~\ref{chap:system_id} that the damping coefficient is not estimated, but a manually tuned value is used.
 
             \input{results/plots/cable_length_vs_train_time_wind.tex}
 
             \paragraph
-            Note that the estimation \gls{PE} converges for each considered flights with a different wind speed,
+            Figure~\ref{fig:cable_length_vs_train_time_wind} shows the \gls{PE} of cable length estimation 
+            for flights with different wind conditions.
+            These flights were all performed with the same payload.
+            It appears that the wind speed affects the parameter estimation results since the estimation error differs significantly for different wind speeds.
+            This may be due to the variable damping effect the controllers have on the payload at different wind speeds.
+            From the considered flights, it appears that the largest \gls{PE} occurs at the highest wind speed, 
+            and the lowest \gls{PE} at the lowest wind speed.
+            However, only a few different wind speeds are considered and a trend cannot be identified conclusively from this small sample.
+
+            % \input{results/plots/white_prediction_single_pend_wind.tex}
+
+            \paragraph
+            Note that the estimation \gls{PE} converges for each considered flight with a different wind speed,
             even with wind speeds up to \SI{6}{\metre/\second}.
             Therefore a dominant oscillation frequency emerges from each flight, 
             even when the multirotor is heavily affected by wind.
@@ -167,11 +172,11 @@
             the dynamical equations in a white-box model are fixed in the a priori modelling phase.
             The model is then completed with values from parameter estimation.
             However, when the dynamics of the observed system differs from the pre-determined model,
-            the paramter estimation algorithms still determine a naive, best-fit value for the pre-determined model.
+            the parameter estimation algorithms still determine naive, best-fit values for the pre-determined model.
             
             \begin{figure}
                 \captionsetup[subfigure]{justification=centering}
-                \centering
+                \centering  
                 \input{results/plots/FFT_vel_step_double_pend.tex} % subfigure
                 \input{results/plots/FFT_double_pend_prac.tex} % subfigure
                 \caption{Data from a velocity step response with a dynamic payload 
@@ -181,34 +186,28 @@
 
             \paragraph
             Figure~\ref{fig:FFT_vel_step_double_pend} shows a snapshot of payload angle data from a practical flight with a dynamic payload.
-            Two superimposed frequencies clearly visible in the oscillations due to the double pendulum action of the elongated pendulum.
-            Two peaks corresponding to these two frequencies can be identified 
-            from the resulting FFT amplitude spectrum in Figure~\ref{fig:FFT_double_pend_prac}.
-            The cable length estimation uses the frequency of the dominant peak 
-            and calculates the effective length corresponding to that frequency.
-            This models a simple pendulum plant that best matches the dynamic payload oscillations. 
+            Two superimposed frequencies are clearly visible in the payload oscillations due to the double pendulum action of the elongated pendulum.
+            Two peaks corresponding to these two frequencies can be identified from the resulting FFT amplitude spectrum in Figure~\ref{fig:FFT_double_pend_prac}.
+            The cable length estimation method uses the frequency of the dominant peak and calculates the effective length corresponding to that frequency.
+            This results in a simple pendulum model that best matches the dynamic payload oscillations. 
 
             \paragraph
             Figure~\ref{fig:double_pend_cable_length_vs_train_time} shows the estimated cable length 
             as a function of length of trainning data for a practical dynamic payload.
             Note how the estimated length converges as the length of training data increases.
-            As the size of the payload swing angles decrease due to damping, 
+            As the size of the payload swing angles decreases due to damping, 
             the relative oscillations of the elongated payload also decrease.
-            Therefore the effect of the superimposed higher frequency oscillations in the angle data is less prominant 
-            and the system dynamics approximate a simple pendulum more closely.
+            Therefore the effect of the superimposed higher frequency oscillations are less prominent and the system dynamics approximate a simple pendulum more closely.
 
             \input{results/plots/double_pend_cable_length_vs_train_time.tex}
             
     \FloatBarrier\section{Data-driven system identification with practical data}
 
         \paragraph
-        In Chapter~\ref{chap:system_id} it was shown that \gls{DMDc} and \gls{HAVOKc} 
-        build accurate state prediction models for the considered system in simulation.
-        It was also shown in Chapter~\ref{chap:modelling} that the simulation environment 
-        is a realistic representation of the practical system.
+        In Chapter~\ref{chap:system_id} it was shown that the data-driven methods build accurate models of the system dynamics from simulation data.
+        It was also shown in Chapter~\ref{chap:modelling} that the simulation environment is a realistic representation of the practical system.
         However, there are still differences between simulations and practical flight.
-        Therefore the data-driven algorithms will be applied to practical flight data in this chapter 
-        to investigate their performance in a practical implementation.
+        Therefore the data-driven algorithms will be applied to practical flight data in this chapter to investigate their performance in a practical implementation.
 
         \FloatBarrier\subsection{Wind disturbance} \label{sec:length_train_data_prac}
 
@@ -216,11 +215,9 @@
             The wind conditions during practical flights have a large influence on the quality of the flight data gathered.
             Wind adds an unmeasured disturbance (also referred to as process noise) 
             to the considered system which is detrimental to system identification.
-            This disturbance consists of a randomly fluctuating force
-            applied to the vehicle, cable and payload.
+            This disturbance consists of a randomly fluctuating force applied to the vehicle, cable and payload.
             It is very difficult to model these forces accurately and determine accurate drag coefficients of the practical system for a realistic simulation .
-            The mean force applied to the multirotor by the wind
-            affects the mean offset in acceleration setpoint data 
+            The mean force applied to the multirotor by the wind affects the mean offset in acceleration setpoint data 
             because the velocity controller integrators compensates for the disturbance.
             The mean offset is subtracted from the acceleration setpoint data, 
             which results in a signal with a zero mean which is used for system identification.
@@ -296,7 +293,7 @@
             \paragraph
             Recall that the models producing these predictions do not use a priori information about the plant. 
             Only input and output measurements are used in the model generation. 
-            Hence the effect of system paramaters such as 
+            Hence the effect of system parameters such as 
             multirotor mass, 
             payload mass, 
             cable length, 
