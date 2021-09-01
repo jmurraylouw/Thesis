@@ -152,14 +152,16 @@
             but the white-box model prediction shows linear damping.
             This is a minor modelling error expected from a simplistic linear approximation of a non-linear system. 
 
-            \input{results/plots/prediction_single_pend_white_prac_bad.tex}
+            % \input{results/plots/prediction_single_pend_white_prac_bad.tex}
+            % \paragraph
+            % Figure~\ref{fig:prediction_single_pend_white_prac_bad} shows the white-box prediction of practical data, when the step input is seen after the initial condition
 
-            \paragraph
-            The naive assumption regarding the speed of the inner loop \gls{PID} controller probably adds to the modelling error significantly.
-            As discussed in Chapter~\ref{chap:modelling}, the white-box model assumes that the time scale seperation between the velocity and attitude controller is large enough for the acceleration setpoint to approximate the actual seperation.
-            However, it appears that the attitude controller of the practical multirotor is slow enough to significantly affect the transient response of the swing angle.
-            Notice how the first two oscillation peaks differ noticeably from the expected linear damping shape.
-            Since the payload is attached below the \gls{CoM} of the multirotor, the oscillating pitch angle of the multirotor also affects the swing angle of the payload.
+            % \paragraph
+            % The naive assumption regarding the speed of the inner loop \gls{PID} controller probably adds to the modelling error significantly.
+            % As discussed in Chapter~\ref{chap:modelling}, the white-box model assumes that the time scale seperation between the velocity and attitude controller is large enough for the acceleration setpoint to approximate the actual seperation.
+            % However, it appears that the attitude controller of the practical multirotor is slow enough to significantly affect the transient response of the swing angle.
+            % Notice how the first two oscillation peaks differ noticeably from the expected linear damping shape.
+            % Since the payload is attached below the \gls{CoM} of the multirotor, the oscillating pitch angle of the multirotor also affects the swing angle of the payload.
 
             % ?? However, as discussed in Chapter~\ref{chap:control_systems}, the LQR controller which utillises the white-box model is quite robust against model uncertainty and may still result in acceptable control with such a model.
             % Recall from Chapter~\ref{chap:system_id} that the damping coefficient is not estimated, but a manually tuned value is used.
@@ -169,8 +171,8 @@
             \paragraph
             Figure~\ref{fig:cable_length_vs_train_time_wind} shows the \gls{PE} of cable length estimation for flights with different wind conditions.
             These flights were all performed with the same payload.
-            It appears that the wind speed affects the parameter estimation results since the estimation error differs significantly for different wind speeds.
-            This may be due to the variable damping effect the controllers have on the payload at different wind speeds.
+            It appears that the wind speed affects the parameter estimation result since the estimation error differs significantly for different wind speeds.
+            This may be due to the variable damping effect of the controllers at different wind speeds.
             From the considered flights, it appears that the largest \gls{PE} occurs at the highest wind speed, 
             and the lowest \gls{PE} at the lowest wind speed.
             However, only a few different wind speeds were tested and a trend cannot be identified conclusively from this small sample.
@@ -189,7 +191,7 @@
             \paragraph
             As discussed in Chapter~\ref{chap:system_id}, 
             the dynamical equations in a white-box model are fixed in the a priori modelling phase.
-            The model is then completed with values from parameter estimation.
+            The model is then populated with values from parameter estimation.
             However, when the dynamics of the observed system differs from the pre-determined model,
             the parameter estimation algorithms still determine naive, best-fit values for the pre-determined model.
             
