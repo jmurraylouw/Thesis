@@ -218,13 +218,13 @@
                 \input{results/plots/FFT_double_pend_prac.tex} % subfigure
                 \caption{White-box model prediction for a North velocity step input for a dynamic payload
                 ($m_1 =$~\SI{0.2}{\kilo\gram}, $l_1 =$~\SI{0.5}{\meter}, $m_2 =$~\SI{0.1}{\kilo\gram}, $l_2 =$~\SI{0.6}{\meter}) }
-                \label{fig:predictions_double_pend_prac_subfigs}  
+                \label{fig:FFT_double_pend_prac_subfigs}  
             \end{figure}
 
             \paragraph
             Figure~\ref{fig:FFT_vel_step_double_pend} shows a snapshot of payload angle data from a practical flight with a dynamic payload.
             Two superimposed frequencies are clearly visible in the payload oscillations due to the double pendulum action of the elongated pendulum.
-            Two peaks corresponding to these two frequencies can be identified from the resulting FFT amplitude spectrum in Figure~\ref{fig:FFT_double_pend_prac}.
+            The two peaks corresponding to these two frequencies can easily be identified from the FFT amplitude spectrum in Figure~\ref{fig:FFT_double_pend_prac}.
             The cable length estimation method uses the frequency of the dominant peak and calculates the effective length corresponding to that frequency.
             This results in a simple pendulum model that best matches the dynamic payload oscillations. 
 
@@ -233,11 +233,9 @@
             \paragraph
             Figure~\ref{fig:double_pend_cable_length_vs_train_time} shows the estimated cable length 
             as a function of the length of training data for a practical dynamic payload.
-            Note how the estimated length converges after a sufficient length of training data.
-            The estimated cable length is \SI{1.03}{\metre}, which is used in the white-box model.
-            Figure~\ref{fig:prediction_double_pend_white_prac} plots the measured and predicted payload angle for this flight.
-            It is clear that the model prediction is completely different from the actual payload angle.
-
+            Note that the estimated length converges after a sufficient length of training data, showing that a dominant oscillation frequency can be identified.
+            For this flight the estimated cable length is \SI{1.03}{\metre}.
+            
             \begin{figure}
                 \captionsetup[subfigure]{justification=centering}
                 \centering  
@@ -245,20 +243,36 @@
                 \input{results/plots/prediction_double_pend_white_prac_bad.tex} % subfigure
                 \caption{Data from a velocity step response with a dynamic payload 
                 ($m_1 =$~\SI{0.2}{\kilo\gram}, $l_1 =$~\SI{0.5}{\meter}, $m_2 =$~\SI{0.1}{\kilo\gram}, $l_2 =$~\SI{0.6}{\meter}).}
-                \label{fig:FFT_double_pend_prac_subfigs}  
+                \label{fig:predictions_double_pend_prac_subfigs}  
             \end{figure}
 
             \paragraph
-            As the size of the payload swing angles decrease due to damping, 
-            the relative oscillations of the elongated payload also decrease.
-            Therefore the effect of the superimposed higher frequency oscillations become less prominent and the system dynamics approximate a simple pendulum more closely.
-            However, the simple pendulum model is still a bad representation of the practical data.
-
-            % \input{results/plots/prediction_double_pend_white_prac_diff_IC.tex}
+            Figure~\ref{fig:predictions_double_pend_prac_subfigs} shows two model predictions resulting from slightly different starting points in flight data.
+            The two prediction runs in Figure~\ref{fig:predictions_double_pend_prac_subfigs} differ significantly from each other even though the starting points of the predictions are offset by only \SI{0.06}{\second}.
+            Since the oscillations of the dynamic payload are irregular compared to the sinusoidal dynamics of the white-box model, the prediction accuracy is very sensitive to the initial condition.
             
-            \paragraph
-            Overall,
+            \input{results/plots/prediction_double_pend_white_prac_diff_IC.tex}
+            
+            Figure~\ref{fig:prediction_double_pend_white_prac_diff_IC} shows the white-box model predictions for the dynamic payload data with slightly different starting positions in the data.
+            Note how much the predictions differ even though the starting points are so close together. 
+            This shows how sensitive the white-box model is to the initial condition of the prediction.
+            This is because the white-box model consists of ordinary differential equations depend on the initial angular rate of the payload.
+            Even though the oscilations of the dynamic payload have a general sinusoidal shape, the time derivative of the data differ significantly from the sinusoidal white-box dynamics.
+            This is clear from numerous infliction points in the payload angle data shown in Figure~\ref{fig:predictions_double_pend_prac_subfigs}.
+            
+            % ?? Could add this if there is time
+            % Recall from Chapter~\ref{chap:modelling} that the white-box model consists of ordinary differential equations.
+            % Therefore the payload angle prediction depends on both the payload angle and angular rate at the prediction starting point.
+            % For example, there is an infliction point in the measured payload angle near $Time =$~\SI{2}{\second} in Figure~\ref{fig:predictions_double_pend_prac_subfigs}.
+            % If the white-box model prediction starts at this point, the initial angular rate is zero and the initial payload angle is positive.
+            % Therefore the white-box model wrongly predicts that this corresponds to the peak of an oscillation, where the practical data shows that the payload angle is in ascend at this point.
 
+            \paragraph
+            However, as the size of the swing angles attenuate the relative oscillations of the elongated payload also decrease.
+            Therefore the effect of the superimposed higher frequency oscillations become less prominent and the system dynamics approximate a simple pendulum more closely.
+            For example, in Figure~\ref{fig:predictions_double_pend_prac_subfigs} it can be seen that the oscillations after $Time =$~\SI{12}{\second} are much less irregular than before. 
+            Therefore the simple pendulum model provides a descent representation of a practical dynamic payload for small swing angles.
+            Overall, the white-box model represents the general shape of the practical data, but does not capture the transient responce of the system and is very sensitive to initial conditions. 
             
     \FloatBarrier\section{Data-driven system identification with practical data}
 
