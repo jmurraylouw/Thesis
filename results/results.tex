@@ -142,8 +142,19 @@
             Figure~\ref{fig:prediction_single_pend_white_prac} compares the actual payload angle to the predicted angle of the white-box model for a practical flight. 
             The cable length estimated from this flight is \SI{0.617}{\metre} resulting in a \gls{PE} of 23.4~\%.
             It is clear that the prediction differs significantly from the actual data in magnitude and in frequency.
-            This large difference is expected at such large swing angles, because the model was a linearised with the small angle approximation (as discussed in Chapter~\ref{chap:modelling}).
+            A large difference is expected at such large swing angles, because the model was a linearised with the small angle approximation (as discussed in Chapter~\ref{chap:modelling}).
             Therefore, the actual non-linear dynamics differ significantly from the linearised model for this data.
+            Note that an incorrect damping coefficient used in the model does can not contribute much to the modelling error.
+            The damping coefficient largely effects the rate of attenuation of the amplitude of the oscillations, but does not have a large effect on the initial swing angle of the predicted by the model.
+            The initial swing angle of the practical data is clearly very different from the model prediction.
+            
+            \paragraph
+            The naive assumption regarding the speed of the inner loop \gls{PID} controller probably adds to the modelling error significantly.
+            As discussed in Chapter~\ref{chap:modelling}, the white-box model assumes that the time scale seperation between the velocity and attitude controller is large enough for the acceleration setpoint to approximate the actual seperation.
+            However, it appears that the attitude controller of the practical multirotor is slow enough to significantly affect the transient response of the swing angle.
+            Notice how the first two oscillation peaks differ noticeably from the expected linear damping shape.
+            Since the payload is attached below the \gls{CoM} of the multirotor, the oscillating pitch angle of the multirotor also affects the swing angle of the payload.
+
             % ?? However, as discussed in Chapter~\ref{chap:control_systems}, the LQR controller which utillises the white-box model is quite robust against model uncertainty and may still result in acceptable control with such a model.
             % Recall from Chapter~\ref{chap:system_id} that the damping coefficient is not estimated, but a manually tuned value is used.
 
@@ -199,17 +210,19 @@
             Figure~\ref{fig:double_pend_cable_length_vs_train_time} shows the estimated cable length 
             as a function of the length of training data for a practical dynamic payload.
             Note how the estimated length converges after a sufficient length of training data.
-            Figure~\ref{fig:prediction_double_pend_white_prac} shows the measured payload angle for this flight.
             The estimated cable length is \SI{1.03}{\metre}, which is used in the white-box model.
-            The resulting payload angle prediction is also plotted in Figure~\ref{fig:prediction_double_pend_white_prac}.
+            Figure~\ref{fig:prediction_double_pend_white_prac} plots the measured and predicted payload angle for this flight.
+            It is clear that the model prediction is completely different from the actual payload angle.
 
             \input{results/plots/prediction_double_pend_white_prac.tex}
-            
+
             \paragraph
             As the size of the payload swing angles decrease due to damping, 
             the relative oscillations of the elongated payload also decrease.
             Therefore the effect of the superimposed higher frequency oscillations become less prominent and the system dynamics approximate a simple pendulum more closely.
-
+            However, the simple pendulum model is still a bad representation of the practical data.
+            
+            % \input{results/plots/prediction_double_pend_white_prac_bad.tex}
             
 
             
