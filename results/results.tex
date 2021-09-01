@@ -102,11 +102,11 @@
         
         %     As discussed in Chapter~\ref{chap:system_id}, for this method to work, the mass of the multirotor needs to be known.
         %     If a heavier battery or an extra accessory is added to the vehicle, 
-        %     the new vehicle mass will first have to be estimated in a separate flight, before the payload can be attached.
+        %     the new vehicle mass will first have to be estimated in a separate flight before the payload can be attached.
         %     This is one of the disadvantages of white-box modelling with parameter estimation based techniques.
         %     The method is designed with a specific system in mind 
-        %     and needs to be adjusted and redesigned for every deviation from the the pre-assumed configuration.
-        %     In contrast, the data-driven technique is a general solution which works for a much wider range of system configurations.
+        %     and needs to be adjusted and redesigned for every deviation from the pre-assumed configuration.
+        %     In contrast, the data-driven technique is a general solution that works for a much wider range of system configurations.
         %     The data-driven technique is not readjusted for an added vehicle mass, 
         %     since the whole model is estimated instead of specific parameters.
 
@@ -130,7 +130,7 @@
             with different payload masses and cable lengths.
             Note that for each payload configuration, 
             the estimation converges to a constant error after a sufficient length of training data.
-            %% ?? Add length of training data required to all techniques to compare white-box length to black box length
+            %% ?? Add the length of training data required to all techniques to compare white-box length to black-box length
             For these payload configurations, the converged \gls{PE} ranges from 18.9~\% to 32.4~\%.
             These errors may be due to the large difference between the theoretical and the damped natural frequency.
             It appears that the \gls{PID} controllers damp the payload oscillations significantly, 
@@ -147,10 +147,10 @@
             The prediction matches the general shape of the practical data well.
             The transient response of the practical data is noticeably different from the model prediction.
             This can be seen in the first two oscillation peaks.
-            This is probably due to the dynamcis of the inner loop controllers which are not account for in the white-box model, but affects the transient response of the practical data.
-            Also note that the payload swing angle peaks are attenuated by non-linear damping,
+            This is probably due to the dynamics of the inner loop controllers which are not account for in the white-box model but affects the transient response of the practical data.
+            Furthermore, note that the payload swing angle peaks are attenuated by non-linear damping,
             but the white-box model prediction shows linear damping.
-            This is a minor modelling error expected from a simplistic linear approximation of a non-linear system. 
+            This is a minor modelling error expected from a simple linear approximation of a non-linear system. 
 
             % \input{results/plots/prediction_single_pend_white_prac_bad.tex}
             % \paragraph
@@ -158,12 +158,12 @@
 
             % \paragraph
             % The naive assumption regarding the speed of the inner loop \gls{PID} controller probably adds to the modelling error significantly.
-            % As discussed in Chapter~\ref{chap:modelling}, the white-box model assumes that the time scale seperation between the velocity and attitude controller is large enough for the acceleration setpoint to approximate the actual seperation.
+            % As discussed in Chapter~\ref{chap:modelling}, the white-box model assumes that the time scale separation between the velocity and attitude controller is large enough for the acceleration setpoint to approximate the actual separation.
             % However, it appears that the attitude controller of the practical multirotor is slow enough to significantly affect the transient response of the swing angle.
             % Notice how the first two oscillation peaks differ noticeably from the expected linear damping shape.
             % Since the payload is attached below the \gls{CoM} of the multirotor, the oscillating pitch angle of the multirotor also affects the swing angle of the payload.
 
-            % ?? However, as discussed in Chapter~\ref{chap:control_systems}, the LQR controller which utillises the white-box model is quite robust against model uncertainty and may still result in acceptable control with such a model.
+            % ?? However, as discussed in Chapter~\ref{chap:control_systems}, the LQR controller which utilises the white-box model is quite robust against model uncertainty and may still result in acceptable control with such a model.
             % Recall from Chapter~\ref{chap:system_id} that the damping coefficient is not estimated, but a manually tuned value is used.
 
             \input{results/plots/cable_length_vs_train_time_wind.tex}
@@ -171,6 +171,7 @@
             \paragraph
             Figure~\ref{fig:cable_length_vs_train_time_wind} shows the \gls{PE} of cable length estimation for flights with different wind conditions.
             These flights were all performed with the same payload.
+            Wind conditions are referenced here by the wind speed recorded by the website, www.yr.no, for the hour of the day of the flight.
             It appears that the wind speed affects the parameter estimation result since the estimation error differs significantly for different wind speeds.
             This may be due to the variable damping effect of the controllers at different wind speeds.
             From the considered flights, it appears that the largest \gls{PE} occurs at the highest wind speed, 
@@ -182,11 +183,11 @@
             even with wind speeds up to \SI{6}{\metre/\second}.
             Therefore a dominant oscillation frequency emerges from each flight, 
             even when the multirotor is heavily affected by wind.
-            % ?? Maybe add this if there is time: and show effect of effective length vs actual length in system id chapter.
+            % ?? Maybe add this if there is time: and show the effect of effective length vs actual length in the system id chapter.
             % As discussed in Section~\ref{sec:param_estimation}, 
             % the effective cable length corresponding to the dominant frequency is more important
         
-        \FloatBarrier\subsection{Dynamic payload cable length estimation}
+        \FloatBarrier\subsection{Dynamic payload cable length estimation} \label{sec:dynamic_payload_prac}
 
             \paragraph
             As discussed in Chapter~\ref{chap:system_id}, 
@@ -207,7 +208,7 @@
             is that the suspended payload is a point mass.
             This reduced the considered suspended payload system to a simple pendulum in the white-box model.
             Figure~\ref{fig:practical_double_pendulum} shows a photo of an elongated payload suspended from Honeybee during a practical flight
-            This is a practical example of a dynamic payload which deviates significantly from the point mass assumption.
+            This is a practical example of a dynamic payload that deviates significantly from the point mass assumption.
             The mass distribution causes a relative rotation of the payload with respect to the suspended cable,
             which significantly affects the flight dynamics.
             
@@ -234,7 +235,7 @@
             Figure~\ref{fig:double_pend_cable_length_vs_train_time} shows the estimated cable length 
             as a function of the length of training data for a practical dynamic payload.
             Note that the estimated length converges after a sufficient length of training data, showing that a dominant oscillation frequency can be identified.
-            For this flight the estimated cable length is \SI{1.03}{\metre}.
+            For this flight, the estimated cable length is \SI{1.03}{\metre}.
             
             \begin{figure}
                 \captionsetup[subfigure]{justification=centering}
@@ -257,13 +258,13 @@
             Note how much the predictions differ even though the starting points are so close together. 
             This shows how sensitive the white-box model is to the initial condition of the prediction.
             This is because the white-box model consists of ordinary differential equations depend on the initial angular rate of the payload.
-            Even though the oscilations of the dynamic payload have a general sinusoidal shape, the time derivative of the data differ significantly from the sinusoidal white-box dynamics.
+            Even though the oscillations of the dynamic payload have an approximate sinusoidal shape, the time derivative of the data differs significantly from the sinusoidal white-box dynamics.
             This is clear from numerous infliction points in the payload angle data shown in Figure~\ref{fig:predictions_double_pend_prac_subfigs}.
             
             % ?? Could add this if there is time
-            % Recall from Chapter~\ref{chap:modelling} that the white-box model consists of ordinary differential equations.
+            % Recall from Chapter~\ref{chap: modelling} that the white-box model consists of ordinary differential equations.
             % Therefore the payload angle prediction depends on both the payload angle and angular rate at the prediction starting point.
-            % For example, there is an infliction point in the measured payload angle near $Time =$~\SI{2}{\second} in Figure~\ref{fig:predictions_double_pend_prac_subfigs}.
+            % For example, there is an inflexion point in the measured payload angle near $Time =$~\SI{2}{\second} in Figure~\ref{fig:predictions_double_pend_prac_subfigs}.
             % If the white-box model prediction starts at this point, the initial angular rate is zero and the initial payload angle is positive.
             % Therefore the white-box model wrongly predicts that this corresponds to the peak of an oscillation, where the practical data shows that the payload angle is in ascend at this point.
 
@@ -271,16 +272,16 @@
             However, as the size of the swing angles attenuate the relative oscillations of the elongated payload also decrease.
             Therefore the effect of the superimposed higher frequency oscillations become less prominent and the system dynamics approximate a simple pendulum more closely.
             For example, in Figure~\ref{fig:predictions_double_pend_prac_subfigs} it can be seen that the oscillations after $Time =$~\SI{12}{\second} are much less irregular than before. 
-            Therefore the simple pendulum model provides a descent representation of a practical dynamic payload for small swing angles.
-            Overall, the white-box model represents the general shape of the practical data, but does not capture the transient responce of the system and is very sensitive to initial conditions. 
+            Therefore the simple pendulum model provides a decent representation of a practical dynamic payload for small swing angles.
+            Overall, the white-box model represents the general shape of the practical data, but does not capture the transient response of the system and is very sensitive to initial conditions. 
             
     \FloatBarrier\section{Data-driven system identification with practical data}
 
         \paragraph
-        In Chapter~\ref{chap:system_id} it was shown that the data-driven methods build accurate models of the system dynamics from simulation data.
+        In Chapter~\ref{chap:system_id} it was shown that the considered data-driven methods build accurate models of the system dynamics from simulation data.
         It was also shown in Chapter~\ref{chap:modelling} that the simulation environment is a realistic representation of the practical system.
-        However, there are still differences between simulations and practical flight.
-        Therefore the data-driven algorithms will be applied to practical flight data in this chapter to investigate their performance in a practical implementation.
+        However, there are still differences between simulations and practical flights.
+        Therefore the data-driven algorithms will be applied to practical flight data in this chapter to evaluate their suitability for practical implementations.
 
         \FloatBarrier\subsection{Wind disturbance} \label{sec:length_train_data_prac}
 
@@ -289,31 +290,29 @@
             Wind adds an unmeasured disturbance (also referred to as process noise) 
             to the considered system which is detrimental to system identification.
             This disturbance consists of a randomly fluctuating force applied to the vehicle, cable and payload.
-            It is very difficult to model these forces accurately and determine accurate drag coefficients of the practical system for a realistic simulation .
+            It is very difficult to model these forces accurately and to determine accurate drag coefficients of the practical system for realistic simulations.
+
+            \paragraph
             The mean force applied to the multirotor by the wind affects the mean offset in acceleration setpoint data 
-            because the velocity controller integrators compensates for the disturbance.
+            because the velocity controller integrators compensate for the disturbance.
             The mean offset is subtracted from the acceleration setpoint data, 
             which results in a signal with a zero mean which is used for system identification.
-            This accounts for the mean force applied the wind.
+            This accounts for the mean force applied by the wind.
             % ??  As shown in Figure~\ref{fig:}, this greatly reduces the prediction error.
             However, the wind speed also fluctuates from the mean randomly.
             This results in random process noise in the plant which cannot easily be removed from the measured data.
 
-            % ?? Shows plot of data with high wind and low wind
+            % ?? Shows a plot of data with high wind and low wind
 
             \input{results/plots/wind_Ttrain.tex}
 
             \paragraph
-            Figure~\ref{fig:wind_Ttrain} shows prediction error as a function of training data length for data with different wind conditions.
-            Wind conditions are referenced here by the wind speed recorded by the website, www.yr.no, 
-            for the hour of day of the flight.
-            From this plot shows that the minimum prediction error decreases with decreasing wind speeds.
-            This is expected, since lower wind speeds correspond to less process noise 
-            which is benificial for system identifcation.
-            Note that the prediction error corresponding to \SI{6}{\metre/\second} winds does not vary much with length of training data.
+            Figure~\ref{fig:wind_Ttrain} shows prediction error as a function of training data length for different wind conditions.
+            This plot shows that the minimum prediction error decreases with decreasing wind speeds.
+            This is expected since lower wind speeds correspond to less process noise which is beneficial for system identification.
+            Note that the prediction error corresponding to \SI{6}{\metre/\second} winds does not vary much with the length of training data.
             % This may be because the unmeasured wind disturbance dominates the flight dynamics such the data-driven algorithms cannot identify a representative model with any length of training data. 
-            The prediction error at this wind speed is significantly large 
-            and a model generated from such data will probably not be useful for control.
+            The prediction error at this wind speed is quite large and a model generated from such data will probably not be useful for control.
             %  ?? Figure of prediction with wind clearly shows that the prediction model does not represent the actual flight dynamics.
 
             \input{results/plots/havok_vs_dmd_Ttrain_2mps.tex}
@@ -321,27 +320,25 @@
             \paragraph
             Figure~\ref{fig:havok_vs_dmd_Ttrain_2mps} compares the prediction errors of \gls{DMDc} and \gls{HAVOKc} models.
             It is evident that the two techniques produce similar prediction errors for different wind conditions.
-            The difference in prediction error is very small 
-            and will probably not effect the performance of the controllers using these models.
-            This shows that the minor difference in the implementation of the algorithms has a negilible effect on the resultant models.
-            The \gls{DMDc} implementation is therefore prefered over \gls{HAVOKc} due to a lower computational complexity.
+            The difference in prediction error is very small and will probably not affect the performance of the controllers using these models.
+            This affirms the observation in Chaper~\ref{chap:system_id} that the minor difference in the algorithm implementations has a negligible effect on prediction accuracy.
+            The \gls{DMDc} implementation is therefore prefered over \gls{HAVOKc} for practical data due to lower computational complexity.
 
             
         \FloatBarrier\subsection{Hyperparameters}
             
             \paragraph
             As discussed in Section~\ref{sec:hyperparameters}, 
-            the prediction error generally improves for a higher number of delay-coordinates 
-            because the number of parameters in the model increases.
-            However, the prediction error reaches a pareto optimum, 
-            after which the error does not significantly decrease with an increasing number of terms anymore.
+            the prediction error generally improves for a higher number of delay-coordinates because the number of parameters in the model increases.
+            However, the prediction error reaches a Pareto optimum, 
+            after which the error does not significantly decrease with an increasing number of terms.
             Figure~\ref{fig:havok_vs_dmd_q_2mps} shows the prediction error as a function of the number of delay-coordinates
             for practical flight data.
-            Even though the pareto elbow is not as smooth and clear as with simulation data, 
+            Even though the Pareto elbow is not as smooth and clear as shown in Chapter~\ref{chap:system_id}, 
             the elbow can still be identified.            
-            % Note that the pareto elbow is not as smooth and clear as shown in Section~\ref{sec:hyperparameters}.
-            % This may due to random 
-            % The pareto optimal models for practical data have significantly more delay-coordinates than
+            % Note that the Pareto elbow is not as smooth and clear as shown in Section~\ref{sec:hyperparameters}.
+            % This may be due to random 
+            % The Pareto optimal models for practical data have significantly more delay-coordinates than
 
             \input{results/plots/havok_vs_dmd_q_2mps.tex}
 
@@ -356,24 +353,22 @@
             It was shown with multiple simulations in Section~\ref{sec:system_params} 
             that the system identification methods work for a range of different payload parameters.
             Figure~\ref{fig:prac_system_params} shows the prediction error for different payloads with practical data. 
-            Only \gls{DMDc} predictions are plotted here because HAVOK predictions are so similar.
             This shows that the proposed methods also work in practice with different payload configurations.
-            The `double-descent' trend is clearly seen in the plots 
-            where the prediction error increases slightly after a specific length of training data.            
+            The `double-descent' trend (discussed in Section~\ref{sec:sys_id_length_of_data}) is also seen in the practical data results where the prediction error increases slightly after a specific length of training data.            
             
             \input{results/plots/prac_system_params.tex}
 
             \paragraph
             Recall that the models producing these predictions do not use a priori information about the plant. 
             Only input and output measurements are used in the model generation. 
-            Hence the effect of system parameters such as 
+            In contrast to the white-box technique, the effect of system parameters such as 
             multirotor mass, 
             payload mass, 
             cable length, 
             and damping coefficients 
-            are inherintly included in the estimated model.
-            Therefore these other parameters can also be varied 
-            and the system identification algorithm will still be able to determine a prediction model of the system.
+            are inherently included in the estimated model.
+            Therefore these parameters can all be varied 
+            and the system identification algorithm should still be able to determine a prediction model of the system.
 
         \FloatBarrier\subsection{State predictions}
 
@@ -381,7 +376,9 @@
             Figure~\ref{fig:prac_pediction_single_pend_theta_black} 
             shows the measured and predicted payload angle data of a suspended payload for a velocity step in a practical flight.
             Note that the model is generated from training data and is tested with a separate set of previously unseen, testing data.
-            Figure~\ref{fig:prac_pediction_single_pend_theta_black} plots the state prediction against testing data.
+            Figure~\ref{fig:prac_pediction_single_pend_theta_black} plots the state prediction against testing data and it is clear that the prediction data fits the measured data very well.
+            
+            \paragraph
             Recall from Section~\ref{sec:dmdc} that \gls{DMDc} produces a discrete, state-space model in the form:
             \begin{equation}
                 \bm{x}_{k+1} = \bm{A} \bm{x}_k + \bm{A}_d \bm{d}_k + \bm{B} \bm{u}_k .
@@ -392,7 +389,7 @@
             delay vector, $\bm{d}_{k}$
             and input vector, $\bm{u}_{k}$
             at the previous time-step.
-            Each of these time-step predictions results in a small error which accumulates with each succesive prediction.
+            Each of these time-step predictions results in a small error that accumulates with each successive time-step.
             Therefore the prediction error increases as the prediction horizon increases, 
             as shown in Figure~\ref{fig:prac_pediction_single_pend_theta_black}.
 
@@ -401,15 +398,14 @@
             \paragraph
             Figure~\ref{fig:prac_pediction_single_pend_vel_black} 
             shows the measured and predicted North velocity of the same flight.
-            The oscillations in the velocity response due to the swinging payload is clearly visible in this plot.
+            The oscillations in the velocity response due to the swinging payload are clearly visible in this plot.
             The model predicts the frequency and size of these oscillations reasonably well.
-            Note that prediction of the payload angle is significantly easier than predicting the velocity response.
-            The payload angle prediction inherantly oscillates around a zero mean.
-            However, the velocity response has a non-zero mean 
-            and depends on numerical integration of the acceleration setpoint data.
+            Note that predicting the payload angle is significantly easier than predicting the velocity response.
+            The payload angle prediction inherently oscillates around a zero mean.
+            However, the velocity response has a non-zero mean and depends on numerical integration of the acceleration setpoint data.
             A slight error in the correction of the setpoint offset 
             (discussed in Section~\ref{sec:noise} and Section~\ref{sec:length_train_data_prac})
-            may result in a large error in the velocity prediction due to a build up in integration error.
+            may result in a large error in the velocity prediction due to a build-up of integration error.
             However, despite this challenge, the model accurately predicts the velocity step size of the practical data.
 
             \input{results/plots/prac_pediction_single_pend_vel_black.tex}
@@ -419,15 +415,13 @@
         \FloatBarrier\subsection{Extended dimensions}
 
             \paragraph
-            Since the data-driven methods are only dependant on the input and output data used,
-            the prediction model can be easily extended to include more dimentions by adding more state measurement variables.
-            In this section, a prediction model is generated and discussed 
-            which includes both the North and East axes dynamics.
-            Such a model could be used in a single \gls{MPC} velocity controller 
-            to damp the payload oscillations in both axis simulateously.
+            Because the data-driven methods are only dependant on the input and output data used,
+            the prediction model can easily be extended to include more dimensions by adding more state measurement variables.
+            In this section, a prediction model is generated and discussed which includes both the North and East axes dynamics.
+            Such a model could be used in a single \gls{MPC} velocity controller to damp the payload oscillations in both axes simultaneously.
 
             \paragraph
-            For this model, the new state vector is,
+            For this model, the state vector is,
             \begin{equation}
                 \bm{x} = \begin{bmatrix}
                     V_N & V_E & \theta_N & \theta_E 
@@ -451,14 +445,15 @@
             \end{figure}
 
             \paragraph
-            To generate training data, random steps are commanded in the North and East axes simulateously 
-            to stimulate the dynamics in both axes. 
+            To generate training data, random steps are commanded in the North and East axes simultaneously to excite the dynamics in both axes. 
             Figure~\ref{fig:XY_train_data_subfigs} shows an example of the practical training data used for this extended dimension model.
             Clear oscillations in the payload angle and velocity response of both axes are visible. 
             Figure~\ref{fig:xy_predictions} shows the state variable predictions of a \gls{DMDc} model 
             build from the data in Figure~\ref{fig:XY_train_data_subfigs}.
-            It is clear that this model provides an accuarte prediction of each state variable considered.
+            It is clear that this model provides an accurate prediction of each state variable considered.
             This shows that the data-driven methods can be effectively extended to include both the North and East axes dynamics. 
+            This is a great advantage of the proposed data-driven approach.
+            The model is easily adapted for different use cases without redesigning estimation techniques or remodelling the plant manually.
 
             \begin{figure}
                 \captionsetup[subfigure]{justification=centering}
@@ -476,9 +471,9 @@
         \FloatBarrier\subsection{Dynamic payload} 
 
             \paragraph
-            As mentioned in Chapter~\ref{chap:system_id}, 
+            As mentioned in Section~\ref{sec:dynamic_payload_prac}, 
             one of the disadvantages of the white-box system identification approach
-            is that it relies heavily on a priori modeling assumptions.
+            is that it relies heavily on a priori modelling assumptions.
             When a payload is attached to the multirotor that deviates from the white-box modelling assumptions, 
             the performance of the system identification method decreases.
             However, the data-driven methods can handle this deviation
@@ -489,9 +484,9 @@
             \paragraph
             Figure~\ref{fig:prac_pediction_double_pend_theta_black} shows the measured and predicted payload angle
             of the practical dynamic payload.
-            The irregular oscillations due to the double pendulum action of an elongated payload is clearly seen in the angle data.
-            It appears that the prediction differs slightly from the measurement data at the peaks, 
-            however this does not appear to be a significant error.
+            The irregular oscillations due to the double pendulum action of an elongated payload are visible in the angle data.
+            The data-driven model clearly represents the actual payload dynamics well.
+            It appears that the prediction differs slightly from the measurement data at the peaks, however, this does not appear to be a significant error.
             Overall, it is clear that the \gls{DMDc} model captures the multi-frequency oscillations of the dynamic payload well.
 
             \input{results/plots/prac_pediction_double_pend_vel_black.tex}
@@ -499,15 +494,16 @@
             \paragraph
             Figure~\ref{fig:prac_pediction_double_pend_vel_black} shows the measured and predicted velocity of the same flight.
             The superimposed frequencies are not as visible in the velocity oscillations as they were in the payload angle data.
-            However these oscillations in the velocity response 
-            still appear irregular compared to the simple payload data shown in Figure~\ref{fig:prac_pediction_single_pend_vel_black}.
+            However, the oscillations in the velocity response still appear irregular compared to the simple payload data shown in Figure~\ref{fig:prac_pediction_single_pend_vel_black}.
             In Figure~\ref{fig:prac_pediction_double_pend_vel_black}, 
             the size of the velocity prediction deviates from the measurement data at the velocity overshoot.
-            However, this error does not appear significant enough to affect the corresponding \gls{MPC} controller using this model.
-            The shape of the velocity oscillations also appear to be captured well in the prediction.
-            Recall that the prediction is propagated from an initial condition and the given input data only.
+            However, this error does not appear significant enough to affect the corresponding \gls{MPC} controller.
+            The shape of the velocity oscillations also appears to be captured well in the prediction.
+            
+            \paragraph
+            Recall that the prediction is propagated from an initial condition using the given input data only.
             The model does not use state measurements to readjust after the initial condition is taken.
-            Therefore a accumulation in prediction error is expected as the prediction horizon increases.
+            Therefore an accumulation in prediction error is expected as the prediction horizon increases.
             Because the model prediction matches the shape of the practical testing data so closely,
             it is expected that this model can be used for a practical \gls{MPC} implementation on practical data. 
 
