@@ -1,4 +1,4 @@
-\begin{figure}[htb]
+\begin{subfigure}[t]{\columnwidth}
     \centering
     \begin{tikzpicture}
         \begin{axis}[            
@@ -6,8 +6,8 @@
             ylabel = Payload angle,
             x unit = \si{\second},
             y unit = \si{\radian},
-            xmin = 0,   xmax = 20,
-            ymin = -15,  ymax = 25,
+            xmin = 0,   xmax = 19,
+            ymin = -25,  ymax = 25,
             grid = major,
             legend cell align = left,
             legend pos = north east,
@@ -28,17 +28,16 @@
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = time, y = theta, col sep = comma] 
         {results/csv/step_predictions_Prac_2021-08-23_04_double_pend_m1_0.2_m2_0.1_l1-0.5_l2_0.62_wind-0.5.csv_white_36.9.csv};
-        \addlegendentry{Actual}
+        % \addlegendentry{Actual}
 
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = time, y = theta_hat, col sep = comma] 
         {results/csv/step_predictions_Prac_2021-08-23_04_double_pend_m1_0.2_m2_0.1_l1-0.5_l2_0.62_wind-0.5.csv_white_36.9.csv};
-        \addlegendentry{Model prediction using the estimated length}
+        % \addlegendentry{Model prediction using the estimated length}
 
         \end{axis}
     \end{tikzpicture} 
     
-    \caption{Example of a bad prediction with a white-box model for a dynamic payload
-    ($m_1 =$~\SI{0.2}{\kilo\gram}, $l_1 =$~\SI{0.5}{\meter}, $m_2 =$~\SI{0.1}{\kilo\gram}, $l_2 =$~\SI{0.6}{\meter}) }
+    % \caption{Bad white-box model approximation}
     \label{fig:prediction_double_pend_white_prac_bad}
-\end{figure}
+\end{subfigure}
