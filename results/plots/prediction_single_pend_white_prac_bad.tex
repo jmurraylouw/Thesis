@@ -27,12 +27,12 @@
         
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = time, y = theta, col sep = comma] 
-        {results/csv/step_predictions_Prac_2021-08-20_02_l-2_mp-0.3-wind-0.5.csv_white_26.34.csv};
+        {results/csv/step_predictions_Prac_2021-08-20_02_l-2_mp-0.3-wind-0.5.csv_white_21.74.csv};
         \addlegendentry{Actual}
 
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = time, y = theta_hat, col sep = comma] 
-        {results/csv/step_predictions_Prac_2021-08-20_02_l-2_mp-0.3-wind-0.5.csv_white_26.34.csv};
+        {results/csv/step_predictions_Prac_2021-08-20_02_l-2_mp-0.3-wind-0.5.csv_white_21.74.csv};
         \addlegendentry{Model prediction using the estimated length}
 
         \end{axis}
@@ -40,5 +40,5 @@
     
     \caption{White-box model prediction for a North velocity step input
     ($l =$~\SI{0.5}{\metre}, $m_p =$~\SI{0.2}{\kilo\gram}.)}
-    \label{fig:prediction_single_pend_white_prac}
+    \label{fig:prediction_single_pend_white_prac_bad}
 \end{figure}

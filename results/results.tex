@@ -148,6 +148,8 @@
             The damping coefficient largely effects the rate of attenuation of the amplitude of the oscillations, but does not have a large effect on the initial swing angle of the predicted by the model.
             The initial swing angle of the practical data is clearly very different from the model prediction.
             
+            \input{results/plots/prediction_single_pend_white_prac_bad.tex}
+
             \paragraph
             The naive assumption regarding the speed of the inner loop \gls{PID} controller probably adds to the modelling error significantly.
             As discussed in Chapter~\ref{chap:modelling}, the white-box model assumes that the time scale seperation between the velocity and attitude controller is large enough for the acceleration setpoint to approximate the actual seperation.
@@ -221,9 +223,14 @@
             the relative oscillations of the elongated payload also decrease.
             Therefore the effect of the superimposed higher frequency oscillations become less prominent and the system dynamics approximate a simple pendulum more closely.
             However, the simple pendulum model is still a bad representation of the practical data.
+
+            \paragraph
+            Figure~\ref{fig:prediction_double_pend_white_prac_bad}
             
-            % \input{results/plots/prediction_double_pend_white_prac_bad.tex}
+            \input{results/plots/prediction_double_pend_white_prac_bad.tex}
             
+            \paragraph
+            Overall,
 
             
     \FloatBarrier\section{Data-driven system identification with practical data}
