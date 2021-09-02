@@ -3,36 +3,7 @@
 \chapter{Control systems}
 \label{chap:control_systems}
 
-    \section{Cascaded PID}
-
-        Control system design
-        Slower for less swing angles
-
-    \section{LQR}
-
-        Anton and Francois stuff
-
-    \section{MPC}
-
-        MATLAB
-        QP solver
-        C+ generation
-
-    \FloatBarrier\section{Implentation and results}
-
-        \paragraph
-        After the system identification phase, active swing damping control can be applied
-        to the multirotor and payload system.
-        The control architectures are summarised in Table~\ref{tbl:controller_summary} 
-        by pairing the system identification techniques along with the appropriate controllers.
-        It was firstly shown in Chapter~\ref{chap:system_id} that the system identifcation techniques worked in simulation.
-        Emphasise that control is now applied in a full \gls{SITL} simulation.
-
-        \paragraph
-        MATLAB is used to generate a \gls{MPC} \gls{ROS} node 
-        This \gls{ROS} node receives state feedback from the Gazebo simulator,
-        computes the optimal control action,
-        and sends the setpoint to PX4 through the package 'mavros'.
+    \FloatBarrier\section{Overview of controllers}
 
         \begin{table}[!h]
             \renewcommand{\arraystretch}{1.1}
@@ -52,24 +23,49 @@
             \end{tabularx}
             \label{tbl:controller_summary}
         \end{table}
-        
+    
 
-        \FloatBarrier\subsection{Single pendulum}
+    \FloatBarrier\section{Cascaded PID}
+
+        Control system design
+        Slower for less swing angles
+
+    \FloatBarrier\section{LQR}
+
+        Anton and Francois stuff
+
+    \FloatBarrier\section{MPC}
+
+        MATLAB
+        QP solver
+        C+ generation
+
+    \FloatBarrier\section{Implentation and results}
+
+        \paragraph
+        After the system identification phase, active swing damping control can be applied
+        to the multirotor and payload system.
+        The control architectures are summarised in Table~\ref{tbl:controller_summary} 
+        by pairing the system identification techniques along with the appropriate controllers.
+        It was firstly shown in Chapter~\ref{chap:system_id} that the system identifcation techniques worked in simulation.
+        Emphasise that control is now applied in a full \gls{SITL} simulation.
+        
+        \FloatBarrier\subsection{Single paylaod}
 
             \begin{itemize}
                 \item subplot prediction of data driven model. subplot prediction of white-box model
                 \item plot \gls{MPC} vs \gls{LQR} v \gls{PID} (no wind) step = 1 m/s
                 \item plot \gls{MPC} vs \gls{LQR} v \gls{PID} (no wind) step = 2 m/s
-                \item plot \gls{DMDc} vs \gls{HAVOKc} (\gls{DMDc} - Havok)
+                \item plot different system paramaters
                 \item plot with wind disturbacne control
             \end{itemize}
 
-        \FloatBarrier\subsection{Double pendulum}
+        \FloatBarrier\subsection{Dynamic payload}
 
             \begin{itemize}
                 \item subplot prediction of data driven model. subplot prediction of white-box model
                 \item plot \gls{MPC} vs \gls{LQR} v \gls{PID} (no wind)
-                \item plot \gls{DMDc} vs \gls{HAVOKc} (\gls{DMDc} - Havok)
             \end{itemize}
 
+    \FloatBarrier\section{Conclusion}
     

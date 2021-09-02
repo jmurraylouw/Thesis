@@ -1,1 +1,2 @@
-figures/stellenbosch_ee_report-figure0.pdf: system_id/csv/single_step_predictions_SITL_x_vel_noise_l1_m0-3.csv.csv
+figures/stellenbosch_ee_report-figure0.pdf: modelling/csv/vel_step_Prac_2021-08-20_04_no_load_velocity_steps_wind_0.5.csv.csv
+figures/stellenbosch_ee_report-figure0.pdf: modelling/csv/vel_step_Prac_2021-08-20_04_no_load_velocity_steps_wind_0.5.csv.csv
