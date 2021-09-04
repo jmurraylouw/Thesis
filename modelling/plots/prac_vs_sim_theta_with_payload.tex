@@ -1,0 +1,42 @@
+\begin{figure}[htb]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[            
+            xlabel = Time,
+            ylabel = Payload angle,
+            x unit = \si{\second},
+            y unit = \si{\degree},
+            xmin = 0,   xmax = 16,
+            ymin = -20,  ymax = 20,
+            grid = major,
+            legend cell align = left,
+            legend pos = south east,
+            grid style = dashed,
+            legend style = {font = \scriptsize},
+            label style = {font = \scriptsize},
+            tick label style = {font = \scriptsize},
+            width = 0.95\columnwidth,
+            height = 0.5\columnwidth,
+            % initialize Dark2
+            cycle list/Dark2,
+            % combine it with 'mark list*':
+            cycle multiindex* list = {
+                Dark2\nextlist
+            }
+        ]
+                
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = time, y = theta.prac, col sep = comma] 
+        {modelling/csv/prac_vs_sim_vel_step_Simulink_2021-08-20_02_l-2_mp-0.3-wind-0.5.csv.csv};
+        \addlegendentry{Practical}
+
+        \addplot+[mark = none, style = dashed, ultra thick] 
+        table[x = time, y = theta.sim, col sep = comma] 
+        {modelling/csv/prac_vs_sim_vel_step_Simulink_2021-08-20_02_l-2_mp-0.3-wind-0.5.csv.csv};
+        \addlegendentry{Simulated}
+
+        \end{axis}
+    \end{tikzpicture} 
+    \caption{Payload angle comparison of simulated and practical data for Honeybee with a suspended payload}
+    \label{fig:prac_vs_sim_theta_with_payload}
+\end{figure}

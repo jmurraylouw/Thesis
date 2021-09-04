@@ -1,2 +1,2 @@
-figures/stellenbosch_ee_report-figure9.pdf: system_id/csv/NMAE_vs_Ntrain_SITL_x_vel_no_noise_longer_times.csv_havok_angle.csv
-figures/stellenbosch_ee_report-figure9.pdf: system_id/csv/NMAE_vs_Ntrain_SITL_x_vel_noise_longer_times.csv_havok_angle.csv
+figures/stellenbosch_ee_report-figure9.pdf: system_id/csv/NMAE_vs_Ntrain_SITL_x_vel_noise_l1_m0-2_state_vector.csv_havok_angle.csv
+figures/stellenbosch_ee_report-figure9.pdf: system_id/csv/NMAE_vs_Ntrain_SITL_x_vel_noise_l1_m0-2_state_vector.csv_havok_angular_rate.csv
