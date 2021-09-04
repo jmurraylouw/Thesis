@@ -1,4 +1,4 @@
-figures/stellenbosch_ee_report-figure22.pdf: results/csv/cable_length_vs_train_time_Prac_2021-08-23_01_l-0.5_mp-0.2_wind-0.5.csv_10_0.5.csv
-figures/stellenbosch_ee_report-figure22.pdf: results/csv/cable_length_vs_train_time_Prac_2021-08-20_01_l-1_mp-0.1_wind-0.5.csv_10_1.csv
-figures/stellenbosch_ee_report-figure22.pdf: results/csv/cable_length_vs_train_time_Prac_2021-08-20_02_l-2_mp-0.3-wind-0.5.csv_10_2.csv
-figures/stellenbosch_ee_report-figure22.pdf: results/csv/cable_length_vs_train_time_Prac_2021-08-20_03_l-1_mp-0.2_wind-0.5.csv_10_1.csv
+figures/stellenbosch_ee_report-figure22.pdf: control/csv/compare_control_pid_Simulink_single_pend_mp0.3_l2.25_PID_vel_steps_tune_scale_0.7.mat.csv
+figures/stellenbosch_ee_report-figure22.pdf: control/csv/compare_control_pid_Simulink_single_pend_mp0.3_l2.25_PID_vel_steps_tune_scale_0.7.mat.csv
+figures/stellenbosch_ee_report-figure22.pdf: control/csv/compare_control_mpc_Simulink_single_pend_mp0.3_l2.25_PID_vel_steps_tune_scale_0.7.mat.csv
+figures/stellenbosch_ee_report-figure22.pdf: control/csv/compare_control_lqr_Simulink_single_pend_mp0.3_l2.25_PID_vel_steps_tune_scale_0.7.mat.csv

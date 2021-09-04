@@ -1,0 +1,48 @@
+\begin{figure}[htb]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[            
+            xlabel = Time,
+            ylabel = Payload angle,
+            x unit = \si{\second},
+            y unit = \si{\degree},
+            xmin = 0,   xmax = 16,
+            ymin = -20,  ymax = 15,
+            grid = major,
+            legend cell align = left,
+            legend pos = south east,
+            grid style = dashed,
+            legend style = {font = \scriptsize},
+            label style = {font = \scriptsize},
+            tick label style = {font = \scriptsize},
+            width = 0.95\columnwidth,
+            height = 0.5\columnwidth,
+            % initialize Dark2
+            cycle list/Dark2,
+            % combine it with 'mark list*':
+            cycle multiindex* list = {
+                Dark2\nextlist
+            }
+        ]
+                
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = time, y = theta, col sep = comma] 
+        {control/csv/compare_control_pid_Simulink_single_pend_mp0.3_l2.25_PID_vel_steps_tune_scale_0.7.mat.csv};
+        \addlegendentry{PID}
+
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = time, y = theta, col sep = comma] 
+        {control/csv/compare_control_mpc_Simulink_single_pend_mp0.3_l2.25_PID_vel_steps_tune_scale_0.7.mat.csv};
+        \addlegendentry{MPC}
+
+        \addplot+[mark = none, style = dashed, ultra thick] 
+        table[x = time, y = theta, col sep = comma] 
+        {control/csv/compare_control_lqr_Simulink_single_pend_mp0.3_l2.25_PID_vel_steps_tune_scale_0.7.mat.csv};
+        \addlegendentry{LQR}
+
+        \end{axis}
+    \end{tikzpicture} 
+    \caption{Payload angle comparison for different controllers
+    ($l =$~\SI{2}{\meter}, $m_p =$~\SI{0.3}{\kilo\gram})}
+    \label{fig:compare_control_theta}
+\end{figure}

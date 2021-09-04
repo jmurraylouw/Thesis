@@ -1,2 +1,2 @@
-figures/stellenbosch_ee_report-figure35.pdf: results/csv/step_predictions_Prac_2021-08-20_02_l-2_mp-0.3-wind-0.5.csv_dmd_737.csv
-figures/stellenbosch_ee_report-figure35.pdf: results/csv/step_predictions_Prac_2021-08-20_02_l-2_mp-0.3-wind-0.5.csv_dmd_737.csv
+figures/stellenbosch_ee_report-figure35.pdf: results/csv/NMAE_vs_q_Prac_2021-08-12_03_manual_x_vel_steps_2mps_q.csv_dmd_angle.csv
+figures/stellenbosch_ee_report-figure35.pdf: results/csv/NMAE_vs_q_Prac_2021-08-12_03_manual_x_vel_steps_2mps_q.csv_havok_angle.csv
