@@ -1,0 +1,51 @@
+\begin{figure}[htb]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[            
+            xlabel = Time,
+            ylabel = Velocity,
+            x unit = \si{\second},
+            y unit = \si{\metre/\second},
+            xmin = 0,   xmax = 16,
+            ymin = -0.1,  ymax = 2.7,
+            grid = major,
+            legend cell align = left,
+            legend pos = south east,
+            grid style = dashed,
+            legend style = {font = \scriptsize},
+            label style = {font = \scriptsize},
+            tick label style = {font = \scriptsize},
+            width = 0.95\columnwidth,
+            height = 0.5\columnwidth,
+            % initialize Dark2
+            cycle list/Dark2,
+            % combine it with 'mark list*':
+            cycle multiindex* list = {
+                Dark2\nextlist
+            }
+        ]
+        
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = time, y = vel_sp, col sep = comma] 
+        {control/csv/compare_control_mpc_Simulink_single_pend_mp0.3_l2.25_MPC_vel_steps_tune_scale_0.7_wind_step_disturb.csv};
+        \addlegendentry{Setpoint}
+
+        \pgfplotsset{cycle list shift = 1} % Shift to skip PID colour used in other plots
+
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = time, y = vel, col sep = comma] 
+        {control/csv/compare_control_mpc_Simulink_single_pend_mp0.3_l2.25_MPC_vel_steps_tune_scale_0.7_wind_step_disturb.csv};
+        \addlegendentry{MPC}
+
+        \addplot+[mark = none, style = dashed, ultra thick] 
+        table[x = time, y = vel, col sep = comma] 
+        {control/csv/compare_control_lqr_Simulink_single_pend_mp0.3_l2.25_LQR_vel_steps_tune_scale_0.7_wind_step_disturb.csv};
+        \addlegendentry{LQR}
+
+
+        \end{axis}
+    \end{tikzpicture} 
+    \caption{Effect of an unmeasured step input disturbance.
+    ($l =$~\SI{2}{\meter}, $m_p =$~\SI{0.3}{\kilo\gram})}
+    \label{fig:compare_control_vel_wind_disturbance}
+\end{figure}

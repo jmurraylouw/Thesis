@@ -60,21 +60,73 @@
             \paragraph
             vel control
 
+            MPC:
+            vel weight = 2;
+            theta weight = 0;
+            dtheta weight = 10; 
+            mv weight = 1;
+            mvrate weight = 5;
+            Ty = 5;
+            Tu = 3;
+
+            LQR:
+            LQR.Q = diag([10 10 0 100]); 
+            LQR.R = 8
+
             \input{control/plots/compare_control_theta.tex}
 
             \paragraph
             theta control
 
+            \input{control/plots/compare_control_acc_sp.tex}
+
+            \paragraph
+            acc-sp plot
+
+            \input{control/plots/compare_control_vel_wind_disturbance.tex}
+
+            \paragraph
+            Wind disturbance wind speed~=~\SI{2}{\metre/\second}
+
+            \input{control/plots/improve_lqr_integrator.tex}
+
+            \paragraph
+            Improve integrator
+
+            \begin{figure}
+                \captionsetup[subfigure]{justification=centering}
+                \centering  
+                \input{control/plots/compare_control_vel_l-1.0_mp-0.2.tex} % subfigure
+                \input{control/plots/compare_control_vel_l-1.0_mp-0.2.tex} % subfigure
+                \input{control/plots/compare_control_vel_l-1.0_mp-0.2.tex} % subfigure
+                \caption{}
+                \label{fig:compare_control_different_payloads}  
+            \end{figure}
+
+            \paragraph
+            Different payloads, compare tuning
 
             \begin{itemize}
-                \item subplot prediction of data driven model. subplot prediction of white-box model
-                \item plot \gls{MPC} vs \gls{LQR} v \gls{PID} (no wind) step = 1 m/s
+                \item plot acc-sp
                 \item plot \gls{MPC} vs \gls{LQR} v \gls{PID} (no wind) step = 2 m/s
                 \item plot different system paramaters
                 \item plot with wind disturbacne control
             \end{itemize}
 
         \FloatBarrier\subsection{Dynamic payload}
+
+            \paragraph
+            Intro
+
+            \input{control/plots/compare_control_vel_dynamic.tex}
+
+            \paragraph
+            vel control
+
+            \input{control/plots/compare_control_theta_dynamic.tex}
+
+            \paragraph
+            theta control
 
             \begin{itemize}
                 \item subplot prediction of data driven model. subplot prediction of white-box model
