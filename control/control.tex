@@ -53,11 +53,16 @@
         \FloatBarrier\subsection{Simple suspended payload}
 
             \paragraph
-            intro
+            The modelling assumptions of the white-box model discussed in Chapter~\ref{chap:modelling} 
+            defines a point-mass suspended with a rigid cable which is attached to the \gls{CoM} of the multirotor.
+            This is a simplisitic suspended payload model but represents the dynamics of many practical payloads well.
+            In this section, the simulated payload model complies will all these assumptions.
+            This is also the payload model used for simulations with an \gls{LQR} controller by \cite{Erasmus2020} and \cite{Slabber2020}
 
             \input{control/plots/compare_control_vel.tex}
 
             \paragraph
+            Figure~\ref{fig:compare_control_vel}
             vel control
 
             MPC:
@@ -83,6 +88,21 @@
             \paragraph
             acc-sp plot
 
+            \begin{figure}
+                \captionsetup[subfigure]{justification=centering}
+                \centering  
+                \input{control/plots/compare_control_vel_l-1.0_mp-0.2.tex} % subfigure
+                \input{control/plots/compare_control_vel_l-2.0_mp-0.3.tex} % subfigure
+                \input{control/plots/compare_control_vel_l-0.5_mp-0.1.tex} % subfigure
+                \caption{}
+                \label{fig:compare_control_different_payloads}  
+            \end{figure}
+
+            \paragraph
+            Different payloads, compare tuning
+
+        \FloatBarrier\subsection{Wind disturbance}
+
             \input{control/plots/compare_control_vel_wind_disturbance.tex}
 
             \paragraph
@@ -91,27 +111,7 @@
             \input{control/plots/improve_lqr_integrator.tex}
 
             \paragraph
-            Improve integrator
-
-            \begin{figure}
-                \captionsetup[subfigure]{justification=centering}
-                \centering  
-                \input{control/plots/compare_control_vel_l-1.0_mp-0.2.tex} % subfigure
-                \input{control/plots/compare_control_vel_l-1.0_mp-0.2.tex} % subfigure
-                \input{control/plots/compare_control_vel_l-1.0_mp-0.2.tex} % subfigure
-                \caption{}
-                \label{fig:compare_control_different_payloads}  
-            \end{figure}
-
-            \paragraph
-            Different payloads, compare tuning
-
-            \begin{itemize}
-                \item plot acc-sp
-                \item plot \gls{MPC} vs \gls{LQR} v \gls{PID} (no wind) step = 2 m/s
-                \item plot different system paramaters
-                \item plot with wind disturbacne control
-            \end{itemize}
+            Improve integrator. This is in contrast to the MPC response which shows good disturbance rejection and maintains a low overshoot.
 
             % Could add effect of bad models. ??
 
