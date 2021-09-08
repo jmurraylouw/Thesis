@@ -7,7 +7,7 @@
             x unit = \si{\second},
             y unit = \si{\metre/\second},
             xmin = 0,   xmax = 16,
-            ymin = -0.1,  ymax = 2.7,
+            ymin = -0.1,  ymax = 2.2,
             grid = major,
             legend cell align = left,
             legend pos = south east,
@@ -25,30 +25,22 @@
             }
         ]
         
-        \addplot+[mark = none, style = solid, ultra thick] 
-        table[x = time, y = vel_sp, col sep = comma] 
-        {control/csv/compare_control_pid_Simulink_single_pend_mp0.3_l2.25_PID_vel_steps_tune_scale_0.7.mat.csv};
-        \addlegendentry{Setpoint}
+        \pgfplotsset{cycle list shift = 2}
 
         \addplot+[mark = none, style = solid, ultra thick] 
-        table[x = time, y = vel, col sep = comma] 
-        {control/csv/compare_control_pid_Simulink_single_pend_mp0.3_l2.25_PID_vel_steps_tune_scale_0.7.mat.csv};
-        \addlegendentry{PID}
-
-        \addplot+[mark = none, style = solid, ultra thick] 
-        table[x = time, y = vel, col sep = comma] 
-        {control/csv/compare_control_mpc_Simulink_single_pend_mp0.3_l2.25_PID_vel_steps_tune_scale_0.7.mat.csv};
+        table[x = time, y = acc_sp, col sep = comma] 
+        {control/csv/compare_control_mpc_Simulink_single_pend_mp0.3_l2.25_MPC_vel_steps_tune_scale_0.7.csv};
         \addlegendentry{MPC}
 
         \addplot+[mark = none, style = dashed, ultra thick] 
-        table[x = time, y = vel, col sep = comma] 
+        table[x = time, y = acc_sp, col sep = comma] 
         {control/csv/compare_control_lqr_Simulink_single_pend_mp0.3_l2.25_PID_vel_steps_tune_scale_0.7.mat.csv};
         \addlegendentry{LQR}
 
 
         \end{axis}
     \end{tikzpicture} 
-    \caption{Velocity step response comparison for different controllers
+    \caption{Acceleration setpoint commanded by different controllers for a velocity step input
     ($l =$~\SI{2}{\meter}, $m_p =$~\SI{0.3}{\kilo\gram})}
     \label{fig:compare_control_acc_sp}
 \end{figure}
