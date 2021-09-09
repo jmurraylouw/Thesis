@@ -27,27 +27,27 @@
         
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = time, y = vel_sp, col sep = comma] 
-        {control/csv/compare_control_pid_Simulink_single_pend_mp0.3_l2.25_PID_vel_steps_tune_scale_0.7.mat.csv};
+        {control/csv/compare_control_lqr_Simulink_single_pend_mp0.1_l0.5_LQR_vel_steps_tune_scale_0.7.csv};
         \addlegendentry{Setpoint}
 
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = time, y = vel, col sep = comma] 
-        {control/csv/compare_control_pid_Simulink_single_pend_mp0.3_l2.25_PID_vel_steps_tune_scale_0.7.mat.csv};
+        {control/csv/compare_control_pid_Simulink_single_pend_mp0.1_l0.5_PID_vel_steps_tune_scale_0.7.csv};
         \addlegendentry{PID}
 
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = time, y = vel, col sep = comma] 
-        {control/csv/compare_control_mpc_Simulink_single_pend_mp0.3_l2.25_MPC_vel_steps_tune_scale_0.7.csv};
+        {control/csv/compare_control_mpc_Simulink_single_pend_mp0.1_l0.5_MPC_vel_steps_tune_scale_0.7.csv};
         \addlegendentry{MPC}
 
         \addplot+[mark = none, style = dashed, ultra thick] 
         table[x = time, y = vel, col sep = comma] 
-        {control/csv/compare_control_lqr_Simulink_single_pend_mp0.3_l2.25_PID_vel_steps_tune_scale_0.7.mat.csv};
+        {control/csv/compare_control_lqr_Simulink_single_pend_mp0.1_l0.5_LQR_vel_steps_tune_scale_0.7.csv};
         \addlegendentry{LQR}
 
 
         \end{axis}
     \end{tikzpicture} 
-    \caption{Velocity step response comparison for different controllers
-    ($l =$~\SI{2}{\meter}, $m_p =$~\SI{0.3}{\kilo\gram})}
+    \caption{Velocity step response comparison of different controllers
+    ($l =$~\SI{0.5}{\meter}, $m_p =$~\SI{0.1}{\kilo\gram})}
 \end{subfigure}

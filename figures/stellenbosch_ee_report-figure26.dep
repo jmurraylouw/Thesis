@@ -1,4 +1,4 @@
-figures/stellenbosch_ee_report-figure26.pdf: control/csv/compare_control_pid_Simulink_single_pend_mp0.3_l2.25_PID_vel_steps_tune_scale_0.7.mat.csv
-figures/stellenbosch_ee_report-figure26.pdf: control/csv/compare_control_pid_Simulink_single_pend_mp0.3_l2.25_PID_vel_steps_tune_scale_0.7.mat.csv
-figures/stellenbosch_ee_report-figure26.pdf: control/csv/compare_control_mpc_Simulink_single_pend_mp0.3_l2.25_MPC_vel_steps_tune_scale_0.7.csv
-figures/stellenbosch_ee_report-figure26.pdf: control/csv/compare_control_lqr_Simulink_single_pend_mp0.3_l2.25_PID_vel_steps_tune_scale_0.7.mat.csv
+figures/stellenbosch_ee_report-figure26.pdf: control/csv/compare_control_lqr_Simulink_single_pend_mp0.1_l0.5_LQR_vel_steps_tune_scale_0.7.csv
+figures/stellenbosch_ee_report-figure26.pdf: control/csv/compare_control_pid_Simulink_single_pend_mp0.1_l0.5_PID_vel_steps_tune_scale_0.7.csv
+figures/stellenbosch_ee_report-figure26.pdf: control/csv/compare_control_mpc_Simulink_single_pend_mp0.1_l0.5_MPC_vel_steps_tune_scale_0.7.csv
+figures/stellenbosch_ee_report-figure26.pdf: control/csv/compare_control_lqr_Simulink_single_pend_mp0.1_l0.5_LQR_vel_steps_tune_scale_0.7.csv

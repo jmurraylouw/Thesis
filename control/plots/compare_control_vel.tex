@@ -42,13 +42,13 @@
 
         \addplot+[mark = none, style = dashed, ultra thick] 
         table[x = time, y = vel, col sep = comma] 
-        {control/csv/compare_control_lqr_Simulink_single_pend_mp0.3_l2.25_PID_vel_steps_tune_scale_0.7.mat.csv};
+        {control/csv/compare_control_lqr_Simulink_single_pend_mp0.3_l2.25_LQR_vel_steps_tune_scale_0.7.csv};
         \addlegendentry{LQR}
 
 
         \end{axis}
     \end{tikzpicture} 
-    \caption{Velocity step response comparison for different controllers
+    \caption{Velocity step response comparison of different controllers
     ($l =$~\SI{2}{\meter}, $m_p =$~\SI{0.3}{\kilo\gram})}
     \label{fig:compare_control_vel}
 \end{figure}

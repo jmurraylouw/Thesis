@@ -57,13 +57,21 @@
             defines a point-mass suspended with a rigid cable which is attached to the \gls{CoM} of the multirotor.
             This is a simplisitic suspended payload model but represents the dynamics of many practical payloads well.
             In this section, the simulated payload model complies will all these assumptions.
+            The simulation model used in this section was verified with practical data in Section~\ref{sec:model_verification}.
             This is also the payload model used for simulations with an \gls{LQR} controller by \cite{Erasmus2020} and \cite{Slabber2020}
 
             \input{control/plots/compare_control_vel.tex}
 
             \paragraph
-            Figure~\ref{fig:compare_control_vel}
-            vel control
+            From simulation results, it appears that both the MPC and LQR effectively damp the payload oscillations while controlling the velocity of the multirotor.
+            Figure~\ref{fig:compare_control_vel} shows the velocity step responces of the MPC, LQR and PID controllers for a multirotor with a suspended payload.
+            For the MPC and LQR, the respective models were first generated in the training phase of the simulation.
+            Thereafter, the MPC and LQR were manually and iteratively tuned to produce a step response with a similar response time and overshoot.
+            The PID response shown is with the same controller gains used in the training phase.
+            
+            \paragraph
+            From Figure~\ref{fig:compare_control_vel} it is clear that both the LQR and MPC controllers actively damp the velocity oscillation caused by the swinging payload.
+            The oscillations clearly continue for a long
 
             MPC:
             vel weight = 2;
@@ -88,11 +96,12 @@
             \paragraph
             acc-sp plot
 
+        \FloatBarrier\subsection{Different payloads}
+
             \begin{figure}
                 \captionsetup[subfigure]{justification=centering}
                 \centering  
                 \input{control/plots/compare_control_vel_l-1.0_mp-0.2.tex} % subfigure
-                \input{control/plots/compare_control_vel_l-2.0_mp-0.3.tex} % subfigure
                 \input{control/plots/compare_control_vel_l-0.5_mp-0.1.tex} % subfigure
                 \caption{}
                 \label{fig:compare_control_different_payloads}  
