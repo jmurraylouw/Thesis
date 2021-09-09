@@ -3,7 +3,7 @@
 \chapter{Control systems}
 \label{chap:control}
 
-    \FloatBarrier\section{Overview of controllers}
+    \FloatBarrier\section{Overview of controllers} \label{sec:controller_overview}
 
         \begin{table}[!h]
             \renewcommand{\arraystretch}{1.1}
@@ -34,7 +34,7 @@
 
         Anton and Francois stuff
 
-    \FloatBarrier\section{MPC}
+    \FloatBarrier\section{MPC} \label{sec:mpc}
 
         MATLAB
         QP solver
@@ -50,7 +50,7 @@
         It was firstly shown in Chapter~\ref{chap:system_id} that the system identifcation techniques worked in simulation.
         % Emphasise that control is now applied in a full \gls{SITL} simulation.
         
-        \FloatBarrier\subsection{Simple suspended payload}
+        \FloatBarrier\subsection{Simple suspended payload} \label{sec:simple_payload_control}
 
             \paragraph
             The modelling assumptions of the white-box model discussed in Chapter~\ref{chap:modelling} 
@@ -65,38 +65,58 @@
             \paragraph
             From simulation results, it appears that both the MPC and LQR effectively damp the payload oscillations while controlling the velocity of the multirotor.
             Figure~\ref{fig:compare_control_vel} shows the velocity step responces of the MPC, LQR and PID controllers for a multirotor with a suspended payload.
+            From Figure~\ref{fig:compare_control_vel} it is clear that both the LQR and MPC controllers actively damp the velocity oscillation caused by the swinging payload.
+            The \gls{PID} controller does not consider the payload angle, hence the oscillations are not damped as strongly.
+
+            \paragraph
             For the MPC and LQR, the respective models were first generated in the training phase of the simulation.
             Thereafter, the MPC and LQR were manually and iteratively tuned to produce a step response with a similar response time and overshoot.
-            The PID response shown is with the same controller gains used in the training phase.
-            
-            \paragraph
-            From Figure~\ref{fig:compare_control_vel} it is clear that both the LQR and MPC controllers actively damp the velocity oscillation caused by the swinging payload.
-            The oscillations clearly continue for a long
+            The PID response shown uses the same controller gains used in the training phase.
 
-            MPC:
-            vel weight = 2;
-            theta weight = 0;
-            dtheta weight = 10; 
-            mv weight = 1;
-            mvrate weight = 5;
-            Ty = 5;
-            Tu = 3;
+            % MPC:
+            % vel weight = 2;
+            % theta weight = 0;
+            % dtheta weight = 10; 
+            % mv weight = 1;
+            % mvrate weight = 5;
+            % Ty = 5;
+            % Tu = 3;
 
-            LQR:
-            LQR.Q = diag([10 10 0 100]); 
-            LQR.R = 8
+            % LQR:
+            % LQR.Q = diag([0.3 10 0 100]); 
+            % LQR.R = 8
 
             \input{control/plots/compare_control_theta.tex}
 
             \paragraph
-            theta control
+            Figure~\ref{fig:compare_control_theta} shows the payload angle data of the velocity step response.
+            Both the MPC and LQR damp the payload angle well and the osciilations cease after only two or three swings.
+            In this case, the MPC response results in a smaller initial swing angle, however, this is dependant on the specific tuning of each controller.
+            The LQR can also be tuned to produce a similar swing angle.
 
             \input{control/plots/compare_control_acc_sp.tex}
 
             \paragraph
-            acc-sp plot
+            Figure~\ref{fig:compare_control_acc_sp} shows the acceleration setpoint commanded by the two controllers for this step response.
+            This is probably due to the inherant similarity between the controller implementations as discussed in Section~\ref{sec:mpc}.
+            The similarity in the acceleration setpoint responses also show that the energy expended in a velocity steps are roughly equal for these two controller implementations.
+            However, this is also highly dependant on the weightings used in optimastion problem of both controllers.
+            Both controllers also produce a non-zero steady-state setpoint as expected, which is required to counter areodynamic drag.
 
-        \FloatBarrier\subsection{Different payloads}
+        \FloatBarrier\subsection{Different system parameters}
+
+            \paragraph
+            The system identification and control implementations are required to perform well with different unknown payload parameters.
+            Therefore, numerous flights with a range of different payload were simulated, the respective models were trained and the controllers were implemented.
+            Figure~\ref{compare_control_vel_l1} and Figure~\ref{compare_control_vel_l05} show velocity step responces with LQR and MPC implentations with two payloads flights.
+            Both the parameter estimation with LQR implementation, and the DMDc with MPC implementation, handle flights with different cable lengths and payload masses well.
+            In each flight, LQR and MPC damp the payload oscillations and control the multirotor velocity well.
+            
+            \paragraph
+            For each simulation, the controller was left 
+            The controllers were not specifically tuned for each simulation.
+            Instead, the same controller parameters were used as in Section~\ref{sec:simple_payload_control}.
+            This shows how adaptibile each control architecture is to different payload parameters with manual intervention.
 
             \begin{figure}
                 \captionsetup[subfigure]{justification=centering}
