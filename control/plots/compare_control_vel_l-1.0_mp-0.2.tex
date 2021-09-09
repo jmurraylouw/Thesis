@@ -27,22 +27,22 @@
         
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = time, y = vel_sp, col sep = comma] 
-        {control/csv/compare_control_pid_Simulink_single_pend_mp0.3_l2.25_PID_vel_steps_tune_scale_0.7.mat.csv};
+        {control/csv/compare_control_mpc_Simulink_single_pend_mp0.2_l1_MPC_vel_steps_tune_scale_0.7.csv};
         \addlegendentry{Setpoint}
 
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = time, y = vel, col sep = comma] 
-        {control/csv/compare_control_pid_Simulink_single_pend_mp0.3_l2.25_PID_vel_steps_tune_scale_0.7.mat.csv};
+        {control/csv/compare_control_pid_Simulink_single_pend_mp0.2_l1_PID_vel_steps_tune_scale_0.7.csv};
         \addlegendentry{PID}
 
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = time, y = vel, col sep = comma] 
-        {control/csv/compare_control_mpc_Simulink_single_pend_mp0.3_l2.25_MPC_vel_steps_tune_scale_0.7.csv};
+        {control/csv/compare_control_mpc_Simulink_single_pend_mp0.2_l1_MPC_vel_steps_tune_scale_0.7.csv};
         \addlegendentry{MPC}
 
         \addplot+[mark = none, style = dashed, ultra thick] 
         table[x = time, y = vel, col sep = comma] 
-        {control/csv/compare_control_lqr_Simulink_single_pend_mp0.3_l2.25_PID_vel_steps_tune_scale_0.7.mat.csv};
+        {control/csv/compare_control_lqr_Simulink_single_pend_mp0.2_l1_LQR_vel_steps_tune_scale_0.7.csv};
         \addlegendentry{LQR}
 
 
