@@ -15,9 +15,9 @@
                 \cmidrule(lr){1-2}
                 Category    & Algorithm                     & \\
                 \midrule
-                White-box   & RLS mass estimator, and       & LQR \\
+                White-box   & RLS mass estimator, and       & \gls{LQR} \\
                             & FFT cable length estimator    & \\
-                Black-box   & DMDc, or                      & MPC \\
+                Black-box   & DMDc, or                      & \gls{MPC} \\
                             & HAVOK                         & \\
                 \bottomrule
             \end{tabularx}
@@ -30,7 +30,7 @@
         Control system design
         Slower for less swing angles
 
-    \FloatBarrier\section{LQR}
+    \FloatBarrier\section{LQR} \label{sec:lqr}
 
         Anton and Francois stuff
 
@@ -63,14 +63,14 @@
             \input{control/plots/compare_control_vel.tex}
 
             \paragraph
-            From simulation results, it appears that both the MPC and LQR effectively damp the payload oscillations while controlling the velocity of the multirotor.
-            Figure~\ref{fig:compare_control_vel} shows the velocity step responces of the MPC, LQR and PID controllers for a multirotor with a suspended payload.
-            From Figure~\ref{fig:compare_control_vel} it is clear that both the LQR and MPC controllers actively damp the velocity oscillation caused by the swinging payload.
+            From simulation results, it appears that both the \gls{MPC} and \gls{LQR} effectively damp the payload oscillations while controlling the velocity of the multirotor.
+            Figure~\ref{fig:compare_control_vel} shows the velocity step responces of the MPC, \gls{LQR} and PID controllers for a multirotor with a suspended payload.
+            From Figure~\ref{fig:compare_control_vel} it is clear that both the \gls{LQR} and \gls{MPC} controllers actively damp the velocity oscillation caused by the swinging payload.
             The \gls{PID} controller does not consider the payload angle, hence the oscillations are not damped as strongly.
 
             \paragraph
-            For the MPC and LQR, the respective models were first generated in the training phase of the simulation.
-            Thereafter, the MPC and LQR were manually and iteratively tuned to produce a step response with a similar response time and overshoot.
+            For the \gls{MPC} and LQR, the respective models were first generated in the training phase of the simulation.
+            Thereafter, the \gls{MPC} and \gls{LQR} were manually and iteratively tuned to produce a step response with a similar response time and overshoot.
             The PID response shown uses the same controller gains used in the training phase.
 
             % MPC:
@@ -90,9 +90,9 @@
 
             \paragraph
             Figure~\ref{fig:compare_control_theta} shows the payload angle data of the velocity step response.
-            Both the MPC and LQR damp the payload angle well and the osciilations cease after only two or three swings.
-            In this case, the MPC response results in a smaller initial swing angle, however, this is dependant on the specific tuning of each controller.
-            The LQR can also be tuned to produce a similar swing angle.
+            Both the \gls{MPC} and \gls{LQR} damp the payload angle well and the osciilations cease after only two or three swings.
+            In this case, the \gls{MPC} response results in a smaller initial swing angle, however, this is dependant on the specific tuning of each controller.
+            The \gls{LQR} can also be tuned to produce a similar swing angle.
 
             \input{control/plots/compare_control_acc_sp.tex}
 
@@ -108,15 +108,9 @@
             \paragraph
             The system identification and control implementations are required to perform well with different unknown payload parameters.
             Therefore, numerous flights with a range of different payload were simulated, the respective models were trained and the controllers were implemented.
-            Figure~\ref{compare_control_vel_l1} and Figure~\ref{compare_control_vel_l05} show velocity step responces with LQR and MPC implentations with two payloads flights.
-            Both the parameter estimation with LQR implementation, and the DMDc with MPC implementation, handle flights with different cable lengths and payload masses well.
-            In each flight, LQR and MPC damp the payload oscillations and control the multirotor velocity well.
-            
-            \paragraph
-            For each simulation, the controller was left 
-            The controllers were not specifically tuned for each simulation.
-            Instead, the same controller parameters were used as in Section~\ref{sec:simple_payload_control}.
-            This shows how adaptibile each control architecture is to different payload parameters with manual intervention.
+            Figure~\ref{fig:compare_control_vel_l1} and Figure~\ref{fig:compare_control_vel_l05} show velocity step responces with \gls{LQR} and \gls{MPC} implentations with two payloads flights.
+            Both the parameter estimation with \gls{LQR} implementation, and the DMDc with \gls{MPC} implementation, handle flights with different cable lengths and payload masses well.
+            In each flight, \gls{LQR} and \gls{MPC} damp the payload oscillations and control the multirotor velocity well.
 
             \begin{figure}
                 \captionsetup[subfigure]{justification=centering}
@@ -126,21 +120,48 @@
                 \caption{}
                 \label{fig:compare_control_different_payloads}  
             \end{figure}
-
+                        
             \paragraph
-            Different payloads, compare tuning
+            The controllers were not specifically tuned for each simulation.
+            Instead, the same controller parameters were used for these simulations as the simulations in Section~\ref{sec:simple_payload_control}.
+            This shows that each control architecture is adaptibile to different payload parameters without manual intervention.
 
         \FloatBarrier\subsection{Wind disturbance}
+
+            \paragraph
+            For zero steady-state error with a practical system, a controller needs to apply some form of disturbance rejection.
+            Practical systems experience unmeasured disturbances and other deviations which are not accounted for by the plant model.
+            For example, a mean force applied by wind could prevent zero steady-state tracking error of the multirotor velocity without disturbance rejection.
+            As discuseed in Section~\ref{sec:lqr}, an integral state variable was added to the \gls{LQR} plant model for inegral action of the multirotor velocity tracking.
+            As discuseed in Section~\ref{sec:mpc}, an unmeasured input was added to the \gls{MPC} plant model with a disturbance estimator to apply integral action to the multirotor velocity.
 
             \input{control/plots/compare_control_vel_wind_disturbance.tex}
 
             \paragraph
-            Wind disturbance wind speed~=~\SI{2}{\metre/\second}
+            Figure~\ref{fig:compare_control_vel_wind_disturbance} shows the responses of the controllers from Section~\ref{sec:simple_payload_control} with a constant wind disturbance starting at \SI{8}{\second}.
+            At Time~=~\SI{8}{\second}, a wind speed of \SI{2}{\metre/\second} is applied as an unmeasured step input.
+            This mostly affects the multirotor velocity because the wind causes a greater drag force on the multirotor, 
+            hence a larger acceleration setpoint is required to maintain a constant velocity.
+
+            \paragraph
+            It appears that the MPC shows better disturbance rejection than the LQR when using the controller parameters which were tuned for good performance in Section~\ref{sec:simple_payload_control}.
+            This is primarily because the weighting of the integral variable in the LQR optimisation was minimised to reduce overshoot.
+            The integral weighting can be increased to improve integral action at the expense of increasing overshoot in the velocity response.
 
             \input{control/plots/improve_lqr_integrator.tex}
 
             \paragraph
-            Improve integrator. This is in contrast to the MPC response which shows good disturbance rejection and maintains a low overshoot.
+            Figure~\ref{fig:improve_lqr_integrator} shows the LQR responses with different integral state weightings.
+            The other state variable weights are kept constant for each response.
+            It is clear that the settling time and disturbance rejection of the LQR improves for larger integral state weighting.
+            However, the overshoot increases significantly because of the integrator build up at the start of the response.
+            % The overshoot could be decreased by adding a velocity derivative state to the LQR model, but this will involve ex
+
+            \paragraph
+            In contrast to the LQR, the \gls{MPC} shows good disturbance rejection while maintaining a low overshoot.
+            This is because the disturbance estimator applies integral action which depends on deviation of the actual dynamics from the plant model.
+            whereas the LQR applies integral action proportional to the integral of the tracking error.
+            Therefore the MPC implementation produces less integrator build up which results in a lower overshoot.
 
             % Could add effect of bad models. ??
 
