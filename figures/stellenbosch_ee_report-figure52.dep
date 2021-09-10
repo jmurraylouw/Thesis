@@ -1,2 +1,2 @@
-figures/stellenbosch_ee_report-figure52.pdf: results/csv/step_predictions_Prac_2021-08-23_04_double_pend_m1_0.2_m2_0.1_l1-0.5_l2_0.62_wind-0.5.csv_dmd_201.csv
-figures/stellenbosch_ee_report-figure52.pdf: results/csv/step_predictions_Prac_2021-08-23_04_double_pend_m1_0.2_m2_0.1_l1-0.5_l2_0.62_wind-0.5.csv_dmd_201.csv
+figures/stellenbosch_ee_report-figure52.pdf: results/csv/step_predictions_Prac_2021-08-23_02_l-0.5_mp-0.2_wind-0.5_XY_steps.csv_dmd_746.csv
+figures/stellenbosch_ee_report-figure52.pdf: results/csv/step_predictions_Prac_2021-08-23_02_l-0.5_mp-0.2_wind-0.5_XY_steps.csv_dmd_746.csv
