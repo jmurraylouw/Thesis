@@ -1,4 +1,6 @@
-\graphicspath{{control/fig/}}
+
+{
+\tikzset{external/figure name/.add={control/}{}}
 
 \chapter{Control systems}
 \label{chap:control}
@@ -127,7 +129,7 @@
             This shows that each control architecture is adaptibile to different payload parameters without manual intervention.
 
             \input{control/plots/compare_control_vel_mq_changed.tex}
-            
+
         \FloatBarrier\subsection{Wind disturbance}
 
             \paragraph
@@ -188,4 +190,6 @@
             \end{itemize}
 
     \FloatBarrier\section{Conclusion}
+
+} % end of tikz set
     

@@ -1,2 +1,0 @@
-figures/stellenbosch_ee_report-figure6.pdf: system_id/csv/NMAE_vs_q_SITL_x_vel_noise_longer_times_q.csv_dmd_angle_Ttrain_60.csv
-figures/stellenbosch_ee_report-figure6.pdf: system_id/csv/NMAE_vs_q_SITL_x_vel_noise_longer_times_q.csv_havok_angle_Ttrain_60.csv
