@@ -128,7 +128,34 @@
             Instead, the same controller parameters were used for these simulations as the simulations in Section~\ref{sec:simple_payload_control}.
             This shows that each control architecture is adaptibile to different payload parameters without manual intervention.
 
-            \input{control/plots/compare_control_vel_mq_changed.tex}
+            \begin{figure}
+                \captionsetup[subfigure]{justification=centering}
+                \centering  
+                \input{control/plots/compare_control_vel_mq_changed.tex}
+                \input{control/plots/compare_control_theta_mq_changed.tex}
+                \caption{Velocity step responses with the multirotor mass decreased by \SI{0.25}{\kilo\gram}
+                ($l =$~\SI{0.5}{\meter}, $m_p =$~\SI{0.3}{\kilo\gram})}
+                \label{fig:mq_changed} 
+            \end{figure}
+
+            \paragraph
+            However, the control architectures are not all very adaptable to variation of other system parameters.
+            As mentioned in Chapter~\ref{chap:system_id}, a disadvantage of the white-box system identification approach used by the LQR,
+            is that parameter estimation techniques need to be manually designed for each unknown parameter.
+            In the specific implementation, the LQR model assumes that the multirotor mass is known.
+            Hence, changing the mass of the multirotor by adding or removing an accesory is detrimental to the accuracy of plant model and therefore affects the LQR performance.
+            In contrast, the data-driven system identification of the MPC plant model does not rely on such modelling assumptions.
+            Therefore a change in the multirotor mass does affect the MPC implementation.
+
+            \paragraph
+            Simulations were performed with an altered multirotor mass.
+            Figure~\ref{fig:mq_changed} shows the resulting velocity step responses of the PID, MPC and LQR.
+
+
+            \paragraph
+            Unfair
+            LQR is robust for other changes.
+            But does show the advantage
 
         \FloatBarrier\subsection{Wind disturbance}
 

@@ -1,0 +1,48 @@
+\begin{subfigure}[t]{\columnwidth}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[            
+            xlabel = Time,
+            ylabel = Payload angle,
+            x unit = \si{\second},
+            y unit = \si{\degree},
+            xmin = 0,    xmax = 16,
+            ymin = -18,  ymax = 6,
+            grid = major,
+            legend cell align = left,
+            legend pos = south east,
+            grid style = dashed,
+            legend style = {font = \scriptsize},
+            label style = {font = \scriptsize},
+            tick label style = {font = \scriptsize},
+            width = 0.95\columnwidth,
+            height = 0.5\columnwidth,
+            % initialize Dark2
+            cycle list/Dark2,
+            % combine it with 'mark list*':
+            cycle multiindex* list = {
+                Dark2\nextlist
+            }
+        ]
+                
+        \pgfplotsset{cycle list shift = 1}
+
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = time, y = theta, col sep = comma] 
+        {control/csv/compare_control_pid_Simulink_single_pend_mp0.3_l0.5_PID_vel_steps_tune_scale_0.7_mq_0.546_mp_0.3.csv};
+        \addlegendentry{PID}
+
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = time, y = theta, col sep = comma] 
+        {control/csv/compare_control_mpc_Simulink_single_pend_mp0.3_l0.5_MPC_vel_steps_tune_scale_0.7_mq_0.546_mp_0.3.csv};
+        \addlegendentry{MPC}
+
+        \addplot+[mark = none, style = dashed, ultra thick] 
+        table[x = time, y = theta, col sep = comma] 
+        {control/csv/compare_control_lqr_Simulink_single_pend_mp0.3_l0.5_LQR_vel_steps_tune_scale_0.7_mq_0.546_mp_0.3_l_est_0.35696.csv};
+        \addlegendentry{LQR}
+
+        \end{axis}
+    \end{tikzpicture} 
+
+\end{subfigure}

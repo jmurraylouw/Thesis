@@ -1,4 +1,4 @@
-\begin{figure}[htb]
+\begin{subfigure}[t]{\columnwidth}
     \centering
     \begin{tikzpicture}
         \begin{axis}[            
@@ -7,7 +7,7 @@
             x unit = \si{\second},
             y unit = \si{\metre/\second},
             xmin = 0,   xmax = 16,
-            ymin = -0.1,  ymax = 2.7,
+            ymin = -0.1,  ymax = 2.5,
             grid = major,
             legend cell align = left,
             legend pos = south east,
@@ -27,28 +27,26 @@
         
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = time, y = vel_sp, col sep = comma] 
-        {control/csv/compare_control_lqr_Simulink_single_pend_mp0.3_l1.5_LQR_vel_steps_tune_scale_0.7_1.5_x_mq.csv};
+        {control/csv/compare_control_pid_Simulink_single_pend_mp0.3_l0.5_PID_vel_steps_tune_scale_0.7_mq_0.546_mp_0.3.csv};
         \addlegendentry{Setpoint}
 
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = time, y = vel, col sep = comma] 
-        {control/csv/compare_control_pid_Simulink_single_pend_mp0.3_l1.5_PID_vel_steps_tune_scale_0.7_1.5_x_mq.csv};
+        {control/csv/compare_control_pid_Simulink_single_pend_mp0.3_l0.5_PID_vel_steps_tune_scale_0.7_mq_0.546_mp_0.3.csv};
         \addlegendentry{PID}
 
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = time, y = vel, col sep = comma] 
-        {control/csv/compare_control_mpc_Simulink_single_pend_mp0.3_l1.5_MPC_vel_steps_tune_scale_0.7_1.5_x_mq.csv};
+        {control/csv/compare_control_mpc_Simulink_single_pend_mp0.3_l0.5_MPC_vel_steps_tune_scale_0.7_mq_0.546_mp_0.3.csv};
         \addlegendentry{MPC}
 
         \addplot+[mark = none, style = dashed, ultra thick] 
         table[x = time, y = vel, col sep = comma] 
-        {control/csv/compare_control_lqr_Simulink_single_pend_mp0.3_l1.5_LQR_vel_steps_tune_scale_0.7_1.5_x_mq.csv};
+        {control/csv/compare_control_lqr_Simulink_single_pend_mp0.3_l0.5_LQR_vel_steps_tune_scale_0.7_mq_0.546_mp_0.3_l_est_0.35696.csv};
         \addlegendentry{LQR}
 
 
         \end{axis}
     \end{tikzpicture} 
-    \caption{Velocity step responses with an altered multirotor mass
-    ($m_q =$~\SI{0.3}{\kilo\gram}, $l =$~\SI{1.5}{\meter}, $m_p =$~\SI{0.3}{\kilo\gram})}
-    \label{fig:compare_control_vel_mq_changed}
-\end{figure}
+
+\end{subfigure}
