@@ -1,4 +1,6 @@
 \graphicspath{{system_id/fig/}, {system_id/plots}}
+{
+\tikzset{external/figure name/.add={system_id/}{}}
 
 \chapter{System identification}
 \label{chap:system_id}
@@ -62,4 +64,4 @@
         % the dynamics described by the model are significantly different from the actual dynamics.
         % This will have a detrimental effect on the control performance of a controller based on such a model,
         % since the controller will be designed for different plant than what it is controlling actually controlling.
-       
+}
