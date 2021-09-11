@@ -29,17 +29,17 @@
 
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = time, y = theta, col sep = comma] 
-        {control/csv/compare_control_pid_Simulink_single_pend_mp0.3_l2.25_PID_vel_steps_tune_scale_0.7.mat.csv};
+        {control/csv/compare_control_pid_Simulink_double_pend_m1-0.2_m2-0.1_l1-0.5_l2-0.6_PID_vel_steps_tune_scale_0.7.csv};
         \addlegendentry{PID}
 
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = time, y = theta, col sep = comma] 
-        {control/csv/compare_control_mpc_Simulink_single_pend_mp0.3_l2.25_MPC_vel_steps_tune_scale_0.7.csv};
+        {control/csv/compare_control_mpc_Simulink_double_pend_m1-0.2_m2-0.1_l1-0.5_l2-0.6_MPC_vel_steps_tune_scale_0.7.csv};
         \addlegendentry{MPC}
 
         \addplot+[mark = none, style = dashed, ultra thick] 
         table[x = time, y = theta, col sep = comma] 
-        {control/csv/compare_control_lqr_Simulink_single_pend_mp0.3_l2.25_LQR_vel_steps_tune_scale_0.7.csv};
+        {control/csv/compare_control_lqr_Simulink_double_pend_m1-0.2_m2-0.1_l1-0.5_l2-0.6_LQR_vel_steps_tune_scale_0.7_slow_minimal_oscillations.csv};
         \addlegendentry{LQR}
 
         \end{axis}
