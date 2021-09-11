@@ -222,29 +222,48 @@
             \input{control/plots/compare_control_vel_dynamic.tex}
 
             \paragraph
-            In this section, accurate system identification models were first generated, as described in Section~\ref{sec:dynamic_payload}, and used in the MPC and LQR controllers.
+            For the simulations in this section, accurate system identification models were generated as described in Section~\ref{sec:dynamic_payload}, and used in the MPC and LQR controllers.
             Figure~\ref{fig:compare_control_vel_dynamic} shows the reslting controller responses with a dynamic payload.
-            It appears that the velocity responses of both the LQR and the MPC are less smooth than with a simiple suspended payload.
+            It appears that the velocity responses of both the LQR and the MPC are less smooth than with a simiple suspended payload and show small velocity ocsilations.
             
             \input{control/plots/compare_control_theta_dynamic.tex}
             
             \paragraph
-            Figure~\ref{fig:compare_control_theta_dynamic} shows the angle of the suspension cable during a velocity step response.
-
-
-            \paragraph
-            For LQR:
-            This is expected, since the angle measurement of the payload relative to the cable is not available to the controllers and therefore it is not controlled directly.
-            Therefore, the high freqency relative oscillation of the payload continues to influence the velocity response until it stops oscillating.
-            For MPC:
-            Reason
+            Figure~\ref{fig:compare_control_theta_dynamic} shows the suspension cable angle for a velocity step response.
+            It appears that the LQR and MPC damp the payload oscillations with a similar response time.
+            However, the superimposed, high frequency oscillations are smaller in the LQR response than in the MPC response.
+            The LQR naively damps the payload oscillations because its controller gain is determined from the same dynamical model as for a simple suspended payload.
+            Because the angle of the payload relative to the cable is not measured or considered in the LQR plant model, it does not directly damp these high frequency oscillations.
+            The MPC should account for the superimposed frequency and provide a smoother response than the LQR, since the black-box model includes the double pendulum dynamics in its prediction model.
+            Therefore it is expected that the MPC optimiser determines a smooth trajectory which damps both the low and high frequnecy oscillations. 
 
             \input{control/plots/mpc_vel_prediction_vs_actual.tex}
 
             \paragraph
-            Theta Prediction vs actual
+            However, the MPC does not provide a smooth velocity or payload angle response, 
+            because the predicted trajectory of the plant model with the optimised input sequence differs significantly from the actual response of the simulated system.
+            Figure~\ref{fig:mpc_vel_prediction_vs_actual} shows the predicted velocity of the MPC optimiser, given the velocity setpoint and initial condition at Time~=~\SI{1.1}{\second}.
+            The actual simulated response with the MPC controller is also shown in Figure~\ref{fig:mpc_vel_prediction_vs_actual}.
+            The optimiser determined a smooth trajectory using the plant model.
+            For the first part of the velocity response, the model prediction matches the actual response well.
+            However, after Time~=~\SI{3.2}{\second}, the predicted dyanmics is noticebly different from the actual response to the optimised input sequence.
 
             \input{control/plots/mpc_theta_prediction_vs_actual.tex}
+
+            \paragraph
+            Figure~\ref{fig:mpc_theta_prediction_vs_actual} shows the predicted and actual payload angle response for the same simulation at the same time-step.
+            The MPC optimiser determined a smooth trajectory for the payload angle, but the actual response differs significantly from this trajectory.
+            Even though the black-box model predictions accuratly matched the testing data, Figure~\ref{fig:mpc_vel_prediction_vs_actual} and Figure~\ref{fig:mpc_theta_prediction_vs_actual}  
+            show that the model does not represent the simulated system for all possible values of the state and input vectors. 
+
+            \paragraph
+            This shows that 
+            overfit to dynamics
+            effect of controller.
+            Due to the feedback nature of a controller
+
+            \paragraph
+            closure issue
 
 
     \FloatBarrier\section{Conclusion}
