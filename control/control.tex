@@ -254,19 +254,27 @@
             Figure~\ref{fig:mpc_theta_prediction_vs_actual} shows the predicted and actual payload angle response for the same simulation at the same time-step.
             The MPC optimiser determined a smooth trajectory for the payload angle, but the actual response differs significantly from this trajectory.
             Even though the black-box model predictions accuratly matched the testing data, Figure~\ref{fig:mpc_vel_prediction_vs_actual} and Figure~\ref{fig:mpc_theta_prediction_vs_actual}  
-            show that the model does not represent the simulated system for all possible values of the state and input vectors. 
+            show that the model is not an accurate approximation of the simulated system for all values of the state and input vectors. 
 
             \paragraph
-            This shows that 
-            overfit to dynamics
-            effect of controller.
-            Due to the feedback nature of a controller
-
+            The estimated model provides accurate predictions in the subspace of state and input vectors considered in the training data.
+            However, the MPC generates trajectories which are beyond this subspace and the model needs to extrapolate outside of the training subspace.
+            The multirotor with a simple suspended payload represents a mildly non-linear system, hence the linear approximation was effective for control with an MPC.
+            However, a double pendulum system reveals highly non-linear dynamics with multiple fixed points.
+            This system also includes an unmeasured state variable which adds complexity to dynamics.
+            
             \paragraph
-            closure issue
+            From the results in Figure~\ref{fig:mpc_vel_prediction_vs_actual} and Figure~\ref{fig:mpc_theta_prediction_vs_actual}
+            it appears that the data-driven linear model results in acceptable control with an MPC.
+            However, the actual dynamics do not follow the optimised trajectory of the MPC and the MPC does not outperform the LQR implementation.
 
+            % ?? Add discussion of how it could be improved:
+            % Constrain MPC to stay within subspace
+            % Adaptive MPC to include larger subspace
 
     \FloatBarrier\section{Conclusion}
+            
+            
 
 } % end of tikz set
     
