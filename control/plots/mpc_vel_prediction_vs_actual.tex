@@ -1,0 +1,47 @@
+\begin{figure}[htb]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[            
+            xlabel = Time,
+            ylabel = Velocity,
+            x unit = \si{\second},
+            y unit = \si{\metre/\second},
+            xmin = 0,   xmax = 9.1,
+            ymin = -0.1,  ymax = 2.4,
+            grid = major,
+            legend cell align = left,
+            legend pos = south east,
+            grid style = dashed,
+            legend style = {font = \scriptsize},
+            label style = {font = \scriptsize},
+            tick label style = {font = \scriptsize},
+            width = 0.95\columnwidth,
+            height = 0.5\columnwidth,
+            % initialize Dark2
+            cycle list/Dark2,
+            % combine it with 'mark list*':
+            cycle multiindex* list = {
+                Dark2\nextlist
+            }
+        ]
+        
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = time, y = vel_sp, col sep = comma] 
+        {control/csv/compare_control_mpc_Simulink_double_pend_m1-0.2_m2-0.1_l1-0.5_l2-0.6_MPC_vel_steps_tune_scale_0.7_slow_minimal_oscillations.csv};
+        \addlegendentry{Setpoint}
+
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = time, y = prediction.vel, col sep = comma] 
+        {control/csv/mpc_prediction_vs_actual_Simulink_double_pend_m1-0.2_m2-0.1_l1-0.5_l2-0.6_MPC_vel_steps_tune_scale_0.7.csv};
+        \addlegendentry{Optimised prediction}
+
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = time, y = vel, col sep = comma] 
+        {control/csv/compare_control_mpc_Simulink_double_pend_m1-0.2_m2-0.1_l1-0.5_l2-0.6_MPC_vel_steps_tune_scale_0.7.csv};
+        \addlegendentry{Actual response}
+
+        \end{axis}
+    \end{tikzpicture} 
+    \caption{Optimised prediction and actual velocity response of the MCP with a dynamic payload}
+    \label{fig:mpc_vel_prediction_vs_actual}
+\end{figure}

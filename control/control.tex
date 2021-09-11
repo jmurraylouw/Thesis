@@ -209,28 +209,43 @@
         \FloatBarrier\subsection{Dynamic payload}
 
             \paragraph
-            Intro
+            As discussed in Section~\ref{sec:dynamic_payload}, some payloads have dynamics that differ significantly from a suspended rigid mass.
+            In this work, these payloads are refered to as dynamic payloads.
+            An example of such a payload is an elongated payload, which can be represented by a double pendulum model. 
+            
+            \paragraph
+            In Section~\ref{sec:dynamic_payload}, the proposed system identification techniques were tested on simulated flight data with such a payload.
+            For the white-box system identification approach, it was shown that the white-box model captures the dynamics of the dominant frequency of the oscillating payload but ignores the higher frequency dynamics.
+            For the black-box approach, a prediction model was generated from a set of training data.
+            This model accurately predicted the multirotor and payload dynamics, including the low and high frequency dynamics, of a set of testing data.
 
             \input{control/plots/compare_control_vel_dynamic.tex}
 
             \paragraph
-            vel control
-
+            In this section, accurate system identification models were first generated, as described in Section~\ref{sec:dynamic_payload}, and used in the MPC and LQR controllers.
+            Figure~\ref{fig:compare_control_vel_dynamic} shows the reslting controller responses with a dynamic payload.
+            It appears that the velocity responses of both the LQR and the MPC are less smooth than with a simiple suspended payload.
+            
             \input{control/plots/compare_control_theta_dynamic.tex}
             
             \paragraph
-            theta control
+            Figure~\ref{fig:compare_control_theta_dynamic} shows the angle of the suspension cable during a velocity step response.
 
-            \input{control/plots/mpc_prediction_vs_actual.tex}
 
             \paragraph
-            Prediction vs actual
+            For LQR:
+            This is expected, since the angle measurement of the payload relative to the cable is not available to the controllers and therefore it is not controlled directly.
+            Therefore, the high freqency relative oscillation of the payload continues to influence the velocity response until it stops oscillating.
+            For MPC:
+            Reason
 
+            \input{control/plots/mpc_vel_prediction_vs_actual.tex}
 
-            \begin{itemize}
-                \item subplot prediction of data driven model. subplot prediction of white-box model
-                \item plot \gls{MPC} vs \gls{LQR} v \gls{PID} (no wind)
-            \end{itemize}
+            \paragraph
+            Theta Prediction vs actual
+
+            \input{control/plots/mpc_theta_prediction_vs_actual.tex}
+
 
     \FloatBarrier\section{Conclusion}
 
