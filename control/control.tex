@@ -45,6 +45,8 @@
 
             \input{control/diagrams/pid_architecture.tex}
             
+            % ?? Fix notation of symbols and define them
+
             \paragraph
             Figure~\ref{fig:pid_architecture} shows a high level overview of the PX4 control architecture, but does not show state feedback. 
             The inner-most element is the mixer, which converts virtual actuator commands to actuator thrust commands.
@@ -61,9 +63,9 @@
             Linear PID control is used to control angular rate of the multirotor in the pitch, roll, and yaw axis of the body frame.
             The angular rate controller receives angular rate estimates from the PX4 state estimator, and outputs virtual actuator commands to the mixer.
             
-            Input diagram of controller.
-
-            % \cite{reghard} ??
+            \input{control/diagrams/angular_rate_controller.tex}
+            
+            \paragraph
             Classical control theory was used by \cite{Grobler2020} to design the controller gains of the practical multirotor, Honeybee.
             This process is also explained in detail by \cite{Erasmus2020}.
             The controller gains were designed for fast transient response, fast disturbance rejection, and minimal overshoot.            
