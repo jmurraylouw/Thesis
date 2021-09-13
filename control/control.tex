@@ -30,23 +30,28 @@
     \FloatBarrier\section{Cascaded PID}
 
         \paragraph
-        This section gives an overview of the PID controller architecture and the design process used to determine the controller gains.
-        PX4-Autopilot was chosen as the multirotor flight-stack because it is open-source and is widely used in industry and research.
-        The default multirotor PX4 control architecture consists of multiple cascaded PID controller loops.
-        This can be devided into two main categories, the inner loop attitude controllers and the outher loop translational controllers.
-        
-
-
+        This section gives a brief overview of the PID control architecture.
+        The controllers are designed based on a linearised model of the multirotor without a payload.
+        The design process used to determine the controller gains are also discussed in this section.
+        Finally the controllers are implemented with MATLAB and Simulink and are verified with a PX4 SITL simulation in Gazebo.
 
         \FloatBarrier\section{PX4 control architecture}
+            
+            \paragraph
+            PX4-Autopilot was chosen as the multirotor flight-stack because it is open-source and widely used in industry and research.
+            The default PX4 control architecture for a multirotor consists of multiple cascaded PID controller loops.
+            This is devided into two main categories, the inner loop attitude controllers and the outher loop translational controllers.
 
             \input{control/diagrams/pid_architecture.tex}
             
             \paragraph
-            Figure~\ref{fig:pid_architecture} shows a high level overview of the PX4 control architecture which does not show state feedback. 
-            The attitude controllers, consisting of the angular rate and angle controlelrs, deal with the fastest dyamics and therefore run at the highest frequency.
-            The angular rate controller
-            The ou
+            Figure~\ref{fig:pid_architecture} shows a high level overview of the PX4 control architecture, but does not show state feedback. 
+            The inner-most element is the mixer, which converts virtual actuator commands to actuator thrust commands.
+            The attitude controller includes the angle and angular rate controllers, which send sommands to the mixer.
+            The translational controller consists of the position and velocity controllers, which send commands to the attitude controller.
+            The rate of each controller is also shown in Figure~\ref{fig:pid_architecture}.
+            % The inner loop controllers deal with the fastest dynamics and are required to run at the highest rate.
+            % The translation controllers control slower dynamics. hence they run a lower rate.
 
         \FloatBarrier\section{Attitude controllers}
 
