@@ -33,7 +33,8 @@
         This section gives a brief overview of the PID control architecture.
         The controllers are designed based on a linearised model of the multirotor without a payload.
         The design process used to determine the controller gains are also discussed in this section.
-        Finally the controllers are implemented with MATLAB and Simulink and are verified with a PX4 SITL simulation in Gazebo.
+        Finally the controllers are implemented with MATLAB and Simulink and are verified with practical flight data.
+        % ?? remember to add practical verification
 
         \FloatBarrier\section{PX4 control architecture}
             
@@ -47,18 +48,39 @@
             \paragraph
             Figure~\ref{fig:pid_architecture} shows a high level overview of the PX4 control architecture, but does not show state feedback. 
             The inner-most element is the mixer, which converts virtual actuator commands to actuator thrust commands.
+            % This is achieved with simple matrix multiplication.
             The attitude controller includes the angle and angular rate controllers, which send sommands to the mixer.
             The translational controller consists of the position and velocity controllers, which send commands to the attitude controller.
             The rate of each controller is also shown in Figure~\ref{fig:pid_architecture}.
             % The inner loop controllers deal with the fastest dynamics and are required to run at the highest rate.
             % The translation controllers control slower dynamics. hence they run a lower rate.
 
-        \FloatBarrier\section{Attitude controllers}
+        \FloatBarrier\section{Angular rate controller}
 
-            Designed with rootlocus. explain. cite anton and reghard.
-            Gains used from reghard.
+            \paragraph
+            Linear PID control is used to control angular rate of the multirotor in the pitch, roll, and yaw axis of the body frame.
+            The angular rate controller receives angular rate estimates from the PX4 state estimator, and outputs virtual actuator commands to the mixer.
+            
+            Input diagram of controller.
 
-        \FloatBarrier\section{Translational controllers}
+            % \cite{reghard} ??
+            Classical control theory was used by \cite{Grobler2020} to design the controller gains of the practical multirotor, Honeybee.
+            This process is also explained in detail by \cite{Erasmus2020}.
+            The controller gains were designed for fast transient response, fast disturbance rejection, and minimal overshoot.            
+            It was determined by \cite{Grobler2020} that the default PX4 angular rate controller gains of the ZMR250 airframe provide excellent control for Honeybee and satisfy these design requirements.
+            For a \SI{1}{\radian/\second} step responce, the pitch rate controllers result in a 
+            3.6~\% overshoot, 
+            \SI{0.024}{\second} rise time, 
+            \SI{0.8}{\second} settling time, 
+            and \SI{138}{\radian/\second} bandwidth \cite{Grobler2020}.
+            These gains are well suited for Honeybee and will also be implemented in this work.
+            The default roll rate and yaw rate controller gains are also implemented.
+
+        \FloatBarrier\section{Angle controller}
+
+            \paragraph
+
+        \FloatBarrier\section{Translational controller}
 
             Mention position controllers are not used
 
