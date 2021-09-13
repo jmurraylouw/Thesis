@@ -1,0 +1,71 @@
+%===================================================================================
+% TIKZ PX4 CONTROLLERS
+%===================================================================================
+
+\begin{figure}[H]
+    \centering
+
+    % Define distances
+    \def\blockheight{4em}
+    \def\blockwidth{3.2em}
+    \def\nodesep{0.9*\blockwidth}
+
+    \footnotesize
+    \begin{tikzpicture}[>={Stealth[inset=0pt,length=3pt,angle'=60,round]},
+        simple_block/.style = {draw, fill=light_blue, text centered, inner sep=0em, text width=\blockwidth, minimum height=\blockheight, font=\tiny},
+        no_border_block/.style = {text centered, inner ysep=0.5em},
+        frame_block/.style = {draw, text centered, inner ysep=1.25em, inner xsep=0.5em, dashed}
+    ]
+    %===================================================================================
+    
+    % Reference
+    \node (ref) [] {};
+    
+    % Position controller
+    \path (ref.east)+(\nodesep,0) node (pos_ctrl) [simple_block] {Position \textbf{P}};
+    
+    % Velocity controller
+    \path (pos_ctrl.east)+(\nodesep,0) node (vel_ctrl) [simple_block] {Velocity \textbf{PID}};
+    
+    % Force to Attitude
+    \path (vel_ctrl.east)+(\nodesep,0) node (force_2_att) [simple_block] {Force to \\ Attitude};
+    
+    % Inertial Frame
+    \node[fit=(pos_ctrl) (vel_ctrl)] (inertial) [frame_block] {};
+    \path (inertial.south)+(0,0) node (inertial_text) [no_border_block, anchor=north] {Inertial Frame};
+    
+    % Angle controller
+    \path (force_2_att.north east)+(\nodesep,0) node (angle_ctrl) [simple_block, anchor=north] {Angle \\ \textbf{P}};
+    
+    % Angular Rate controller
+    \path (angle_ctrl.east)+(\nodesep,0) node (ang_vel_ctrl) [simple_block] {Angular Rate \textbf{PID}};
+    
+    % Mixer
+    \path (ang_vel_ctrl.east)+(\nodesep,0) node (mixer) [simple_block] {Mixer};
+    
+    % Body Frame
+    \node[fit=(angle_ctrl) (ang_vel_ctrl)] (body) [frame_block] {};
+    \path (body.south)+(0,0) node (body_text) [no_border_block, anchor=north] {Body Frame};
+    
+    \path (mixer.east)+(0.5*\nodesep,0) node (cmd) [] {};
+    
+    %===================================================================================
+    
+    \path[draw,->] (ref.east) -- (pos_ctrl.west);
+    
+    \path[draw,->] (pos_ctrl.east) -- (vel_ctrl.west);
+    
+    \path[draw,->] (vel_ctrl.east) -- (force_2_att.west);
+    
+    \path[draw,->] (force_2_att.east) -- (angle_ctrl.west);
+    
+    \path[draw,->] (angle_ctrl.east) -- (ang_vel_ctrl.west);
+    
+    \path[draw,->] (ang_vel_ctrl.east) -- (mixer.west);
+    
+    \path[draw,->] (mixer.east) -- (cmd.west);
+    
+    \end{tikzpicture}
+    \caption{Control system architecture.}
+    \label{fig:control_system}
+\end{figure}
