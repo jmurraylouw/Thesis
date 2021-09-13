@@ -5,7 +5,7 @@
       \def\blockheight{7em}
       \def\largeblockheight{1.45*\blockheight}
       \def\blockwidth{3.9em}
-      \def\nodesep{1.15*\blockwidth}
+      \def\nodesep{1.25*\blockwidth}
     
       \footnotesize
       \begin{tikzpicture}[>={Stealth[inset=0pt,length=3pt,angle'=60,round]},
@@ -14,7 +14,7 @@
           no_border_block/.style = {text centered, inner ysep=0.5em},
           frame_block/.style = {draw, text centered, inner ysep=2.25em, inner xsep=0.5em, dashed}
       ]
-        \hspace{-1.05cm}
+        
         %===================================================================================
         
         % Reference
@@ -76,5 +76,9 @@
         \path[draw,->] (mixer.east) -- node[text centered, inner sep=5pt, anchor=south] {$\bm{T}_\text{sp}$} (cmd.west);
       
       \end{tikzpicture}
+      
+      \caption{Cascaded PID control architecture of PX4}
       \label{fig:pid_architecture}
+      
     \end{figure}
+    

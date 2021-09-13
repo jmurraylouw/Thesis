@@ -1,6 +1,6 @@
 
 {
-\tikzset{external/figure name/.add={control/}{}}
+\tikzset{external/figure name/.add={control_overview/}{}}
 
 \chapter{Control systems}
 \label{chap:control}
@@ -34,19 +34,19 @@
         PX4-Autopilot was chosen as the multirotor flight-stack because it is open-source and is widely used in industry and research.
         The default multirotor PX4 control architecture consists of multiple cascaded PID controller loops.
         This can be devided into two main categories, the inner loop attitude controllers and the outher loop translational controllers.
-        Figure~\ref{fig:pid_architecture} shows a high level overview of the PX4 control architecture, excluding controller feedback. 
         
-        \input{control/diagrams/pid_architecture.tex}
-        \input{control/diagrams/anton_diagram.tex}
-        
-        \paragraph
-        The attitude controls, consisting of the angular rate and angle controlelrs, deal with the fastest dyamics and therefore run at the highest frequency.
-        The ou
+
 
 
         \FloatBarrier\section{PX4 control architecture}
 
-            Diagram of cascaded loop
+            \input{control/diagrams/pid_architecture.tex}
+            
+            \paragraph
+            Figure~\ref{fig:pid_architecture} shows a high level overview of the PX4 control architecture which does not show state feedback. 
+            The attitude controllers, consisting of the angular rate and angle controlelrs, deal with the fastest dyamics and therefore run at the highest frequency.
+            The angular rate controller
+            The ou
 
         \FloatBarrier\section{Attitude controllers}
 
@@ -69,6 +69,11 @@
         QP solver
         C++ generation
 
+} % End tikz set for controllers overview
+
+{
+\tikzset{external/figure name/.add={control_implementation/}{}}
+            
     \FloatBarrier\section{Implentation and results}
 
         \paragraph
