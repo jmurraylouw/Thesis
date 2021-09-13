@@ -383,7 +383,7 @@
         % hence a faster sample time is required for accurate system identification.
         Note that for all considered cable lengths, the prediction error has a sharp decrease for 
         $T_s >$~\SI{0.045}{\second}.
-        This may be because the model does not try to capture the small, high frequency oscillations in the dynamics
+        This may be because the model does not try to capture the small, high-frequency oscillations in the dynamics
         at such slow sample times.
         Hence the long term prediction of the models fits the general shape of the dynamics well and results in low errors.
         However, this sample time is too slow for controlling the practical multirotor.
@@ -437,7 +437,7 @@
     \subsection{Noise} \label{sec:noise}
 
         \paragraph
-        Measurement noise is bad for system identification because it adds high frequency information to the output signals
+        Measurement noise is bad for system identification because it adds high-frequency information to the output signals
         which are not part of the actual dynamics.
         On the practical multirotor the \gls{IMU}, barometer, magnetometer and \gls{GPS} sensors experience measurement noise.
         The \gls{EKF} performs sensor fusion and smooths out most of the measurement noise 
@@ -452,12 +452,12 @@
         The noisy signals from both the multirotor \gls{EKF} and payload swing angle are smoothed 
         with a quadratic regression smoother from MATLAB\textsuperscript{\textregistered} before applying system identification.
         The smoother uses a fixed window length of 20 samples which was selected iteratively 
-        to remove high frequency variation without loosing the general shape of the data.
+        to remove high-frequency variation without loosing the general shape of the data.
 
         \input{system_id/plots/acc_sp.tex}
         
         \paragraph
-        The input signal also needs to be smoothed to remove high frequency noise from the logged signal.
+        The input signal also needs to be smoothed to remove high-frequency noise from the logged signal.
         The quadratic regression smoother does not fit the shape of the input data well 
         because of the sharp, non-differentiable edges in the acceleration setpoint signal.
         Therefore a Gaussian-weighted moving average smoother 
