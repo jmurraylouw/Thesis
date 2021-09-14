@@ -1,0 +1,52 @@
+\begin{figure}[htb]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[            
+            xlabel = Time,
+            ylabel = Velocity,
+            x unit = \si{\second},
+            y unit = \si{\metre/\second},
+            xmin = 0,   xmax = 16,
+            ymin = -0.1,  ymax = 2.4,
+            grid = major,
+            legend cell align = left,
+            legend pos = south east,
+            grid style = dashed,
+            legend style = {font = \scriptsize},
+            label style = {font = \scriptsize},
+            tick label style = {font = \scriptsize},
+            width = 0.95\columnwidth,
+            height = 0.5\columnwidth,
+            % initialize Dark2
+            cycle list/Dark2,
+            % combine it with 'mark list*':
+            cycle multiindex* list = {
+                Dark2\nextlist
+            }
+        ]
+        
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = time, y = vel_sp, col sep = comma] 
+        {control/csv/compare_control_mpc_Simulink_single_pend_mp0.3_l2.25_MPC_vel_steps_tune_scale_0.7.csv};
+        \addlegendentry{Setpoint}
+
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = time, y = vel, col sep = comma] 
+        {control/csv/compare_control_mpc_Simulink_single_pend_mp0.1_l0.5_MPC_vel_steps_tune_scale_0.7.csv};
+        \addlegendentry{($l =$~\SI{0.5}{\meter}, $m_p =$~\SI{0.1}{\kilo\gram})}
+
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = time, y = vel, col sep = comma] 
+        {control/csv/compare_control_mpc_Simulink_single_pend_mp0.2_l1_MPC_vel_steps_tune_scale_0.7.csv};
+        \addlegendentry{($l =$~\SI{1}{\meter}, $m_p =$~\SI{0.2}{\kilo\gram})}
+
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = time, y = vel, col sep = comma] 
+        {control/csv/compare_control_mpc_Simulink_single_pend_mp0.3_l2.25_MPC_vel_steps_tune_scale_0.7.csv};
+        \addlegendentry{($l =$~\SI{2}{\meter}, $m_p =$~\SI{0.3}{\kilo\gram})}
+
+        \end{axis}
+    \end{tikzpicture} 
+    \caption{\gls{MPC} velocity step responses with different payloads}
+    \label{fig:mpc_tuning_plot}
+\end{figure}

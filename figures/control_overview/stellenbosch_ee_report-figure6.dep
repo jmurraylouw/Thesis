@@ -1,4 +1,2 @@
 figures/control_overview/stellenbosch_ee_report-figure6.pdf: control/csv/compare_control_pid_Simulink_single_pend_mp0.1_l0.5_PID_vel_steps_tune_scale_0.7.csv
-figures/control_overview/stellenbosch_ee_report-figure6.pdf: control/csv/compare_control_pid_Simulink_single_pend_mp0.1_l0.5_PID_vel_steps_tune_scale_0.7.csv
-figures/control_overview/stellenbosch_ee_report-figure6.pdf: control/csv/compare_control_pid_Simulink_single_pend_mp0.2_l1_PID_vel_steps_tune_scale_0.7.csv
 figures/control_overview/stellenbosch_ee_report-figure6.pdf: control/csv/compare_control_pid_Simulink_single_pend_mp0.3_l2.25_PID_vel_steps_tune_scale_0.7.mat.csv
