@@ -139,28 +139,39 @@
             The translational controller consists of the position and velocity conyrollers.
             Position control is not required for training data in this work, therefore it will not be discussed in this section.
             For more details about the PX4 position control implementation and design, readers are refered to the work by \cite{Grobler2020}.
-            A diagram of the PX4 velocity controller is shown in Figure~\ref{fig:velocity_controller}.
+            A diagram of the North velocity controller is shown in Figure~\ref{fig:velocity_controller}.
+            The West and Down velocity controllers duplicate the same configuration.
 
             \input{control/diagrams/velocity_controller.tex}
 
             \paragraph
             Recall from Chapter~\ref{chap:system_id}, that the cascaded PID controller is used for velocity step inputs in the training data phase for system identifcation.
-            
-            The system identification methods produce linear models, which are used in active swing damping controllers to minise the payload swing angles during flight.
-            Therefore the models do not need to approximate  
-            The velocity controller gains used by \cite{Grobler2020} result in aggressive veloicty responses, which produces large payload swing angles.
-            Therefore the velocity controller gains are designed for a slower transient reponse which results in smaller payload swing angles.
+            The system identification methods produce linear models, which are used in swing damping controllers to minimise the payload angles during flight.
+            Therefore training data with large payload angles is undesirable, because it is very different from the vector subspace that the swing damping controllers will operate in.
+            The velocity controller gains used for Honeybee by \cite{Grobler2020} result in aggressive veloicty responses, which produces large payload swing angles.
+            Therefore the velocity controller gains are redesigned for a slower transient reponse which results in smaller payload swing angles.
 
             \paragraph
+            The trasfer function, $G_{V_N}(s)$, of the plant considered for North velocity control was derived by \cite{Erasmus2020}.
+            As a brief summary, the derivation starts by linearising the multirotor pitch rate dynamics at hover with the small angle approximation.
+            The closed-loop transfer function including the pitch rate controller is then determined.
+            This function is then used in the derivation of the closed-loop transfer function of the pitch dynamics, which includes the pitch angle controller.
+            Finally, this is used to derive the open-loop, North velocity transfer function, $G_{V_N}(s)$, with $A_{N,sp}(s)$ as input and $V_N$(s) as output 
+            For more detail regarding this derivation, readers are refered to the work by \cite{Erasmus2020}.  
+
+            \begin{figure}
+                \captionsetup[subfigure]{justification=centering}
+                \centering  
+                \input{control/plots/rootlocus_open_loop.tex} % subfigure
+                \input{control/plots/rootlocus_closed_loop.tex} % subfigure
+                \caption{Root locus plots of the North velocity controller}
+                \label{fig:rootlocus_subfigs}  
+            \end{figure}
+
             Design.
             Rootlocus plot
             
             % ?? Check connection with system id chapter for training data controller
-
-            The position controller applies a proportional term only
-
-
-
 
     \FloatBarrier\section{LQR} \label{sec:lqr}
 
