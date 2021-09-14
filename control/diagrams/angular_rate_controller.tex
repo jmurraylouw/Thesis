@@ -54,11 +54,11 @@
   
       % Controller
       \path(ref)+(\nodesep,0) node (ref_sum) [sum={}{+}{-}{}] {};
-      \path(ref_sum)+(\nodesep,0) node (ctrl_k) [simple_block] {$K$};
-      \path(ctrl_k)+(2*\nodesep,0) node (ctrl_i) [sat_block_int, fill=light_blue, text centered, inner sep=0pt] {$~~\int$};
+    %   \path(ref_sum)+(\nodesep,0) node (ctrl_k) [simple_block] {$K$};
+      \path(ref_sum)+(3*\nodesep,0) node (ctrl_i) [sat_block_int, fill=light_blue, text centered, inner sep=0pt] {$~~\int$};
       \path(ctrl_i)+(\nodesep,0) node (ctrl_i_gain) [simple_block] {$I$};
-      \path(ref_sum)+(\nodesep,-1.5*\blockheight) node (ctrl_kd) [simple_block] {$K$};
-      \path(ctrl_kd)+(\nodesep,0) node (ctrl_d_filt) [simple_block] {LPF};
+    %   \path(ref_sum)+(\nodesep,-1.5*\blockheight) node (ctrl_kd) [simple_block] {$K$};
+      \path(ref_sum)+(2*\nodesep,-1.5*\blockheight) node (ctrl_d_filt) [simple_block] {LPF};
       \path(ref_sum)+(3*\nodesep,-1.5*\blockheight) node (ctrl_d) [simple_block] {$\frac{\partial}{\partial t}$};
       \path(ctrl_d)+(\nodesep,0) node (ctrl_d_gain) [simple_block] {$D$};
       \path(ref_sum)+(4*\nodesep,1.5*\blockheight) node (ctrl_p_gain) [simple_block] {$P$};
@@ -71,12 +71,12 @@
       %===================================================================================
       \path[draw,->] (ref.east) -- node[anchor=south, pos=0] {$\Omega_\text{sp}$} (ref_sum.west);
   
-      \path[draw,->] (ref_sum.east) -- (ctrl_k.west);
-      \path[draw,->] (ctrl_k.east) -- (ctrl_i.west);
-      \path[draw,->] (output.east) |- node[anchor=south, pos=0] {$\Omega$} (ctrl_kd.west);
-      \path[draw,->] (ctrl_kd.east) -- (ctrl_d_filt.west);
+      \path[draw,->] (ref_sum.east) -- (ctrl_i.west);
+    %   \path[draw,->] (ctrl_k.east) -- (ctrl_i.west);
+      \path[draw,->] (output.east) |- node[anchor=south, pos=0] {$\Omega$} (ctrl_d_filt.west);
+    %   \path[draw,->] (ctrl_kd.east) -- (ctrl_d_filt.west);
       \path[draw,->] (output.east -| ref_sum.south) -- (ref_sum.south);
-      \path[draw,->] ([xshift=0.65*\nodesep]ctrl_k.east) |- (ctrl_p_gain.west);
+      \path[draw,->] ([xshift=1.65*\nodesep]ref_sum.east) |- (ctrl_p_gain.west);
       \path[draw,->] (ctrl_i.east) -- (ctrl_i_gain.west);
       \path[draw,->] (ctrl_d_filt.east) -- (ctrl_d.west);
       \path[draw,->] (ctrl_d.east) -- (ctrl_d_gain.west);
