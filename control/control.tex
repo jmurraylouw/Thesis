@@ -176,9 +176,11 @@
     \FloatBarrier\section{LQR} \label{sec:lqr}
 
         \paragraph
+        LQR is a well-konw technique, ...
         % LQR is \cite{get cite}
         An LQR for North velocity control is presented in this section. 
         This controller structure can be duplicated for East veloicty control.
+        Full-state feedback. Effect of EKF not included.
         
         \paragraph
         An LQR does not inherently apply integral action and does not achieve zero steady-state tracking error in the presence of disturbacnes.
@@ -188,26 +190,53 @@
         \end{equation}
         The augmented state space model used to deign the LQR is therefore given by:
         \begin{equation}
-            \dot{\bm{x}}_A = A_A \bm{x}_A + B_A \bm{u}_A
+            \dot{\bm{x}}_A = \bm{A}_A \bm{x}_A + \bm{B}_A \bm{u}_A ,
         \end{equation}
-
+        where
         \begin{align}
             \bm{x}_A &= 
-            \begin{bmatrix}
-            \mathcal{V}_N & \bm{x}_{long}
-            \end{bmatrix}^T, \\
-            \textbf{A}_A &= 
-            \begin{bmatrix}
-            0 & -\textbf{C}_{long}\\
-            \textbf{0} & \textbf{A}_{long}
-            \end{bmatrix} \mbox{ and}  \\
-            \textbf{B}_A &= 
-            \begin{bmatrix}
-            0 & \textbf{B}_{long}
-            \end{bmatrix}^T.
+                \begin{bmatrix}
+                    \mathcal{V}_N & V_N & \theta & \dot{\theta}
+                \end{bmatrix}^T, \\
+            \bm{u} &= 
+                \begin{bmatrix}
+                    A_{N,sp}
+                \end{bmatrix}, \\
+            \bm{A}_A &= 
+                \begin{bmatrix}
+                    0 & -1 & 0 & 0 \\
+                    0 & \frac{ -c_{air} }{m_Q} & \frac{ m_p \cdot g}{m_Q} & \frac{c_{\theta}}{(l\cdot m_Q)} \\
+                    0 & 0 & 0 & 1 \\
+                    0 & \frac{ c_{air} }{ (m_Q \cdot l) } & \frac{ (m_p+m_Q) \cdot g}{(m_Q \cdot l) } & \frac{ -c_{\theta} \cdot (m_p+m_Q)}{(l^2 \cdot m_Q \cdot m_p)}
+                \end{bmatrix}, \mbox{ and} \\
+            \bm{B}_A &= 
+                \begin{bmatrix}
+                    0 \\ 
+                    \frac{1}{m_Q} \\
+                    0 \\
+                    \frac{-1}{(m_Q \cdot l)} \\
+                \end{bmatrix}.
         \end{align}
 
-        Integral state
+        \paragraph
+        % Figure~\ref{fig:}
+        shows the resulting controller digram.
+
+        \paragraph
+        The LQR control law is defined as:
+        \begin{equation} \label{eg:lqr_control_law}
+            \bm{u} = -\bm{K}_{lqr} \bm{x}_a ,
+        \end{equation}
+        where $\bm{K}_{lqr}$ is the LQR gain.
+        Furthermore, the LQR considers the cost function:
+        \begin{equation}\label{eq:lqr_cost_function}
+            J( \bm{u} ) = \int_{0}^{ \infty } \left( \bm{X}_A^T \bm{Q} \bm{X}_A + \bm{u}^T \bm{R} \bm{u} \right) dt ,
+        \end{equation}
+        where $\bm{Q}$ is the state weighting matrix,
+        and $\bm{R}$ is the input weighting matrix.
+        The LQR gain, $\bm{K}_{lqr}$, 
+        is therefore determined by substituting Equation~\ref{eq:lqr_control_law} into Equation~\ref{eq:lqr_cost_function} and minimising the cost function.
+
 
 
     \FloatBarrier\section{MPC} \label{sec:mpc}
