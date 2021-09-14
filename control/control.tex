@@ -176,7 +176,7 @@
     \FloatBarrier\section{LQR} \label{sec:lqr}
 
         \paragraph
-        LQR is a well-konw technique, ...
+        LQR is a well-kown technique, ...
         % LQR is \cite{get cite}
         An LQR for North velocity control is presented in this section. 
         This controller structure can be duplicated for East veloicty control.
@@ -188,7 +188,13 @@
         \begin{equation}
             \dot{\mathcal{V}}_N = V_{N,sp} - V_N
         \end{equation}
-        The augmented state space model used to deign the LQR is therefore given by:
+        
+        \paragraph
+        The North velocity dynamics were derived and linearised in Chapter~\ref{chap:modelling} 
+        to produce a state-space model which will be used to design the LQR.
+        It is asumed that all model parameter are known before a flight, 
+        except the payload paramaters, $l$ and $m_p$, which are estimated in the system identification phase.
+        The augmented state space model which includes the integral state is given by:
         \begin{equation}
             \dot{\bm{x}}_A = \bm{A}_A \bm{x}_A + \bm{B}_A \bm{u}_A ,
         \end{equation}
@@ -198,7 +204,7 @@
                 \begin{bmatrix}
                     \mathcal{V}_N & V_N & \theta & \dot{\theta}
                 \end{bmatrix}^T, \\
-            \bm{u} &= 
+            \bm{u}_A &= 
                 \begin{bmatrix}
                     A_{N,sp}
                 \end{bmatrix}, \\
@@ -219,25 +225,56 @@
         \end{align}
 
         \paragraph
-        % Figure~\ref{fig:}
-        shows the resulting controller digram.
-
-        \paragraph
         The LQR control law is defined as:
-        \begin{equation} \label{eg:lqr_control_law}
-            \bm{u} = -\bm{K}_{lqr} \bm{x}_a ,
+        \begin{equation} \label{eq:lqr_control_law}
+            \bm{u}_A = \bm{K}_{lqr} ( \bm{x}_{A,sp} - \bm{x}_A ) ,
         \end{equation}
-        where $\bm{K}_{lqr}$ is the LQR gain.
+        where $\bm{K}_{lqr}$ is the LQR gain, and $\bm{x}_{A,sp}$ is the augmented state vector setpoint.
+        Only $V_{N,sp}$ has a non-zero value, hence 
+        $\bm{x}_{A,sp} = \left[ 0~~V_{N,sp}~~0~~0 \right]^T$.
+        
+        \paragraph
         Furthermore, the LQR considers the cost function:
         \begin{equation}\label{eq:lqr_cost_function}
-            J( \bm{u} ) = \int_{0}^{ \infty } \left( \bm{X}_A^T \bm{Q} \bm{X}_A + \bm{u}^T \bm{R} \bm{u} \right) dt ,
+            J( \bm{u}_A ) = \int_{0}^{ \infty } \left( \bm{X}_A^T \bm{Q} \bm{X}_A + \bm{u}_A^T \bm{R} \bm{u}_A \right) dt ,
         \end{equation}
         where $\bm{Q}$ is the state weighting matrix,
         and $\bm{R}$ is the input weighting matrix.
         The LQR gain, $\bm{K}_{lqr}$, 
         is therefore determined by substituting Equation~\ref{eq:lqr_control_law} into Equation~\ref{eq:lqr_cost_function} and minimising the cost function.
 
+        \paragraph
+        The LQR control performance can be manually tuned by changing the state and input weights in $\bm{Q}$ and $\bm{R}$ respectively.
+        The weighting of each state variable can be weighted according to tracking importance.
+        For example, if the weighting of $V_N$ is small in comparison to the weighting of $\theta$, 
+        the controller will produce a slow velocity response with small payload swing angles.
+        For the values in $\bm{R}$, if the weighting of an input variable is large, 
+        the controller will output lower control values for that variable.
 
+        \paragraph
+        The general design requirements of the LQR are to 
+        produce a fast velocity response with zero-steady-state error while damping the payload oscillations quickly.
+        The priority is to produce a smooth trajectory with minimal oscillation, however a reasonably fast response time is still required.
+        An iterative tuning approach was used to determine the $\bm{Q}$ and $\bm{R}$ matrix entries that produce a good performance.
+        The final LQR weightings were selected as:
+        \begin{equation}
+            \bm{Q} = diag([0.1~~10~~0~~100])~~\text{and}~~\bm{R} = 13
+        \end{equation}.
+        Note that the weight of the payload angle variable is 0.
+        This is because the payload angle will have a non-zero steady-state value at constant velocity, $V_N$, due to aerodynamic drag.
+        The payload angle is therefore damped by placing a heavy weighting on the derivative of the payload angle instead.
+
+        \input{control/plots/lqr_tuning_plot.tex}
+
+        \paragraph
+        Figure~\ref{fig:lqr_tuning_plot} shows a plot of the simulated LQR velocity response with different payload parameters.
+        It is clear that the controller damps the payload angles well and produces a smooth trajectory with different payloads.
+        The same matrixes weighting are used 
+        For each different payload, 
+        the payload parameters are estimated, 
+        the state-space model is populated, 
+        and the LQR gain is calculated using the same weighting matrix values.
+        The controller performance, including disturbance rejection, will be further discussed in Section~\ref{sec:control_implementation}.
 
     \FloatBarrier\section{MPC} \label{sec:mpc}
 
@@ -251,6 +288,7 @@
 \tikzset{external/figure name/.add={control_implementation/}{}}
             
     \FloatBarrier\section{Implentation and results}
+    \label{sec:control_implementation}
 
         \paragraph
         After the system identification phase, active swing damping control can be applied
