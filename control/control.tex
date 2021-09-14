@@ -27,7 +27,7 @@
         \end{table}
     
 
-    \FloatBarrier\section{PID control architecture of PX4}
+    \FloatBarrier\section{Cascaded PID}
 
         \paragraph
         This section gives a brief overview of the PID control architecture.
@@ -125,9 +125,31 @@
 
         \FloatBarrier\subsection{Translational controller}
 
-            Mention position controllers are not used
+            Mention acceleration to attitude conversion.
 
-            Slower for less swing angles
+            Explain velocity controller
+
+            
+            The translational controller consists of the position and velocity conyrollers.
+            Position control is not required to produce training data in this work, therefore it will not be discussed in this section.
+            For more details about the PX4 position control implementation and design, readers are refered to the work by \cite{Grobler2020}.
+            The velocity controller diagram is shown in Figure~\ref{fig:velocity_controller}.
+
+            \input{control/diagrams/veloicty_controller.tex}
+
+            \paragraph
+            The velocity controller gains used by \cite{Grobler2020} result in aggressive veloicty responses, which produces large payload swing angles.
+            Recall from Chapter~\ref{chap:system_id}, that the cascaded PID controller is used for velocity step inputs in the training data phase for system identifcation.
+            
+            The system identification methods produce linear models, which are used in active swing damping controllers to minise the payload swing angles during flight.
+            Therefore the models do not need to approximate  
+            
+            % ?? Check connection with system id chapter for training data controller
+
+            The position controller applies a proportional term only
+
+
+
 
     \FloatBarrier\section{LQR} \label{sec:lqr}
 
