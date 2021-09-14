@@ -176,8 +176,7 @@
     \FloatBarrier\section{LQR} \label{sec:lqr}
 
         \paragraph
-        % LQR is \cite{get cite}   
-
+        % LQR is \cite{get cite}
         An LQR for North velocity control is presented in this section. 
         This controller structure can be duplicated for East veloicty control.
         
@@ -185,13 +184,28 @@
         An LQR does not inherently apply integral action and does not achieve zero steady-state tracking error in the presence of disturbacnes.
         Therefore the state vector is augmented with an integral state of the velocity error, $\mathcal{V}_N$, such that:
         \begin{equation}
-            \dot{\mathcal{V}_N} = V_{N,sp} - V_N
+            \dot{\mathcal{V}}_N = V_{N,sp} - V_N
         \end{equation}
         The augmented state space model used to deign the LQR is therefore given by:
         \begin{equation}
-            \dot{\bm{x}_A} = A_A \bm{x}_A + B_A \bm{u}_A
+            \dot{\bm{x}}_A = A_A \bm{x}_A + B_A \bm{u}_A
         \end{equation}
 
+        \begin{align}
+            \bm{x}_A &= 
+            \begin{bmatrix}
+            \mathcal{V}_N & \bm{x}_{long}
+            \end{bmatrix}^T, \\
+            \textbf{A}_A &= 
+            \begin{bmatrix}
+            0 & -\textbf{C}_{long}\\
+            \textbf{0} & \textbf{A}_{long}
+            \end{bmatrix} \mbox{ and}  \\
+            \textbf{B}_A &= 
+            \begin{bmatrix}
+            0 & \textbf{B}_{long}
+            \end{bmatrix}^T.
+        \end{align}
 
         Integral state
 
