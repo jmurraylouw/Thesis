@@ -175,7 +175,26 @@
 
     \FloatBarrier\section{LQR} \label{sec:lqr}
 
-        Anton and Francois stuff
+        \paragraph
+        % LQR is \cite{get cite}   
+
+        An LQR for North velocity control is presented in this section. 
+        This controller structure can be duplicated for East veloicty control.
+        
+        \paragraph
+        An LQR does not inherently apply integral action and does not achieve zero steady-state tracking error in the presence of disturbacnes.
+        Therefore the state vector is augmented with an integral state of the velocity error, $\mathcal{V}_N$, such that:
+        \begin{equation}
+            \dot{\mathcal{V}_N} = V_{N,sp} - V_N
+        \end{equation}
+        The augmented state space model used to deign the LQR is therefore given by:
+        \begin{equation}
+            \dot{\bm{x}_A} = A_A \bm{x}_A + B_A \bm{u}_A
+        \end{equation}
+
+
+        Integral state
+
 
     \FloatBarrier\section{MPC} \label{sec:mpc}
 
