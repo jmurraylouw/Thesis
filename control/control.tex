@@ -60,27 +60,56 @@
         \FloatBarrier\section{Angular rate controller}
 
             \paragraph
-            Linear PID control is used to control angular rate of the multirotor in the pitch, roll, and yaw axis of the body frame.
+            Three seperate linear PID controllers are used to the control angular rate of the multirotor in the pitch, roll, and yaw axis of the body frame.
             The angular rate controller receives angular rate estimates from the PX4 state estimator, and outputs virtual actuator commands to the mixer.
             
             \input{control/diagrams/angular_rate_controller.tex}
             
             \paragraph
             Classical control theory was used by \cite{Grobler2020} to design the controller gains of the practical multirotor, Honeybee.
-            This process is also explained in detail by \cite{Erasmus2020}.
-            The controller gains were designed for fast transient response, fast disturbance rejection, and minimal overshoot.            
+            This same process is also explained in detail by \cite{Erasmus2020}.
+            The controller gains were designed for a transient response that is as fast as possible, while retaining fast disturbance rejection, and minimal overshoot.            
             It was determined by \cite{Grobler2020} that the default PX4 angular rate controller gains of the ZMR250 airframe provide excellent control for Honeybee and satisfy these design requirements.
+            
+            \paragraph
             For a \SI{1}{\radian/\second} step responce, the pitch rate controllers result in a 
             3.6~\% overshoot, 
             \SI{0.024}{\second} rise time, 
             \SI{0.8}{\second} settling time, 
             and \SI{138}{\radian/\second} bandwidth \cite{Grobler2020}.
             These gains are well suited for Honeybee and will also be implemented in this work.
-            The default roll rate and yaw rate controller gains are also implemented.
+            The default roll-rate and yaw-rate controller gains are also implemented.
 
         \FloatBarrier\section{Angle controller}
 
             \paragraph
+            The pitch, roll, and yaw angles are controlled by the angle controller in the body frame.
+            A quaternion based controller is implemented by PX4 for angle control based on work by \cite{Brescianini2013}.
+            The structure and design of this controller is well explained by \cite{Grobler2020}, \cite{Erasmus2020}, and \cite{Slabber2020} and is only briefly discussed here.
+            An integrator is not required in this controller, because it is placed between the velocity and angular rate controllers which both include integrators to reject steady-state disturbacnes \cite{Erasmus2020}.
+            Therefore only a proportional term is applied in this control law.
+
+            \paragraph
+            For the control law proposed by \cite{Brescianini2013}, the error quaternion is calculated as:
+            \begin{equation}
+                \bar{\bm{q}}_e = \bar{\bm{q}}^{-1} \cdot \bar{\bm{q}}_{sp},
+            \end{equation}
+            where $\bar{\bm{q}}_e$ is the quaternion error, 
+            $\bar{\bm{q}}$ is the attitude quaternion of the multirotor,  
+            and $\bar{\bm{q}}_{sp}$ is the attitude quaternion setpoint.
+            The resulting control law is given as:
+            \begin{equation} \label{eq:angle_law}
+                \bm{\varOmega}_{\mathcal{B}_{sp}} = 2 \bm{P}_{q} \mbox{sgn}(q_{0_e}) \bm{q}_{v_e} , 
+                \qquad \qquad \mbox{sgn}(q_{0_e}) = 
+                \begin{cases}
+                    1,  & \quad q_{0_e}  \geq   0 \\
+                    -1, & \quad q_{0_e}  <      0
+                \end{cases} 
+            \end{equation}
+
+            
+
+            %  ?? Fix symbols
 
         \FloatBarrier\section{Translational controller}
 
