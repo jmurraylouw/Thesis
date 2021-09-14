@@ -1,94 +1,94 @@
 % From: https://github.com/PX4/PX4-user_guide/blob/master/assets/diagrams/mc_control_arch_tikz.tex
 \begin{figure}[ht]
-    \centering
-  
-    % Define distances
-    \def\blockheight{2.2em}
-    \def\blockwidth{2.2em}
-    \def\nodesep{1.5*\blockwidth}
-  
-    \begin{tikzpicture}[>={Stealth[inset=0pt,length=3pt,angle'=60,round]},
-      simple_block/.style = {draw, fill=light_blue, text centered, inner sep=0pt, minimum width=\blockwidth, minimum height=\blockheight},
-      frame_block/.style = {draw, text centered, inner ysep=1.25em, inner xsep=1.25em, dashed},
-      port/.style = {inner sep=0pt, font=\tiny},
-      sum/.style n args = {4}{draw, circle, minimum size=1.5em, alias=sum,
-        append after command = {
-          node at (sum.north) [port, below=1pt] {$#1$}
-          node at (sum.west) [port, right=1pt] {$#2$}
-          node at (sum.south) [port, above=1pt] {$#3$}
-          node at (sum.east) [port, left=1pt] {$#4$}
-        }
-      },
-      sat_block/.style = {draw, minimum width=\blockwidth, minimum height=\blockheight, path picture = 
-        {
-        % Get the width and height of the path picture node
-        \pgfpointdiff{\pgfpointanchor{path picture bounding box}{north east}}%
-            {\pgfpointanchor{path picture bounding box}{south west}}
-        \pgfgetlastxy\x\y
-        % Scale the x and y vectors so that the range
-        % -1 to 1 is slightly shorter than the size of the node
-        \tikzset{x=\x*.4, y=\y*.4}
-        %
-        % Draw annotation
-        \draw (-1,0) -- (1,0) (0,-1) -- (0,1); 
-        \draw (-1,-.6) -- (-.6,-.6) -- (.6,.6) -- (1,.6);
-        }
-      },
-      sat_block_int/.style = {draw, minimum width=\blockwidth, minimum height=\blockheight, path picture = 
-        {
-        % Get the width and height of the path picture node
-        \pgfpointdiff{\pgfpointanchor{path picture bounding box}{north east}}%
-            {\pgfpointanchor{path picture bounding box}{south west}}
-        \pgfgetlastxy\x\y
-        % Scale the x and y vectors so that the range
-        % -1 to 1 is slightly shorter than the size of the node
-        \tikzset{x=\x*.4, y=\y*.4}
-        %
-        % Draw annotation
-        \draw (-.8,-.9) -- (-.6,-.9) -- (.1,.5) -- (.3,.5);
-        }
-      }
-    ]
-      %===================================================================================
-      \node[text centered] (ref) {};
-  
-      % Controller
-      \path(ref)+(\nodesep,0) node (ref_sum) [sum={}{+}{-}{}] {};
-    %   \path(ref_sum)+(\nodesep,0) node (ctrl_k) [simple_block] {$K$};
-      \path(ref_sum)+(2*\nodesep,0) node (ctrl_i) [sat_block_int, fill=light_blue, text centered, inner sep=0pt] {$~~\int$};
-      \path(ctrl_i)+(\nodesep,0) node (ctrl_i_gain) [simple_block] {$I$};
-    %   \path(ref_sum)+(\nodesep,-1.5*\blockheight) node (ctrl_kd) [simple_block] {$K$};
-      \path(ref_sum)+(\nodesep,-1.5*\blockheight) node (ctrl_d_filt) [simple_block] {LPF};
-      \path(ref_sum)+(2*\nodesep,-1.5*\blockheight) node (ctrl_d) [simple_block] {$\frac{\partial}{\partial t}$};
-      \path(ctrl_d)+(\nodesep,0) node (ctrl_d_gain) [simple_block] {$D$};
-      \path(ref_sum)+(3*\nodesep,1.5*\blockheight) node (ctrl_p_gain) [simple_block] {$P$};
-      \path(ctrl_i_gain)+(\nodesep,0) node (ctrl_sum) [sum={+}{+}{-}{}] {};
-      \path(ctrl_sum)+(\nodesep,0) node (ctrl) [] {};
-      % \path(sat_ctrl.east)+(0.675*\nodesep,0) node (ctrl) [] {};
-  
-      \path(ref_sum.south |- ctrl_d_filt.west)+(-\nodesep,0) node(output) [] {};
-  
-      %===================================================================================
-      \path[draw,->] (ref.east) -- node[anchor=south, pos=0] {$V_{N,sp}$} (ref_sum.west);
-  
-      \path[draw,->] (ref_sum.east) -- (ctrl_i.west);
-    %   \path[draw,->] (ctrl_k.east) -- (ctrl_i.west);
-      \path[draw,->] (output.east) |- node[anchor=south, pos=0] {$V_{N}$} (ctrl_d_filt.west);
-    %   \path[draw,->] (ctrl_kd.east) -- (ctrl_d_filt.west);
-      \path[draw,->] (output.east -| ref_sum.south) -- (ref_sum.south);
-      \path[draw,->] ([xshift=0.65*\nodesep]ref_sum.east) |- (ctrl_p_gain.west);
-      \path[draw,->] (ctrl_i.east) -- (ctrl_i_gain.west);
-      \path[draw,->] (ctrl_d_filt.east) -- (ctrl_d.west);
-      \path[draw,->] (ctrl_d.east) -- (ctrl_d_gain.west);
-      \path[draw,->] (ctrl_d_gain.east) -| (ctrl_sum.south);
-      \path[draw,->] (ctrl_i_gain.east) -- (ctrl_sum.west);
-      \path[draw,->] (ctrl_p_gain.east) -| (ctrl_sum.north);
-      % \path[draw,->] (ctrl_sum.east) -- (sat_ctrl.west);
-      \path[draw,->] (ctrl_sum.east) -- node[anchor=south] {$A_{N,sp}$} (ctrl.west);
-    
-    \end{tikzpicture}
+  \centering
 
-    \caption{North velcity controller \cite{PX4_controller_diagrams}}
-    \label{fig:velocity_controller}
+  % Define distances
+  \def\blockheight{2.2em}
+  \def\blockwidth{2.2em}
+  \def\nodesep{1.5*\blockwidth}
+
+  \begin{tikzpicture}[>={Stealth[inset=0pt,length=3pt,angle'=60,round]},
+    simple_block/.style = {draw, fill=light_blue, text centered, inner sep=0pt, minimum width=\blockwidth, minimum height=\blockheight},
+    frame_block/.style = {draw, text centered, inner ysep=1.25em, inner xsep=1.25em, dashed},
+    port/.style = {inner sep=0pt, font=\tiny},
+    sum/.style n args = {4}{draw, circle, minimum size=1.5em, alias=sum,
+      append after command = {
+        node at (sum.north) [port, below=1pt] {$#1$}
+        node at (sum.west) [port, right=1pt] {$#2$}
+        node at (sum.south) [port, above=1pt] {$#3$}
+        node at (sum.east) [port, left=1pt] {$#4$}
+      }
+    },
+    sat_block/.style = {draw, minimum width=\blockwidth, minimum height=\blockheight, path picture = 
+      {
+      % Get the width and height of the path picture node
+      \pgfpointdiff{\pgfpointanchor{path picture bounding box}{north east}}%
+          {\pgfpointanchor{path picture bounding box}{south west}}
+      \pgfgetlastxy\x\y
+      % Scale the x and y vectors so that the range
+      % -1 to 1 is slightly shorter than the size of the node
+      \tikzset{x=\x*.4, y=\y*.4}
+      %
+      % Draw annotation
+      \draw (-1,0) -- (1,0) (0,-1) -- (0,1); 
+      \draw (-1,-.6) -- (-.6,-.6) -- (.6,.6) -- (1,.6);
+      }
+    },
+    sat_block_int/.style = {draw, minimum width=\blockwidth, minimum height=\blockheight, path picture = 
+      {
+      % Get the width and height of the path picture node
+      \pgfpointdiff{\pgfpointanchor{path picture bounding box}{north east}}%
+          {\pgfpointanchor{path picture bounding box}{south west}}
+      \pgfgetlastxy\x\y
+      % Scale the x and y vectors so that the range
+      % -1 to 1 is slightly shorter than the size of the node
+      \tikzset{x=\x*.4, y=\y*.4}
+      %
+      % Draw annotation
+      \draw (-.8,-.9) -- (-.6,-.9) -- (.1,.5) -- (.3,.5);
+      }
+    }
+  ]
+    %===================================================================================
+    \node[text centered] (ref) {};
+
+    % Controller
+    \path(ref)+(\nodesep,0) node (ref_sum) [sum={}{+}{-}{}] {};
+  %   \path(ref_sum)+(\nodesep,0) node (ctrl_k) [simple_block] {$K$};
+    \path(ref_sum)+(2*\nodesep,0) node (ctrl_i) [sat_block_int, fill=light_blue, text centered, inner sep=0pt] {$~~\int$};
+    \path(ctrl_i)+(\nodesep,0) node (ctrl_i_gain) [simple_block] {$I$};
+  %   \path(ref_sum)+(\nodesep,-1.5*\blockheight) node (ctrl_kd) [simple_block] {$K$};
+    \path(ref_sum)+(\nodesep,-1.5*\blockheight) node (ctrl_d_filt) [simple_block] {LPF};
+    \path(ref_sum)+(2*\nodesep,-1.5*\blockheight) node (ctrl_d) [simple_block] {$\frac{\partial}{\partial t}$};
+    \path(ctrl_d)+(\nodesep,0) node (ctrl_d_gain) [simple_block] {$D$};
+    \path(ref_sum)+(3*\nodesep,1.5*\blockheight) node (ctrl_p_gain) [simple_block] {$P$};
+    \path(ctrl_i_gain)+(\nodesep,0) node (ctrl_sum) [sum={+}{+}{-}{}] {};
+    \path(ctrl_sum)+(\nodesep,0) node (sat_ctrl) [sat_block] {};
+    \path(sat_ctrl.east)+(1*\nodesep,0) node (ctrl) [] {};
+
+    \path(ref_sum.south |- ctrl_d_filt.west)+(-\nodesep,0) node(output) [] {};
+
+    %===================================================================================
+    \path[draw,->] (ref.east) -- node[anchor=south, pos=0] {$V_{N,sp}$} (ref_sum.west);
+
+    \path[draw,->] (ref_sum.east) -- (ctrl_i.west);
+  %   \path[draw,->] (ctrl_k.east) -- (ctrl_i.west);
+    \path[draw,->] (output.east) |- node[anchor=south, pos=0] {$V_N$} (ctrl_d_filt.west);
+  %   \path[draw,->] (ctrl_kd.east) -- (ctrl_d_filt.west);
+    \path[draw,->] (output.east -| ref_sum.south) -- (ref_sum.south);
+    \path[draw,->] ([xshift=0.65*\nodesep]ref_sum.east) |- (ctrl_p_gain.west);
+    \path[draw,->] (ctrl_i.east) -- (ctrl_i_gain.west);
+    \path[draw,->] (ctrl_d_filt.east) -- (ctrl_d.west);
+    \path[draw,->] (ctrl_d.east) -- (ctrl_d_gain.west);
+    \path[draw,->] (ctrl_d_gain.east) -| (ctrl_sum.south);
+    \path[draw,->] (ctrl_i_gain.east) -- (ctrl_sum.west);
+    \path[draw,->] (ctrl_p_gain.east) -| (ctrl_sum.north);
+    \path[draw,->] (ctrl_sum.east) -- (sat_ctrl.west);
+    \path[draw,->] (sat_ctrl.east) -- node[anchor=south] {$A_{N,sp}$} (ctrl.west);
   
-  \end{figure}
+  \end{tikzpicture}
+
+  \caption{Velocity controller diagram \cite{PX4_controller_diagrams}}
+  \label{fig:velocity_controller}
+
+\end{figure}
