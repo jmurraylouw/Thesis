@@ -1,0 +1,1 @@
+figures/control_overview/stellenbosch_ee_report-figure7.pdf: control/csv/compare_control_lqr_Simulink_single_pend_mp0.3_l2.25_LQR_vel_steps_tune_scale_0.7.csv

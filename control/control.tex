@@ -168,8 +168,9 @@
                 \label{fig:rootlocus_subfigs}  
             \end{figure}
 
-            Design.
-            Rootlocus plot
+            \input{control/plots/pid_tuning_plot.tex}
+
+            Figure~\ref{fig:pid_tuning_plot} shows ...
             
             % ?? Check connection with system id chapter for training data controller
 
@@ -258,8 +259,8 @@
         An iterative tuning approach was used to determine the $\bm{Q}$ and $\bm{R}$ matrix entries that produce a good performance.
         The final LQR weightings were selected as:
         \begin{equation}
-            \bm{Q} = diag([0.1~~10~~0~~100])~~\text{and}~~\bm{R} = 13
-        \end{equation}.
+            \bm{Q} = diag([0.1~~10~~0~~100]),~~~\bm{R} = 13 .
+        \end{equation}
         Note that the weight of the payload angle variable is 0.
         This is because the payload angle will have a non-zero steady-state value at constant velocity, $V_N$, due to aerodynamic drag.
         The payload angle is therefore damped by placing a heavy weighting on the derivative of the payload angle instead.
