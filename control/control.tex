@@ -27,7 +27,7 @@
         \end{table}
     
 
-    \FloatBarrier\section{Cascaded PID}
+    \FloatBarrier\section{PID control architecture of PX4}
 
         \paragraph
         This section gives a brief overview of the PID control architecture.
@@ -35,29 +35,27 @@
         The design process used to determine the controller gains are also discussed in this section.
         Finally the controllers are implemented with MATLAB and Simulink and are verified with practical flight data.
         % ?? remember to add practical verification
+        
+        \paragraph
+        The PX4-Autopilot was chosen as the multirotor flight-stack because it is open-source and widely used in industry and research.
+        The default PX4 control architecture for a multirotor consists of multiple cascaded PID controller loops.
+        This is devided into two main categories, the inner loop attitude controllers and the outher loop translational controllers.
 
-        \FloatBarrier\section{PX4 control architecture}
-            
-            \paragraph
-            PX4-Autopilot was chosen as the multirotor flight-stack because it is open-source and widely used in industry and research.
-            The default PX4 control architecture for a multirotor consists of multiple cascaded PID controller loops.
-            This is devided into two main categories, the inner loop attitude controllers and the outher loop translational controllers.
+        \input{control/diagrams/pid_architecture.tex}
+        
+        % ?? Fix notation of symbols and define them
 
-            \input{control/diagrams/pid_architecture.tex}
-            
-            % ?? Fix notation of symbols and define them
+        \paragraph
+        Figure~\ref{fig:pid_architecture} shows a high level overview of the PX4 control architecture, but does not show state feedback. 
+        The inner-most element is the mixer, which converts virtual actuator commands to actuator thrust commands.
+        % This is achieved with simple matrix multiplication.
+        The attitude controller includes the angle and angular rate controllers, which send sommands to the mixer.
+        The translational controller consists of the position and velocity controllers, which send commands to the attitude controller.
+        The rate of each controller is also shown in Figure~\ref{fig:pid_architecture}.
+        % The inner loop controllers deal with the fastest dynamics and are required to run at the highest rate.
+        % The translation controllers control slower dynamics. hence they run a lower rate.
 
-            \paragraph
-            Figure~\ref{fig:pid_architecture} shows a high level overview of the PX4 control architecture, but does not show state feedback. 
-            The inner-most element is the mixer, which converts virtual actuator commands to actuator thrust commands.
-            % This is achieved with simple matrix multiplication.
-            The attitude controller includes the angle and angular rate controllers, which send sommands to the mixer.
-            The translational controller consists of the position and velocity controllers, which send commands to the attitude controller.
-            The rate of each controller is also shown in Figure~\ref{fig:pid_architecture}.
-            % The inner loop controllers deal with the fastest dynamics and are required to run at the highest rate.
-            % The translation controllers control slower dynamics. hence they run a lower rate.
-
-        \FloatBarrier\section{Angular rate controller}
+        \FloatBarrier\subsection{Angular rate controller}
 
             \paragraph
             Three seperate linear PID controllers are used to the control angular rate of the multirotor in the pitch, roll, and yaw axis of the body frame.
@@ -75,20 +73,18 @@
             For a \SI{1}{\radian/\second} step responce, the pitch rate controllers result in a 
             3.6~\% overshoot, 
             \SI{0.024}{\second} rise time, 
-            \SI{0.8}{\second} settling time, 
+            \SI{0.8}{\second} for a 2~\% settling time, 
             and \SI{138}{\radian/\second} bandwidth \cite{Grobler2020}.
             These gains are well suited for Honeybee and will also be implemented in this work.
             The default roll-rate and yaw-rate controller gains are also implemented.
 
-        \FloatBarrier\section{Angle controller}
+        \FloatBarrier\subsection{Angle controller}
 
             \paragraph
             The pitch, roll, and yaw angles are controlled by the angle controller in the body frame.
             A quaternion based controller is implemented by PX4 for angle control based on work by \cite{Brescianini2013}.
             The structure and design of this controller is well explained by \cite{Grobler2020}, \cite{Erasmus2020}, and \cite{Slabber2020} and is only briefly discussed here.
-            An integrator is not required in this controller, because it is placed between the velocity and angular rate controllers which both include integrators to reject steady-state disturbacnes \cite{Erasmus2020}.
-            Therefore only a proportional term is applied in this control law.
-
+            
             \paragraph
             For the control law proposed by \cite{Brescianini2013}, the error quaternion is calculated as:
             \begin{equation}
@@ -99,7 +95,7 @@
             and $\bar{\bm{q}}_{sp}$ is the attitude quaternion setpoint.
             The resulting control law is given as:
             \begin{equation} \label{eq:angle_law}
-                \bm{\varOmega}_{\mathcal{B}_{sp}} = 2 \bm{P}_{q} \mbox{sgn}(q_{0_e}) \bm{q}_{v_e} , 
+                \bm{\varOmega}_{sp} = 2 \bm{P}_{q} \mbox{sgn}(q_{0_e}) \bm{q}_{v_e} , 
                 \qquad \qquad \mbox{sgn}(q_{0_e}) = 
                 \begin{cases}
                     1,  & \quad q_{0_e}  \geq   0 \\
@@ -107,14 +103,27 @@
                 \end{cases} 
             \end{equation}
 
-            %  ?? Fix symbols
+            %  ?? Fix symbols be matrix and correspond with diagram and explain matrix
+            
+            \paragraph
+            The implementation of this control law is illustrated in Figure~\ref{fig:angle_controller}.
+            The attitude setpoint is taken as input, the current attitude is received from the PX4 estimator, and the resulting anglular rate setpoint is produced as the output.
 
             \input{control/diagrams/angle_controller.tex}
-            
-            Figure~\ref{fig:angle_controller}
 
+            \paragraph
+            An integrator is not required in this controller, because it is placed between the velocity and angular rate controllers which both include integrators to reject steady-state disturbacnes \cite{Erasmus2020}.
+            Therefore only a proportional term is applied in this control law.
+            The proportional gain was designed by \cite{Grobler2020} for a faster transient response and bandwidth than the default ZMR250 gain.
+            This results in a \SI{1}{\radian} step response with a
+            0~\% overshoot, 
+            \SI{0.3}{\second} rise time, 
+            \SI{0.47}{\second} for a 2~\% settling time, 
+            and \SI{11}{\radian/\second} bandwidth \cite{Grobler2020}.
+            This still has a good time-scale seperation from the angular rate controller, which has a bandwidth of \SI{138}{\radian/\second}.
+            The same gains designed by \cite{Grobler2020} will be used in this work.
 
-        \FloatBarrier\section{Translational controller}
+        \FloatBarrier\subsection{Translational controller}
 
             Mention position controllers are not used
 
