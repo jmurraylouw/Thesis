@@ -1,0 +1,61 @@
+\begin{figure}[htb]
+    \centering
+    \footnotesize
+  
+    % Define distances
+    \def\blockheight{3em}
+    \def\blockwidth{3em}
+    \def\nodesep{2*\blockwidth}
+  
+    \begin{tikzpicture}[>={Stealth[inset=0pt,length=3pt,angle'=60,round]},
+      simple_block/.style = {draw, fill=light_blue, text centered, inner sep=0pt, minimum width=\blockwidth, minimum height=\blockheight},
+      text_block/.style = {draw, fill=light_blue, text centered, inner sep=0pt, text width=2*\blockwidth, minimum height=\blockheight},
+      frame_block/.style = {draw, text centered, inner ysep=1.25em, inner xsep=1.25em, dashed},
+      sat_block/.style = {draw, minimum width=\blockwidth, minimum height=\blockheight, path picture = 
+          {
+          % Get the width and height of the path picture node
+          \pgfpointdiff{\pgfpointanchor{path picture bounding box}{north east}}%
+              {\pgfpointanchor{path picture bounding box}{south west}}
+          \pgfgetlastxy\x\y
+          % Scale the x and y vectors so that the range
+          % -1 to 1 is slightly shorter than the size of the node
+          \tikzset{x=\x*.4, y=\y*.4}
+          %
+          % Draw annotation
+          \draw (-1,0) -- (1,0) (0,-1) -- (0,1); 
+          \draw (-1,-.6) -- (-.6,-.6) -- (.6,.6) -- (1,.6);
+          }
+      },
+      gain/.style = {draw, fill=light_blue, inner sep=0pt, isosceles triangle, minimum height=\blockheight, isosceles triangle apex angle=60},
+    ]
+  
+      %===============================================================================
+      \node[text centered, yshift=0.25*\blockheight] (ref) {};
+  
+      % Controller
+      \path(ref)+(0.75*\nodesep,-0.25*\blockheight) node (err_quat) [text_block] {Error quaternion};
+      \path(err_quat)+(1.5*\nodesep,0) node (select_axis) [text_block] {Extract component};
+      \path(select_axis)+(0, 1.5*\blockheight) node (select_mag) [text_block] {Extract magnitude};
+      \path(select_mag)+(1.1*\nodesep,0) node (sgn) [simple_block] {sgn};
+      \path(select_axis)+(1.9*\nodesep, 0.25*\blockheight) node (mult) [simple_block] {$\times$};
+      \path(mult)+(0.65*\nodesep, 0) node (p_gain) [gain] {\scriptsize $2 P$};
+      \path(p_gain)+(0.75*\nodesep, 0) node (sat_ctrl) [sat_block] {};
+      \path(sat_ctrl)+(0.75*\nodesep, 0) node (output) [] {};
+  
+      %===============================================================================
+      \path[draw,->] (ref.east) -- node[text centered, anchor=south, pos=0.1] {$\bm{q}_\text{sp}$} ([yshift=0.25*\blockheight]err_quat.west);
+      \path[draw,->] ([yshift=-0.25*\blockheight]err_quat.west -| ref.east) -- node[text centered, anchor=north, pos=0.1] {$\bm{q}$} ([yshift=-0.25*\blockheight]err_quat.west);
+      \path[draw,->] (err_quat.east) -- node[text centered, anchor=south,pos=0.4] {$\bm{q}_\text{e}$} (select_axis.west);
+      \path[draw,->]([xshift=0.3*\nodesep]err_quat.east) |- (select_mag.west);
+      \path[draw,->] (select_mag.east) -- node[text centered, anchor=south] {$q_{0_\text{e}}$} (sgn.west);
+      \path[draw,->] (sgn.east) -- ([xshift=0.15*\nodesep]sgn.east) |- ([yshift=0.25*\blockheight]mult.west);
+      \path[draw,->] (select_axis.east) -- node[text centered, anchor=south, pos=0.45]{$q_{j_\text{e}}$} ([yshift=-0.25*\blockheight]mult.west);
+      \path[draw,->] (mult.east) -- (p_gain.west);
+      \path[draw,->] (p_gain.east) -- (sat_ctrl.west);
+      \path[draw,->] (sat_ctrl.east) -- node[text centered, anchor=south] {$\Omega_\text{sp}$} (output.west);
+    \end{tikzpicture}
+
+    \caption{Quaternion based angle controller \cite{PX4_controller_diagrams}}
+    \label{fig:angle_controller}
+  
+  \end{figure}
