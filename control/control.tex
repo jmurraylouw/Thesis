@@ -60,8 +60,14 @@
             \paragraph
             Three seperate linear PID controllers are used to the control angular rate of the multirotor in the pitch, roll, and yaw axis of the body frame.
             The angular rate controller receives angular rate estimates from the PX4 state estimator, and outputs virtual actuator commands to the mixer.
+            Figure~\ref{fig:angular_rate_controller} shows a diagram of the PX4 angular rate controller.
             
             \input{control/diagrams/angular_rate_controller.tex}
+
+            \paragraph
+            Derivative kick.
+            LPF.
+            Saturation.
             
             \paragraph
             Classical control theory was used by \cite{Grobler2020} to design the controller gains of the practical multirotor, Honeybee.
@@ -131,18 +137,23 @@
 
             
             The translational controller consists of the position and velocity conyrollers.
-            Position control is not required to produce training data in this work, therefore it will not be discussed in this section.
+            Position control is not required for training data in this work, therefore it will not be discussed in this section.
             For more details about the PX4 position control implementation and design, readers are refered to the work by \cite{Grobler2020}.
-            The velocity controller diagram is shown in Figure~\ref{fig:velocity_controller}.
+            A diagram of the PX4 velocity controller is shown in Figure~\ref{fig:velocity_controller}.
 
-            \input{control/diagrams/veloicty_controller.tex}
+            \input{control/diagrams/velocity_controller.tex}
 
             \paragraph
-            The velocity controller gains used by \cite{Grobler2020} result in aggressive veloicty responses, which produces large payload swing angles.
             Recall from Chapter~\ref{chap:system_id}, that the cascaded PID controller is used for velocity step inputs in the training data phase for system identifcation.
             
             The system identification methods produce linear models, which are used in active swing damping controllers to minise the payload swing angles during flight.
             Therefore the models do not need to approximate  
+            The velocity controller gains used by \cite{Grobler2020} result in aggressive veloicty responses, which produces large payload swing angles.
+            Therefore the velocity controller gains are designed for a slower transient reponse which results in smaller payload swing angles.
+
+            \paragraph
+            Design.
+            Rootlocus plot
             
             % ?? Check connection with system id chapter for training data controller
 
