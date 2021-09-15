@@ -1,0 +1,38 @@
+\begin{subfigure}[t]{0.45\columnwidth}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[            
+            xlabel = Time,
+            ylabel = Payload angle,
+            x unit = \si{\second},
+            y unit = \si{\degree},
+            xmin = 0,   xmax = 16,
+            ymin = -20,  ymax = 8,
+            grid = major,
+            legend cell align = left,
+            legend pos = south east,
+            grid style = dashed,
+            legend style = {font = \scriptsize},
+            label style = {font = \scriptsize},
+            tick label style = {font = \scriptsize},
+            width = 0.95\columnwidth,
+            height = 0.95\columnwidth,
+            % initialize Dark2
+            cycle list/Dark2,
+            % combine it with 'mark list*':
+            cycle multiindex* list = {
+                Dark2\nextlist
+            }
+        ]
+
+        \pgfplotsset{cycle list shift = 2}
+        
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x = time, y = theta, col sep = comma] 
+        {control/csv/compare_control_pid_Simulink_single_pend_mp0.2_l1_PID_vel_steps_tune_scale_0.7.csv};
+
+        \end{axis}
+    \end{tikzpicture} 
+    \caption{Payload angle}
+    \label{fig:pid_tuning_plot_theta}
+\end{subfigure}

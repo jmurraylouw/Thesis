@@ -131,19 +131,18 @@
         Finally, this is used to derive the open-loop, North velocity transfer function, $G_{V_N}(s)$, with $A_{N,sp}(s)$ as input and $V_N$(s) as output 
         For more detail regarding this derivation, readers are refered to the work by \cite{Erasmus2020}.  
 
-        
-
         \input{control/plots/rootlocus_cl.tex}
 
         \begin{figure}
             \captionsetup[subfigure]{justification=centering}
             \centering  
-            \input{control/plots/pid_tuning_plot.tex} % subfigure
-            \input{control/plots/rootlocus_closed_loop.tex} % subfigure
-            \caption{Root locus plots of the North velocity controller}
-            \label{fig:rootlocus_subfigs}  
+            \input{control/plots/pid_tuning_plot_vel.tex} % subfigure
+            \input{control/plots/pid_tuning_plot_theta.tex} % subfigure
+            \caption{\gls{PID} velocity step response 
+            ($l =$~\SI{1}{\meter}, $m_p =$~\SI{0.2}{\kilo\gram})}
+            \label{fig:pid_tuning_subfigs}  
         \end{figure}
 
-        Figure~\ref{fig:pid_tuning_plot} shows velocity step response for a cascaded PID controller with a payload producing large oscillations.
+        Figure~\ref{fig:pid_tuning_plot_vel} shows velocity step response for a cascaded PID controller with a payload.
         % ?? Talk about pid response. What do you want to show?
         % ?? Check connection with system id chapter for training data controller
