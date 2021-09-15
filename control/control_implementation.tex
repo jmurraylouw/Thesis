@@ -9,8 +9,8 @@
     to the multirotor and payload system.
     The control architectures are summarised in Table~\ref{tbl:controller_summary} 
     by pairing the system identification techniques along with the appropriate controllers.
-    In this work, the \emph{MPC architecture} refers to the entire control implementation, 
-    which includes the data-driven system identification process and the resulting MPC based on the estimated model.
+    In this work, the \emph{\gls{MPC} architecture} refers to the entire control implementation, 
+    which includes the data-driven system identification process and the resulting \gls{MPC} based on the estimated model.
     Likewise, the \emph{\gls{LQR} architecture} includes the white-box modelling, the parameter estimation process, and the resulting \gls{LQR} determined from the system identification model.
     
     \paragraph
@@ -30,14 +30,14 @@
 
         \paragraph
         From simulation results, it appears that both the \gls{MPC} and \gls{LQR} effectively damp the payload oscillations while controlling the velocity of the multirotor.
-        Figure~\ref{fig:compare_control_vel} shows the velocity step responces of the MPC, \gls{LQR} and PID controllers for a multirotor with a suspended payload.
+        Figure~\ref{fig:compare_control_vel} shows the velocity step responces of the MPC, \gls{LQR} and \gls{PID} controllers for a multirotor with a suspended payload.
         From Figure~\ref{fig:compare_control_vel} it is clear that both the \gls{LQR} and \gls{MPC} controllers actively damp the velocity oscillation caused by the swinging payload.
         The \gls{PID} controller does not consider the payload angle, hence the oscillations are not damped as strongly.
 
         \paragraph
         For the \gls{MPC} and LQR, the respective models were first generated in the training phase of the simulation.
         Thereafter, the \gls{MPC} and \gls{LQR} were manually and iteratively tuned to produce a step response with a similar response time and overshoot.
-        The PID response shown uses the same controller gains used in the training phase.
+        The \gls{PID} response shown uses the same controller gains used in the training phase.
 
         % MPC:
         % vel weight = 2;
@@ -96,7 +96,7 @@
         is that parameter estimation techniques need to be manually designed for each unknown parameter.
         In the specific implementation, the \gls{LQR} model assumes that the multirotor mass is known.
         Hence, changing the mass of the multirotor is detrimental to the accuracy of plant model and therefore affects the \gls{LQR} performance.
-        In contrast, the data-driven system identification method for the MPC plant model does not rely on such modelling assumptions.
+        In contrast, the data-driven system identification method for the \gls{MPC} plant model does not rely on such modelling assumptions.
         
         \begin{figure}
             \captionsetup[subfigure]{justification=centering}
@@ -118,12 +118,12 @@
         The same tuned controller parameters were also used.
 
         \paragraph
-        In Figure~\ref{fig:mq_changed} it appears that the \gls{LQR} results in lower payload oscillations than the PID controller
+        In Figure~\ref{fig:mq_changed} it appears that the \gls{LQR} results in lower payload oscillations than the \gls{PID} controller
         but induces higher frequency oscillations.
         This results in a jittery velocity response with the \gls{LQR} and is undesirable for a multirotor flight.
         The \gls{LQR} control performance has degraded because the dynamics of the \gls{LQR} plant model differs significantly from the actual dynamics. 
-        In contrast, the MPC still results in a smooth velocity profile and damps the payload oscillations effectively, as in previous simulations.
-        This is expected since the system identification model used by the MPC included the effect of the changed mass by estimating the entire model without considering indivdual parameters.
+        In contrast, the \gls{MPC} still results in a smooth velocity profile and damps the payload oscillations effectively, as in previous simulations.
+        This is expected since the system identification model used by the \gls{MPC} included the effect of the changed mass by estimating the entire model without considering indivdual parameters.
         
         \paragraph
         It should be noted that another mass estimator can be implemented to estimate $m_Q$ in a flight stage before the payload is added.
@@ -150,7 +150,7 @@
         For both system identification approaches, the models were trained without wind.
 
         \paragraph
-        It appears that the MPC shows better disturbance rejection than the \gls{LQR} when using the controller parameters which were tuned for good performance in Section~\ref{sec:simple_payload_control}.
+        It appears that the \gls{MPC} shows better disturbance rejection than the \gls{LQR} when using the controller parameters which were tuned for good performance in Section~\ref{sec:simple_payload_control}.
         This is primarily because the weighting of the integral variable in the \gls{LQR} optimisation was minimised to reduce overshoot.
         The integral weighting can be increased to improve integral action at the expense of increasing overshoot in the velocity response.
 
@@ -167,7 +167,7 @@
         In contrast to the LQR, the \gls{MPC} shows good disturbance rejection while maintaining a low overshoot.
         This is because the disturbance estimator applies integral action which depends on the deviation of the actual dynamics from the plant model.
         whereas the \gls{LQR} applies integral action proportional to the integral of the tracking error.
-        Therefore the MPC implementation produces less integrator build up which results in a lower overshoot.
+        Therefore the \gls{MPC} implementation produces less integrator build up which results in a lower overshoot.
 
         % Could add effect of bad models. ??
 
@@ -187,27 +187,27 @@
         \input{control/plots/compare_control_vel_dynamic.tex}
 
         \paragraph
-        For the simulations in this section, accurate system identification models were generated as described in Section~\ref{sec:dynamic_payload} and used in the MPC and \gls{LQR} controllers.
+        For the simulations in this section, accurate system identification models were generated as described in Section~\ref{sec:dynamic_payload} and used in the \gls{MPC} and \gls{LQR} controllers.
         Figure~\ref{fig:compare_control_vel_dynamic} shows the reslting controller responses with a dynamic payload.
-        It appears that the velocity responses of both the \gls{LQR} and the MPC are less smooth than with a simple suspended payload and show small velocity oscillations.
+        It appears that the velocity responses of both the \gls{LQR} and the \gls{MPC} are less smooth than with a simple suspended payload and show small velocity oscillations.
         
         \input{control/plots/compare_control_theta_dynamic.tex}
         
         \paragraph
         Figure~\ref{fig:compare_control_theta_dynamic} shows the suspension cable angle for a velocity step response.
-        It appears that the \gls{LQR} and MPC damp the payload oscillations with a similar response time.
-        However, the superimposed, high-frequency oscillations are smaller in the \gls{LQR} response than in the MPC response.
+        It appears that the \gls{LQR} and \gls{MPC} damp the payload oscillations with a similar response time.
+        However, the superimposed, high-frequency oscillations are smaller in the \gls{LQR} response than in the \gls{MPC} response.
         The \gls{LQR} naively damps the payload oscillations because its controller gain is determined from the same dynamical model as for a simple suspended payload.
         Because the angle of the payload relative to the cable is not measured or considered in the \gls{LQR} plant model, it does not directly damp these high-frequency oscillations.
-        The MPC should account for the superimposed frequency and provide a smoother response than the \gls{LQR}, since the black-box model includes the double pendulum dynamics in its prediction model.
-        Therefore it is expected that the MPC optimiser determines a smooth trajectory that damps both the low and high-frequency oscillations. 
+        The \gls{MPC} should account for the superimposed frequency and provide a smoother response than the \gls{LQR}, since the black-box model includes the double pendulum dynamics in its prediction model.
+        Therefore it is expected that the \gls{MPC} optimiser determines a smooth trajectory that damps both the low and high-frequency oscillations. 
 
         \input{control/plots/mpc_vel_prediction_vs_actual.tex}
 
         \paragraph
-        However, the MPC does not provide a smooth velocity or payload angle response.
-        Even though the MPC generates a smooth optimised trajectory with the plant model, the actual response of the simulated system differs from this prediction.
-        Figure~\ref{fig:mpc_vel_prediction_vs_actual} shows the predicted velocity of the MPC optimiser, given the velocity setpoint and initial condition at Time~=~\SI{1.1}{\second}.
+        However, the \gls{MPC} does not provide a smooth velocity or payload angle response.
+        Even though the \gls{MPC} generates a smooth optimised trajectory with the plant model, the actual response of the simulated system differs from this prediction.
+        Figure~\ref{fig:mpc_vel_prediction_vs_actual} shows the predicted velocity of the \gls{MPC} optimiser, given the velocity setpoint and initial condition at Time~=~\SI{1.1}{\second}.
         The actual simulated response, resulting from replanning at every time-step with the MPC, is also shown in Figure~\ref{fig:mpc_vel_prediction_vs_actual}.
         For the first part of the velocity response, the the actual response matches the optimised trajectory well.
         However, after Time~=~\SI{3.2}{\second}, the predicted dynamics is noticeably different from the actual response to the optimised input sequence.
@@ -216,13 +216,13 @@
 
         \paragraph
         Figure~\ref{fig:mpc_theta_prediction_vs_actual} shows the predicted and actual payload angle response for this simulation, starting at the same time-step.
-        The MPC optimiser also determined a smooth trajectory for the payload angle, but the actual response differs significantly from this trajectory.
+        The \gls{MPC} optimiser also determined a smooth trajectory for the payload angle, but the actual response differs significantly from this trajectory.
         Even though the black-box model predictions accuratly matched the testing data, Figure~\ref{fig:mpc_vel_prediction_vs_actual} and Figure~\ref{fig:mpc_theta_prediction_vs_actual}  
         show that the model is not an accurate approximation of the simulated system for all values of the state and input vectors. 
 
         \paragraph
         The estimated model provides accurate predictions in the subspace of state and input vectors considered in the training data.
-        However, the MPC generates trajectories that are beyond this subspace and the model needs to extrapolate outside of the training subspace.
+        However, the \gls{MPC} generates trajectories that are beyond this subspace and the model needs to extrapolate outside of the training subspace.
         The multirotor with a simple suspended payload represents a mildly non-linear system, hence the linear approximation was effective for control with an MPC.
         However, a double pendulum system reveals highly non-linear dynamics with multiple fixed points.
         This system also includes an unmeasured state variable which adds complexity to dynamics.
@@ -230,52 +230,52 @@
         \paragraph
         From the results in Figure~\ref{fig:mpc_vel_prediction_vs_actual} and Figure~\ref{fig:mpc_theta_prediction_vs_actual}
         it appears that the data-driven linear model results in acceptable control with an MPC.
-        However, the actual dynamics do not follow the optimised trajectory of the MPC and the MPC does not outperform the \gls{LQR} implementation.
+        However, the actual dynamics do not follow the optimised trajectory of the \gls{MPC} and the \gls{MPC} does not outperform the \gls{LQR} implementation.
 
         % ?? Add discussion of how it could be improved:
-        % Constrain MPC to stay within subspace
-        % Adaptive MPC to include larger subspace
+        % Constrain \gls{MPC} to stay within subspace
+        % Adaptive \gls{MPC} to include larger subspace
 
 \FloatBarrier\section{Conclusion}
 
     \paragraph
-    From simulations without wind disturbances, it was shown that the MPC and \gls{LQR} architectures deliver similar control performances for a range of different payload parameters.
+    From simulations without wind disturbances, it was shown that the \gls{MPC} and \gls{LQR} architectures deliver similar control performances for a range of different payload parameters.
     Both controllers result in a similar response time and velocity overshoot, and the payload angle is damped well by both controllers.
     Therefore, in the absence of wind, 
-    the control performance does not conclusively differentiate between the \gls{LQR} and MPC architectures for a simple suspended payload.
-    As expected, the PID controller does not provide acceptable control of the multirotor with a suspended payload and does not actively damp the payload oscillations.
+    the control performance does not conclusively differentiate between the \gls{LQR} and \gls{MPC} architectures for a simple suspended payload.
+    As expected, the \gls{PID} controller does not provide acceptable control of the multirotor with a suspended payload and does not actively damp the payload oscillations.
     
     \paragraph
-    Both the \gls{LQR} and the MPC architectures handle different payload parameters well.
+    Both the \gls{LQR} and the \gls{MPC} architectures handle different payload parameters well.
     Even though the parameter estimation techniques (used with the LQR) did not consider the mass of the multirotor ($m_Q$),
     the \gls{LQR} architecture still provided acceptable swing damping control with small changes in $m_Q$.
     However, it was shown that the \gls{LQR} architecture produces an undesirable control performance for large changes in $m_Q$.
     Therefore, parameter estimation procedure will need to be redesigned to account for such changes in other system parameters.
-    However, the data-driven approach does not rely on modelling assumptions, hence the MPC still provides good control performance for different values of $m_Q$.
+    However, the data-driven approach does not rely on modelling assumptions, hence the \gls{MPC} still provides good control performance for different values of $m_Q$.
     
     \paragraph
-    Both the \gls{LQR} and the MPC effectively rejected the unmeasured input disturbance caused by wind, resulting in zero steady-state tracking error for the multirotor velocity.
+    Both the \gls{LQR} and the \gls{MPC} effectively rejected the unmeasured input disturbance caused by wind, resulting in zero steady-state tracking error for the multirotor velocity.
     However, the \gls{LQR} implementations which are tuned for effective disturbance rejection result in large velocity overshoots due to the integrator build-up.
-    The MPC implementation applies integral action with a disturbance estimator and achieves zero steady-state error without increasing the velocity overshoot.
+    The \gls{MPC} implementation applies integral action with a disturbance estimator and achieves zero steady-state error without increasing the velocity overshoot.
 
     \paragraph
-    For simulations with a dynamic payload, both the \gls{LQR} and MPC effectively applied swing damping control.
+    For simulations with a dynamic payload, both the \gls{LQR} and \gls{MPC} effectively applied swing damping control.
     However, there the trajectories were not as smooth as with the simple suspended payload.
     Even though the simulated dynamics differed significantly from the simple suspended payload model used by the LQR,
     the \gls{LQR} still managed to damp the payload oscillations quickly. 
 
     \paragraph
-    The MPC also managed to damp the payload oscillations, but did not conclusively outperform the \gls{LQR}.
+    The \gls{MPC} also managed to damp the payload oscillations, but did not conclusively outperform the \gls{LQR}.
     Even though the estimated model used by the \gls{MPC} showed good prediction accuracy with the given testing data set, 
-    the actual system response did not follow the predicted trajectory of the MPC well.
-    It appears that the optimised trajectory of the MPC is beyond the vector subspace where the linear model provides an accurate approximation of the non-linear dynamics.
-    % Therefore, the proposed \gls{DMDc} implementation does not provide a sufficient linear model approximation for effective MPC control of such a dynamic payload.
+    the actual system response did not follow the predicted trajectory of the \gls{MPC} vell.
+    It appears that the optimised trajectory of the \gls{MPC} is beyond the vector subspace where the linear model provides an accurate approximation of the non-linear dynamics.
+    % Therefore, the proposed \gls{DMDc} implementation does not provide a sufficient linear model approximation for effective \gls{MPC} control of such a dynamic payload.
     Therefore, an improved data-driven system identification model, which provides an accurate approximation over a larger vector subspace, 
-    is required for improved MPC control of such a dynamic payload.
+    is required for improved \gls{MPC} control of such a dynamic payload.
 
     \paragraph
     The advantage of the \gls{LQR} architecture is that it is computationally simple in comparison to an MPC.
     However, the \gls{LQR} architecture is designed for a specific system configuration and only accounts for chnages in specific system parameters. 
-    In contrast, the MPC architecture provides a good general solution for different system configurations without considering individual parameters and without a priori modelling.
+    In contrast, the \gls{MPC} architecture provides a good general solution for different system configurations without considering individual parameters and without a priori modelling.
 
 } % end of tikz set

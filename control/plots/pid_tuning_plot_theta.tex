@@ -1,4 +1,4 @@
-\begin{subfigure}[t]{0.45\columnwidth}
+\begin{subfigure}[t]{0.49\columnwidth}
     \centering
     \begin{tikzpicture}
         \begin{axis}[            
@@ -15,7 +15,7 @@
             legend style = {font = \scriptsize},
             label style = {font = \scriptsize},
             tick label style = {font = \scriptsize},
-            width = 0.95\columnwidth,
+            width = 0.99\columnwidth,
             height = 0.95\columnwidth,
             % initialize Dark2
             cycle list/Dark2,
@@ -26,7 +26,7 @@
         ]
 
         \pgfplotsset{cycle list shift = 2}
-        
+
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x = time, y = theta, col sep = comma] 
         {control/csv/compare_control_pid_Simulink_single_pend_mp0.2_l1_PID_vel_steps_tune_scale_0.7.csv};
