@@ -44,7 +44,7 @@
     The cable length is estimated from the measurement of the natural frequency of the swinging payload.
     As described by \cite{Bisgaard2008}, the natural frequency is given by:
     \begin{equation} \label{eq:nat_freq}
-        \omega_n = \sqrt{ \frac{g}{l} \cdot \frac{m_q + m_p}{m_q}} .
+        \omega_n = \sqrt{ \frac{g}{l} \cdot \frac{m_Q + m_p}{m_Q}} .
     \end{equation}
     The cable length can clearly be calculated from Equation~\ref{eq:nat_freq} if the other parameters are known.
     The natural frequency is measured by performing a \gls{FFT} on the payload swing angle response 
@@ -70,7 +70,7 @@
     
     \paragraph
     The dominant frequency is clearly identified by the peak at \SI{0.520}{\radian/\second}.
-    Since $m_q$, $m_p$ and $g$ are known, and $\omega_n$ has been measured, 
+    Since $m_Q$, $m_p$ and $g$ are known, and $\omega_n$ has been measured, 
     $l$ can be determined from Equation~\ref{eq:nat_freq}.
     The estimated length for this simulation is \SI{0.953}{\metre}.
     The actual cable length is \SI{1}{\metre}, therefore this estimation has an error of 4.7\%.

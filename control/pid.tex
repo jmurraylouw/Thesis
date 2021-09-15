@@ -165,62 +165,56 @@
         Therefore the velocity controller gains are redesigned for a slower transient reponse and smaller payload swing angles.
 
         \paragraph
-        The trasfer function, $G_{V_N}(s)$, of the North velocity dynamics of a multirotor with a suspened payload was derived by \cite{Slabber2020}.
+        The derivation of the trasfer function, $G_{V_N}(s)$, of the North velocity dynamics 
+        of a multirotor with a suspened payload was derived by \cite{Slabber2020} and is described here briefly.
         Firstly, the non-linear dynamics were derived with Lagrangian mechanics as described in Chapter~\ref{chap:system_id}.
         The equations were then linearised around hover with the small-angle approximation.
-        The linearised equations for the North velocity dynamics can be presented in the state-space form as,
-        % \begin{equation}
-
-        % \end{equation}
-
-        The linearized longitudinal equations of motion of the quadrotor and suspended payload system are written in state space form as 
+        The linearised equations for the longitudinal or North velocity dynamics can be presented in the state-space form as,
         \begin{align}
-        \dot{\textbf{X}}_{long} &= \textbf{A}_{long} \textbf{X}_{long} + \textbf{B}_{long} \mbox{U}_{long}~\mbox{and}\\
-        \mbox{Y}_{long} &= \textbf{C}_{long} \textbf{X}_{long},
+            \dot{\textbf{X}}_{long} &= \textbf{A}_{long} \textbf{X}_{long} + \textbf{B}_{long} \mbox{U}_{long}~\mbox{and}\\
+            \mbox{Y}_{long} &= \textbf{C}_{long} \textbf{X}_{long},
         \end{align}
         where 
         \begin{align}
-        \renewcommand\arraystretch{3}
-        \textbf{X}_{long} & = 
-        \begin{bmatrix}
-        V_N~\dot{\theta}_p^\mathcal{I}~\theta_p^\mathcal{I}
-        \end{bmatrix}^T,\\
-        \textbf{A}_{long} &= 
-        \begin{bmatrix}
-        0 & \frac{c}{l m_q} & \frac{g m_p}{m_q}\\[0.5em]
-        0 & -\frac{c(m_q + m_p)}{l^2 m_q m_p} & -\frac{g(m_q + m_p)}{l m_q} \\[0.5em]
-        0 & 1 & 0
-        \end{bmatrix}^T,\\
-        \textbf{B}_{long}& = 
-        \begin{bmatrix}
-        \frac{1}{m_q} & -\frac{1}{l m_q}
-        \end{bmatrix}^T, \\
-        \textbf{C}_{long} &= 
-        \begin{bmatrix}
-        1 & 0 & 0
-        \end{bmatrix}.%, \\
-        %\mbox{U}_{long} & = F_N  \mbox{ and}\\
-        %\mbox{Y}_{long} & = V_N
+            \renewcommand\arraystretch{3}
+            \textbf{X}_{long} & = 
+            \begin{bmatrix}
+                V_N~~\dot{\theta}~~\theta
+            \end{bmatrix}^T, \\
+            % 
+            U_{long} & = A_N, \\
+            % 
+            \textbf{A}_{long} &= 
+            \begin{bmatrix}
+                0 & \frac{ c_{\theta} }{ l m_Q } & \frac{ g m_p }{ m_Q }\\[0.5em]
+                0 & -\frac{ c_{\theta} (m_Q + m_p) }{ l^2 m_Q m_p } & -\frac{ g (m_Q + m_p) }{ l m_Q } \\[0.5em]
+                0 & 1 & 0
+            \end{bmatrix}^T, \\
+            % 
+            \textbf{B}_{long}& = 
+            \begin{bmatrix}
+                \frac{1}{m_Q} & -\frac{1}{l m_Q}
+            \end{bmatrix}^T, \\
+            % 
+            \textbf{C}_{long} &= 
+            \begin{bmatrix}
+                1 & 0 & 0
+            \end{bmatrix}.
         \end{align}
-        The input and output to the plant are given by $\mbox{U}_{long} = F_N  \mbox{ and } \mbox{Y}_{long} = V_N$, respectively. The linear longitudinal velocity plant is then determined to be 
+        For the definition of these symbols, refer to Chapter~\ref{chap:system_id}.
+        The input and output of the plant are $\mbox{U}_{long} = A_N  \mbox{ and } \mbox{Y}_{long} = V_N$, respectively. 
+        The transfer function can therefore be calculated as, 
         \begin{align}\label{eq:lin_vel_quad_pl}
-        G_{V_N}(s) &= \frac{V_N(s)}{F_N(s)} = \textbf{C}_{long} \left(s \textbf{I} - \textbf{A}_{long}\right)^{-1} \textbf{B}_{long} \\
-        %\frac{V_N(s)}{F_N(s)} &= \dfrac{1}{m_q} \cdot \dfrac{s^2 + \frac{c}{mp l^2}s + \dfrac{g}{l}}{s \left[s^2 + \dfrac{c(m_q + m_p)}{m_q m_p l^2}s + \dfrac{g(m_q + m_p)}{m_q l}\right]} 
-        G_{V_N}(s) &= \dfrac{1}{m_q} \cdot \dfrac{s^2 + \frac{c}{m_p l^2}s + \dfrac{g}{l}}{s \left[s^2 + \dfrac{c(m_q + m_p)}{m_q m_p l^2}s + \dfrac{g(m_q + m_p)}{m_q l}\right]} 
+            G_{V_N}(s) &= \frac{V_N(s)}{A_N(s)} = \textbf{C}_{long} \left(s \textbf{I} - \textbf{A}_{long}\right)^{-1} \textbf{B}_{long} \\
+            G_{V_N}(s) &= \dfrac{1}{m_Q} \cdot \dfrac{s^2 + \frac{c}{m_p l^2}s + \dfrac{g}{l}}{s \left[s^2 + \dfrac{c(m_Q + m_p)}{m_Q m_p l^2}s + \dfrac{g(m_Q + m_p)}{m_Q l}\right]} 
         \end{align}
-        %To coincide with the PX4 control architecture, the linear longitudinal velocity plant is adapted by including the closed-loop pitch angle dynamics given in Equation~(\ref{eq:lin_cl_pa_plant}) and using the normalized longitudinal force given in Equation~(\ref{eq:force_to_norm}). Therefore, plant used for the controller design describes the dynamics from the commanded normalized longitudinal force to the longitudinal velocity:
-        %\begin{equation}
-        %G_{V_N}(s) = \frac{V_N(s)}{F_{N_{ref}}^{PX4}(s)} = 4T_{max}\cdot  G_{q_{2_{cl}}}^{PX4}(s) \cdot \frac{V_N(s)}{F_N(s)}.
-        %\end{equation}
-        It should be noted that the actual input to the longitudinal velocity controller plant is the commanded inertial force, $F_{N_{ref}}$, where the relationship between the actual force and commanded force is represented by the pitch angle dynamics, $ G_{q_{2_{cl}}}(s) $. However, as in \cite{article:Taylor}, it is assumed that there is good time-scale separation between the inner pitch angle dynamics and outer longitudinal velocity dynamics.%, $G_{V_N}(s)$. 
 
-        Finally, this is used to derive the open-loop, North velocity transfer function, $G_{V_N}(s)$, with $A_{N_{sp}}(s)$ as input and $V_N$(s) as output 
-        For more detail regarding this derivation, readers are refered to the work by \cite{Erasmus2020}.  
+        % ?? Check for consistency and for Francois wording
 
-        % As a brief summary, the derivation starts by linearising the multirotor pitch rate dynamics at hover with the small angle approximation.
-        % The closed-loop transfer function including the pitch rate controller is then determined.
-        % This function is then used in the derivation of the closed-loop transfer function of the pitch dynamics, which includes the pitch angle controller.
-        
+        \paragraph
+        A payload with $m_p =$ and $l =$ is considered for the controller design.
+% ?? OCntinue here
+
         \input{control/plots/rootlocus_cl.tex}
 
         \begin{figure}
