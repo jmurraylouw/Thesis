@@ -39,6 +39,7 @@
         Derivative kick.
         LPF.
         Saturation.
+        Not included
         
         \paragraph
         Classical control theory was used by \cite{Grobler2020} to design the controller gains of the practical multirotor, Honeybee.
@@ -130,14 +131,16 @@
         Finally, this is used to derive the open-loop, North velocity transfer function, $G_{V_N}(s)$, with $A_{N,sp}(s)$ as input and $V_N$(s) as output 
         For more detail regarding this derivation, readers are refered to the work by \cite{Erasmus2020}.  
 
-        \begin{figure}
-            \captionsetup[subfigure]{justification=centering}
-            \centering  
-            \input{control/plots/rootlocus_open_loop.tex} % subfigure
-            \input{control/plots/rootlocus_closed_loop.tex} % subfigure
-            \caption{Root locus plots of the North velocity controller}
-            \label{fig:rootlocus_subfigs}  
-        \end{figure}
+        % \begin{figure}
+        %     \captionsetup[subfigure]{justification=centering}
+        %     \centering  
+        %     \input{control/plots/rootlocus_open_loop.tex} % subfigure
+        %     \input{control/plots/rootlocus_closed_loop.tex} % subfigure
+        %     \caption{Root locus plots of the North velocity controller}
+        %     \label{fig:rootlocus_subfigs}  
+        % \end{figure}
+
+        \input{control/plots/rootlocus_cl.tex}
 
         \input{control/plots/pid_tuning_plot.tex}
 
