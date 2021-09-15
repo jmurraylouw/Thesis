@@ -1,11 +1,12 @@
 \FloatBarrier\section{LQR} \label{sec:lqr}
 
         \paragraph
-        LQR is a well-kown technique, ...
-        % LQR is \cite{get cite} ??
-        An LQR for North velocity control is presented in this section. 
+        LQR is a popular optimal control technique which has been shown to be an effective swing-damping controller for multirotors with a suspeneded payload 
+        \cite{Erasmus2020} \cite{Slabber2020} \cite{Us2019}.
+        LQG combines this optimal control technique with a full-state estimator when all the satets cannot be measured \cite{Li2016}.
+        An LQG was effectiveley used by \cite{Slabber2020} for swing-damping control of a multirotor and suspended payload system.
+        An LQR for North velocity control with full-state feedback is presented in this section. 
         This controller structure can be duplicated for East veloicty control.
-        Full-state feedback. Effect of EKF not included.
         
         \paragraph
         An LQR does not inherently apply integral action and does not achieve zero steady-state tracking error in the presence of disturbacnes.
