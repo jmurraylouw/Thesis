@@ -12,7 +12,7 @@
         An \gls{LQR} does not inherently apply integral action and does not achieve zero steady-state tracking error in the presence of disturbacnes.
         Therefore the state vector is augmented with an integral state of the velocity error, $\mathcal{V}_N$, such that:
         \begin{equation}
-            \dot{\mathcal{V}}_N = V_{N,sp} - V_N
+            \dot{\mathcal{V}}_N = V_{N_{sp}} - V_N
         \end{equation}
         
         \paragraph
@@ -32,7 +32,7 @@
                 \end{bmatrix}^T, \\
             \bm{u}_A &= 
                 \begin{bmatrix}
-                    A_{N,sp}
+                    A_{N_{sp}}
                 \end{bmatrix}, \\
             \bm{A}_A &= 
                 \begin{bmatrix}
@@ -53,11 +53,11 @@
         \paragraph
         The \gls{LQR} control law is defined as:
         \begin{equation} \label{eq:lqr_control_law}
-            \bm{u}_A = \bm{K}_{lqr} ( \bm{x}_{A,sp} - \bm{x}_A ) ,
+            \bm{u}_A = \bm{K}_{lqr} ( \bm{x}_{A_{sp}} - \bm{x}_A ) ,
         \end{equation}
-        where $\bm{K}_{lqr}$ is the \gls{LQR} gain, and $\bm{x}_{A,sp}$ is the augmented state vector setpoint.
-        Only $V_{N,sp}$ has a non-zero value, hence 
-        $\bm{x}_{A,sp} = \left[ 0~~V_{N,sp}~~0~~0 \right]^T$.
+        where $\bm{K}_{lqr}$ is the \gls{LQR} gain, and $\bm{x}_{A_{sp}}$ is the augmented state vector setpoint.
+        Only $V_{N_{sp}}$ has a non-zero value, hence 
+        $\bm{x}_{A_{sp}} = \left[ 0~~V_{N_{sp}}~~0~~0 \right]^T$.
         
         \paragraph
         Furthermore, the \gls{LQR} considers the cost function:

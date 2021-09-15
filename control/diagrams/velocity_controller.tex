@@ -56,12 +56,12 @@
     \path(ref)+(\nodesep,0) node (ref_sum) [sum={}{+}{-}{}] {};
   %   \path(ref_sum)+(\nodesep,0) node (ctrl_k) [simple_block] {$K$};
     \path(ref_sum)+(2*\nodesep,0) node (ctrl_i) [sat_block_int, fill=light_blue, text centered, inner sep=0pt] {$~~\int$};
-    \path(ctrl_i)+(\nodesep,0) node (ctrl_i_gain) [simple_block] {$I$};
+    \path(ctrl_i)+(\nodesep,0) node (ctrl_i_gain) [simple_block] {$I_{V_N}$};
   %   \path(ref_sum)+(\nodesep,-1.5*\blockheight) node (ctrl_kd) [simple_block] {$K$};
     \path(ref_sum)+(\nodesep,-1.5*\blockheight) node (ctrl_d_filt) [simple_block] {LPF};
     \path(ref_sum)+(2*\nodesep,-1.5*\blockheight) node (ctrl_d) [simple_block] {$\frac{\partial}{\partial t}$};
-    \path(ctrl_d)+(\nodesep,0) node (ctrl_d_gain) [simple_block] {$D$};
-    \path(ref_sum)+(3*\nodesep,1.5*\blockheight) node (ctrl_p_gain) [simple_block] {$P$};
+    \path(ctrl_d)+(\nodesep,0) node (ctrl_d_gain) [simple_block] {$D_{V_N}$};
+    \path(ref_sum)+(3*\nodesep,1.5*\blockheight) node (ctrl_p_gain) [simple_block] {$P_{V_N}$};
     \path(ctrl_i_gain)+(\nodesep,0) node (ctrl_sum) [sum={+}{+}{-}{}] {};
     \path(ctrl_sum)+(\nodesep,0) node (sat_ctrl) [sat_block] {};
     \path(sat_ctrl.east)+(1*\nodesep,0) node (ctrl) [] {};
@@ -69,7 +69,7 @@
     \path(ref_sum.south |- ctrl_d_filt.west)+(-\nodesep,0) node(output) [] {};
 
     %===================================================================================
-    \path[draw,->] (ref.east) -- node[anchor=south, pos=0] {$V_{N,sp}$} (ref_sum.west);
+    \path[draw,->] (ref.east) -- node[anchor=south, pos=0] {$V_{N_{sp}}$} (ref_sum.west);
 
     \path[draw,->] (ref_sum.east) -- (ctrl_i.west);
   %   \path[draw,->] (ctrl_k.east) -- (ctrl_i.west);
@@ -84,7 +84,7 @@
     \path[draw,->] (ctrl_i_gain.east) -- (ctrl_sum.west);
     \path[draw,->] (ctrl_p_gain.east) -| (ctrl_sum.north);
     \path[draw,->] (ctrl_sum.east) -- (sat_ctrl.west);
-    \path[draw,->] (sat_ctrl.east) -- node[anchor=south] {$A_{N,sp}$} (ctrl.west);
+    \path[draw,->] (sat_ctrl.east) -- node[anchor=south] {$A_{N_{sp}}$} (ctrl.west);
   
   \end{tikzpicture}
 

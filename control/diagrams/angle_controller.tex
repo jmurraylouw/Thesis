@@ -38,7 +38,7 @@
       \path(select_axis)+(0, 1.5*\blockheight) node (select_mag) [text_block] {Extract magnitude};
       \path(select_mag)+(1.1*\nodesep,0) node (sgn) [simple_block] {sgn};
       \path(select_axis)+(1.9*\nodesep, 0.25*\blockheight) node (mult) [simple_block] {$\times$};
-      \path(mult)+(0.65*\nodesep, 0) node (p_gain) [gain] {\scriptsize $2 P$};
+      \path(mult)+(0.65*\nodesep, 0) node (p_gain) [gain] {\scriptsize $2 P_{\Omega_j}$};
       \path(p_gain)+(0.75*\nodesep, 0) node (sat_ctrl) [sat_block] {};
       \path(sat_ctrl)+(0.75*\nodesep, 0) node (output) [] {};
   
@@ -52,7 +52,7 @@
       \path[draw,->] (select_axis.east) -- node[text centered, anchor=south, pos=0.45]{$q_{j_\text{e}}$} ([yshift=-0.25*\blockheight]mult.west);
       \path[draw,->] (mult.east) -- (p_gain.west);
       \path[draw,->] (p_gain.east) -- (sat_ctrl.west);
-      \path[draw,->] (sat_ctrl.east) -- node[text centered, anchor=south] {$\Omega_\text{sp}$} (output.west);
+      \path[draw,->] (sat_ctrl.east) -- node[text centered, anchor=south] {$\Omega_{j_{sp}}$} (output.west);
     \end{tikzpicture}
 
     \caption{Quaternion based angle controller diagram \cite{PX4_controller_diagrams}}

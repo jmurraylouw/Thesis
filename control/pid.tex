@@ -16,9 +16,28 @@
     \paragraph
     The default PX4 control architecture consists of multiple cascaded \gls{PID} controller loops.
     This is devided into two main sections, the inner-loop attitude controllers and the outer-loop translational controllers.
-    Figure~\ref{fig:pid_architecture} shows a high level overview of the PX4 control architecture, but does not show state feedback. 
-
+    Figure~\ref{fig:pid_architecture} shows a high level overview of the PX4 control architecture, but does not show state feedback.
+    
     \input{control/diagrams/pid_architecture.tex}
+
+    \paragraph
+    The setpoint vectors in Figure~\ref{fig:pid_architecture} are denoted by 
+    $\bm{X}_{sp}$ for position, 
+    $\bm{V}_{sp}$ for velocity, 
+    $\bm{A}_{sp}$ for acceleration, 
+    $\bm{q}_{sp}$ for the attitude quaternion, 
+    $\bm{\Omega}_{sp}$ for angular rate, and
+    $\bm{T}_{sp}$ for motor thrust.
+    The virtual actuator commands are denoted by 
+    $\delta_{A_{sp}}$,
+    $\delta_{E_{sp}}$,
+    $\delta_{R_{sp}}$, and
+    $\delta_{T_{sp}}$,
+    for the virtual 
+    aileron,
+    elevator,
+    rudder, and 
+    thrust commands.
 
     % ?? Fix notation of symbols and define them
 
@@ -42,11 +61,15 @@
         \input{control/diagrams/angular_rate_controller.tex}
 
         \paragraph
-        A \gls{LPF}
-        Derivative kick.
-        LPF.
-        Saturation.
-        Not included
+        In Figure~\ref{fig:angular_rate_controller}, the $j$ subscript denotes a specific element in the vectors $\bm{\Omega}_{sp}$ and $\bm{\Omega}$, and the corresponding virtual actuator, where $j = \{ 1, 2, 3 \}$.
+        Some elements in the controller improve the practical control implementation, but have a neglible effect on the design on the gains, namely:
+        \begin{itemize}
+            \item A \gls{LPF} is added in the derivative path to reduce the effect of noise.
+            \item The deravtive path is implemented on the plant output signal, instead of the error signal to elliminate derivative kick.
+            \item Saturation is applied to the integral path to elliminate integral wind-up.
+            \item The control signal is saturated to avoid dangerously large setpoint commands.
+        \end{itemize}
+        These effects are also described in detail by \cite{Erasmus2020}.
         
         \paragraph
         Classical control theory was used by \cite{Grobler2020} to design the controller gains of the practical multirotor, Honeybee.
@@ -54,6 +77,8 @@
         The controller gains were designed for a transient response that is as fast as possible, while retaining fast disturbance rejection, and minimal overshoot.            
         It was determined by \cite{Grobler2020} that the default PX4 angular rate controller gains of the ZMR250 airframe provide excellent control for Honeybee and satisfy these design requirements.
         
+        % ?? Input figure of angular rate step response
+
         \paragraph
         For a \SI{1}{\radian/\second} step responce, the pitch rate controllers result in a 
         3.6~\% overshoot, 
@@ -61,7 +86,7 @@
         \SI{0.8}{\second} for a 2~\% settling time, 
         and \SI{138}{\radian/\second} bandwidth \cite{Grobler2020}.
         These gains are well suited for Honeybee and will also be implemented in this work.
-        The default roll-rate and yaw-rate controller gains are also implemented.
+        The default roll-rate and yaw-rate controller gains are also implemented for the same reason.
 
     \FloatBarrier\subsection{Angle controller}
 
@@ -70,87 +95,94 @@
         A quaternion based controller is implemented by PX4 for angle control based on work by \cite{Brescianini2013}.
         The structure and design of this controller is well explained by \cite{Grobler2020}, \cite{Erasmus2020}, and \cite{Slabber2020} and is only briefly discussed here.
         
-    %     \paragraph
-    %     For the control law proposed by \cite{Brescianini2013}, the error quaternion is calculated as:
-    %     \begin{equation}
-    %         \bar{\bm{q}}_e = \bar{\bm{q}}^{-1} \cdot \bar{\bm{q}}_{sp},
-    %     \end{equation}
-    %     where $\bar{\bm{q}}_e$ is the quaternion error, 
-    %     $\bar{\bm{q}}$ is the attitude quaternion of the multirotor,  
-    %     and $\bar{\bm{q}}_{sp}$ is the attitude quaternion setpoint.
-    %     The resulting control law is given as:
-    %     \begin{equation} \label{eq:angle_law}
-    %         \bm{\varOmega}_{sp} = 2 \bm{P}_{q} \mbox{sgn}(q_{0_e}) \bm{q}_{v_e} , 
-    %         \qquad \qquad \mbox{sgn}(q_{0_e}) = 
-    %         \begin{cases}
-    %             1,  & \quad q_{0_e}  \geq   0 \\
-    %             -1, & \quad q_{0_e}  <      0
-    %         \end{cases} 
-    %     \end{equation}
+        \paragraph
+        For the control law proposed by \cite{Brescianini2013}, the error quaternion is calculated as:
+        \begin{equation}
+            \bm{q}_e = \bm{q}^{-1} \cdot \bm{q}_{sp},
+        \end{equation}
+        where $\bm{q}_e$ is the quaternion error, 
+        $\bm{q}$ is the attitude quaternion of the multirotor,  
+        and $\bm{q}_{sp}$ is the attitude quaternion setpoint.
+        The resulting control law is given as:
+        \begin{equation} \label{eq:angle_law}
+            \bm{\Omega}_{sp} = 2 \bm{P}_{q} \phantom{.} \mbox{sgn}(q_{0_e}) \bm{q}_{v_e} , 
+            \qquad \qquad \mbox{sgn}(q_{0_e}) = 
+            \begin{cases}
+                1,  & \quad q_{0_e}  \geq   0 \\
+                -1, & \quad q_{0_e}  <      0
+            \end{cases} ,
+        \end{equation}
+        where 
+        $\bm{\Omega}_{sp}$ is a vector of the roll, pitch, and yaw angular rate setpoints,
+        $\bm{P}_{q}$ is a vector of the corresponding proportional gains,
+        $q_{0_e}$ is the error of the quaternion magnitude component, and
+        $\bm{q}_{v_e}$ is the error of the vector component of the quaternion.
+        The implementation of this control law is illustrated in Figure~\ref{fig:angle_controller} for a single element of $\bm{\Omega}_{sp}$.
 
-    %     %  ?? Fix symbols be matrix and correspond with diagram and explain matrix
+        %  ?? Fix symbols be matrix and correspond with diagram and explain matrix
+
+        \input{control/diagrams/angle_controller.tex}
         
-    %     \paragraph
-    %     The implementation of this control law is illustrated in Figure~\ref{fig:angle_controller}.
-    %     The attitude setpoint is taken as input, the current attitude is received from the PX4 estimator, and the resulting anglular rate setpoint is produced as the output.
+        \paragraph
+        In Figure~\ref{fig:angle_controller}, the $j$ subscript denotes a specific element in the vectors $\bm{q}_e$, $\bm{P}_{q}$, and $\bm{\Omega}_{sp}$, where $j = \{ 1, 2, 3 \}$.
+        The attitude quaternion setpoint is taken as input, the current attitude is received from the PX4 estimator, and the resulting anglular rate setpoint is produced as the control signal.
 
-    %     \input{control/diagrams/angle_controller.tex}
 
-    %     \paragraph
-    %     An integrator is not required in this controller, because it is placed between the velocity and angular rate controllers which both include integrators to reject steady-state disturbacnes \cite{Erasmus2020}.
-    %     Therefore only a proportional term is applied in this control law.
-    %     The proportional gain was designed by \cite{Grobler2020} for a faster transient response and bandwidth than the default ZMR250 gain.
-    %     This results in a \SI{1}{\radian} step response with a
-    %     0~\% overshoot, 
-    %     \SI{0.3}{\second} rise time, 
-    %     \SI{0.47}{\second} for a 2~\% settling time, 
-    %     and \SI{11}{\radian/\second} bandwidth \cite{Grobler2020}.
-    %     This still has a good time-scale seperation from the angular rate controller, which has a bandwidth of \SI{138}{\radian/\second}.
-    %     The same gains designed by \cite{Grobler2020} will be used in this work.
+        \paragraph
+        An integrator is not required in this controller, because it is placed between the velocity and angular rate controllers, which both include integrators to reject steady-state disturbacnes \cite{Erasmus2020}.
+        Therefore only a proportional term is applied in this control law.
+        The proportional gain was designed for Honeybee by \cite{Grobler2020} for a faster transient response and bandwidth than with the default ZMR250 gain.
+        This results in a \SI{1}{\radian} step response with a
+        0~\% overshoot, 
+        \SI{0.3}{\second} rise time, 
+        \SI{0.47}{\second} for a 2~\% settling time, 
+        and \SI{11}{\radian/\second} bandwidth \cite{Grobler2020}.
+        This has a large time-scale seperation from the angular rate controller, which has a bandwidth of \SI{138}{\radian/\second}.
+        A fast angle response is also desired in this work, hence the same gains designed by \cite{Grobler2020} will be used.
 
-    % \FloatBarrier\subsection{Translational controller}
+    \FloatBarrier\subsection{Translational controller}
 
-    %     \paragraph}
-    %     The translational controller consists of the position and velocity conyrollers.
-    %     Position control is not required for training data in this work, therefore it will not be discussed in this section.
-    %     A diagram of the North velocity controller is shown in Figure~\ref{fig:velocity_controller}.
-    %     The West and Down velocity controllers duplicate the same configuration.
-    %     In order to drive the multirotor to a given velocity setpoint, the velocity controller commands an acceleration setpoint in the inertial frame.
-    %     This acceleration setpoint is transformed to an attitude setpoint which is used by the angle controller.
-    %     This transformation is originally based on work done by \cite{Mellinger2011}. 
+        \paragraph
+        The translational controller consists of the position and velocity controllers.
+        Position control is not required for training data in this work, therefore it will not be discussed in this section.
+        A diagram of the North velocity controller is shown in Figure~\ref{fig:velocity_controller}.
+        The West and Down velocity controllers duplicate the same configuration.
+        In order to drive the multirotor to a given velocity setpoint, the velocity controller commands an acceleration setpoint in the inertial frame.
+        This acceleration setpoint is transformed to an attitude setpoint which is used by the angle controller.
+        This transformation is based on work done by \cite{Mellinger2011}. 
 
-    %     % ?? Ensure body frame and inertial frame are explained in modelling chapter
+        % ?? Ensure body frame and inertial frame are explained in modelling chapter
 
-    %     \input{control/diagrams/velocity_controller.tex}
+        \input{control/diagrams/velocity_controller.tex}
 
-    %     \paragraph
-    %     Recall from Chapter~\ref{chap:system_id}, that the cascaded \gls{PID} controller is used for velocity step inputs in the training data phase for system identifcation.
-    %     The system identification methods produce linear models, which are used in swing damping controllers to minimise the payload angles during flight.
-    %     Therefore training data with large payload angles is undesirable, because it is very different from the vector subspace that the swing damping controllers will operate in.
-    %     The velocity controller gains used for Honeybee by \cite{Grobler2020} result in aggressive veloicty responses, which produces large payload swing angles.
-    %     Therefore the velocity controller gains are redesigned for a slower transient reponse which results in smaller payload swing angles.
+        \paragraph
+        Recall from Chapter~\ref{chap:system_id}, that the cascaded \gls{PID} controller is used for velocity step inputs in the training data phase for system identifcation.
+        The system identification methods produce linear models, which are used in swing damping controllers to minimise the payload angles during flight.
+        Therefore training data with large payload angles is undesirable, because it is very different from the vector subspace that the swing damping controllers will operate in.
+        The velocity controller gains used for Honeybee by \cite{Grobler2020} result in aggressive veloicty responses, which produces large payload swing angles.
+        Therefore the velocity controller gains are redesigned for a slower transient reponse which results in smaller payload swing angles.
 
-    %     \paragraph
-    %     The trasfer function, $G_{V_N}(s)$, of the plant considered for North velocity control was derived by \cite{Erasmus2020}.
-    %     As a brief summary, the derivation starts by linearising the multirotor pitch rate dynamics at hover with the small angle approximation.
-    %     The closed-loop transfer function including the pitch rate controller is then determined.
-    %     This function is then used in the derivation of the closed-loop transfer function of the pitch dynamics, which includes the pitch angle controller.
-    %     Finally, this is used to derive the open-loop, North velocity transfer function, $G_{V_N}(s)$, with $A_{N,sp}(s)$ as input and $V_N$(s) as output 
-    %     For more detail regarding this derivation, readers are refered to the work by \cite{Erasmus2020}.  
+        \paragraph
+        The trasfer function, $G_{V_N}(s)$, of the plant considered for North velocity control was derived by \cite{Erasmus2020}.
+        As a brief summary, the derivation starts by linearising the multirotor pitch rate dynamics at hover with the small angle approximation.
+        The closed-loop transfer function including the pitch rate controller is then determined.
+        This function is then used in the derivation of the closed-loop transfer function of the pitch dynamics, which includes the pitch angle controller.
+        Finally, this is used to derive the open-loop, North velocity transfer function, $G_{V_N}(s)$, with $A_{N_{sp}}(s)$ as input and $V_N$(s) as output 
+        For more detail regarding this derivation, readers are refered to the work by \cite{Erasmus2020}.  
 
-    %     \input{control/plots/rootlocus_cl.tex}
+        \input{control/plots/rootlocus_cl.tex}
 
-    %     \begin{figure}
-    %         \captionsetup[subfigure]{justification=centering}
-    %         \centering  
-    %         \input{control/plots/pid_tuning_plot_vel.tex} % subfigure
-    %         \input{control/plots/pid_tuning_plot_theta.tex} % subfigure
-    %         \caption{\gls{PID} velocity step response 
-    %         ($l =$~\SI{1}{\meter}, $m_p =$~\SI{0.2}{\kilo\gram})}
-    %         \label{fig:pid_tuning_subfigs}  
-    %     \end{figure}
+        \begin{figure}
+            \captionsetup[subfigure]{justification=centering}
+            \centering  
+            \input{control/plots/pid_tuning_plot_vel.tex} % subfigure
+            \input{control/plots/pid_tuning_plot_theta.tex} % subfigure
+            \caption{\gls{PID} velocity step response 
+            ($l =$~\SI{1}{\meter}, $m_p =$~\SI{0.2}{\kilo\gram})}
+            \label{fig:pid_tuning_subfigs}  
+        \end{figure}
 
-    %     \paragraph
-    %     Figure~\ref{fig:pid_tuning_plot_vel} shows velocity step response for a cascaded \gls{PID} controller with a payload.
-    %     % ?? Talk about \gls{PID} response. What do you want to show?
-    %     % ?? Check connection with system id chapter for training data controller
+        \paragraph
+        Figure~\ref{fig:pid_tuning_plot_vel} shows velocity step response for a cascaded \gls{PID} controller with a payload.
+        % ?? Talk about \gls{PID} response. What do you want to show?
+        % ?? Check connection with system id chapter for training data controller
