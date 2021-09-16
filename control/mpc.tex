@@ -11,7 +11,7 @@
     % ?? Lit study: include different types of MPC, e.g. DMC, MAC
     % ?? different types of models \cite{}, 
 
-    \FloatBarrier\section{Model}
+    \FloatBarrier\subsection{Model}
 
         \paragraph
         In the proposed control architecture for a multirotor with an unknown suspended payload,
@@ -27,7 +27,7 @@
 
 
 
-    \FloatBarrier\section{Receding horizon}
+    \FloatBarrier\subsection{Receding horizon}
 
         \paragraph
         Diagram of prediction horizon and control horizon
@@ -35,7 +35,7 @@
         \paragraph
         controller desicion, ${z_k}^T = [ u( k | k )^T ~~ u( k+1 | k)^T ~~ ... ~~ u( k+p-1 | k )^T ] $
 
-    \FloatBarrier\section{Algoriithm}
+    \FloatBarrier\subsection{Algoriithm}
 
         \paragraph
         Different implementations. e.g. list
@@ -53,14 +53,14 @@
         \end{itemize}
         The objective function provides a scalar value that quatifies the controller performance.
         The controller desicion is the \gls{MV} adjustments determined by the QP solver that minimise the objective function.
-        The constraints are conditions that the controller desicion need to satisfy, such as bounds on the MV and MO values.
+        The constraints are conditions that the controller decision need to satisfy, such as bounds on the MO, MV, and \gls{MV} increment values.
 
         \paragraph
         Constraints cause non-linear ..., 
         not applied
 
         \paragraph
-        The objective function implemented by the Model Predictive Control Toolbox\texttrademark is documented well by the user manual \cite{MPCtoolbox2019}.
+        The objective function used by the Model Predictive Control Toolbox\texttrademark is documented well by the corresponding user manual \cite{MPCtoolbox2019}.
         An overview of this implementation, which is used in this work, will be given here. 
         The objective function consists of the sum of three terms that each quantify a specific aspect of the control performance,
         and is calculated as,
@@ -71,8 +71,8 @@
         The three scalar performance measures are denoted as
         $J_y(z_k)$ for output setpoint tracking,
         $J_u(z_k)$ for \gls{MV} tracking, and
-        $J_{\delta u}(z_k)$ for MV move suppression
-        Each performance measure include weigths that balanse the competing objectives of the different terms.
+        $J_{\delta u}(z_k)$ for \gls{MV} move suppression
+        Each performance measure includes weigths that balanse the competing objectives of the different terms.
         These weights need to be manually tuned for a desired controller performance.
 
         \paragraph
@@ -98,11 +98,17 @@
         \end{tabular}
 
         \paragraph
-        Explain
+        The controller receives the reference values, $r_j( k+i | k)$, for the prediction horizon starting at time-step $k$.
+        Using the inernal plant model, the predicted output values, $y_j( k+i | k)$, is determined based on the controller decision, $z_k$.
+        The values of $N_p$ and ${w^y}_{j}$ are design choises and are constant controller specifications.
+        The value of $n_y$ is also constant and is determined from the plant model.
 
         \paragraph
         \textbf{Manipulated variable tracking}  \newline
-        The performance measure of the manipulated variable tracking is calulated as,
+        In some control applications, it is desirable to keep specific \gls{MV} variables close to a target value.
+        In the multirotor use case, lower \gls{MV} values are prefered because this corresponds to lower energy use.
+        The \gls{MV} target values are therefore set to zero for our use case. 
+        The performance measure of the manipulated variable tracking is calculated as,
         \begin{equation}
             J_u(z_k) = \sum_{j = 1}^{n_u} ~ \sum_{i = 0}^{N_p - 1} 
                 \left\{ 
@@ -114,33 +120,36 @@
         \end{equation}
         where the symbols are denoted as, \newline
         \begin{tabular}{ l l } 
-            $n_u$           & Number of munipulated variables \\ 
-            $u_j( k+i | k)$ & Predicted value of $j$\textsuperscript{th} output variable at $i$\textsuperscript{th} prediction step, from time-step $k$ \\
-            $u_{j,sp}( k+i | k)$ & Reference or setpoint value of $j$\textsuperscript{th} output variable at $i$\textsuperscript{th} prediction step, from time-step $k$ \\
-            ${w^u}_{j}$   & Tuning weight for $j$\textsuperscript{th} output variable \\
+            $n_u$           & Number of manipulated variables \\ 
+            $u_j( k+i | k)$ & Control decision of $j$\textsuperscript{th} \gls{MV} at $i$\textsuperscript{th} time-step from $k$ \\
+            $u_{j,target}( k+i | k)$ & Target value of $j$\textsuperscript{th} \gls{MV} at $i$\textsuperscript{th} time-step from $k$ \\
+            ${w^u}_{j}$   & Tuning weight for $j$\textsuperscript{th} \gls{MV} \\
         \end{tabular}
 
         \paragraph
-        Explain
-
+        The desired $u_{j,target}( k+i | k)$ values can be received for the prediction horizon starting at time-step $k$.
+        However, for our use case, all $u_{j,target}( k+i | k)$ values are constant and zero.
+        The value of $n_u$ is fixed by the plant model.
+        The ${w^u}_{j}$ values are also constant and are determined as a design choise.
+        
         \paragraph
-        \textbf{Manipulated variable move suppression}  \newline
-        The performance measure of the manipulated variable tracking is calulated as,
+        \textbf{Manipulated variable increment suppression}  \newline
+        Large increments or moves in the \gls{MV} values is often undesirable for good control performance.
+        In the multirotor use case, large increments of the acceleration \gls{MV}s result in large jerks which may cause the system to go beyond the accurate vector subspace of the plant model.
+        High frequency moves in the acceleration \gls{MV}s may also cause jittery flight dynamics because acceleration setpoint changes correspond to attidue changes.
+        The performance measure of \gls{MV} tracking is calulated as,
         \begin{equation}
-            J_u(z_k) = \sum_{j = 1}^{n_u} ~ \sum_{i = 0}^{N_p - 1} 
+            J_\Delta u (z_k) = \sum_{j = 1}^{n_u} ~ \sum_{i = 0}^{N_p - 1} 
                 \left\{ 
-                    {w^u}_{j} 
+                    {w^{\Delta u}}_{j} 
                         \left[ 
-                            u_j( k+i | k) - u_{j,sp}( k+i | k)
+                            u_j( k+i | k) - u_j( k+i-1 | k)
                         \right]
                 \right\}^2 ,
         \end{equation}
         where the symbols are denoted as, \newline
         \begin{tabular}{ l l } 
-            $n_u$           & Number of munipulated variables \\ 
-            $u_j( k+i | k)$ & Predicted value of $j$\textsuperscript{th} output variable at $i$\textsuperscript{th} prediction step, from time-step $k$ \\
-            $u_{j,sp}( k+i | k)$ & Reference or setpoint value of $j$\textsuperscript{th} output variable at $i$\textsuperscript{th} prediction step, from time-step $k$ \\
-            ${w^u}_{j}$   & Tuning weight for $j$\textsuperscript{th} output variable \\
+            ${w^u}_{j}$   & Tuning weight for movement in the $j$\textsuperscript{th} \gls{MV} \\
         \end{tabular}
 
         \paragraph
@@ -149,12 +158,23 @@
 
 % ?? convert acronyms to \gls{}
 
-    \FloatBarrier\section{Integral action}
+    \FloatBarrier\subsection{Integral action}
         
         \paragraph
         
 
-    \FloatBarrier\section{Tuning}
+    \FloatBarrier\subsection{Tuning}
+
+        \paragraph
+        In the controller tuning process, a large value of ${w^y}_{j}$ will correspond to more agrresive maneuvers of the $j$\textsuperscript{th} OV, because of the tracking error of that OV will be heavily penalised.
+        For the tuning process, small values of ${w^u}_{j}$, correspond to aggresive maneuvers, because the values of the \gls{MV}s are not heavily penalised in the objective function. 
+
+        \paragraph
+        The value of $N_p$ determines the number of decision values in $z_k$.
+        Therefore the computational complexity of the QP problem increases with larger values of $N_p$.
+        However, if the 
+        Hence, the value of $N_p$ needs
+        It is often state as a 
 
     MATLAB
     QP solver
