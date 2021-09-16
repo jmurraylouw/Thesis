@@ -12,26 +12,35 @@
     % ?? Lit study: include different types of \gls{MPC}, e.g. DMC, MAC
     % ?? different types of models \cite{}, 
 
-    \FloatBarrier\subsection{Model}
+    \FloatBarrier\subsection{Model} \label{sec:mpc_model}
 
         \paragraph
         In the proposed control architecture for a multirotor with an unknown suspended payload,
         the \gls{MPC} is used with a estimated model from the data-driven techniques discussed in Chapter~\ref{chap:system_id}.
         DMDc and HAVOKc produce discrete, linear state-space models of the system dynamics.
-
+        % ?? See \cite{Garcia1989} for good example of different implementations with different models
         MIMO
         State space
         Discrete
 
         MV, MO, UO, UD,
         diagram of model
+        % ?? see https://www.mathworks.com/help/mpc/gs/mpc-modeling.html for diagram of MPC implementation
 
+        Explain how get rid of delays
+
+        % ?? State space model with $A_{mpc}$
+
+        \paragraph
+        Augmented with $\dot{\theta}$.
 
 
     \FloatBarrier\subsection{Receding horizon}
 
         \paragraph
         Diagram of prediction horizon and control horizon
+
+        % ?? See \cite{Mayne2000} for good intro to
 
         \paragraph
         controller desicion, ${z_k}^T = [ u( k | k )^T ~~ u( k+1 | k)^T ~~ ... ~~ u( k+p-1 | k )^T ] $
@@ -174,12 +183,12 @@
     \FloatBarrier\subsection{Integral action}
         
         \paragraph
-        A simple implementation of predictive control with multiple \gls{OV}s does not inherantly apply integral action or disturbance rejection.
+        A simple implementation of predictive control with multiple output variables does not inherantly apply integral action or disturbance rejection.
         For the multirotor and suspeneded payload use case,
         \gls{MPC} control without integral action results in a non-zero steady-state error of the mulrtirotor velocity, due to wind distrubance and inaccuracies in modelling the drag.
         % Due to modelling inaccuraciose or disturbances, 
         % the \gls{MPC} may continually determine and execute a control action that does not drive the the If the actual aerodynamics drag is more than the drag accounted for in the model.
-        % In this case, zero steady-state error tracking for every OV will not be achieved in the presence of any model inaccuracy or disturbance.
+        % In this case, zero steady-state error tracking for every output variable will not be achieved in the presence of any model inaccuracy or disturbance.
         
         % A example can be used to explain this with the multirotor system.
         % Consider the case when the multirotor is flying at steady-state velocity and the payload angle is at steady-state.
@@ -196,13 +205,60 @@
         This method is also discribed by \cite{Mayne2000}.
 
         \paragraph
-        Another commonly used strategy involves estimating a constant disturbance in the plant model which influences an \gls{OV} \cite{Ruscio2013}.
+        Another commonly used strategy involves estimating a input disturbance in the plant model which influences an output variable \cite{Ruscio2013}.
+        In this way, integral action is applied to the plant output.
+        This is the integral action strategy applied in this work.
+        Since integral action is required for $V_N$ in the North velocity controller,
+        a disturbance model that influences $V_N$ is augmentented to the input matrix.
+        
+        \paragraph
+        The resulting state-space matrix is,
+        \begin{equation} \label{eq:mpc_ud_state_space_model}
+            \bm{x}_{mpc} (k+1) = 
+                \bm{A}_{mpc} \bm{x}_{mpc} (k) 
+                + 
+                \begin{bmatrix}
+                    \bm{B}_{mpc} & \bm{B_{ud}}
+                \end{bmatrix}
+                \begin{bmatrix}
+                    \bm{u}_{mpc} (k) \\ \hat{u}_{ud}(k)
+                \end{bmatrix} ,
+        \end{equation}
+        where
+        $\bm{B_{ud}}$ is the input disturbance model and 
+        $\hat{u}_{ud}$ is the estimated input disturbance value.
+        The input disturbance model is designed as,
+        \begin{equation}
+            \bm{B_{ud}} = 
+                \begin{bmatrix}
+                    1 & 0 & 0 & \bm{0}
+                \end{bmatrix}^T ,
+        \end{equation}
+        such that it only influences $V_N$ in the state vector,
+        \begin{equation}
+            {\bm{x}_{mpc}}^T = 
+                \begin{bmatrix}
+                    V_N & \theta & \dot{\theta} & \bm{d}
+                \end{bmatrix} , \phantom{~~~}
+        \end{equation}
+        where $d$ is the delay state vector defined in Equation~\ref{eq:delay_vector}.
 
+        \paragraph
+        The value of $\hat{u}_{ud}(k)$ is estimated by the default Kalman filter estimator implemented by the Model Predictive Control Toolbox\texttrademark~ 
+        using the state-space model from Equation~\ref{eq:mpc_ud_state_space_model}.
+        The value of $\hat{u}_{ud}(k)$ is then used in the \gls{QP} solver to determine the optimal control action of the \gls{MPC}.
+        The control performance was tested with the default Kalman filter gain with different payload parameters and disturbances.
+        It was determined that the MPC with the default input disturbance estimator provides acceptable controller performance without aditional tuning. 
+        Hence, the default Kalman filter is used in the final control implementation.
+        Zero steady-state error for velocity tracking was achieved for different paylaods and different input disturbacnes, showing that integral action is achieved.
+        The simulation results showing the \gls{MPC} integral action will be shown and discussed in Section~\ref{sec:control_implementation}.
+
+        % ?? plot showing difference between with integral action and without
 
     \FloatBarrier\subsection{Tuning}
 
         \paragraph
-        In the controller tuning process, a large value of ${w^y}_{j}$ will correspond to more agrresive maneuvers of the $j$\textsuperscript{th} \gls{OV}, because of the tracking error of that \gls{OV} will be heavily penalised.
+        In the controller tuning process, a large value of ${w^y}_{j}$ will correspond to more agrresive maneuvers of the $j$\textsuperscript{th} output variable, because of the tracking error of that variable will be heavily penalised.
         For the tuning process, small values of ${w^u}_{j}$, correspond to aggresive maneuvers, because the values of the \gls{MV}s are not heavily penalised in the objective function. 
 
         \paragraph
