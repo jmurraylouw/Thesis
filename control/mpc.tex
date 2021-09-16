@@ -1,21 +1,22 @@
 \FloatBarrier\section{MPC} \label{sec:mpc}
 
     \paragraph
-    \gls{MPC} refers to a family of controllers which apply control actions based on predictions with a separately identifiable model \cite{Garcia1989}.
+    \gls{MPC} refers to a control approach where the control action at each time-step 
+    is determined by solving an open-loop optimal control problem over a finite prediction horizon \cite{Mayne2000}.
     \gls{MPC} does not refer to a specific algorithm implementation, but rather to the general control approach.
     A specific \gls{MPC} implementation is dependant on the plant model representation \cite{Garcia1989}.
-    In this section, an overview will be given of the specific MPC implementation used in this work.
-    The MPC algorithm will be explained and the design process to tune this implementation will be discussed.
-    Finally, the control response of the tuned MPC will be shown and discussed for a simulated system.
+    In this section, an overview will be given of the specific \gls{MPC} implementation used in this work.
+    The \gls{MPC} algorithm will be explained and the design process to tune this implementation will be discussed.
+    Finally, the control response of the tuned \gls{MPC} will be shown and discussed for a simulated system.
     
-    % ?? Lit study: include different types of MPC, e.g. DMC, MAC
+    % ?? Lit study: include different types of \gls{MPC}, e.g. DMC, MAC
     % ?? different types of models \cite{}, 
 
     \FloatBarrier\subsection{Model}
 
         \paragraph
         In the proposed control architecture for a multirotor with an unknown suspended payload,
-        the MPC is used with a estimated model from the data-driven techniques discussed in Chapter~\ref{chap:system_id}.
+        the \gls{MPC} is used with a estimated model from the data-driven techniques discussed in Chapter~\ref{chap:system_id}.
         DMDc and HAVOKc produce discrete, linear state-space models of the system dynamics.
 
         MIMO
@@ -40,8 +41,9 @@
         \paragraph
         Different implementations. e.g. list
         Based on model
-        Other MPC optimiser options.
+        Other \gls{MPC} optimiser options.
         MATLAB chosen. Why MATLAB?
+        C++ generation
         
         \paragraph
         The \gls{MPC} implementation from the Model Predictive Control Toolbox\texttrademark ~solves the control optimisattion problem as a \gls{QP} at each time interval \cite{MPCtoolbox2019}.
@@ -89,12 +91,12 @@
         \end{equation}
         where the symbols are denoted as, \newline
         \begin{tabular}{ l l } 
-            $k$             & Current control interval time-step \\
-            $n_y$           & Number of output variables \\ 
-            $N_p$           & Prediction horizon \\ 
-            $y_j( k+i | k)$ & Predicted value of $j$\textsuperscript{th} output variable at $i$\textsuperscript{th} time-step from $k$ \\
-            $r_j( k+i | k)$ & Reference value of $j$\textsuperscript{th} output variable at $i$\textsuperscript{th} time-step from $k$ \\
-            ${w^y}_{j}$     & Tuning weight for $j$\textsuperscript{th} output variable \\
+            $k$             & Current control interval time-step. \\
+            $n_y$           & Number of output variables. \\ 
+            $N_p$           & Prediction horizon. \\ 
+            $y_j( k+i | k)$ & Predicted value of $j$\textsuperscript{th} output variable at $i$\textsuperscript{th} time-step from $k$. \\
+            $r_j( k+i | k)$ & Reference value of $j$\textsuperscript{th} output variable at $i$\textsuperscript{th} time-step from $k$. \\
+            ${w^y}_{j}$     & Tuning weight for $j$\textsuperscript{th} output variable. \\
         \end{tabular}
 
         \paragraph
@@ -120,10 +122,10 @@
         \end{equation}
         where the symbols are denoted as, \newline
         \begin{tabular}{ l l } 
-            $n_u$           & Number of manipulated variables \\ 
-            $u_j( k+i | k)$ & Control decision of $j$\textsuperscript{th} \gls{MV} at $i$\textsuperscript{th} time-step from $k$ \\
-            $u_{j,target}( k+i | k)$ & Target value of $j$\textsuperscript{th} \gls{MV} at $i$\textsuperscript{th} time-step from $k$ \\
-            ${w^u}_{j}$   & Tuning weight for $j$\textsuperscript{th} \gls{MV} \\
+            $n_u$           & Number of manipulated variables. \\ 
+            $u_j( k+i | k)$ & Control decision of $j$\textsuperscript{th} \gls{MV} at $i$\textsuperscript{th} time-step from $k$. \\
+            $u_{j,target}( k+i | k)$ & Target value of $j$\textsuperscript{th} \gls{MV} at $i$\textsuperscript{th} time-step from $k$. \\
+            ${w^u}_{j}$   & Tuning weight for $j$\textsuperscript{th} \gls{MV}. \\
         \end{tabular}
 
         \paragraph
@@ -137,7 +139,8 @@
         Large increments or moves in the \gls{MV} values is often undesirable for good control performance.
         In the multirotor use case, large increments of the acceleration \gls{MV}s result in large jerks which may cause the system to go beyond the accurate vector subspace of the plant model.
         High frequency moves in the acceleration \gls{MV}s may also cause jittery flight dynamics because acceleration setpoint changes correspond to attidue changes.
-        The performance measure of \gls{MV} tracking is calulated as,
+        The performance measure of \gls{MV} tracking is used to penalise increments in the \gls{MV}s.
+        This is calulated as,
         \begin{equation}
             J_\Delta u (z_k) = \sum_{j = 1}^{n_u} ~ \sum_{i = 0}^{N_p - 1} 
                 \left\{ 
@@ -149,24 +152,57 @@
         \end{equation}
         where the symbols are denoted as, \newline
         \begin{tabular}{ l l } 
-            ${w^u}_{j}$   & Tuning weight for movement in the $j$\textsuperscript{th} \gls{MV} \\
+            ${w^u}_{j}$   & Tuning weight for movement in the $j$\textsuperscript{th} \gls{MV}. \\
         \end{tabular}
 
         \paragraph
-        Explain
+        The values of ${w^{\Delta u}}_{j}$ are constant and are determined as a design choise.
 
+        \paragraph
+        The similarities and differences between the \gls{LQR} and \gls{MPC} objective functions should be noted.
+        The \gls{LQR} implementation described in Section~\ref{sec:lqr}, did not included penalisation for MV increments.
+        However, if $J_\Delta u (z_k)$ is removed from the objective function, the \gls{MPC} and \gls{LQR} controllers optimise the same variables.
+        In both implementations weights are designed for these variables in the objective function.
+
+        \paragraph
+        The \gls{LQR} optimisation corresponds to solving the unconstrained \gls{MPC} optimisation problem for $N_p = \infty$.
+        However, the \gls{LQR} optimisation is run only once to determine the \gls{LQR} gain, whereas the \gls{MPC} optimisation is re-run at every time-step.
+        Also note that the \gls{LQR} uses a continuous-time model, but the \gls{MPC} considered in this work uses a discrete-time model.
 
 % ?? convert acronyms to \gls{}
 
     \FloatBarrier\subsection{Integral action}
         
         \paragraph
+        A simple implementation of predictive control with multiple \gls{OV}s does not inherantly apply integral action or disturbance rejection.
+        For the multirotor and suspeneded payload use case,
+        \gls{MPC} control without integral action results in a non-zero steady-state error of the mulrtirotor velocity, due to wind distrubance and inaccuracies in modelling the drag.
+        % Due to modelling inaccuraciose or disturbances, 
+        % the \gls{MPC} may continually determine and execute a control action that does not drive the the If the actual aerodynamics drag is more than the drag accounted for in the model.
+        % In this case, zero steady-state error tracking for every OV will not be achieved in the presence of any model inaccuracy or disturbance.
         
+        % A example can be used to explain this with the multirotor system.
+        % Consider the case when the multirotor is flying at steady-state velocity and the payload angle is at steady-state.
+        % The \gls{MPC} controls both the multirotor velocity and the payload angle.
+        % A new velocity setpoint is given that is slightly large than the current velocity.
+        % The \gls{MPC} optimiser will genertae a solution, $z_k$, to accelerate slowly to the new velocity setpoint without disturbing the paylaod angle too much. 
+        
+        \paragraph
+        Different methods have been proposed to apply integral action with an \gls{MPC}.
+        A commonly used method involves applying an integrator to the control action determined by the \gls{MPC} \cite{Ruscio2013}.
+        In this implementation, the \gls{MPC} detemines the optimal control action increment, ${\Delta u_k}^*$,
+        and the control action, $u_k = u_{k-1} + {\Delta u_k}^*$ is applied.
+        Hence, ingtegral action is applied to the plant input.
+        This method is also discribed by \cite{Mayne2000}.
+
+        \paragraph
+        Another commonly used strategy involves estimating a constant disturbance in the plant model which influences an \gls{OV} \cite{Ruscio2013}.
+
 
     \FloatBarrier\subsection{Tuning}
 
         \paragraph
-        In the controller tuning process, a large value of ${w^y}_{j}$ will correspond to more agrresive maneuvers of the $j$\textsuperscript{th} OV, because of the tracking error of that OV will be heavily penalised.
+        In the controller tuning process, a large value of ${w^y}_{j}$ will correspond to more agrresive maneuvers of the $j$\textsuperscript{th} \gls{OV}, because of the tracking error of that \gls{OV} will be heavily penalised.
         For the tuning process, small values of ${w^u}_{j}$, correspond to aggresive maneuvers, because the values of the \gls{MV}s are not heavily penalised in the objective function. 
 
         \paragraph
@@ -175,9 +211,5 @@
         However, if the 
         Hence, the value of $N_p$ needs
         It is often state as a 
-
-    MATLAB
-    QP solver
-    C++ generation
 
     \input{control/plots/mpc_tuning_plot.tex}

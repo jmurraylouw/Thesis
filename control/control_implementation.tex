@@ -30,7 +30,7 @@
 
         \paragraph
         From simulation results, it appears that both the \gls{MPC} and \gls{LQR} effectively damp the payload oscillations while controlling the velocity of the multirotor.
-        Figure~\ref{fig:compare_control_vel} shows the velocity step responces of the MPC, \gls{LQR} and \gls{PID} controllers for a multirotor with a suspended payload.
+        Figure~\ref{fig:compare_control_vel} shows the velocity step responces of the \gls{MPC}, \gls{LQR} and \gls{PID} controllers for a multirotor with a suspended payload.
         From Figure~\ref{fig:compare_control_vel} it is clear that both the \gls{LQR} and \gls{MPC} controllers actively damp the velocity oscillation caused by the swinging payload.
         The \gls{PID} controller does not consider the payload angle, hence the oscillations are not damped as strongly.
 
@@ -208,7 +208,7 @@
         However, the \gls{MPC} does not provide a smooth velocity or payload angle response.
         Even though the \gls{MPC} generates a smooth optimised trajectory with the plant model, the actual response of the simulated system differs from this prediction.
         Figure~\ref{fig:mpc_vel_prediction_vs_actual} shows the predicted velocity of the \gls{MPC} optimiser, given the velocity setpoint and initial condition at Time~=~\SI{1.1}{\second}.
-        The actual simulated response, resulting from replanning at every time-step with the MPC, is also shown in Figure~\ref{fig:mpc_vel_prediction_vs_actual}.
+        The actual simulated response, resulting from replanning at every time-step with the \gls{MPC}, is also shown in Figure~\ref{fig:mpc_vel_prediction_vs_actual}.
         For the first part of the velocity response, the the actual response matches the optimised trajectory well.
         However, after Time~=~\SI{3.2}{\second}, the predicted dynamics is noticeably different from the actual response to the optimised input sequence.
 
@@ -223,13 +223,13 @@
         \paragraph
         The estimated model provides accurate predictions in the subspace of state and input vectors considered in the training data.
         However, the \gls{MPC} generates trajectories that are beyond this subspace and the model needs to extrapolate outside of the training subspace.
-        The multirotor with a simple suspended payload represents a mildly non-linear system, hence the linear approximation was effective for control with an MPC.
+        The multirotor with a simple suspended payload represents a mildly non-linear system, hence the linear approximation was effective for control with an \gls{MPC}.
         However, a double pendulum system reveals highly non-linear dynamics with multiple fixed points.
         This system also includes an unmeasured state variable which adds complexity to dynamics.
         
         \paragraph
         From the results in Figure~\ref{fig:mpc_vel_prediction_vs_actual} and Figure~\ref{fig:mpc_theta_prediction_vs_actual}
-        it appears that the data-driven linear model results in acceptable control with an MPC.
+        it appears that the data-driven linear model results in acceptable control with an \gls{MPC}.
         However, the actual dynamics do not follow the optimised trajectory of the \gls{MPC} and the \gls{MPC} does not outperform the \gls{LQR} implementation.
 
         % ?? Add discussion of how it could be improved:
@@ -274,7 +274,7 @@
     is required for improved \gls{MPC} control of such a dynamic payload.
 
     \paragraph
-    The advantage of the \gls{LQR} architecture is that it is computationally simple in comparison to an MPC.
+    The advantage of the \gls{LQR} architecture is that it is computationally simple in comparison to an \gls{MPC}.
     However, the \gls{LQR} architecture is designed for a specific system configuration and only accounts for chnages in specific system parameters. 
     In contrast, the \gls{MPC} architecture provides a good general solution for different system configurations without considering individual parameters and without a priori modelling.
 
