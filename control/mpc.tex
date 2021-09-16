@@ -1,7 +1,44 @@
 \FloatBarrier\section{MPC} \label{sec:mpc}
 
-        MATLAB
-        QP solver
-        C++ generation
+    \paragraph
+    \gls{MPC} refers to a family of controllers which apply control actions based on predictions with a separately identifiable model \cite{Garcia1989}.
+    \gls{MPC} does not refer to a specific algorithm implementation, but rather to the general control approach.
+    A specific \gls{MPC} implementation is dependant on the plant model representation \cite{Garcia1989}.
+    In this section, an overview will be given of the specific MPC implementation used in this work.
+    The MPC algorithm will be explained and the design process to tune this implementation will be discussed.
+    Finally, the control response of the tuned MPC will be shown and discussed for a simulated system.
+    
+    % ?? Lit study: include different types of MPC, e.g. DMC, MAC
+    % ?? different types of models \cite{}, 
 
-        \input{control/plots/mpc_tuning_plot.tex}
+    \FloatBarrier\section{Model}
+
+        \paragraph
+        In the proposed control architecture for a multirotor with an unknown suspended payload,
+        the MPC is used with a estimated model from the data-driven techniques discussed in Chapter~\ref{chap:system_id}.
+        DMDc and HAVOKc produce discrete, linear state-space models of the system dynamics.
+
+        MIMO
+        State space
+        Discrete
+
+    \FloatBarrier\section{Algoriithm}
+
+        \paragraph
+        Different implementations. e.g. list
+        Based on model
+        Other MPC optimiser options.
+        MATLAB chosen.
+        Why MATLAB?
+        QP
+        Cost function
+
+
+    \FloatBarrier\section{}
+    \FloatBarrier\section{Tuning}
+
+    MATLAB
+    QP solver
+    C++ generation
+
+    \input{control/plots/mpc_tuning_plot.tex}
