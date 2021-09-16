@@ -22,19 +22,138 @@
         State space
         Discrete
 
+        MV, MO, UO, UD,
+        diagram of model
+
+
+
+    \FloatBarrier\section{Receding horizon}
+
+        \paragraph
+        Diagram of prediction horizon and control horizon
+
+        \paragraph
+        controller desicion, ${z_k}^T = [ u( k | k )^T ~~ u( k+1 | k)^T ~~ ... ~~ u( k+p-1 | k )^T ] $
+
     \FloatBarrier\section{Algoriithm}
 
         \paragraph
         Different implementations. e.g. list
         Based on model
         Other MPC optimiser options.
-        MATLAB chosen.
-        Why MATLAB?
-        QP
-        Cost function
+        MATLAB chosen. Why MATLAB?
+        
+        \paragraph
+        The \gls{MPC} implementation from the Model Predictive Control Toolbox\texttrademark ~solves the control optimisattion problem as a \gls{QP} at each time interval \cite{MPCtoolbox2019}.
+        This QP usually consists of three features, namely,
+        \begin{itemize}
+            \item the objective function,
+            \item the constraints, and
+            \item the controller desion
+        \end{itemize}
+        The objective function provides a scalar value that quatifies the controller performance.
+        The controller desicion is the \gls{MV} adjustments determined by the QP solver that minimise the objective function.
+        The constraints are conditions that the controller desicion need to satisfy, such as bounds on the MV and MO values.
+
+        \paragraph
+        Constraints cause non-linear ..., 
+        not applied
+
+        \paragraph
+        The objective function implemented by the Model Predictive Control Toolbox\texttrademark is documented well by the user manual \cite{MPCtoolbox2019}.
+        An overview of this implementation, which is used in this work, will be given here. 
+        The objective function consists of the sum of three terms that each quantify a specific aspect of the control performance,
+        and is calculated as,
+        \begin{equation}
+            J(z_k) = J_y(z_k) + J_u(z_k) + J_{\Delta u}(z_k),
+        \end{equation}
+        where $z_k$ is the controller decison at time-step $k$.
+        The three scalar performance measures are denoted as
+        $J_y(z_k)$ for output setpoint tracking,
+        $J_u(z_k)$ for \gls{MV} tracking, and
+        $J_{\delta u}(z_k)$ for MV move suppression
+        Each performance measure include weigths that balanse the competing objectives of the different terms.
+        These weights need to be manually tuned for a desired controller performance.
+
+        \paragraph
+        \textbf{Output setpoint tracking}  \newline
+        The performance measure of the output setpoint tracking is calulated as,
+        \begin{equation}
+            J_y(z_k) = \sum_{j = 1}^{n_y} ~ \sum_{i = 1}^{N_p} 
+                \left\{ 
+                    {w^y}_{j} 
+                        \left[ 
+                            r_j( k+i | k) - y_j( k+i | k)
+                        \right]
+                \right\}^2 ,
+        \end{equation}
+        where the symbols are denoted as, \newline
+        \begin{tabular}{ l l } 
+            $k$             & Current control interval time-step \\
+            $n_y$           & Number of output variables \\ 
+            $N_p$           & Prediction horizon \\ 
+            $y_j( k+i | k)$ & Predicted value of $j$\textsuperscript{th} output variable at $i$\textsuperscript{th} time-step from $k$ \\
+            $r_j( k+i | k)$ & Reference value of $j$\textsuperscript{th} output variable at $i$\textsuperscript{th} time-step from $k$ \\
+            ${w^y}_{j}$     & Tuning weight for $j$\textsuperscript{th} output variable \\
+        \end{tabular}
+
+        \paragraph
+        Explain
+
+        \paragraph
+        \textbf{Manipulated variable tracking}  \newline
+        The performance measure of the manipulated variable tracking is calulated as,
+        \begin{equation}
+            J_u(z_k) = \sum_{j = 1}^{n_u} ~ \sum_{i = 0}^{N_p - 1} 
+                \left\{ 
+                    {w^u}_{j} 
+                        \left[ 
+                            u_j( k+i | k) - u_{j,sp}( k+i | k)
+                        \right]
+                \right\}^2 ,
+        \end{equation}
+        where the symbols are denoted as, \newline
+        \begin{tabular}{ l l } 
+            $n_u$           & Number of munipulated variables \\ 
+            $u_j( k+i | k)$ & Predicted value of $j$\textsuperscript{th} output variable at $i$\textsuperscript{th} prediction step, from time-step $k$ \\
+            $u_{j,sp}( k+i | k)$ & Reference or setpoint value of $j$\textsuperscript{th} output variable at $i$\textsuperscript{th} prediction step, from time-step $k$ \\
+            ${w^u}_{j}$   & Tuning weight for $j$\textsuperscript{th} output variable \\
+        \end{tabular}
+
+        \paragraph
+        Explain
+
+        \paragraph
+        \textbf{Manipulated variable move suppression}  \newline
+        The performance measure of the manipulated variable tracking is calulated as,
+        \begin{equation}
+            J_u(z_k) = \sum_{j = 1}^{n_u} ~ \sum_{i = 0}^{N_p - 1} 
+                \left\{ 
+                    {w^u}_{j} 
+                        \left[ 
+                            u_j( k+i | k) - u_{j,sp}( k+i | k)
+                        \right]
+                \right\}^2 ,
+        \end{equation}
+        where the symbols are denoted as, \newline
+        \begin{tabular}{ l l } 
+            $n_u$           & Number of munipulated variables \\ 
+            $u_j( k+i | k)$ & Predicted value of $j$\textsuperscript{th} output variable at $i$\textsuperscript{th} prediction step, from time-step $k$ \\
+            $u_{j,sp}( k+i | k)$ & Reference or setpoint value of $j$\textsuperscript{th} output variable at $i$\textsuperscript{th} prediction step, from time-step $k$ \\
+            ${w^u}_{j}$   & Tuning weight for $j$\textsuperscript{th} output variable \\
+        \end{tabular}
+
+        \paragraph
+        Explain
 
 
-    \FloatBarrier\section{}
+% ?? convert acronyms to \gls{}
+
+    \FloatBarrier\section{Integral action}
+        
+        \paragraph
+        
+
     \FloatBarrier\section{Tuning}
 
     MATLAB
