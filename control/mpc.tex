@@ -417,12 +417,33 @@
         The objective function weights were then tuned for a desired controller perfomracne.
         
         \paragraph
-        Hereafter, the value of $T_p = T_c$ was incrementally decreased untill a noticeable change in the controller performnace.
+        The objective function weights were iteratively tuned for a desired control performance in a similar way to the LQR.
+        All weigths corresponding to the dealy-coordinates are set to zero.
+        Due to the non-zero steady-state value of $\theta$, the corresponding weight is also set to zero.
+        Hereafter, the value of $T_p = T_c$ is incrementally decreased untill a noticeable change in the controller performnace.
         $T_p$ is fixed at the smallest value before this change occurs.
         $T_c$ is then further decreased until a noticeable change in performnace.
 
         \paragraph
-        
+        The final designed controller configuration parameters are shown in Table~\ref{tbl:mpc_params}.
+
+        \begin{table}[!h]
+            \renewcommand{\arraystretch}{1.1}
+            \centering
+            \caption{MPC configuration parameters.}
+            \begin{tabularx}{0.75\linewidth}{@{}cc@{}}
+                \toprule
+                \textbf{Parameter}   & \textbf{Value} \\
+                    $N_p$   &  \\
+                    $N_c$   &  \\ 
+                    $T_s$   &  \\
+                    ${w^y}_{j}$   &  \\
+                    ${w^u}_{j}$   &  \\ 
+                    ${w^{\Delta u}}_{j}$   &  \\
+                \bottomrule
+            \end{tabularx}
+            \label{tbl:mpc_params}
+        \end{table}
 
         \input{control/plots/mpc_tuning_plot.tex}
 
@@ -430,6 +451,6 @@
         Figure~\ref{fig:mpc_tuning_plot} shows a plot of the simulated \gls{MPC} velocity response with different payload parameters.
         It is clear that the controller damps the payload angles well and produces a smooth trajectory with different payloads.
         For each different payload a \gls{DMDc} model is first estimated.
-        Thereafter the \gls{MPC} is simulated with the same controller configuration defined in Table~ref{tbl:}.
+        Thereafter the \gls{MPC} is simulated with the same controller configuration defined in Table~\ref{tbl:mpc_params}.
         The controller performance, including disturbance rejection, will be further discussed in Section~\ref{sec:control_implementation}.
     
