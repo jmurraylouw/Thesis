@@ -31,8 +31,11 @@
     \FloatBarrier\subsection{Receding horizon}
 
         \paragraph
-        Diagram of prediction horizon and control horizon
-
+        As stated before, an MPC considers an open-loop optimal control problem over a finite prediction horizon \cite{Mayne2000}.
+        Using a plant model for predictions,
+        an optimiser determines the optimal control sequence that will minimise an objective function over the prediction horizon.
+        MPC is also refered to as Receding Horizon Control, because the control sequence is determined for the next prediction horizon period at every time-step.
+        
         \begin{figure}[ht]
             \centering
             \includegraphics[width=0.818\linewidth]{control/fig/receding_horizon}
@@ -42,7 +45,22 @@
         % ?? See \cite{Mayne2000} for good intro to
 
         \paragraph
-        controller desicion, ${\bm{z}_k}^T = [ \bm{u}( k | k )^T ~~ \bm{u}( k+1 | k)^T ~~ ... ~~ \bm{u}( k+p-1 | k )^T ] $
+        Figure~\ref{fig:receding_horizon} illustrates the receding horizon concept for a \gls{SISO} system.
+        One of the main objectives of the optimiser is to minimise the error between the predicted trajectory and the target trajectory.
+        % Therefore the MPC determines a control sequence that would produce the optimsed trajectory of the output variable.
+        Starting at time-step $k$, a prediction horizon of $N_p$ time-steps is considered, and the optimiser suggests a controller decision of $N_c$ unique control values.
+        $N_c$ is referred to as the control horizon and is subject to the condition, $N_c \leq N_p$.
+        The control sequence, or controller decision, at time-step $k$ is denoted by,
+        \begin{equation}
+            {\bm{z}_k}^T = [ \bm{u}( k | k )^T ~~ \bm{u}( k+1 | k)^T ~~ ... ~~ \bm{u}( k+p-1 | k )^T ] 
+        \end{equation}
+        which minimizes a specific objective function over the control horizon.
+        The controller decision produces the predicted trajectory when applied to the plant model.
+        Note that only the control action, $\bm{u}( k | k )$, will be executed and a new controller decsion will be determined at time-step $k+1$.
+        Also note that if $N_c < N_p$, the remaining control actions are set to,
+        \begin{equation}
+            \bm{u}( i | k ) = \bm{u}( N_c | k ), ~~ i > N_c .
+        \end{equation}
 
     \FloatBarrier\subsection{Plant model} \label{sec:mpc_model}
 
@@ -159,13 +177,13 @@
         The objective function consists of the sum of three terms that each quantify a specific aspect of the control performance,
         and is calculated as,
         \begin{equation}
-            J(z_k) = J_y(z_k) + J_u(z_k) + J_{\Delta u}(z_k),
+            J(\bm{z}_k) = J_y(\bm{z}_k) + J_u(\bm{z}_k) + J_{\Delta u}(\bm{z}_k),
         \end{equation}
-        where $z_k$ is the controller decison at time-step $k$.
+        where $\bm{z}_k$ is the controller decison at time-step $k$.
         The three scalar performance measures are denoted as
-        $J_y(z_k)$ for output setpoint tracking,
-        $J_u(z_k)$ for \gls{MV} tracking, and
-        $J_{\delta u}(z_k)$ for \gls{MV} move suppression
+        $J_y(\bm{z}_k)$ for output setpoint tracking,
+        $J_u(\bm{z}_k)$ for \gls{MV} tracking, and
+        $J_{\delta u}(\bm{z}_k)$ for \gls{MV} move suppression
         Each performance measure includes weigths that balanse the competing objectives of the different terms.
         These weights need to be manually tuned for a desired controller performance.
 
@@ -173,7 +191,7 @@
         \textbf{Output setpoint tracking}  \newline
         The performance measure of the output setpoint tracking is calulated as,
         \begin{equation}
-            J_y(z_k) = \sum_{j = 1}^{n_y} ~ \sum_{i = 1}^{N_p} 
+            J_y(\bm{z}_k) = \sum_{j = 1}^{n_y} ~ \sum_{i = 1}^{N_p} 
                 \left\{ 
                     {w^y}_{j} 
                         \left[ 
@@ -193,7 +211,7 @@
 
         \paragraph
         The controller receives the reference values, $r_j( k+i | k)$, for the prediction horizon starting at time-step $k$.
-        Using the inernal plant model, the predicted output values, $y_j( k+i | k)$, is determined based on the controller decision, $z_k$.
+        Using the inernal plant model, the predicted output values, $y_j( k+i | k)$, is determined based on the controller decision, $\bm{z}_k$.
         The values of $N_p$ and ${w^y}_{j}$ are design choises and are constant controller specifications.
         The value of $n_y$ is also constant and is determined from the plant model.
 
@@ -204,7 +222,7 @@
         The \gls{MV} target values are therefore set to zero for our use case. 
         The performance measure of the manipulated variable tracking is calculated as,
         \begin{equation}
-            J_u(z_k) = \sum_{j = 1}^{n_u} ~ \sum_{i = 0}^{N_p - 1} 
+            J_u(\bm{z}_k) = \sum_{j = 1}^{n_u} ~ \sum_{i = 0}^{N_p - 1} 
                 \left\{ 
                     {w^u}_{j} 
                         \left[ 
@@ -234,7 +252,7 @@
         The performance measure of \gls{MV} tracking is used to penalise increments in the \gls{MV}s.
         This is calulated as,
         \begin{equation}
-            J_\Delta u (z_k) = \sum_{j = 1}^{n_u} ~ \sum_{i = 0}^{N_p - 1} 
+            J_\Delta u (\bm{z}_k) = \sum_{j = 1}^{n_u} ~ \sum_{i = 0}^{N_p - 1} 
                 \left\{ 
                     {w^{\Delta u}}_{j} 
                         \left[ 
@@ -253,7 +271,7 @@
         \paragraph
         The similarities and differences between the \gls{LQR} and \gls{MPC} objective functions should be noted.
         The \gls{LQR} implementation described in Section~\ref{sec:lqr}, did not included penalisation for MV increments.
-        However, if $J_\Delta u (z_k)$ is removed from the objective function, the \gls{MPC} and \gls{LQR} controllers optimise the same variables.
+        However, if $J_\Delta u (\bm{z}_k)$ is removed from the objective function, the \gls{MPC} and \gls{LQR} controllers optimise the same variables.
         In both implementations weights are designed for these variables in the objective function.
 
         \paragraph
@@ -277,7 +295,7 @@
         % Consider the case when the multirotor is flying at steady-state velocity and the payload angle is at steady-state.
         % The \gls{MPC} controls both the multirotor velocity and the payload angle.
         % A new velocity setpoint is given that is slightly large than the current velocity.
-        % The \gls{MPC} optimiser will genertae a solution, $z_k$, to accelerate slowly to the new velocity setpoint without disturbing the paylaod angle too much. 
+        % The \gls{MPC} optimiser will genertae a solution, $\bm{z}_k$, to accelerate slowly to the new velocity setpoint without disturbing the paylaod angle too much. 
         
         \paragraph
         Different methods have been proposed to apply integral action with an \gls{MPC}.
@@ -343,11 +361,15 @@
     \FloatBarrier\subsection{Tuning}
 
         \paragraph
+        List values that need to be tuned.
+        $N_p, N_c, T_s$
+
+        \paragraph
         In the controller tuning process, a large value of ${w^y}_{j}$ will correspond to more agrresive maneuvers of the $j$\textsuperscript{th} output variable, because of the tracking error of that variable will be heavily penalised.
         For the tuning process, small values of ${w^u}_{j}$, correspond to aggresive maneuvers, because the values of the \gls{MV}s are not heavily penalised in the objective function. 
 
         \paragraph
-        The value of $N_p$ determines the number of decision values in $z_k$.
+        The value of $N_p$ determines the number of decision values in $\bm{z}_k$.
         Therefore the computational complexity of the QP problem increases with larger values of $N_p$.
         However, if the 
         Hence, the value of $N_p$ needs
