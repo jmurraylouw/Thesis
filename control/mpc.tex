@@ -1,12 +1,14 @@
 \FloatBarrier\section{MPC} \label{sec:mpc}
 
     \paragraph
-    \gls{MPC} refers to a control approach where the control action at each time-step 
-    is determined by solving an open-loop optimal control problem over a finite prediction horizon \cite{Mayne2000}.
+    \acrfull{MPC} refers to a control approach that determines the control action at each time-step 
+    by solving an open-loop optimal control problem over a finite prediction horizon \cite{Mayne2000}.
     \gls{MPC} does not refer to a specific algorithm implementation, but rather to the general control approach.
-    A specific \gls{MPC} implementation is dependant on the plant model representation \cite{Garcia1989}.
+    Each specific \gls{MPC} implementation is dependant on the plant model representation \cite{Garcia1989}.
     In this section, an overview will be given of the specific \gls{MPC} implementation used in this work.
-    The \gls{MPC} algorithm will be explained and the design process to tune this implementation will be discussed.
+    Similarly to the presented PID and LQR controllers, the presented MPC 
+    The \gls{MPC} objective function will be explained and the design process to tune the controller will be discussed.
+    It will also be discussed how integral action is achieved with the \gls{MPC}.
     Finally, the control response of the tuned \gls{MPC} will be shown and discussed for a simulated system.
     
     % ?? Lit study: include different types of \gls{MPC}, e.g. DMC, MAC
@@ -14,26 +16,65 @@
 
     \FloatBarrier\subsection{Model} \label{sec:mpc_model}
 
-        \paragraph
-        In the proposed control architecture for a multirotor with an unknown suspended payload,
-        the \gls{MPC} is used with a estimated model from the data-driven techniques discussed in Chapter~\ref{chap:system_id}.
-        DMDc and HAVOKc produce discrete, linear state-space models of the system dynamics.
-        % ?? See \cite{Garcia1989} for good example of different implementations with different models
-        MIMO
-        State space
-        Discrete
+            % ?? See \cite{Garcia1989} for good example of different implementations with different models
+            MIMO
+            State space
+            Discrete
+    
+            MV, MO, UO, UD,
+            diagram of model
+            % ?? see https://www.mathworks.com/help/mpc/gs/mpc-modeling.html for diagram of MPC implementation   
 
-        MV, MO, UO, UD,
-        diagram of model
-        % ?? see https://www.mathworks.com/help/mpc/gs/mpc-modeling.html for diagram of MPC implementation
+        \paragraph
+        In the proposed \gls{MPC} architecture for a multirotor with an unknown suspended payload,
+        an estimated model from the data-driven techniques discussed in Chapter~\ref{chap:system_id} will be used as the plant model.
+        DMDc and HAVOKc produce discrete, linear state-space models of the system dynamics.
+        Hence, the \gls{MPC} implementation corresponding to such a model will be used.
+        The following state-space model representation will be used,
+        \begin{equation} \label{eq:mpc_state_space}
+            \bm{x}_{mpc} (k+1) = \bm{A}_{mpc} \bm{x}_{mpc} (k) + \bm{B}_{mpc} \bm{u}_{mpc} (k) ,
+        \end{equation}
+        where
+        $\bm{A}_{mpc}$ is the system matrix and
+        $\bm{B}_{mpc}$ is the input matrix
+        applied by the \gls{MPC}.
+        $\bm{x}_{mpc} (k)$ is the state vector and
+        $\bm{u}_{mpc} (k)$ is the input vector at time-step $k$
+        for this state space model.
+
+        \paragraph
+        \gls{DMDc} applied multiple delay-coordinates to account for input delay and state delay in the system.
+        In Section~\ref{sec:dmdc}, it was shown that the \gls{DMDc} implementation produces three matrices, 
+        $\bm{A}_{dmd}$, 
+        $\bm{A}_d$, and 
+        $\bm{B}_{dmd}$.
+    
+        This produces large state-space matrices with many output variables
+
 
         Explain how get rid of delays
 
         % ?? State space model with $A_{mpc}$
 
         \paragraph
-        Augmented with $\dot{\theta}$.
-
+        Recall from Section~\ref{sec:payload_state_variable} that $\dot{\theta}$ is not used in the estimated model.
+        However, as discussed in Section~\ref{sec:lqr}, it is better for a controller to minimise $\dot{\theta}$, 
+        rather than $\theta$, because $\theta$ has a non-zero steady-state value due to aerodynamic drag during a veloicty step response.
+        The state vector is therefore augmented with the $\dot{\theta}$ variable, such that,
+        \begin{equation}
+            {\bm{x}_{mpc}}^T = 
+                \begin{bmatrix}
+                    V_N & \theta & \dot{\theta} & \bm{d}
+                \end{bmatrix} , \phantom{~~~}
+        \end{equation}
+        where $\bm{d}$ is the delay state vector defined in Equation~\ref{eq:delay_vector}.
+        The $\bm{A}_{mpc}$ matrix is also augmented with the Backwards Euler numerical differentiation equation, such that,
+        \begin{equation}
+            \dot{\theta} (k) = \frac{1}{T_s} \theta(k) - \frac{1}{T_s} \theta(k-1) 
+        \end{equation}
+        $\bm{B}_{mpc}$ is also changed such that the matrix dimentions agree but $\bm{u}_{mpc} (k)$ does not directly influence $\dot{\theta} (k)$.
+        In this way, a weight can be applied to the $\dot{\theta}$ variable in the \gls{MPC} objective function to control this variable.
+        This will be discussed in the sections below.
 
     \FloatBarrier\subsection{Receding horizon}
 
@@ -231,7 +272,7 @@
         \begin{equation}
             \bm{B_{ud}} = 
                 \begin{bmatrix}
-                    1 & 0 & 0 & \bm{0}
+                    0.1 & 0 & 0 & \bm{0}
                 \end{bmatrix}^T ,
         \end{equation}
         such that it only influences $V_N$ in the state vector,
@@ -239,11 +280,13 @@
             {\bm{x}_{mpc}}^T = 
                 \begin{bmatrix}
                     V_N & \theta & \dot{\theta} & \bm{d}
-                \end{bmatrix} , \phantom{~~~}
+                \end{bmatrix} . \phantom{~~~}
         \end{equation}
-        where $d$ is the delay state vector defined in Equation~\ref{eq:delay_vector}.
+        
+% ?? Talk about design of value 0.1 in distrubance model
 
         \paragraph
+        The specific value of the non-zero matrix entry in $\bm{B_{ud}}$ has only a slight effect on the control performance, hence the interative tuning process for this value was simple.
         The value of $\hat{u}_{ud}(k)$ is estimated by the default Kalman filter estimator implemented by the Model Predictive Control Toolbox\texttrademark~ 
         using the state-space model from Equation~\ref{eq:mpc_ud_state_space_model}.
         The value of $\hat{u}_{ud}(k)$ is then used in the \gls{QP} solver to determine the optimal control action of the \gls{MPC}.
