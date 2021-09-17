@@ -28,6 +28,22 @@
     It will also be discussed how integral action is achieved with the \gls{MPC}.
     Finally, the control response of the tuned \gls{MPC} will be shown and discussed for a simulated system.
 
+    \FloatBarrier\subsection{Receding horizon}
+
+        \paragraph
+        Diagram of prediction horizon and control horizon
+
+        \begin{figure}[ht]
+            \centering
+            \includegraphics[width=0.818\linewidth]{control/fig/receding_horizon}
+            \caption{Illustration of the receding horizon of an MPC (adapted from \cite{horizon_diagram2021})}
+            \label{fig:receding_horizon}
+        \end{figure}
+        % ?? See \cite{Mayne2000} for good intro to
+
+        \paragraph
+        controller desicion, ${\bm{z}_k}^T = [ \bm{u}( k | k )^T ~~ \bm{u}( k+1 | k)^T ~~ ... ~~ \bm{u}( k+p-1 | k )^T ] $
+
     \FloatBarrier\subsection{Plant model} \label{sec:mpc_model}
 
         \paragraph
@@ -46,7 +62,7 @@
         $\bm{x}_{mpc} (k)$ is the state vector and
         $\bm{u}_{mpc} (k)$ is the input vector at time-step $k$
         for this state space model.
-        It is assumed that full-state feedback is available.
+        It is assumed that full-state feedback is available, therefore $y_{mpc} = x_{mpc}$.
 
         \paragraph
         \gls{DMDc} applies multiple delay-coordinates to account for input delay and state delay in the system.
@@ -111,16 +127,6 @@
         \end{equation}
         $\bm{B}_{mpc}$ is also changed such that the matrix dimentions agree but $\bm{u}_{mpc} (k)$ does not directly influence $\dot{\theta} (k)$.
         In this way, a weight can be applied to the $\dot{\theta}$ variable in the \gls{MPC} objective function to control this variable.
-
-    \FloatBarrier\subsection{Receding horizon}
-
-        \paragraph
-        Diagram of prediction horizon and control horizon
-
-        % ?? See \cite{Mayne2000} for good intro to
-
-        \paragraph
-        controller desicion, ${z_k}^T = [ u( k | k )^T ~~ u( k+1 | k)^T ~~ ... ~~ u( k+p-1 | k )^T ] $
 
     \FloatBarrier\subsection{Algoriithm}
 
