@@ -13,8 +13,8 @@
     \end{figure}
 % ?? remove all MV and MO
     \paragraph
-    Shows the structure of a typical MPC implemnetation.
-    As a high-level overview, the MPC receives the measured output vector, $\bm{y}$, 
+    Shows the structure of a typical \gls{MPC} implemnetation.
+    As a high-level overview, the \gls{MPC} receives the measured output vector, $\bm{y}$, 
     and the output setpoint $\bm{y}_{sp}$, and detemines the control action, $\bm{u}$, to drive the $\bm{y}$ values to $\bm{y}_{sp}$.
     An optimiser uses an internal plant model to determine an optimal control sequence over a prediction horizon \cite{Mayne2000}.
     Therefore $\bm{y}_{sp}$ may be replaced by a target trajectory for the prediction horizon. 
@@ -31,15 +31,15 @@
     \FloatBarrier\subsection{Receding horizon}
 
         \paragraph
-        As stated before, an MPC considers an open-loop optimal control problem over a finite prediction horizon \cite{Mayne2000}.
+        As stated before, an \gls{MPC} considers an open-loop optimal control problem over a finite prediction horizon \cite{Mayne2000}.
         Using a plant model for predictions,
         an optimiser determines the optimal control sequence that will minimise an objective function over the prediction horizon.
-        MPC is also refered to as Receding Horizon Control, because the control sequence is determined for the next prediction horizon period at every time-step.
+        \gls{MPC} is also refered to as Receding Horizon Control, because the control sequence is determined for the next prediction horizon period at every time-step.
         
         \begin{figure}[ht]
             \centering
             \includegraphics[width=0.818\linewidth]{control/fig/receding_horizon}
-            \caption{Illustration of the receding horizon of an MPC (adapted from \cite{horizon_diagram2021})}
+            \caption{Illustration of the receding horizon of an \gls{MPC} (adapted from \cite{horizon_diagram2021})}
             \label{fig:receding_horizon}
         \end{figure}
         % ?? See \cite{Mayne2000} for good intro to
@@ -47,7 +47,7 @@
         \paragraph
         Figure~\ref{fig:receding_horizon} illustrates the receding horizon concept for a \gls{SISO} system.
         One of the main objectives of the optimiser is to minimise the error between the predicted trajectory and the target trajectory.
-        % Therefore the MPC determines a control sequence that would produce the optimsed trajectory of the output variable.
+        % Therefore the \gls{MPC} determines a control sequence that would produce the optimsed trajectory of the output variable.
         Starting at time-step $k$, a prediction horizon of $N_p$ time-steps is considered, and the optimiser suggests a controller decision of $N_c$ unique control values.
         $N_c$ is referred to as the control horizon and is subject to the condition, $N_c \leq N_p$.
         The control sequence, or controller decision, at time-step $k$ is denoted by,
@@ -130,7 +130,8 @@
         \paragraph
         Recall from Section~\ref{sec:payload_state_variable} that $\dot{\theta}$ is not used in the estimated model.
         However, as discussed in Section~\ref{sec:lqr}, it is better for a controller to minimise $\dot{\theta}$, 
-        rather than $\theta$, because $\theta$ has a non-zero steady-state value due to aerodynamic drag during a veloicty step response.
+        rather than $\theta$.
+        This is because $\theta$ has a non-zero steady-state value due to aerodynamic drag during a velocity step response.
         The state vector is therefore augmented with the $\dot{\theta}$ variable, such that the state vector is rather given by,
         \begin{equation}
             {\bm{x}_{mpc}}^T = 
@@ -146,17 +147,32 @@
         $\bm{B}_{mpc}$ is also changed such that the matrix dimentions agree but $\bm{u}_{mpc} (k)$ does not directly influence $\dot{\theta} (k)$.
         In this way, a weight can be applied to the $\dot{\theta}$ variable in the \gls{MPC} objective function to control this variable.
 
-    \FloatBarrier\subsection{Algoriithm}
+    \FloatBarrier\subsection{Algorithm implementation}
 
         \paragraph
-        Different implementations. e.g. list
-        Based on model
-        Other \gls{MPC} optimiser options.
-        MATLAB chosen. Why MATLAB?
-        C++ generation
+        There are numerous methods available to implement an \gls{MPC} for the use case presented in this work.
+        An extensive list of these options is provided in the survey by \cite{Nguyen2020}.
+        A custom \gls{MPC} implementation can be developed in MATLAB or C\texttt{++} 
+        with the aid of software packages like 
+        CVXGEN \cite{Mattingley2012}, 
+        ACADO \cite{Houska2011},
+        YALMIP \cite{Lofberg2004},
+        Multi-Parametric Toolbox \cite{Herceg2013}, and
+        do-mpc \cite{Lucia2017}.
+        Other open-source \gls{MPC} implementations are also available as \gls{ROS} packages from work done by \cite{kamelmpc2016} or \cite{Falanga2018}.
         
         \paragraph
-        The \gls{MPC} implementation from the Model Predictive Control Toolbox\texttrademark ~solves the control optimisattion problem as a \gls{QP} at each time interval \cite{MPCtoolbox2019}.
+        The Simulink implementaion of an \gls{MPC} from the Model Predictive Control Toolbox\texttrademark \cite{MPCtoolbox2019} was selected for this work. 
+        This is because the implemenation can be applied with the structure of the data-driven state-space models,
+        and it integrates well with our simulation environment in Simulink.
+        The Model Predictive Control Toolbox\texttrademark also supports C++ code generation for stand-alone ROS nodes.
+        Therefore, it can integrate with the SITL implementation of PX4, and also be executed on a companion computer for a practical implementation.
+        Therefore the selected MPC implementation appears to be the 
+
+        % ?? Check all Simulink without TM
+        
+        \paragraph
+        The Model Predictive Control Toolbox\texttrademark ~solves the control optimisattion problem as a \gls{QP} at each time interval \cite{MPCtoolbox2019}.
         This QP usually consists of three features, namely,
         \begin{itemize}
             \item the objective function,
@@ -282,6 +298,8 @@
 % ?? convert acronyms to \gls{}
 
     \FloatBarrier\subsection{Integral action}
+
+    % For example of disturbacne observer \gls{MPC} with multirotor: https://arxiv.org/pdf/2011.11104.pdf
         
         \paragraph
         A simple implementation of predictive control with multiple output variables does not inherantly apply integral action or disturbance rejection.
