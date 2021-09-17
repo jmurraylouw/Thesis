@@ -383,7 +383,7 @@
             \paragraph
             Recall from Section~\ref{sec:dmdc} that \gls{DMDc} produces a discrete, state-space model in the form:
             \begin{equation}
-                \bm{x}_{k+1} = \bm{A} \bm{x}_k + \bm{A}_d \bm{d}_k + \bm{B} \bm{u}_k .
+                \bm{x}_{k+1} = \bm{A}_{dmd} \bm{x}_k + \bm{A}_d \bm{d}_k + \bm{B}_{dmd} \bm{u}_k .
             \end{equation}
             The state prediction starts at the initial condition, $\bm{x}_0$ and $\bm{d}_0$,
             and predicts the state vector for each succesive time-step, $\bm{x}_{k+1}$, 

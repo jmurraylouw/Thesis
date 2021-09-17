@@ -48,7 +48,7 @@
         $\bm{A}_{dmd}$, 
         $\bm{A}_d$, and 
         $\bm{B}_{dmd}$.
-    
+        This is converted
         This produces large state-space matrices with many output variables
 
 
@@ -60,7 +60,7 @@
         Recall from Section~\ref{sec:payload_state_variable} that $\dot{\theta}$ is not used in the estimated model.
         However, as discussed in Section~\ref{sec:lqr}, it is better for a controller to minimise $\dot{\theta}$, 
         rather than $\theta$, because $\theta$ has a non-zero steady-state value due to aerodynamic drag during a veloicty step response.
-        The state vector is therefore augmented with the $\dot{\theta}$ variable, such that,
+        The state vector is therefore augmented with the $\dot{\theta}$ variable, such that the state vector is rather given by,
         \begin{equation}
             {\bm{x}_{mpc}}^T = 
                 \begin{bmatrix}
