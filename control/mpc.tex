@@ -4,32 +4,37 @@
     \acrfull{MPC} refers to a control approach that determines the control action at each time-step 
     by solving an open-loop optimal control problem over a finite prediction horizon \cite{Mayne2000}.
     \gls{MPC} does not refer to a specific algorithm implementation, but rather to the general control approach.
+
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=0.818\linewidth]{control/fig/MPC_controller}
+        \caption{Diagram of the structure of a typical MPC}
+        \label{fig:mpc_controller}
+    \end{figure}
+% ?? remove all MV and MO
+    \paragraph
+    Shows the structure of a typical MPC implemnetation.
+    As a high-level overview, the MPC receives the measured output vector, $\bm{y}$, 
+    and the output setpoint $\bm{y}_{sp}$, and detemines the control action, $\bm{u}$, to drive the $\bm{y}$ values to $\bm{y}_{sp}$.
+    An optimiser uses an internal plant model to determine an optimal control sequence over a prediction horizon \cite{Mayne2000}.
+    Therefore $\bm{y}_{sp}$ may be replaced by a target trajectory for the prediction horizon. 
+    Only the first control action of the optimal sequence is expecuted and the optimisation is re-calculated at every time-step.
+
+    \paragraph
     Each specific \gls{MPC} implementation is dependant on the plant model representation \cite{Garcia1989}.
     In this section, an overview will be given of the specific \gls{MPC} implementation used in this work.
-    Similarly to the presented PID and LQR controllers, the presented \gls{MPC} 
+    Similarly to the presented \gls{PID} and \gls{LQR} controllers, the presented \gls{MPC} 
     The \gls{MPC} objective function will be explained and the design process to tune the controller will be discussed.
     It will also be discussed how integral action is achieved with the \gls{MPC}.
     Finally, the control response of the tuned \gls{MPC} will be shown and discussed for a simulated system.
-    
-    % ?? Lit study: include different types of \gls{MPC}, e.g. DMC, MAC
-    % ?? different types of models \cite{}, 
 
-    \FloatBarrier\subsection{Model} \label{sec:mpc_model}
-
-            % ?? See \cite{Garcia1989} for good example of different implementations with different models
-            MIMO
-            State space
-            Discrete
-    
-            MV, MO, UO, UD,
-            diagram of model
-            % ?? see https://www.mathworks.com/help/mpc/gs/mpc-modeling.html for diagram of \gls{MPC} implementation   
+    \FloatBarrier\subsection{Plant model} \label{sec:mpc_model}
 
         \paragraph
-        In the proposed \gls{MPC} architecture for a multirotor with an unknown suspended payload,
-        an estimated model from the data-driven techniques discussed in Chapter~\ref{chap:system_id} will be used as the plant model.
-        \gls{DMDc} and HAVOKc produce discrete, linear state-space models of the system dynamics.
-        Hence, the \gls{MPC} implementation corresponding to such a model will be used.
+        An estimated model from the data-driven techniques discussed in Chapter~\ref{chap:system_id} will be used as the plant model 
+        for the proposed \gls{MPC} architecture.
+        \gls{DMDc} produces a discrete, linear state-space model of the system dynamics.
+        Hence, an \gls{MPC} implementation that corresponds to such a model will be used.
         The following state-space model representation will be used,
         \begin{equation} \label{eq:mpc_state_space}
             \bm{x}_{mpc} (k+1) = \bm{A}_{mpc} \bm{x}_{mpc} (k) + \bm{B}_{mpc} \bm{u}_{mpc} (k) ,
@@ -41,9 +46,10 @@
         $\bm{x}_{mpc} (k)$ is the state vector and
         $\bm{u}_{mpc} (k)$ is the input vector at time-step $k$
         for this state space model.
+        It is assumed that full-state feedback is available.
 
         \paragraph
-        \gls{DMDc} applied multiple delay-coordinates to account for input delay and state delay in the system.
+        \gls{DMDc} applies multiple delay-coordinates to account for input delay and state delay in the system.
         In Section~\ref{sec:dmdc}, it was shown that the \gls{DMDc} implementation produces three matrices, 
         $\bm{A}_{dmd}$, 
         $\bm{A}_d$, and 
@@ -105,7 +111,6 @@
         \end{equation}
         $\bm{B}_{mpc}$ is also changed such that the matrix dimentions agree but $\bm{u}_{mpc} (k)$ does not directly influence $\dot{\theta} (k)$.
         In this way, a weight can be applied to the $\dot{\theta}$ variable in the \gls{MPC} objective function to control this variable.
-        This will be discussed in the sections below.
 
     \FloatBarrier\subsection{Receding horizon}
 
@@ -135,8 +140,8 @@
             \item the controller desion
         \end{itemize}
         The objective function provides a scalar value that quatifies the controller performance.
-        The controller desicion is the \gls{MV} adjustments determined by the QP solver that minimise the objective function.
-        The constraints are conditions that the controller decision need to satisfy, such as bounds on the MO, MV, and \gls{MV} increment values.
+        The controller desicion is the $\bm{u}_{mpc}$ adjustments determined by the QP solver that minimise the objective function.
+        The constraints are conditions that the controller decision need to satisfy, such as bounds on $\bm{x}_{mpc}$, $\bm{u}_{mpc}$, and $\Delta\bm{u}_{mpc}$ values.
 
         \paragraph
         Constraints cause non-linear ..., 
