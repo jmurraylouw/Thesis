@@ -79,7 +79,7 @@
 
         \paragraph
         The general design requirements of the \gls{LQR} are to 
-        produce a fast velocity response with zero-steady-state error while damping the payload oscillations quickly.
+        produce a fast velocity response with zero steady-state error while damping the payload oscillations quickly.
         The priority is to produce a smooth trajectory with minimal oscillation, however a reasonably fast response time is still required.
         An iterative tuning approach was used to determine the $\bm{Q}$ and $\bm{R}$ matrix entries that produce a good performance.
         The final \gls{LQR} veightings were selected as:
@@ -95,7 +95,6 @@
         \paragraph
         Figure~\ref{fig:lqr_tuning_plot} shows a plot of the simulated \gls{LQR} velocity response with different payload parameters.
         It is clear that the controller damps the payload angles well and produces a smooth trajectory with different payloads.
-        The same matrixes weighting are used 
         For each different payload, 
         the payload parameters are estimated, 
         the state-space model is populated, 

@@ -173,19 +173,22 @@
         
         \paragraph
         The Model Predictive Control Toolbox\texttrademark ~solves the control optimisattion problem as a \gls{QP} at each time interval \cite{MPCtoolbox2019}.
-        This QP usually consists of three features, namely,
+        It applies an active-set \gls{QP} solver using the KWIK algorithm from \cite{Schmid1994}.
+        This \gls{QP} usually consists of three features, namely,
         \begin{itemize}
             \item the objective function,
             \item the constraints, and
             \item the controller desion
         \end{itemize}
         The objective function provides a scalar value that quatifies the controller performance.
-        The controller desicion is the $\bm{u}_{mpc}$ adjustments determined by the QP solver that minimise the objective function.
+        The controller desicion is the $\bm{u}_{mpc}$ adjustments determined by the \gls{QP} solver that minimise the objective function.
         The constraints are conditions that the controller decision need to satisfy, such as bounds on $\bm{x}_{mpc}$, $\bm{u}_{mpc}$, and $\Delta\bm{u}_{mpc}$ values.
 
         \paragraph
-        Constraints cause non-linear ..., 
-        not applied
+        A powerful advantage of \gls{MPC} is that constraints are easily included into the optimal control law.
+        However, constraints are not neccesary in this work and will not be applied.
+        This is advantageous for practical implementations, 
+        because unconstrained \gls{MPC} is less computationally complex than constrained \gls{MPC}.
 
         \paragraph
         The objective function used by the Model Predictive Control Toolbox\texttrademark is documented well by the corresponding user manual \cite{MPCtoolbox2019}.
@@ -278,7 +281,7 @@
         \end{equation}
         where the symbols are denoted as, \newline
         \begin{tabular}{ l l } 
-            ${w^u}_{j}$   & Tuning weight for movement in the $j$\textsuperscript{th} \gls{MV}. \\
+            ${w^{\delta u}}_{j}$   & Tuning weight for movement in the $j$\textsuperscript{th} \gls{MV}. \\
         \end{tabular}
 
         \paragraph
@@ -379,18 +382,54 @@
     \FloatBarrier\subsection{Tuning}
 
         \paragraph
-        List values that need to be tuned.
-        $N_p, N_c, T_s$
+        An MPC can easily be tuned for a range of different design requirements.
+        The same general design requirements will be applied to the MPC as to the LQR in Section~\ref{sec:lqr}, namely,
+        to produce a fast velocity response with zero steady-state error while damping the payload oscillations quickly.
+        The MPC is firstly tuned to have a similar responce time to the LQR so that the controller performacnes can be roughly compared.
+        Thereafter, it is tuned to produce a trajectory as smooth as possible.
 
         \paragraph
-        In the controller tuning process, a large value of ${w^y}_{j}$ will correspond to more agrresive maneuvers of the $j$\textsuperscript{th} output variable, because of the tracking error of that variable will be heavily penalised.
-        For the tuning process, small values of ${w^u}_{j}$, correspond to aggresive maneuvers, because the values of the \gls{MV}s are not heavily penalised in the objective function. 
+        The MPC parameters that are determined in the controller design are,
+        $N_p$, 
+        $N_c$, 
+        ${w^y}_{j}$,
+        ${w^u}_{j}$, and 
+        ${w^{\Delta u}}_{j}$.
+        $T_s$ is fixed by the system identification phase, since the sample time of the discrete model and the controller should match.
 
         \paragraph
-        The value of $N_p$ determines the number of decision values in $\bm{z}_k$.
-        Therefore the computational complexity of the QP problem increases with larger values of $N_p$.
-        However, if the 
-        Hence, the value of $N_p$ needs
-        It is often state as a 
+        In the controller tuning process, a large value of ${w^y}_{j}$ correspond to an aggresive maneuvers of the corresponding output variable, 
+        because of the tracking error of that variable will be heavily penalised.
+        In contrast, small values of ${w^u}_{j}$ or ${w^{\Delta u}}_{j}$, correspond to aggresive maneuvers, 
+        because the control values are not heavily penalised in the objective function. 
 
-    \input{control/plots/mpc_tuning_plot.tex}
+        \paragraph
+        The computational complexity of the \gls{QP} problem increases significantly with larger values of $N_p$ \cite{Sawma2018}.
+        % The value of $N_c$ influences the number of unique decision values in $\bm{z}_k$.
+        The computational complexity also increases with larger values of $N_c$.
+        Therefore the smallest values of $N_p$ and $N_c$ are used that still provide acceptable controller performance.
+        In the tuning process, the initial values were set to 
+        $T_p = T_c = 2 \times t_{p}$
+        where 
+        $T_p = N_p \times T_s$,
+        $T_p = N_p \times T_s$, and
+        $t_{p}$ is the peak-time of the velocity step response with a \gls{PID} controller.
+        The objective function weights were then tuned for a desired controller perfomracne.
+        
+        \paragraph
+        Hereafter, the value of $T_p = T_c$ was incrementally decreased untill a noticeable change in the controller performnace.
+        $T_p$ is fixed at the smallest value before this change occurs.
+        $T_c$ is then further decreased until a noticeable change in performnace.
+
+        \paragraph
+        
+
+        \input{control/plots/mpc_tuning_plot.tex}
+
+        \paragraph
+        Figure~\ref{fig:mpc_tuning_plot} shows a plot of the simulated \gls{MPC} velocity response with different payload parameters.
+        It is clear that the controller damps the payload angles well and produces a smooth trajectory with different payloads.
+        For each different payload a \gls{DMDc} model is first estimated.
+        Thereafter the \gls{MPC} is simulated with the same controller configuration defined in Table~ref{tbl:}.
+        The controller performance, including disturbance rejection, will be further discussed in Section~\ref{sec:control_implementation}.
+    
