@@ -6,7 +6,7 @@
     \gls{MPC} does not refer to a specific algorithm implementation, but rather to the general control approach.
     Each specific \gls{MPC} implementation is dependant on the plant model representation \cite{Garcia1989}.
     In this section, an overview will be given of the specific \gls{MPC} implementation used in this work.
-    Similarly to the presented PID and LQR controllers, the presented MPC 
+    Similarly to the presented PID and LQR controllers, the presented \gls{MPC} 
     The \gls{MPC} objective function will be explained and the design process to tune the controller will be discussed.
     It will also be discussed how integral action is achieved with the \gls{MPC}.
     Finally, the control response of the tuned \gls{MPC} will be shown and discussed for a simulated system.
@@ -23,12 +23,12 @@
     
             MV, MO, UO, UD,
             diagram of model
-            % ?? see https://www.mathworks.com/help/mpc/gs/mpc-modeling.html for diagram of MPC implementation   
+            % ?? see https://www.mathworks.com/help/mpc/gs/mpc-modeling.html for diagram of \gls{MPC} implementation   
 
         \paragraph
         In the proposed \gls{MPC} architecture for a multirotor with an unknown suspended payload,
         an estimated model from the data-driven techniques discussed in Chapter~\ref{chap:system_id} will be used as the plant model.
-        DMDc and HAVOKc produce discrete, linear state-space models of the system dynamics.
+        \gls{DMDc} and HAVOKc produce discrete, linear state-space models of the system dynamics.
         Hence, the \gls{MPC} implementation corresponding to such a model will be used.
         The following state-space model representation will be used,
         \begin{equation} \label{eq:mpc_state_space}
@@ -48,12 +48,43 @@
         $\bm{A}_{dmd}$, 
         $\bm{A}_d$, and 
         $\bm{B}_{dmd}$.
-        This is converted
-        This produces large state-space matrices with many output variables
+        However, the \gls{MPC} requires a single system matrix, $\bm{A}_{mpc}$. 
+        Therefore the \gls{DMDc} system is converted into:
+        \begin{align}
+            % 
+            \begin{bmatrix}
+                \bm{x}_{dmd} (k+1) \\ \bm{d} (k+1)
+            \end{bmatrix}
+            &=
+            \begin{bmatrix}
+                \bm{A}_{dmd} & \bm{0} \\
+                \bm{I}_d & \bm{0}
+            \end{bmatrix}
+            \begin{bmatrix}
+                \bm{x}_{dmd} (k) \\ \bm{d} (k)
+            \end{bmatrix}
+            +
+            \begin{bmatrix}
+                \bm{B}_{dmd} \\ \bm{0}
+            \end{bmatrix}
+            \bm{u}_{dmd} (k) ,
+            \\ 
+            \phantom{\begin{bmatrix} . \\ . \end{bmatrix}} % To get vertical spacing right
+            \bm{x}_{mpc} (k+1) \hspace{7pt}
+            &=
+            \hspace{15pt} \bm{A}_{mpc} 
+            \hspace{25pt} \bm{x}_{mpc} (k) 
+            \hspace{7pt} + 
+            \hspace{7pt} \bm{B}_{mpc} 
+            \hspace{9pt} \bm{u}_{mpc} (k) ,
+            % 
+        \end{align}
+        where $\bm{I}_d$ is the indentity matrix that links the corresponding entries in $[ \bm{x}_{dmd} (k) ~~ \bm{d} (k) ]^T$ to $\bm{d}(k+1)$.
+        This produces large state-space matrices with many unneccesary output variables in $\bm{d}(k+1)$.
+        To ignore these variables in the control optimisation, they are all assigned a zero weight in the \gls{MPC} objective function.
+        The objective function will be discussed in the sections below.
 
-
-        Explain how get rid of delays
-
+        % ?? correct \gls
         % ?? State space model with $A_{mpc}$
 
         \paragraph
@@ -291,7 +322,7 @@
         using the state-space model from Equation~\ref{eq:mpc_ud_state_space_model}.
         The value of $\hat{u}_{ud}(k)$ is then used in the \gls{QP} solver to determine the optimal control action of the \gls{MPC}.
         The control performance was tested with the default Kalman filter gain with different payload parameters and disturbances.
-        It was determined that the MPC with the default input disturbance estimator provides acceptable controller performance without aditional tuning. 
+        It was determined that the \gls{MPC} with the default input disturbance estimator provides acceptable controller performance without aditional tuning. 
         Hence, the default Kalman filter is used in the final control implementation.
         Zero steady-state error for velocity tracking was achieved for different paylaods and different input disturbacnes, showing that integral action is achieved.
         The simulation results showing the \gls{MPC} integral action will be shown and discussed in Section~\ref{sec:control_implementation}.
