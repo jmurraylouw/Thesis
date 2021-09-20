@@ -217,12 +217,12 @@
         \paragraph
         Figure~\ref{fig:mpc_theta_prediction_vs_actual} shows the predicted and actual payload angle response for this simulation, starting at the same time-step.
         The \gls{MPC} optimiser also determined a smooth trajectory for the payload angle, but the actual response differs significantly from this trajectory.
-        Even though the black-box model predictions accuratly matched the testing data, Figure~\ref{fig:mpc_vel_prediction_vs_actual} and Figure~\ref{fig:mpc_theta_prediction_vs_actual}  
+        Even though the black-box model predictions accurately matched the testing data, Figure~\ref{fig:mpc_vel_prediction_vs_actual} and Figure~\ref{fig:mpc_theta_prediction_vs_actual}  
         show that the model is not an accurate approximation of the simulated system for all values of the state and input vectors. 
 
         \paragraph
-        The estimated model provides accurate predictions in the subspace of state and input vectors considered in the training data.
-        However, the \gls{MPC} generates trajectories that are beyond this subspace and the model needs to extrapolate outside of the training subspace.
+        The estimated model provides accurate predictions in the domain of state and input vectors considered in the training data.
+        However, the \gls{MPC} generates trajectories that are beyond this domain of training data.
         The multirotor with a simple suspended payload represents a mildly non-linear system, hence the linear approximation was effective for control with an \gls{MPC}.
         However, a double pendulum system reveals highly non-linear dynamics with multiple fixed points.
         This system also includes an unmeasured state variable which adds complexity to dynamics.
@@ -233,8 +233,8 @@
         However, the actual dynamics do not follow the optimised trajectory of the \gls{MPC} and the \gls{MPC} does not outperform the \gls{LQR} implementation.
 
         % ?? Add discussion of how it could be improved:
-        % Constrain \gls{MPC} to stay within subspace
-        % Adaptive \gls{MPC} to include larger subspace
+        % Constrain \gls{MPC} to stay within domain
+        % Adaptive \gls{MPC} to include larger domain
 
 \FloatBarrier\section{Conclusion}
 
@@ -267,15 +267,15 @@
     \paragraph
     The \gls{MPC} also managed to damp the payload oscillations, but did not conclusively outperform the \gls{LQR}.
     Even though the estimated model used by the \gls{MPC} showed good prediction accuracy with the given testing data set, 
-    the actual system response did not follow the predicted trajectory of the \gls{MPC} vell.
-    It appears that the optimised trajectory of the \gls{MPC} is beyond the vector subspace where the linear model provides an accurate approximation of the non-linear dynamics.
+    the actual system response did not follow the predicted trajectory of the \gls{MPC} well.
+    It appears that the optimised trajectory of the \gls{MPC} is beyond the domain where the linear model provides an accurate approximation of the non-linear dynamics.
     % Therefore, the proposed \gls{DMDc} implementation does not provide a sufficient linear model approximation for effective \gls{MPC} control of such a dynamic payload.
-    Therefore, an improved data-driven system identification model, which provides an accurate approximation over a larger vector subspace, 
+    Therefore, an improved data-driven system identification model, which provides an accurate approximation  of the dynamics for a larger domain, 
     is required for improved \gls{MPC} control of such a dynamic payload.
 
     \paragraph
     The advantage of the \gls{LQR} architecture is that it is computationally simple in comparison to an \gls{MPC}.
-    However, the \gls{LQR} architecture is designed for a specific system configuration and only accounts for chnages in specific system parameters. 
+    However, the \gls{LQR} architecture is designed for a specific system configuration and only accounts for changes in specific system parameters. 
     In contrast, the \gls{MPC} architecture provides a good general solution for different system configurations without considering individual parameters and without a priori modelling.
 
 } % end of tikz set

@@ -178,7 +178,7 @@
         \begin{itemize}
             \item the objective function,
             \item the constraints, and
-            \item the controller desion
+            \item the controller decision
         \end{itemize}
         The objective function provides a scalar value that quantifies the controller performance.
         The controller decision is the set of $\bm{u}_{mpc}$ values determined by the \gls{QP} solver that minimises the objective function.
@@ -196,12 +196,12 @@
         \begin{equation} \label{eq:mpc_objective_function}
             J(\bm{z}_k) = J_y(\bm{z}_k) + J_u(\bm{z}_k) + J_{\Delta u}(\bm{z}_k),
         \end{equation}
-        where $\bm{z}_k$ is the controller decison at time-step $k$.
+        where $\bm{z}_k$ is the controller decision at time-step $k$.
         The three scalar performance measures are denoted as
         $J_y(\bm{z}_k)$ for output setpoint tracking,
         $J_u(\bm{z}_k)$ for \gls{MV} tracking, and
         $J_{\delta u}(\bm{z}_k)$ for \gls{MV} move suppression.
-        Each performance measure includes weigths that balanse the competing objectives of the different terms.
+        Each performance measure includes weights that balance the competing objectives of the different terms.
         These weights need to be manually tuned for a desired controller performance.
 
         \paragraph
@@ -228,14 +228,14 @@
 
         \paragraph
         The controller receives the reference values, $r_j( k+i | k)$, for the prediction horizon starting at time-step $k$.
-        Using the inernal plant model, the predicted output values, $y_j( k+i | k)$, is determined based on the controller decision, $\bm{z}_k$.
+        Using the internal plant model, the predicted output values, $y_j( k+i | k)$, is determined based on the controller decision, $\bm{z}_k$.
         The values of $N_p$ and ${w^y}_{j}$ are design choices that are constant controller specifications.
         The value of $n_y$ are also constant and are determined from the plant model.
 
         \paragraph
         \textbf{Manipulated variable tracking}  \newline
         In some control applications, it is desirable to keep specific \gls{MV} variables close to a target value.
-        In the multirotor use case, lower \gls{MV} values are prefered because this corresponds to lower energy use.
+        In the multirotor use case, lower \gls{MV} values are preferred because this corresponds to lower energy use.
         The \gls{MV} target values are therefore set.
         The performance measure of manipulated variable tracking is calculated as,
         \begin{equation}
@@ -264,7 +264,7 @@
         \paragraph
         \textbf{Manipulated variable increment suppression}  \newline
         Large increments or moves in the \gls{MV} values are often undesirable for good control performance.
-        In the multirotor use case, large increments of the acceleration \gls{MV}s result in large jerks which may cause the system to go beyond the accurate vector subspace of the plant model.
+        In the multirotor use case, large increments of the acceleration \gls{MV}s result in aggressive jerks which may cause the system to go beyond the accurate domain of the linear approximation model.
         High frequency moves in the acceleration \gls{MV}s may also cause jittery flight dynamics because acceleration setpoint changes correspond to attitude changes.
         The performance measure of \gls{MV} tracking is used to penalise increments in the \gls{MV}s.
         This is calculated as,
@@ -324,7 +324,7 @@
         This method is also described by \cite{Mayne2000}.
 
         \paragraph
-        Another commonly used strategy involves estimating an input disturbance which influences an output variable in the plant model \cite{Ruscio2013}.
+        Another commonly used strategy involves estimating an input disturbance that influences an output variable in the plant model \cite{Ruscio2013}.
         In this way, integral action is applied to the plant output.
         This integral action strategy will be applied in this work.
         Since integral action is required for $V_N$ in the North velocity controller,
@@ -350,54 +350,56 @@
         \begin{equation}
             \bm{B_{ud}} = 
                 \begin{bmatrix}
-                    0.1 & 0 & 0 & \bm{0}
+                    b_{ud} & 0 & 0 & \bm{0}
                 \end{bmatrix}^T ,
         \end{equation}
-        such that it only influences $V_N$ in the state vector,
+        such that an input diturbance only influences $V_N$ in the state vector,
         \begin{equation}
             {\bm{x}_{mpc}}^T = 
                 \begin{bmatrix}
                     V_N & \theta & \dot{\theta} & \bm{d}
                 \end{bmatrix} . \phantom{~~~}
         \end{equation}
+        The variable $b_{ud}$ is a tunable value that quantifies the effect of the input disturbance on $V_N$.
+        This variable will be tuned in Section~\ref{sec:}
         
 % ?? Talk about design of value 0.1 in disturbance model
 
         \paragraph
         The specific value of the non-zero matrix entry in $\bm{B_{ud}}$ has only a slight effect on the control performance, hence the iterative tuning process for this value was simple.
-        The value of $\hat{u}_{ud}(k)$ is estimated by the default Kalman filter estimator implemented by the Model Predictive Control Toolbox\texttrademark~ 
-        using the state-space model from Equation~\ref{eq:mpc_ud_state_space_model}.
+        The value of $\hat{u}_{ud}(k)$ is estimated by the default Kalman filter estimator from the Model Predictive Control Toolbox\texttrademark. 
+        This filter is based on the state-space model from Equation~\ref{eq:mpc_ud_state_space_model}.
         The value of $\hat{u}_{ud}(k)$ is then used in the \gls{QP} solver to determine the optimal control action of the \gls{MPC}.
         
         \paragraph
-        The control performance was tested with the default Kalman filter gain with different payload parameters and disturbances.
-        It was determined that the \gls{MPC} with the default input disturbance estimator provides acceptable controller performance without additional tuning. 
+        It was determined from simulations with different payload parameters and disturbances that the \gls{MPC} with the default input disturbance estimator provides acceptable controller performance without additional tuning. 
         Hence, the default Kalman filter is used in the final control implementation.
         Zero steady-state error for velocity tracking was achieved for different payloads and different input disturbances, showing that integral action is achieved.
         The simulation results showing the \gls{MPC} integral action will be shown and discussed in Section~\ref{sec:control_implementation}.
 
         % ?? plot showing the difference between with integral action and without
 
-    \FloatBarrier\subsection{Tuning}
+    \FloatBarrier\subsection{Tuning} \label{sec:mpc_tuning}
 
         \paragraph
         An MPC can easily be tuned for a range of different design requirements.
         The same general design requirements will be applied to the MPC as to the LQR in Section~\ref{sec:lqr}, namely,
         to produce a fast velocity response with zero steady-state error while damping the payload oscillations quickly.
         The MPC is firstly tuned to have a similar response time to the LQR so that the controller performances can be roughly compared.
-        Thereafter, it is tuned to produce a trajectory as smooth as possible.
+        Thereafter, it is tuned to produce a trajectory that is as smooth as possible.
 
         \paragraph
         The MPC parameters that are determined in the controller design are,
         $N_p$, 
         $N_c$, 
-        ${w^y}_{j}$,
-        ${w^u}_{j}$, and 
-        ${w^{\Delta u}}_{j}$.
+        $\bm{w}^y$,
+        $\bm{w}^u$,
+        $\bm{w}^{\Delta u}$, and
+        $b_{ud}$.
         $T_s$ is fixed by the system identification phase, since the sample time of the discrete model and the controller should match.
 
         \paragraph
-        In the controller tuning process, a large value of ${w^y}_{j}$ correspond to aaggressive maneuver of the corresponding output variable, 
+        In the controller tuning process, a large value of ${w^y}_{j}$ corresponds to aggressive control of the j\textsuperscript{th} output variable, 
         because the tracking error of that variable will be heavily penalised.
         In contrast, small values of ${w^u}_{j}$ or ${w^{\Delta u}}_{j}$, correspond to aggressive manoeuvres, 
         because the control values are not heavily penalised in the objective function. 
@@ -406,14 +408,14 @@
         The computational complexity of the \gls{QP} problem increases significantly with larger values of $N_p$ \cite{Sawma2018}.
         % The value of $N_c$ influences the number of unique decision values in $\bm{z}_k$.
         The computational complexity also increases with larger values of $N_c$.
-        Therefore the smallest values of $N_p$ and $N_c$ are used that still provide acceptable controller performance.
+        Therefore the smallest values of $N_p$ and $N_c$ that still provide acceptable controller performance will be used.
         In the tuning process, the initial values were set to 
         $T_p = T_c = 2 \times t_{p}$
         where 
         $T_p = N_p \times T_s$,
         $T_p = N_p \times T_s$, and
         $t_{p}$ is the peak-time of the velocity step response with a \gls{PID} controller.
-        The objective function weights were then tuned for a desired controller perfomracne.
+        The objective function weights were then tuned for a desired controller performance.
         
         \paragraph
         The objective function weights were iteratively tuned for the desired control performance in a similar way to the LQR.
@@ -424,11 +426,14 @@
         $T_c$ is then further decreased until a noticeable change in performance.
 
         \paragraph
+        ?? Tuning of $b_{ud}$
+
+        \paragraph
         The final designed controller configuration parameters are shown in Table~\ref{tbl:mpc_params}.
         Note that the weights in $\bm{w^y}$ correspond to the variables in, 
         $ [ V_N ~~ \theta ~~ \dot{\theta} ] $,
         the weight in $\bm{w}^u$ corresponds to the variable $A_{N_{sp}}$, and 
-        the weight in $\bm{w}^{\Delta u}$ corresponds to $\Delta A_{N_{sp}} (k)  =  A_{N_{sp}} (k) - A_{N_{sp}} (k-1)$.
+        the weight in $\bm{w}^{\Delta u}$ corresponds to the variable $\Delta A_{N_{sp}} (k)  =  A_{N_{sp}} (k) - A_{N_{sp}} (k-1)$.
 
         \begin{table}[!h]
             \renewcommand{\arraystretch}{1.1}
@@ -443,6 +448,7 @@
                     $\bm{w}^y$   &  $[ 2~~0~~10 ]$ \\
                     $\bm{w}^u$   &  $[0.1]$ \\ 
                     $\bm{w}^{\Delta u}$   & $[10]$ \\
+                    $b_{ud}$ & 0.1 \\
                 \bottomrule
             \end{tabularx}
             \label{tbl:mpc_params}

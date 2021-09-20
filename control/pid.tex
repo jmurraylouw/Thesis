@@ -163,12 +163,12 @@
         Recall from Chapter~\ref{chap:system_id}, that the cascaded \gls{PID} controller is used for velocity step inputs in the training data flight stage for system identification.
         The system identification methods produce linear models, which are used in swing damping controllers to minimise the payload angles during flight.
         The velocity controller gains used for Honeybee by \cite{Grobler2020} result in aggressive velocity responses, which produces large payload swing angles.
-        Such large payload angles are undesirable because this causes the vector subspace of the training data to be very different from the vector subspace the swing damping controllers will operate in.
+        Such large payload angles are undesirable for safe flights.
         Therefore the velocity controller gains are redesigned for a slower transient response and smaller payload swing angles.
 
         \paragraph
-        The derivation of the trasfer function, $G_{V_N}(s)$, of the North velocity dynamics 
-        of a multirotor with a suspened payload was derived by \cite{Slabber2020} and is described here briefly.
+        The derivation of the transfer function, $G_{V_N}(s)$, of the North velocity dynamics 
+        of a multirotor with a suspended payload was derived by \cite{Slabber2020} and is described here briefly.
         Firstly, the non-linear dynamics were derived with Lagrangian mechanics as described in Chapter~\ref{chap:system_id}.
         The equations were then linearised around hover with the small-angle approximation.
         The linearised equations for the longitudinal or North velocity dynamics can be presented in the state-space form as,
