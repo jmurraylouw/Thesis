@@ -13,9 +13,9 @@
     \end{figure}
 % ?? remove all MV and MO
     \paragraph
-    Figure~\ref{fig:mpc_controller} shows the structure of a typical \gls{MPC} implemnetation.
+    Figure~\ref{fig:mpc_controller} shows the structure of a typical \gls{MPC} implementation.
     As a high-level overview, the \gls{MPC} receives the measured output vector, $\bm{y}$, 
-    and the output setpoint $\bm{y}_{sp}$, and detemines the control action, $\bm{u}$, to drive the values in $\bm{y}$ to the values $\bm{y}_{sp}$.
+    and the output setpoint $\bm{y}_{sp}$, and determines the control action, $\bm{u}$, to drive the values in $\bm{y}$ to the values $\bm{y}_{sp}$.
     An optimiser uses an internal plant model to determine an optimal control sequence over a prediction horizon \cite{Mayne2000}.
     Therefore $\bm{y}_{sp}$ may be replaced by a target trajectory for the prediction horizon. 
     Only the first control action of the optimal sequence is executed and the optimisation is re-calculated at every time-step.
@@ -55,7 +55,7 @@
         \end{equation}
         which minimizes a specific objective function over the prediction horizon.
         The controller decision produces the predicted trajectory when applied to the plant model.
-        Note that only the first control action, $\bm{u}( k | k )$, will be executed and a new controller decsion will be determined at time-step $k+1$.
+        Note that only the first control action, $\bm{u}( k | k )$, will be executed and a new controller decision will be determined at time-step $k+1$.
         Also note that if $N_c < N_p$, the remaining control actions are set to,
         \begin{equation}
             \bm{u}( i | k ) = \bm{u}( N_c | k ), ~~ i > N_c .
@@ -119,7 +119,7 @@
             \hspace{9pt} \bm{u}_{mpc} (k) ,
             % 
         \end{align}
-        where $\bm{I}_d$ is the indentity matrix that links the corresponding entries in $[ \bm{x}_{dmd} (k) ~~ \bm{d} (k) ]^T$ to $\bm{d}(k+1)$.
+        where $\bm{I}_d$ is the identity matrix that links the corresponding entries in $[ \bm{x}_{dmd} (k) ~~ \bm{d} (k) ]^T$ to $\bm{d}(k+1)$.
         This produces large state-space matrices with many output variables (represented in $\bm{d}(k+1)$) that are necessary for state predictions but do not require setpoint tracking.
         To ignore these variables in the control optimisation, they are assigned a zero weight in the \gls{MPC} objective function.
         The objective function will be further discussed in the sections below.
@@ -145,7 +145,7 @@
             \dot{\theta} (k) = \frac{1}{T_s} \theta(k) - \frac{1}{T_s} \theta(k-1) 
         \end{equation}
         In this way, a weight can be applied to the $\dot{\theta}$ variable in the \gls{MPC} objective function to control this variable.
-        $\bm{B}_{mpc}$ is augmented with zeros so that the state space matrix dimentions agree and so that $\bm{u}_{mpc} (k)$ does not directly influence $\dot{\theta} (k)$.
+        $\bm{B}_{mpc}$ is augmented with zeros so that the state space matrix dimensions agree and so that $\bm{u}_{mpc} (k)$ does not directly influence $\dot{\theta} (k)$.
 
     \FloatBarrier\subsection{Algorithm implementation}
 
@@ -318,8 +318,8 @@
         \paragraph
         Different methods have been proposed to apply integral action with an \gls{MPC}.
         A commonly used method involves applying an integrator to the control action determined by the \gls{MPC} \cite{Ruscio2013}.
-        In this implementation, the \gls{MPC} detemines the optimal control action increment, ${\Delta u_k}^*$,
-        and calculates the control action, $u_k = u_{k-1} + {\Delta u_k}^*$ wich is then applied.
+        In this implementation, the \gls{MPC} determines the optimal control action increment, ${\Delta u_k}^*$,
+        and calculates the control action, $u_k = u_{k-1} + {\Delta u_k}^*$ which is then applied.
         Hence, integral action is applied to the plant input.
         This method is also described by \cite{Mayne2000}.
 
@@ -353,7 +353,7 @@
                     b_{ud} & 0 & 0 & \bm{0}
                 \end{bmatrix}^T ,
         \end{equation}
-        such that an input diturbance only influences $V_N$ in the state vector,
+        such that an input disturbance only influences $V_N$ in the state vector,
         \begin{equation}
             {\bm{x}_{mpc}}^T = 
                 \begin{bmatrix}
@@ -361,7 +361,7 @@
                 \end{bmatrix} . \phantom{~~~}
         \end{equation}
         The variable $b_{ud}$ is a tunable value that quantifies the effect of the input disturbance on $V_N$.
-        This variable will be tuned in Section~\ref{sec:}
+        This variable will be tuned in Section~\ref{sec:mpc_tuning}
         
 % ?? Talk about design of value 0.1 in disturbance model
 

@@ -1,7 +1,7 @@
 {
 \tikzset{external/figure name/.add={control_implementation/}{}}
 
-\FloatBarrier\section{Implentation and results}
+\FloatBarrier\section{Implementation and results}
 \label{sec:control_implementation}
 
     \paragraph
@@ -14,14 +14,14 @@
     Likewise, the \emph{\gls{LQR} architecture} includes the white-box modelling, the parameter estimation process, and the resulting \gls{LQR} determined from the system identification model.
     
     \paragraph
-    It was firstly shown in Chapter~\ref{chap:system_id} that the system identifcation techniques worked in simulation.
+    It was firstly shown in Chapter~\ref{chap:system_id} that the system identification techniques worked in simulation.
     
     \FloatBarrier\subsection{Simple suspended payload} \label{sec:simple_payload_control}
 
         \paragraph
         The modelling assumptions of the white-box model discussed in Chapter~\ref{chap:modelling} 
         defines a point-mass suspended with a rigid cable which is attached to the \gls{CoM} of the multirotor.
-        This is a simplisitic suspended payload model but represents the dynamics of many practical payloads well.
+        This is a simplistic suspended payload model but represents the dynamics of many practical payloads well.
         In this section, the simulated payload model complies will all these assumptions.
         The simulation model used in this section was verified with practical data in Section~\ref{sec:model_verification}.
         This is also the payload model used for simulations with an \gls{LQR} controller by \cite{Erasmus2020} and \cite{Slabber2020}
@@ -56,7 +56,7 @@
 
         \paragraph
         Figure~\ref{fig:compare_control_theta} shows the payload angle data of the velocity step response.
-        Both the \gls{MPC} and \gls{LQR} damp the payload angle well and the osciilations cease after only two or three swings.
+        Both the \gls{MPC} and \gls{LQR} damp the payload angle well and the oscillations cease after only two or three swings.
         In this case, the \gls{MPC} response results in a smaller initial swing angle, however, this is dependant on the specific tuning of each controller.
         The \gls{LQR} can also be tuned to produce a similar swing angle.
 
@@ -64,17 +64,17 @@
 
         \paragraph
         Figure~\ref{fig:compare_control_acc_sp} shows the acceleration setpoint commanded by the two controllers for this step response.
-        This is probably due to the inherant similarity between the controller implementations as discussed in Section~\ref{sec:mpc}.
+        This is probably due to the inherent similarity between the controller implementations as discussed in Section~\ref{sec:mpc}.
         The similarity in the acceleration setpoint responses also show that the energy expended in a velocity steps are roughly equal for these two controller implementations.
-        However, this is also highly dependant on the weightings used in optimastion problem of both controllers.
-        Both controllers also produce a non-zero steady-state setpoint as expected, which is required to counter areodynamic drag.
+        However, this is also highly dependant on the weightings used in optimisation problem of both controllers.
+        Both controllers also produce a non-zero steady-state setpoint as expected, which is required to counter aerodynamic drag.
 
     \FloatBarrier\subsection{Different payload parameters}
 
         \paragraph
         The system identification and control implementations are required to perform well with different unknown payload parameters.
         Therefore, numerous flights with a range of different payload were simulated, the respective models were trained and the controllers were implemented.
-        Figure~\ref{fig:compare_control_vel_l1} and Figure~\ref{fig:compare_control_vel_l05} show velocity step responses with \gls{LQR} and \gls{MPC} implentations with two payloads flights.
+        Figure~\ref{fig:compare_control_vel_l1} and Figure~\ref{fig:compare_control_vel_l05} show velocity step responses with \gls{LQR} and \gls{MPC} implementations with two payloads flights.
         Both the parameter estimation with \gls{LQR} implementation, and the \gls{DMDc} with \gls{MPC} implementation, handle flights with different cable lengths and payload masses well.
         In each flight, \gls{LQR} and \gls{MPC} damp the payload oscillations and control the multirotor velocity well.
 
@@ -85,12 +85,12 @@
         \paragraph
         The controllers were not specifically tuned for each simulation.
         Instead, the same controller parameters were used for these simulations as for the simulations in Section~\ref{sec:simple_payload_control}.
-        This shows that each control architecture is adaptibile to different payload parameters without manual intervention.
+        This shows that each control architecture is adaptable to different payload parameters without manual intervention.
 
     \FloatBarrier\subsection{Variation of other system parameters}
 
         \paragraph
-        The control architectures have been shown to be adaptable to variationd in the payload parameters.
+        The control architectures have been shown to be adaptable to variations in the payload parameters.
         However, changing other system parameters may affect the performance of the different controllers. 
         As mentioned in Chapter~\ref{chap:system_id}, a disadvantage of the white-box system identification approach used by the LQR,
         is that parameter estimation techniques need to be manually designed for each unknown parameter.
@@ -123,7 +123,7 @@
         This results in a jittery velocity response with the \gls{LQR} and is undesirable for a multirotor flight.
         The \gls{LQR} control performance has degraded because the dynamics of the \gls{LQR} plant model differs significantly from the actual dynamics. 
         In contrast, the \gls{MPC} still results in a smooth velocity profile and damps the payload oscillations effectively, as in previous simulations.
-        This is expected since the system identification model used by the \gls{MPC} included the effect of the changed mass by estimating the entire model without considering indivdual parameters.
+        This is expected since the system identification model used by the \gls{MPC} included the effect of the changed mass by estimating the entire model without considering individual parameters.
         
         \paragraph
         It should be noted that another mass estimator can be implemented to estimate $m_Q$ in a flight stage before the payload is added.
@@ -188,7 +188,7 @@
 
         \paragraph
         For the simulations in this section, accurate system identification models were generated as described in Section~\ref{sec:dynamic_payload} and used in the \gls{MPC} and \gls{LQR} controllers.
-        Figure~\ref{fig:compare_control_vel_dynamic} shows the reslting controller responses with a dynamic payload.
+        Figure~\ref{fig:compare_control_vel_dynamic} shows the resulting controller responses with a dynamic payload.
         It appears that the velocity responses of both the \gls{LQR} and the \gls{MPC} are less smooth than with a simple suspended payload and show small velocity oscillations.
         
         \input{control/plots/compare_control_theta_dynamic.tex}

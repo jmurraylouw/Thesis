@@ -139,7 +139,7 @@
         \SI{0.3}{\second} rise time, 
         \SI{0.47}{\second} for a 2~\% settling time, 
         and \SI{11}{\radian/\second} bandwidth \cite{Grobler2020}.
-        This has a large time-scale seperation from the angular rate controller, which has a bandwidth of \SI{138}{\radian/\second}.
+        This has a large time-scale separation from the angular rate controller, which has a bandwidth of \SI{138}{\radian/\second}.
         A fast angle response is also desired in this work, hence the same gains designed by \cite{Grobler2020} will be used.
 
     \FloatBarrier\subsection{Translational controller}
@@ -205,7 +205,7 @@
         \end{align}
         For the definition of these symbols, refer to Chapter~\ref{chap:system_id}.
         The input and output of the plant are $\mbox{U}_{long} = A_N  \mbox{ and } \mbox{Y}_{long} = V_N$, respectively.
-        Note that the actual input of the plant is $A_{N_{sp}}$, however, it is assumed that $A_{N_{sp}} \approx A_N$ due to the large time-scale seperation between the velocity controller and attitude controller.
+        Note that the actual input of the plant is $A_{N_{sp}}$, however, it is assumed that $A_{N_{sp}} \approx A_N$ due to the large time-scale separation between the velocity controller and attitude controller.
         The transfer function can therefore be calculated as, 
         \begin{align}\label{eq:lin_vel_quad_pl}
             G_{V_N}(s) &= \frac{V_N(s)}{A_N(s)} = \textbf{C}_{long} \left(s \textbf{I} - \textbf{A}_{long}\right)^{-1} \textbf{B}_{long} \\
