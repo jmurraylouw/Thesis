@@ -30,7 +30,7 @@
 
         \paragraph
         From simulation results, it appears that both the \gls{MPC} and \gls{LQR} effectively damp the payload oscillations while controlling the velocity of the multirotor.
-        Figure~\ref{fig:compare_control_vel} shows the velocity step responces of the \gls{MPC}, \gls{LQR} and \gls{PID} controllers for a multirotor with a suspended payload.
+        Figure~\ref{fig:compare_control_vel} shows the velocity step responses of the \gls{MPC}, \gls{LQR} and \gls{PID} controllers for a multirotor with a suspended payload.
         From Figure~\ref{fig:compare_control_vel} it is clear that both the \gls{LQR} and \gls{MPC} controllers actively damp the velocity oscillation caused by the swinging payload.
         The \gls{PID} controller does not consider the payload angle, hence the oscillations are not damped as strongly.
 
@@ -74,7 +74,7 @@
         \paragraph
         The system identification and control implementations are required to perform well with different unknown payload parameters.
         Therefore, numerous flights with a range of different payload were simulated, the respective models were trained and the controllers were implemented.
-        Figure~\ref{fig:compare_control_vel_l1} and Figure~\ref{fig:compare_control_vel_l05} show velocity step responces with \gls{LQR} and \gls{MPC} implentations with two payloads flights.
+        Figure~\ref{fig:compare_control_vel_l1} and Figure~\ref{fig:compare_control_vel_l05} show velocity step responses with \gls{LQR} and \gls{MPC} implentations with two payloads flights.
         Both the parameter estimation with \gls{LQR} implementation, and the \gls{DMDc} with \gls{MPC} implementation, handle flights with different cable lengths and payload masses well.
         In each flight, \gls{LQR} and \gls{MPC} damp the payload oscillations and control the multirotor velocity well.
 

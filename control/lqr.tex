@@ -1,7 +1,7 @@
 \FloatBarrier\section{LQR} \label{sec:lqr}
 
         \paragraph
-        \gls{LQR} is a popular optimal control technique which has been shown to be an effective swing-damping controller for multirotors with a suspeneded payload 
+        \gls{LQR} is a popular optimal control technique which has been shown to be an effective swing-damping controller for multirotors with a suspended payload 
         \cite{Erasmus2020} \cite{Slabber2020} \cite{Us2019}.
         \gls{LQG} combines this optimal control technique with a full-state estimator when all the satets cannot be measured \cite{Li2016}.
         An \gls{LQG} was effectiveley used by \cite{Slabber2020} for swing-damping control of a multirotor and suspended payload system.
@@ -9,7 +9,7 @@
         This controller structure can be duplicated for East velocity control.
         
         \paragraph
-        An \gls{LQR} does not inherently apply integral action and does not achieve zero steady-state tracking error in the presence of disturbacnes.
+        An \gls{LQR} does not inherently apply integral action and does not achieve zero steady-state tracking error in the presence of disturbances.
         Therefore the state vector is augmented with an integral state of the velocity error, $\mathcal{V}_N$, such that:
         \begin{equation}
             \dot{\mathcal{V}}_N = V_{N_{sp}} - V_N
