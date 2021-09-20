@@ -3,9 +3,10 @@
         \paragraph
         \gls{LQR} is a popular optimal control technique which has been shown to be an effective swing-damping controller for multirotors with a suspended payload 
         \cite{Erasmus2020} \cite{Slabber2020} \cite{Us2019}.
-        \gls{LQG} combines this optimal control technique with a full-state estimator when all the satets cannot be measured \cite{Li2016}.
-        An \gls{LQG} was effectiveley used by \cite{Slabber2020} for swing-damping control of a multirotor and suspended payload system.
-        An \gls{LQR} for North velocity control with full-state feedback is presented in this section. 
+        The \gls{LQG} technique combines this optimal control technique with a full-state estimator when all state variables cannot be measured \cite{Li2016}.
+        An \gls{LQG} was effectively used by \cite{Slabber2020} for swing-damping control of a multirotor and suspended payload system.
+        However, to focus on the controller performance without considering state estimation, it is assumed that full-state feedback is available in this work.
+        Therefore, an \gls{LQR} for North velocity control with full-state feedback is presented in this section. 
         This controller structure can be duplicated for East velocity control.
         
         \paragraph
@@ -18,8 +19,8 @@
         \paragraph
         The North velocity dynamics were derived and linearised in Chapter~\ref{chap:modelling} 
         to produce a state-space model which will be used to design the LQR.
-        It is asumed that all model parameter are known before a flight, 
-        except the payload paramaters, $l$ and $m_p$, which are estimated in the system identification phase.
+        It is assumed that all model parameter are known before a flight, 
+        except the payload parameters, $l$ and $m_p$, which are estimated in the system identification phase.
         The augmented state space model which includes the integral state is given by:
         \begin{equation}
             \dot{\bm{x}}_A = \bm{A}_A \bm{x}_A + \bm{B}_A \bm{u}_A ,
@@ -71,7 +72,7 @@
 
         \paragraph
         The \gls{LQR} control performance can be manually tuned by changing the state and input weights in $\bm{Q}$ and $\bm{R}$ respectively.
-        The weighting of each state variable can be weighted according to tracking importance.
+        The weighting of each state variable can be determined according to tracking importance.
         For example, if the weighting of $V_N$ is small in comparison to the weighting of $\theta$, 
         the controller will produce a slow velocity response with small payload swing angles.
         For the values in $\bm{R}$, if the weighting of an input variable is large, 
@@ -82,7 +83,7 @@
         produce a fast velocity response with zero steady-state error while damping the payload oscillations quickly.
         The priority is to produce a smooth trajectory with minimal oscillation, however a reasonably fast response time is still required.
         An iterative tuning approach was used to determine the $\bm{Q}$ and $\bm{R}$ matrix entries that produce a good performance.
-        The final \gls{LQR} veightings were selected as:
+        The final \gls{LQR} weightings were selected as:
         \begin{equation}
             \bm{Q} = diag([0.1~~10~~0~~100]),~~~\bm{R} = 13 .
         \end{equation}

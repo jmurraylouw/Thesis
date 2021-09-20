@@ -7,10 +7,10 @@
 
     \paragraph
     Three different types of controllers are considered in this work, namely \gls{PID}, \gls{LQR}, and \gls{MPC}.
-    \gls{PID} control does provide active swing-damping of the payload, but it is used in the training data stage discussed in Chapter~\ref{chap:system_id}. 
+    \gls{PID} control does not provide active swing-damping control of the payload, but it is used in the training data stage discussed in Chapter~\ref{chap:system_id}. 
     \gls{LQR} is a popular and well-known optimal control technique. 
     In previous work by \cite{Erasmus2020} and \cite{Slabber2020}, 
-    an \gls{LQR} implementation with an parameter estimator was designed for active swing-damping control of a multirotor with an unknwon suspended payload.
+    an \gls{LQR} implementation with an parameter estimator was designed for active swing-damping control of a multirotor with an unknown suspended payload.
     This \gls{LQR} architecture was shown to be an effective swing-damping controller and will be applied in this work as the baseline controller.
     
     \paragraph
@@ -24,7 +24,7 @@
     \begin{table}[!h]
         \renewcommand{\arraystretch}{1.1}
         \centering
-        \caption{Active damping controllers paired with the corresponding system identification technique.}
+        \caption{System identification techniques paired with the corresponding controllers.}
         \begin{tabularx}{0.75\linewidth}{@{}lll@{}}
             \toprule
             \multicolumn{2}{c}{\textbf{System identification}}   & \textbf{Controller} \\
@@ -43,7 +43,7 @@
     \paragraph
     In this chapter, an overview of the different controllers will be given and the design process of each controller will be explained.
     A MATLAB/Simulink simulation environment will also be introduced to test these controllers.
-    The controllers will be tested in simulations with different system paramaters and with disturbances.
+    The controllers will then be tested in simulations with different system parameters and disturbances.
     Finally, the simulation results will be shown and discussed.
     
     \input{control/pid}

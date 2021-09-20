@@ -5,18 +5,18 @@
     % The \gls{PID} controllers will be designed based on a linearized model of the multirotor without a payload.
     % The design process used to determine the controller gains will also be discussed in this section.
     % Finally the controllers will be implemented with MATLAB and Simulink and are verified with practical flight data.
-    PX4-Autopilot \cite{Meier2015} was chosen as the multirotor flight-stack because it is open-source and widely used in industry and research.
-    PX4 applies \gls{PID} controllers as the default multirotor controllers.
     \gls{PID} control is a popular linear control technique that applies a control signal proportional to 
     the error signal, 
     the integral of the error signal, 
     and the derivative of the error signal.
+    This is the control technique used in the default PX4-Autopilot multirotor controllers \cite{Meier2015}.
+    PX4-Autopilot was chosen as the multirotor flight-stack because it is open-source and widely used in industry and research.
     The \gls{PID} implementation of PX4 does not provide active swing-damping of the payload, however, it is used in the system identification flight stage discussed in Chapter~\ref{chap:system_id}.
     
     \paragraph
     The default PX4 control architecture consists of multiple cascaded \gls{PID} controller loops.
     This is divided into two main sections, the inner-loop attitude controllers and the outer-loop translational controllers.
-    Figure~\ref{fig:pid_architecture} shows a high-level overview of the PX4 control architecture but does not show state feedback.
+    Figure~\ref{fig:pid_architecture} shows a high-level overview of the PX4 control architecture without showing state feedback.
     
     \input{control/diagrams/pid_architecture.tex}
 
