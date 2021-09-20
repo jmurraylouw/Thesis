@@ -426,7 +426,9 @@
         $T_c$ is then further decreased until a noticeable change in performance.
 
         \paragraph
-        ?? Tuning of $b_{ud}$
+        The last variable to be tuned is $b_{ud}$, which influences the disturbance rejection performance of the controller.
+        A large value of $b_{ud}$ results in a fast disturbance rejection performance, however it also produces in a large overshoot.
+        Starting at an initial guess of $b_{ud} = 1$, the value is iteratively tuned for a consistent performance with a range of different payloads and wind disturbances.
 
         \paragraph
         The final designed controller configuration parameters are shown in Table~\ref{tbl:mpc_params}.
