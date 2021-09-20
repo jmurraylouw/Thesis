@@ -8,13 +8,13 @@
     After the system identification phase, active swing damping control can be applied
     to the multirotor and payload system.
     The control architectures are summarised in Table~\ref{tbl:controller_summary} 
-    by pairing the system identification techniques along with the appropriate controllers.
+    by pairing the system identification techniques with the appropriate controllers.
     In this work, the \emph{\gls{MPC} architecture} refers to the entire control implementation, 
-    which includes the data-driven system identification process and the resulting \gls{MPC} based on the estimated model.
-    Likewise, the \emph{\gls{LQR} architecture} includes the white-box modelling, the parameter estimation process, and the resulting \gls{LQR} determined from the system identification model.
+    which includes the data-driven system identification method and the \gls{MPC}.
+    Likewise, the \emph{\gls{LQR} architecture} includes the white-box modelling, the parameter estimation methods, and the resulting \gls{LQR} determined from the system identification model.
+    These control architectures will be tested in simulation and their results will be shown and compared in this section.
     
-    \paragraph
-    It was firstly shown in Chapter~\ref{chap:system_id} that the system identification techniques worked in simulation.
+    % It was firstly shown in Chapter~\ref{chap:system_id} that the system identification techniques worked in simulation.
     
     \FloatBarrier\subsection{Simple suspended payload} \label{sec:simple_payload_control}
 
@@ -86,50 +86,6 @@
         The controllers were not specifically tuned for each simulation.
         Instead, the same controller parameters were used for these simulations as for the simulations in Section~\ref{sec:simple_payload_control}.
         This shows that each control architecture is adaptable to different payload parameters without manual intervention.
-
-    \FloatBarrier\subsection{Variation of other system parameters}
-
-        \paragraph
-        The control architectures have been shown to be adaptable to variations in the payload parameters.
-        However, changing other system parameters may affect the performance of the different controllers. 
-        As mentioned in Chapter~\ref{chap:system_id}, a disadvantage of the white-box system identification approach used by the LQR,
-        is that parameter estimation techniques need to be manually designed for each unknown parameter.
-        In the specific implementation, the \gls{LQR} model assumes that the multirotor mass is known.
-        Hence, changing the mass of the multirotor is detrimental to the accuracy of plant model and therefore affects the \gls{LQR} performance.
-        In contrast, the data-driven system identification method for the \gls{MPC} plant model does not rely on such modelling assumptions.
-        
-        \begin{figure}
-            \captionsetup[subfigure]{justification=centering}
-            \centering  
-            \input{control/plots/compare_control_vel_mq_changed.tex}
-            \input{control/plots/compare_control_theta_mq_changed.tex}
-            \caption{Velocity step responses with the multirotor mass decreased by \SI{0.25}{\kilo\gram}
-            ($l =$~\SI{0.5}{\meter}, $m_p =$~\SI{0.3}{\kilo\gram})}
-            \label{fig:mq_changed} 
-        \end{figure}
-
-        \paragraph
-        Simulations were performed with an altered multirotor mass to demonstrate how the control architectures handle changes in other system parameters.
-        Figure~\ref{fig:mq_changed} shows the velocity step responses of the \gls{PID}, \gls{MPC} and \gls{LQR} implementations with an altered multirotor mass.
-        For these simulations, the original multirotor mass, $m_Q =$~\SI{0.796}{\kilo\gram}, 
-        was decreased by \SI{0.250}{\kilo\gram}, 
-        resulting in a new multirotor mass of, $m_Q =$~\SI{0.546}{\kilo\gram}.
-        The same system identification processes were naively followed as in the previous sections, without prior knowledge of the change in $m_Q$.
-        The same tuned controller parameters were also used.
-
-        \paragraph
-        In Figure~\ref{fig:mq_changed} it appears that the \gls{LQR} results in lower payload oscillations than the \gls{PID} controller
-        but induces higher frequency oscillations.
-        This results in a jittery velocity response with the \gls{LQR} and is undesirable for a multirotor flight.
-        The \gls{LQR} control performance has degraded because the dynamics of the \gls{LQR} plant model differs significantly from the actual dynamics. 
-        In contrast, the \gls{MPC} still results in a smooth velocity profile and damps the payload oscillations effectively, as in previous simulations.
-        This is expected since the system identification model used by the \gls{MPC} included the effect of the changed mass by estimating the entire model without considering individual parameters.
-        
-        \paragraph
-        It should be noted that another mass estimator can be implemented to estimate $m_Q$ in a flight stage before the payload is added.
-        However, this involves manually redesigning the system identification procedure for each new unknown system parameter.
-        In these simulations, it was shown that changing non-estimated system parameters in the white-box approach can be detrimental to the control performance.
-        Unlike the white-box approach, the black-box approach handles changes in different system parameters well without prior knowledge of these parameters.
 
     \FloatBarrier\subsection{Wind disturbance}
 
@@ -230,11 +186,55 @@
         \paragraph
         From the results in Figure~\ref{fig:mpc_vel_prediction_vs_actual} and Figure~\ref{fig:mpc_theta_prediction_vs_actual}
         it appears that the data-driven linear model results in acceptable control with an \gls{MPC}.
-        However, the actual dynamics do not follow the optimised trajectory of the \gls{MPC} and the \gls{MPC} does not outperform the \gls{LQR} implementation.
+        However, the actual dynamics do not follow the optimised trajectory of the \gls{MPC} and the \gls{MPC} does not conclusively outperform the \gls{LQR} implementation.
 
         % ?? Add discussion of how it could be improved:
         % Constrain \gls{MPC} to stay within domain
         % Adaptive \gls{MPC} to include larger domain
+
+    \FloatBarrier\subsection{Change in unexpected system parameters}
+
+        \paragraph
+        The control architectures have been shown to be adaptable to variations in the payload parameters.
+        However, changing other system parameters may affect the performance of the different controllers. 
+        As mentioned in Chapter~\ref{chap:system_id}, a disadvantage of the white-box system identification approach used by the LQR,
+        is that parameter estimation techniques need to be manually designed for each unknown parameter.
+        In the specific implementation, the \gls{LQR} model assumes that the multirotor mass is known.
+        Hence, changing the mass of the multirotor is detrimental to the accuracy of plant model and therefore affects the \gls{LQR} performance.
+        In contrast, the data-driven system identification method for the \gls{MPC} plant model does not rely on such modelling assumptions.
+        
+        \begin{figure}
+            \captionsetup[subfigure]{justification=centering}
+            \centering  
+            \input{control/plots/compare_control_vel_mq_changed.tex}
+            \input{control/plots/compare_control_theta_mq_changed.tex}
+            \caption{Velocity step responses with the multirotor mass decreased by \SI{0.25}{\kilo\gram}
+            ($l =$~\SI{0.5}{\meter}, $m_p =$~\SI{0.3}{\kilo\gram})}
+            \label{fig:mq_changed} 
+        \end{figure}
+
+        \paragraph
+        Simulations were performed with an altered multirotor mass to demonstrate how the control architectures handle changes in other system parameters.
+        Figure~\ref{fig:mq_changed} shows the velocity step responses of the \gls{PID}, \gls{MPC} and \gls{LQR} implementations with an altered multirotor mass.
+        For these simulations, the original multirotor mass, $m_Q =$~\SI{0.796}{\kilo\gram}, 
+        was decreased by \SI{0.250}{\kilo\gram}, 
+        resulting in a new multirotor mass of, $m_Q =$~\SI{0.546}{\kilo\gram}.
+        The same system identification processes were naively followed as in the previous sections, without prior knowledge of the change in $m_Q$.
+        The same tuned controller parameters were also used.
+
+        \paragraph
+        In Figure~\ref{fig:mq_changed} it appears that the \gls{LQR} results in lower payload oscillations than the \gls{PID} controller
+        but induces higher frequency oscillations.
+        This results in a jittery velocity response with the \gls{LQR} and is undesirable for a multirotor flight.
+        The \gls{LQR} control performance has degraded because the dynamics of the \gls{LQR} plant model differs significantly from the actual dynamics. 
+        In contrast, the \gls{MPC} still results in a smooth velocity profile and damps the payload oscillations effectively, as in previous simulations.
+        This is expected since the system identification model used by the \gls{MPC} included the effect of the changed mass by estimating the entire model without considering individual parameters.
+        
+        \paragraph
+        It should be noted that another mass estimator can be implemented to estimate $m_Q$ in a flight stage before the payload is added.
+        However, this involves manually redesigning the system identification procedure for each new unknown system parameter such as $m_Q$.
+        In these simulations, it was shown that changing non-estimated system parameters in the white-box approach can be detrimental to the control performance.
+        Unlike the white-box approach, the black-box approach handles changes in different system parameters well without prior knowledge of these parameters.
 
 \FloatBarrier\section{Conclusion}
 
