@@ -10,6 +10,8 @@ In this chapter, mathematical models of a multirotor with a suspended payload wi
 These models will be used to simulate the multirotor system in subsequent chapters.
 The models will be based on the real multirotor named \emph{Honeybee}, which was built by \cite{Grobler2020} and will be described further in Chapter~\ref{chap:exp_design}.
 
+% ?? Write this section
+
 \paragraph
 % The system identification and control system techniques in later chapters will then be explained based on the \gls{2D} model to avoid unnecessary complexity.
 Finally, it will be described how this model and the techniques in later chapters are extended to the 3D case.
@@ -25,34 +27,71 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
     
     \begin{figure}[htb]
         \centering
-        \includegraphics[width=0.818\linewidth]{modelling/fig/coord_frames}
-        \caption{Coordinate frames of a quadrotor \cite{Erasmus2020}}
+        \includegraphics[width=0.6\linewidth]{modelling/fig/coord_frames}
+        \caption{Inertial and body coordinate frames of a quadrotor \cite{Erasmus2020}}
         \label{fig:coord_frames}
     \end{figure}
 
     \paragraph
     The inertial frame is denote by $ \mathcal{I} = \{ \bm{\bar{x}}_\mathcal{I}, \bm{\bar{y}}_\mathcal{I}, \bm{\bar{z}}_\mathcal{I} \} $ and describes a \gls{NED} axis system.
     The $x$, $y$, and $z$ axis, align with the North, East, and Down inertial directions respectively.
-    The inertial frame assumes a flat, non-rotating earth, since the quadrotor will travel small distances in comparison to the radius of the earth.
+    The inertial frame assumes a flat, non-rotating earth, since the quadrotor will travel small distances in comparison to the curvature of the earth.
     The origin of this frame is fixed at the takeoff location of the multirotor.
 
     \paragraph
     The body frame is denote by $ \mathcal{B} = \{ \bm{\bar{x}}_\mathcal{B}, \bm{\bar{y}}_\mathcal{B}, \bm{\bar{z}}_\mathcal{B} \} $ and is fixed to the quadrotor body.
     The origin of this frame is at the \gls{CoM} of the vehicle and the $x$, $y$, and $z$ axis, align with the forwards, rightwards, and downwards directions of the quadrotor body respectively.
-    The body frame is described by a translation and rotation relative to the inertial frame.
+    The body frame is defined by a translation and rotation relative to the inertial frame.
 
 \FloatBarrier\section{Multirotor with a suspended payload}
 
+    \paragraph
+    The suspended payload is modelled as a rigid body attached by a link to the \gls{CoM} of the quadrotor rigid body.
+    The following assumptions are made regarding the payload modelling:
+    \begin{itemize}
+        \item The payload is a point mass.
+        \item The link is massless.
+        \item The link is rigid.
+        \item The link is attached to the \gls{CoM} of the multirotor.
+    \end{itemize}
+
+    \paragraph
+    The payloads used in the practical setup, which will be described in Chapter~\ref{chap:exp_design}, 
+    are small relative to the quadrotor and the attachment point is close to the payload \acr{CoM}.
+    They are attached with a low-friction swivel to the suspended cable, therefore the rotation of the payload around the cable axis has a negligible effect on the quadrotor. 
+    The cables used in Chapter~\ref{chap:exp_design} have a very low mass in comparison to the payloads and have a negligible amount of stretch.
+    Furthermore, the cable remains straight and rigid during flight due to the tension applied by the payload.
+    % Aggressive flights may cause the cable to go from taut to slack \cite{}, however, such aggressive manoeuvres will not be considered in this work.
+    Therefore the assumption of a rigid massless cable appears reasonable.
+
+    % ?? Add taut to slack cite
+
+
+    \paragraph
+    Orientations
+    Euler angles Slabber
+    
+    \paragraph
+    Quaternions
+
+    \paragraph
+    diagram of payload
 
 \FloatBarrier\section{Forces and moments}
+
+    \paragraph
+    damping of payload angle
+
+
 \FloatBarrier\section{Lagrangian mechanics}
     \begin{enumerate}
         \item Discuss weak link between altitude dynamics and swing angle
     \end{enumerate}
+
+
 \FloatBarrier\section{Linearised model}
     \label{sec:linear_model}
 
-\FloatBarrier\section{Discretised model}
 \FloatBarrier\section{Model verification} \label{sec:model_verification}
 
     \paragraph
@@ -93,6 +132,7 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
         \item water looks like double payload
     \end{itemize}
 % https://hybrid-robotics.berkeley.edu/publications/ACC2017_QuadLoad_ElasticCable.pdf), 
+% https://www.researchgate.net/publication/352394086_A_Hybrid_Control_Approach_for_the_Sw[…]=publicationTitle&_iepl%5BtargetEntityId%5D=PB%3A352394086
 
 }
 
