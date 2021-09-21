@@ -150,7 +150,7 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
     \paragraph
     The quadrotor is modelled as a rigid body with six degrees of freedom.
     This includes three translations and three rotational degrees of freedom.
-    This modelling process is also well described by \cite{Erasmus2020} and \cite{Slabber2020}, and the same general procedure is followed in this work. 
+    This quadrotor modelling process is well described by \cite{Erasmus2020} and \cite{Slabber2020}, and the same general procedure is followed in this work. 
     
     \paragraph
     The system parameters describing the physical properties of the quadrotor is listed in Table~\ref{tbl:quadrotor_params}.
@@ -227,6 +227,55 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
         \bm{F_\mathcal{B}} & = m_Q\bm{\dot{V}_\mathcal{B}} + \bm{\varOmega_\mathcal{B}} \times m_Q\bm{V_\mathcal{B}} , \label{eq:forces} \\ 
         \bm{M_\mathcal{B}} & = \bm{I_Q}\bm{\dot{\varOmega}_\mathcal{B}} + \bm{\varOmega_\mathcal{B}} \times  \bm{I_Q}\bm{V_\mathcal{B}} , \label{eq:body_rates}
     \end{align}
+
+    \paragraph
+    This provides a set of \glspl{ODE} which fully describe the quadrotor motion in six degrees of freedom, given the forces and moments acting on the vehicle.
+    With the equation derived by \cite{Schaub2017}, the attitude of the quadrotor can be obtained as a quaternion from the body angular rates using,
+    \begin{equation}
+        \begin{bmatrix}
+            \dot{q}_0 \\
+            \dot{q}_1 \\
+            \dot{q}_2 \\
+            \dot{q}_3
+        \end{bmatrix}
+        = 
+        \frac{1}{2}
+        \begin{bmatrix}
+            q_{0} &           - q_{1} &           - q_{2} &           - q_{3} \\
+            q_{1} & \phantom{-} q_{0} &           - q_{3} & \phantom{-} q_{2} \\
+            q_{2} & \phantom{-} q_{3} & \phantom{-} q_{0} &           - q_{1} \\
+            q_{3} &           - q_{2} & \phantom{-} q_{1} & \phantom{-} q_{0}
+        \end{bmatrix} 
+        \begin{bmatrix}
+            0 \\
+            \varOmega_{\mathcal{B}_X} \\ 
+            \varOmega_{\mathcal{B}_Y} \\ 
+            \varOmega_{\mathcal{B}_Z}
+        \end{bmatrix}.
+    \end{equation}
+
+    \paragraph
+    The \gls{DCM} is also derived by \cite{Schaub2017} and can be calculated from the attitude quaternion as,
+    \begin{equation}
+        \boldsymbol{R}_{V}=\left[\begin{array}{ccc}
+        q_{0}^{2}+q_{1}^{2}+q_{2}^{2}+q_{3}^{2} & 2\left(q_{1} q_{2}+q_{0} q_{3}\right) & 2\left(q_{1} q_{3}-q_{0} q_{2}\right) \\
+        2\left(q_{1} q_{2}-q_{0} q_{3}\right) & q_{0}^{2}-q_{1}^{2}+q_{2}^{2}-q_{3}^{2} & 2\left(q_{2} q_{3}+q_{0} q_{1}\right) \\
+        2\left(q_{1} q_{3}+q_{0} q_{2}\right) & 2\left(q_{2} q_{3}-q_{0} q_{1}\right) & q_{0}^{2}-q_{1}^{2}-q_{2}^{2}+q_{3}^{2}
+        \end{array}\right] .
+    \end{equation}
+    $\boldsymbol{R}_{V}$ is the transformation matrix that describes the rotation from the body frame to the inertial frame such that,
+    \begin{equation}
+        \bm{V}_{\mathcal{I}} = \boldsymbol{R}_{V}^{-1} \bm{V}_{\mathcal{B}}
+    \end{equation}
+
+    \paragraph
+    Starting at a specified initial condition, Equation~\ref{eq:forces} and Equation~\ref{eq:body_rates} can now be solved with an \gls{ODE} solver in a simulation environment like Simulink to describe the motion of the quadrotor.
+    The forces and moments acting on the quadrotor will be described in the next section.
+ 
+\FloatBarrier\section{Forces and moments}
+
+    \paragraph
+    damping of payload angle
     
 \FloatBarrier\section{Suspended payload model}
 
@@ -268,12 +317,6 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
     \paragraph
     In the practical setup shown in Chapter~\ref{chap:exp_design}, the cable is attached appears to be very near to the \gls{CoM} of the quadrotor.
     It is assumed that if the attachment point is slightly below this point it will have a negligible effect on the dynamics.
-
-\FloatBarrier\section{Forces and moments}
-
-    \paragraph
-    damping of payload angle
-
 
 \FloatBarrier\section{Lagrangian mechanics}
     \begin{enumerate}
