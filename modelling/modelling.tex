@@ -13,6 +13,9 @@ The models will be based on the real multirotor named \emph{Honeybee}, which was
 % ?? Write this section
 
 \paragraph
+Firstly, 
+quadrotor modelled separately
+payload modelled separately
 % The system identification and control system techniques in later chapters will then be explained based on the \gls{2D} model to avoid unnecessary complexity.
 Finally, it will be described how this model and the techniques in later chapters are extended to the 3D case.
 This 3D mathematical model will be used in a non-linear simulation of a multirotor and suspended payload.
@@ -75,7 +78,7 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
         \end{figure}
 
         \paragraph
-        Figure~\ref{fig:Euler_rotations} gives a simple illustration of the Euler ZYX angles.
+        Figure~\ref{fig:Euler_rotations} gives a simple illustration of the Euler-ZYX angles.
         Note that $\Theta$ and $\Phi$ are each illustrated here as a pure pitch angle and roll angle from the the inertial frame, without a prior Euler rotation.
 
     \FloatBarrier\subsection{Quaternions}
@@ -96,11 +99,12 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
             \begin{bmatrix}
                 \cos(\frac{\alpha}{2}) \\ 
                 \vec{r} \sin(\frac{\alpha}{2} )
-            \end{bmatrix} .
+            \end{bmatrix} ,
         \end{equation}
+        where $q_0$ is the magnitude component and $\bm{q}_v$ is the vector component of the quaternion.
 
         \paragraph
-        A Euler ZYX angle representation, $[\Theta~~\Phi~~\Psi]$, can be converted to a quaternion with the equation from \cite{Brescianini2013},
+        A Euler-ZYX angle representation, $[\Theta~~\Phi~~\Psi]$, can be converted to a quaternion with the equation \cite{Brescianini2013},
         \begin{equation}
             \bm{q}(\Theta, \Phi, \Psi) = 
             \left[\begin{array}{c}
@@ -141,11 +145,86 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
         \paragraph
         These equations will be applied in subsequent chapters.
 
-\FloatBarrier\section{Multirotor with a suspended payload}
+\FloatBarrier\section{Quadrotor model}
+
+    \paragraph
+    The quadrotor is modelled as a rigid body with six degrees of freedom.
+    This includes three translations and three rotational degrees of freedom.
+    This modelling process is also well described by \cite{Erasmus2020} and \cite{Slabber2020}, and the same general procedure is followed in this work. 
+    
+    \paragraph
+    The system parameters describing the physical properties of the quadrotor is listed in Table~\ref{tbl:quadrotor_params}.
+    These parameters will be used in subsequent sections to derive a model of the quadrotor.
+
+    \begin{table}[!htbp]
+        \renewcommand{\arraystretch}{1.1}
+        \centering
+        \caption{MPC configuration parameters.}
+        \begin{tabularx}{0.3\linewidth}{@{}ll@{}}
+            \toprule
+            \textbf{Parameter}   & \textbf{Value} \\
+                $m_Q$       & Mass of multirotor \\
+            \bottomrule
+        \end{tabularx}
+        \label{tbl:quadrotor_params}
+    \end{table}
+
+    \paragraph
+    Applying Newton's second law, the rigid body equations of motion is derived as:
+    \begin{align}
+        \bm{F_\mathcal{B}} & = m_Q\bm{\dot{V}_\mathcal{B}} + \bm{\varOmega_\mathcal{B}} \times m_Q\bm{V_\mathcal{B}} , \label{eq:forces} \\ 
+        \bm{M_\mathcal{B}} & = \bm{I_Q}\bm{\dot{\varOmega}_\mathcal{B}} + \bm{\varOmega_\mathcal{B}} \times  \bm{I_Q}\bm{V_\mathcal{B}} , \label{eq:body_rates}
+    \end{align}
+    where 
+    \begin{align}
+        \bm{F_\mathcal{B}} = &
+        \begin{bmatrix}
+            %F_{\mathcal{B}_X} & F_{\mathcal{B}_Y} & F_{\mathcal{B}_Z}\\
+            X & Y & Z\\
+        \end{bmatrix}^T , \\
+            \bm{M_\mathcal{B}} = &
+        \begin{bmatrix}
+            %M_{\mathcal{B}_X} & M_{\mathcal{B}_Y} & M_{\mathcal{B}_Z}\\
+            L & M & N
+        \end{bmatrix}^T ,
+    \end{align}
+    are the forces and moments, respectively, acting on the quadrotor, with respect to the body frame. The linear and angular velocity of the quadrotor are given by
+    \begin{align}
+        \bm{V_\mathcal{B}} & = 
+        \begin{bmatrix}
+            %V_{\mathcal{B}_X} & V_{\mathcal{B}_Y} & V_{\mathcal{B}_Z}\\
+            U & V & W\\
+        \end{bmatrix}^T \mbox{~and} \\
+        \bm{\varOmega_\mathcal{B}} & = 
+        \begin{bmatrix}
+            %\varOmega_{\mathcal{B}_X} & \varOmega_{\mathcal{B}_Y} & \varOmega_{\mathcal{B}_Z}\\
+            P & Q & R
+        \end{bmatrix}^T.
+    \end{align}
+    The quadrotor mass is  denoted by $m_Q$ and its inertia tensor is given by
+    \begin{equation} \label{eq:inertia}
+        \bm{I_Q} = 
+        \begin{bmatrix}
+            I_{xx} & I_{xy} & I_{xz}\\
+            I_{yx} & I_{yy} & I_{yz}\\
+            I_{zx} & I_{zy} & I_{zz}
+        \end{bmatrix}
+        \approx
+        \begin{bmatrix}
+            I_{xx} & 0 & 0\\
+            0 & I_{yy} & 0\\
+            0 & 0 & I_{zz}
+        \end{bmatrix}.
+    \end{equation}
+    The inertia tensor can be simplified as shown in Equation (\ref{eq:inertia}) due to the symmetry of the quadrotor in the XZ- and YZ-plane. 
+        
+
+
+\FloatBarrier\section{Suspended payload model}
 
     \paragraph
     The suspended payload is modelled as a rigid body attached by a link to the \gls{CoM} of the quadrotor rigid body.
-    Figure~\ref{fig:quad_payload} illustrates a quadrotor with a suspended payload and the Euler ZYX angles of the suspended payload in the inertial frame are also shown.
+    Figure~\ref{fig:quad_payload} illustrates a quadrotor with a suspended payload and the Euler-ZYX angles of the suspended payload in the inertial frame are also shown.
     The $x$-axis and $y$-axis Euler angles are denoted by $\theta_p$ and $\phi_p$ respectively.
     The $z$-axis Euler angle does not contribute to the system dynamics and is omitted. 
 
