@@ -159,15 +159,41 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
     \begin{table}[!htbp]
         \renewcommand{\arraystretch}{1.1}
         \centering
-        \caption{MPC configuration parameters.}
-        \begin{tabularx}{0.3\linewidth}{@{}ll@{}}
+        \caption{System parameters of the quadrotor model.}
+        \begin{tabularx}{0.66\linewidth}{@{}ll@{}}
             \toprule
-            \textbf{Parameter}   & \textbf{Value} \\
+            \textbf{Symbol}   & \textbf{Description} \\
                 $m_Q$       & Mass of multirotor \\
+                $I_{xx}$    & Mass moment of inertia about $\bm{\bar{x}}_\mathcal{B}$ \\ 
+                $I_{yy}$    & Mass moment of inertia about $\bm{\bar{y}}_\mathcal{B}$ \\ 
+                $I_{zz}$    & Mass moment of inertia about $\bm{\bar{z}}_\mathcal{B}$ \\ 
+                $d$         & Distance from \gls{CoM} to each motor\\
+                $R_N$       & Virtual yaw moment arm \\
+                $\tau$      & Motor time constant \\ 
+                $C_{D_X}$   & Aerodynamic drag coefficient in $\bm{\bar{x}}_\mathcal{B}$ direction \\
+                $C_{D_Y}$   & Aerodynamic drag coefficient in $\bm{\bar{x}}_\mathcal{B}$ direction \\
+                $C_{D_Z}$   & Aerodynamic drag coefficient in $\bm{\bar{x}}_\mathcal{B}$ direction \\
             \bottomrule
         \end{tabularx}
         \label{tbl:quadrotor_params}
     \end{table}
+
+    \paragraph
+    The linear velocity of the quadrotor is denoted by,
+    \begin{equation}
+        \bm{V_\mathcal{B}} = 
+        \begin{bmatrix}
+            V_{\mathcal{B}_X} & V_{\mathcal{B}_Y} & V_{\mathcal{B}_Z}\\
+        \end{bmatrix}^T
+    \end{equation}
+    and the angular velocity is denoted by,
+    \begin{equation}
+        \bm{\varOmega_\mathcal{B}} = 
+        \begin{bmatrix}
+            \varOmega_{\mathcal{B}_X} & \varOmega_{\mathcal{B}_Y} & \varOmega_{\mathcal{B}_Z}\\
+        \end{bmatrix}^T.
+    \end{equation}
+    with respect to the body frame.
 
     \paragraph
     Applying Newton's second law, the rigid body equations of motion is derived as:
@@ -188,20 +214,8 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
             L & M & N
         \end{bmatrix}^T ,
     \end{align}
-    are the forces and moments, respectively, acting on the quadrotor, with respect to the body frame. The linear and angular velocity of the quadrotor are given by
-    \begin{align}
-        \bm{V_\mathcal{B}} & = 
-        \begin{bmatrix}
-            %V_{\mathcal{B}_X} & V_{\mathcal{B}_Y} & V_{\mathcal{B}_Z}\\
-            U & V & W\\
-        \end{bmatrix}^T \mbox{~and} \\
-        \bm{\varOmega_\mathcal{B}} & = 
-        \begin{bmatrix}
-            %\varOmega_{\mathcal{B}_X} & \varOmega_{\mathcal{B}_Y} & \varOmega_{\mathcal{B}_Z}\\
-            P & Q & R
-        \end{bmatrix}^T.
-    \end{align}
-    The quadrotor mass is  denoted by $m_Q$ and its inertia tensor is given by
+    are the forces and moments, respectively, acting on the quadrotor, with respect to the body frame.
+    The inertia tensor of the quadrotor is defined as,
     \begin{equation} \label{eq:inertia}
         \bm{I_Q} = 
         \begin{bmatrix}
@@ -216,9 +230,7 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
             0 & 0 & I_{zz}
         \end{bmatrix}.
     \end{equation}
-    The inertia tensor can be simplified as shown in Equation (\ref{eq:inertia}) due to the symmetry of the quadrotor in the XZ- and YZ-plane. 
-        
-
+    The quadrotor is assumed to be symmetrical about the $XZ$- and $YZ$-plane, therefore the inertia tensor can be approximated as a diagonal matrix as shown in Equation~\ref{eq:inertia}. 
 
 \FloatBarrier\section{Suspended payload model}
 
