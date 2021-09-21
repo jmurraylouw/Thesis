@@ -103,10 +103,10 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
         \begin{equation}
             \bm{q}(\Theta, \Phi, \Psi) = 
             \left[\begin{array}{c}
-                c_{\frac{\phi}{2}} c_{\frac{\theta}{2}} c_{\frac{\psi}{2}}+s_{\frac{\phi}{2}} s_{\frac{\theta}{2}} s_{\frac{\psi}{2}} \\
-                -c_{\frac{\phi}{2}} s_{\frac{\theta}{2}} s_{\frac{\psi}{2}}+c_{\frac{\theta}{2}} c_{\frac{\psi}{2}} s_{\frac{\phi}{2}} \\
-                c_{\frac{\phi}{2}} c_{\frac{\psi}{2}} s_{\frac{\theta}{2}}+s_{\frac{\phi}{2}} c_{\frac{\psi}{2}} s_{\frac{\psi}{2}} \\
-                c_{\frac{\phi}{2}} c_{\frac{\theta}{2}} s_{\frac{\psi}{2}}-s_{\frac{\phi}{2}} c_{\frac{\psi}{2}} s_{\frac{\theta}{2}}
+                \phantom{-}\cos{\frac{\Phi}{2}} \cos{\frac{\Theta}{2}}  \cos{\frac{\Psi}{2}}    ~~+~~\sin{\frac{\Phi}{2}}   \sin{\frac{\Theta}{2}}  \sin{\frac{\Psi}{2}} \\
+                          -\cos{\frac{\Phi}{2}} \sin{\frac{\Theta}{2}}  \sin{\frac{\Psi}{2}}    ~~+~~\cos{\frac{\Theta}{2}} \cos{\frac{\Psi}{2}}    \sin{\frac{\Phi}{2}} \\
+                \phantom{-}\cos{\frac{\Phi}{2}} \cos{\frac{\Psi}{2}}    \sin{\frac{\Theta}{2}}  ~~+~~\sin{\frac{\Phi}{2}}   \cos{\frac{\Psi}{2}}    \sin{\frac{\Psi}{2}} \\
+                \phantom{-}\cos{\frac{\Phi}{2}} \cos{\frac{\Theta}{2}}  \sin{\frac{\Psi}{2}}    ~~-~~\sin{\frac{\Phi}{2}}   \cos{\frac{\Psi}{2}}    \sin{\frac{\Theta}{2}}
             \end{array}\right]
         \end{equation}
 
