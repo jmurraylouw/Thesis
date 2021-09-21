@@ -28,7 +28,7 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
     \begin{figure}[htb]
         \centering
         \includegraphics[width=0.6\linewidth]{modelling/fig/coord_frames}
-        \caption{Inertial and body coordinate frames of a quadrotor \cite{Erasmus2020}}
+        \caption{Inertial and body coordinate frames of a quadrotor from \cite{Erasmus2020}}
         \label{fig:coord_frames}
     \end{figure}
 
@@ -42,12 +42,65 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
     The body frame is denote by $ \mathcal{B} = \{ \bm{\bar{x}}_\mathcal{B}, \bm{\bar{y}}_\mathcal{B}, \bm{\bar{z}}_\mathcal{B} \} $ and is fixed to the quadrotor body.
     The origin of this frame is at the \gls{CoM} of the vehicle and the $x$, $y$, and $z$ axis, align with the forwards, rightwards, and downwards directions of the quadrotor body respectively.
     The body frame is defined by a translation and rotation relative to the inertial frame.
+    The position of the \gls{CoM} of the multirotor in the inertial frame is denoted as $P = [P_N~~P_E~~P_D]^T$. 
+    This represents the translation of the body frame relative to the inertial frame.
+    The rotations will be discussed in the section below.
+
+\FloatBarrier\section{Rotations}
+    
+    \paragraph
+    The rotation of the body frame relative to the inertial frame can also be referred to as the attitude of the multirotor.
+    This can be defined in terms of Euler angles or quaternions.
+
+    \FloatBarrier\subsection{Euler angles}
+
+        \paragraph
+        Euler angles are a popular way of describing a \gls{3D} rotation as a sequence of three consecutive elementary rotations \cite{Brescianini2013}.
+        For aircraft applications, the ZYX-sequence is common \cite{Brescianini2013} and will be used in this work.
+        The order of rotations are:
+        \begin{enumerate}
+            \item Rotate the body frame about the $z$-axis by the yaw angle, $\Psi$.
+            \item Rotate the resulting frame about the new $y$-axis by the pitch angle, $\Theta$.
+            \item Rotate the resulting frame about the new $x$-axis by the roll angle, $\Phi$.
+        \end{enumerate}
+
+        \begin{figure}[!htbp]
+            \centering
+            \vspace{0.5cm}
+            \def\svgwidth{\columnwidth}
+            \scalebox{1.0}{\input{modelling/fig/Euler_rotations.pdf_tex}}
+            \caption{Illustration of Euler angles from \cite{Slabber2020}}
+            \label{fig:Euler_rotations}
+        \end{figure}
+
+        \paragraph
+        Figure~\ref{fig:Euler_rotations} gives a simple illustration of the Euler ZYX angles.
+        Note that $\Theta$ and $\Phi$ are each illustrated as a pure pitch angle and roll angle from the the inertial frame, without a prior Euler rotation.
+
+    \FloatBarrier\subsection{Quaternions}
+
+        \paragraph
+        introduce
+
 
 \FloatBarrier\section{Multirotor with a suspended payload}
 
     \paragraph
     The suspended payload is modelled as a rigid body attached by a link to the \gls{CoM} of the quadrotor rigid body.
-    The following assumptions are made regarding the payload modelling:
+    Figure~\ref{fig:quad_payload} illustrates a quadrotor with a suspended payload.
+    The Euler ZYX angles of the suspended payload in the inertial frame are also shown.
+    The $x$-axis and $y$-axis Euler angles are denoted by $\theta_p$ and $\phi_p$ respectively.
+    The $z$-axis Euler angle does not contribute to the system dynamics and is omitted. 
+
+    \begin{figure}[!htbp]
+        \centering
+        \def\svgwidth{\columnwidth}
+        \scalebox{0.6}{\input{modelling/fig/quad_payload.pdf_tex}}
+        \caption{Schematic of a quadrotor with suspended payload from \cite{Slabber2020}}
+        \label{fig:quad_payload}
+    \end{figure}
+    
+    The following assumptions are made regarding the payload model:
     \begin{itemize}
         \item The payload is a point mass.
         \item The link is massless.
@@ -56,26 +109,20 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
     \end{itemize}
 
     \paragraph
-    The payloads used in the practical setup, which will be described in Chapter~\ref{chap:exp_design}, 
-    are small relative to the quadrotor and the attachment point is close to the payload \acr{CoM}.
+    The payloads used in the practical setup and described in Chapter~\ref{chap:exp_design}, 
+    are small relative to the quadrotor and the attachment point is close to the payload \gls{CoM}.
     They are attached with a low-friction swivel to the suspended cable, therefore the rotation of the payload around the cable axis has a negligible effect on the quadrotor. 
+    Therefore modelling a payload as a point mass seems reasonable.
+
+    \paragraph
     The cables used in Chapter~\ref{chap:exp_design} have a very low mass in comparison to the payloads and have a negligible amount of stretch.
     Furthermore, the cable remains straight and rigid during flight due to the tension applied by the payload.
-    % Aggressive flights may cause the cable to go from taut to slack \cite{}, however, such aggressive manoeuvres will not be considered in this work.
-    Therefore the assumption of a rigid massless cable appears reasonable.
-
-    % ?? Add taut to slack cite
-
+    Aggressive flights may cause periods of zero cable tension where the load is in free-fall and the cable is slack \cite{Tang2015}.
+    However, such aggressive manoeuvres will not be considered in this work and the assumption of a rigid, massless cable appears reasonable.
 
     \paragraph
-    Orientations
-    Euler angles Slabber
-    
-    \paragraph
-    Quaternions
-
-    \paragraph
-    diagram of payload
+    In the practical setup shown in Chapter~\ref{chap:exp_design}, the cable is attached appears to be very near to the \gls{CoM} of the quadrotor.
+    It is assumed that if the attachment point is slightly below this point it will have a negligible effect on the dynamics.
 
 \FloatBarrier\section{Forces and moments}
 
@@ -88,9 +135,6 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
         \item Discuss weak link between altitude dynamics and swing angle
     \end{enumerate}
 
-
-\FloatBarrier\section{Linearised model}
-    \label{sec:linear_model}
 
 \FloatBarrier\section{Model verification} \label{sec:model_verification}
 
@@ -119,6 +163,8 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
         \item Plot position step
     \end{enumerate}
 
+\FloatBarrier\section{Linearised model}
+    \label{sec:linear_model}
 
 \FloatBarrier\section{Dynamic payloads}
 
