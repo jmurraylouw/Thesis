@@ -179,42 +179,6 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
     \end{table}
 
     \paragraph
-    The linear velocity of the quadrotor is denoted by,
-    \begin{equation}
-        \bm{V_\mathcal{B}} = 
-        \begin{bmatrix}
-            V_{\mathcal{B}_X} & V_{\mathcal{B}_Y} & V_{\mathcal{B}_Z}\\
-        \end{bmatrix}^T
-    \end{equation}
-    and the angular velocity is denoted by,
-    \begin{equation}
-        \bm{\varOmega_\mathcal{B}} = 
-        \begin{bmatrix}
-            \varOmega_{\mathcal{B}_X} & \varOmega_{\mathcal{B}_Y} & \varOmega_{\mathcal{B}_Z}\\
-        \end{bmatrix}^T.
-    \end{equation}
-    with respect to the body frame.
-
-    \paragraph
-    Applying Newton's second law, the rigid body equations of motion is derived as:
-    \begin{align}
-        \bm{F_\mathcal{B}} & = m_Q\bm{\dot{V}_\mathcal{B}} + \bm{\varOmega_\mathcal{B}} \times m_Q\bm{V_\mathcal{B}} , \label{eq:forces} \\ 
-        \bm{M_\mathcal{B}} & = \bm{I_Q}\bm{\dot{\varOmega}_\mathcal{B}} + \bm{\varOmega_\mathcal{B}} \times  \bm{I_Q}\bm{V_\mathcal{B}} , \label{eq:body_rates}
-    \end{align}
-    where 
-    \begin{align}
-        \bm{F_\mathcal{B}} = &
-        \begin{bmatrix}
-            %F_{\mathcal{B}_X} & F_{\mathcal{B}_Y} & F_{\mathcal{B}_Z}\\
-            X & Y & Z\\
-        \end{bmatrix}^T , \\
-            \bm{M_\mathcal{B}} = &
-        \begin{bmatrix}
-            %M_{\mathcal{B}_X} & M_{\mathcal{B}_Y} & M_{\mathcal{B}_Z}\\
-            L & M & N
-        \end{bmatrix}^T ,
-    \end{align}
-    are the forces and moments, respectively, acting on the quadrotor, with respect to the body frame.
     The inertia tensor of the quadrotor is defined as,
     \begin{equation} \label{eq:inertia}
         \bm{I_Q} = 
@@ -232,6 +196,38 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
     \end{equation}
     The quadrotor is assumed to be symmetrical about the $XZ$- and $YZ$-plane, therefore the inertia tensor can be approximated as a diagonal matrix as shown in Equation~\ref{eq:inertia}. 
 
+
+    \paragraph
+    The linear velocity and angular velocity of the quadrotor with respect to the body frame is denoted by,
+    \begin{align}
+        \bm{V_\mathcal{B}}          &= 
+        \begin{bmatrix}
+            V_{\mathcal{B}_X} & V_{\mathcal{B}_Y} & V_{\mathcal{B}_Z}\\
+        \end{bmatrix}^T , \mbox{ and} \\
+        \bm{\varOmega_\mathcal{B}}  &= 
+        \begin{bmatrix}
+            \varOmega_{\mathcal{B}_X} & \varOmega_{\mathcal{B}_Y} & \varOmega_{\mathcal{B}_Z}\\
+        \end{bmatrix}^T.
+    \end{align}
+    Furthermore, the sum of forces and sum of moments acting on the quadrotor in the body frame are denotes by,
+    \begin{align}
+        \bm{F_\mathcal{B}} = &
+        \begin{bmatrix}
+            F_{\mathcal{B}_X} & F_{\mathcal{B}_Y} & F_{\mathcal{B}_Z} \\
+        \end{bmatrix}^T , \mbox{ and}\\
+            \bm{M_\mathcal{B}} = &
+        \begin{bmatrix}
+            M_{\mathcal{B}_X} & M_{\mathcal{B}_Y} & M_{\mathcal{B}_Z} \\
+        \end{bmatrix}^T .
+    \end{align}
+
+    \paragraph
+    As described by \cite{Erasmus2020}, these equations can be used with Newton's second law to derive the rigid body equations of motion as,
+    \begin{align}
+        \bm{F_\mathcal{B}} & = m_Q\bm{\dot{V}_\mathcal{B}} + \bm{\varOmega_\mathcal{B}} \times m_Q\bm{V_\mathcal{B}} , \label{eq:forces} \\ 
+        \bm{M_\mathcal{B}} & = \bm{I_Q}\bm{\dot{\varOmega}_\mathcal{B}} + \bm{\varOmega_\mathcal{B}} \times  \bm{I_Q}\bm{V_\mathcal{B}} , \label{eq:body_rates}
+    \end{align}
+    
 \FloatBarrier\section{Suspended payload model}
 
     \paragraph
