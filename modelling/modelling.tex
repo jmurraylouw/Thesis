@@ -49,8 +49,8 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
 \FloatBarrier\section{Rotations}
     
     \paragraph
-    The rotation of the body frame relative to the inertial frame can also be referred to as the attitude of the multirotor.
-    This can be defined in terms of Euler angles or quaternions.
+    The rotation of the body frame relative to the inertial frame is referred to as the attitude of the multirotor.
+    Attitude will be defined in terms of Euler angles or quaternions in this work, which will be described below.
 
     \FloatBarrier\subsection{Euler angles}
 
@@ -68,20 +68,79 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
             \centering
             \vspace{0.5cm}
             \def\svgwidth{\columnwidth}
-            \scalebox{1.0}{\input{modelling/fig/Euler_rotations.pdf_tex}}
+            \scalebox{0.85}{\input{modelling/fig/Euler_rotations.pdf_tex}}
+            \vspace{0.5cm}
             \caption{Illustration of Euler angles from \cite{Slabber2020}}
             \label{fig:Euler_rotations}
         \end{figure}
 
         \paragraph
         Figure~\ref{fig:Euler_rotations} gives a simple illustration of the Euler ZYX angles.
-        Note that $\Theta$ and $\Phi$ are each illustrated as a pure pitch angle and roll angle from the the inertial frame, without a prior Euler rotation.
+        Note that $\Theta$ and $\Phi$ are each illustrated here as a pure pitch angle and roll angle from the the inertial frame, without a prior Euler rotation.
 
     \FloatBarrier\subsection{Quaternions}
 
         \paragraph
-        introduce
+        Quaternions are an alternative way of representing a rotation.
+        A quaternion defines a rotation with a single rotation about a fixed axis.
+        which is parametrized by the rotation angle, $\alpha$, and the unit vector, $\vec{k}$ \cite{Brescianini2013}.
+        A unit quaternion is therefore defined as,
+        \begin{equation}
+            \bm{q} = [q_0~~q_1~~q_2~~q_3]^T = 
+            \begin{bmatrix}
+                q_0 \\ 
+                \bm{q}_v
+            \end{bmatrix}
+            =
+            \begin{bmatrix}
+                \cos(\frac{\alpha}{2}) \\ 
+                \vec{k} \sin(\frac{\alpha}{2} )
+            \end{bmatrix}
+        \end{equation}
 
+        \paragraph
+        A Euler ZYX angle representation, $[\Theta~~\Phi~~\Psi]$, can be converted to a quaternion with the equation from \cite{Brescianini2013},
+        \begin{equation}
+            \bm{q}(\Theta, \Phi, \Psi) = 
+            \left[\begin{array}{c}
+                c_{\frac{\phi}{2}} c_{\frac{\theta}{2}} c_{\frac{\psi}{2}}+s_{\frac{\phi}{2}} s_{\frac{\theta}{2}} s_{\frac{\psi}{2}} \\
+                -c_{\frac{\phi}{2}} s_{\frac{\theta}{2}} s_{\frac{\psi}{2}}+c_{\frac{\theta}{2}} c_{\frac{\psi}{2}} s_{\frac{\phi}{2}} \\
+                c_{\frac{\phi}{2}} c_{\frac{\psi}{2}} s_{\frac{\theta}{2}}+s_{\frac{\phi}{2}} c_{\frac{\psi}{2}} s_{\frac{\psi}{2}} \\
+                c_{\frac{\phi}{2}} c_{\frac{\theta}{2}} s_{\frac{\psi}{2}}-s_{\frac{\phi}{2}} c_{\frac{\psi}{2}} s_{\frac{\theta}{2}}
+            \end{array}\right]
+        \end{equation}
+
+        \paragraph
+        The inverse of an quaternion is defined as,
+        \begin{equation}
+            \bm{q}^{-1} = 
+            \frac{\begin{bmatrix}
+                q_0 \\ 
+                -\bm{q}_v
+            \end{bmatrix}}{\sqrt{q_{0}^{2}+q_{1}^{2}+q_{2}^{2}+q_{3}^{2}}}
+        \end{equation}
+
+        \paragraph
+        Furthermore, the multiplication of two quaternions, $\bm{q}$ and $\bm{q}^\prime$, is given by \cite{Brescianini2013}:
+        \begin{equation}
+            \bm{q} \cdot \bm{q}^\prime
+            =
+            Q( \bm{q} ) \bm{q}^\prime,
+        \end{equation}
+        where
+        \begin{equation}
+            Q( \bm{q} ) = 
+            \left[\begin{array}{cccc}
+                q_{0} & -q_{1} & -q_{2} & -q_{3} \\
+                q_{1} & q_{0} & -q_{3} & q_{2} \\
+                q_{2} & q_{3} & q_{0} & -q_{1} \\
+                q_{3} & -q_{2} & q_{1} & q_{0}
+            \end{array}\right]
+        \end{equation}
+
+        \paragraph
+        Quaternions have the advatage that they ??
+        They will be applied in for attitude control ??
 
 \FloatBarrier\section{Multirotor with a suspended payload}
 
