@@ -81,9 +81,10 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
     \FloatBarrier\subsection{Quaternions}
 
         \paragraph
-        Quaternions are an alternative way of representing a rotation.
-        A quaternion defines a rotation with a single rotation about a fixed axis.
-        which is parametrized by the rotation angle, $\alpha$, and the unit vector, $\vec{k}$ \cite{Brescianini2013}.
+        A quaternion provides way of representing a rotation with four parameters.
+        An advantage of quaternions is that it does not produce singularities like Euler angles do \cite{Brescianini2013}.
+        A quaternion defines a rotation with a single rotation about a fixed axis, 
+        which is parametrized by a rotation angle, $\alpha$, and a unit vector, $\vec{r}$.
         A unit quaternion is therefore defined as,
         \begin{equation}
             \bm{q} = [q_0~~q_1~~q_2~~q_3]^T = 
@@ -94,8 +95,8 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
             =
             \begin{bmatrix}
                 \cos(\frac{\alpha}{2}) \\ 
-                \vec{k} \sin(\frac{\alpha}{2} )
-            \end{bmatrix}
+                \vec{r} \sin(\frac{\alpha}{2} )
+            \end{bmatrix} .
         \end{equation}
 
         \paragraph
@@ -103,21 +104,20 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
         \begin{equation}
             \bm{q}(\Theta, \Phi, \Psi) = 
             \left[\begin{array}{c}
-                \phantom{-}\cos{\frac{\Phi}{2}} \cos{\frac{\Theta}{2}}  \cos{\frac{\Psi}{2}}    ~~+~~\sin{\frac{\Phi}{2}}   \sin{\frac{\Theta}{2}}  \sin{\frac{\Psi}{2}} \\
-                          -\cos{\frac{\Phi}{2}} \sin{\frac{\Theta}{2}}  \sin{\frac{\Psi}{2}}    ~~+~~\cos{\frac{\Theta}{2}} \cos{\frac{\Psi}{2}}    \sin{\frac{\Phi}{2}} \\
-                \phantom{-}\cos{\frac{\Phi}{2}} \cos{\frac{\Psi}{2}}    \sin{\frac{\Theta}{2}}  ~~+~~\sin{\frac{\Phi}{2}}   \cos{\frac{\Psi}{2}}    \sin{\frac{\Psi}{2}} \\
-                \phantom{-}\cos{\frac{\Phi}{2}} \cos{\frac{\Theta}{2}}  \sin{\frac{\Psi}{2}}    ~~-~~\sin{\frac{\Phi}{2}}   \cos{\frac{\Psi}{2}}    \sin{\frac{\Theta}{2}}
-            \end{array}\right]
+                \begin{aligned}%[t]
+                     \cos{\tfrac{\Phi}{2}} \cos{\tfrac{\Theta}{2}}  \cos{\tfrac{\Psi}{2}}    ~~ &+ ~~ \sin{\tfrac{\Phi}{2}}   \sin{\tfrac{\Theta}{2}}  \sin{\tfrac{\Psi}{2}} \\
+                    -\cos{\tfrac{\Phi}{2}} \sin{\tfrac{\Theta}{2}}  \sin{\tfrac{\Psi}{2}}    ~~ &+ ~~ \cos{\tfrac{\Theta}{2}} \cos{\tfrac{\Psi}{2}}    \sin{\tfrac{\Phi}{2}} \\
+                     \cos{\tfrac{\Phi}{2}} \cos{\tfrac{\Psi}{2}}    \sin{\tfrac{\Theta}{2}}  ~~ &+ ~~ \sin{\tfrac{\Phi}{2}}   \cos{\tfrac{\Psi}{2}}    \sin{\tfrac{\Psi}{2}} \\
+                     \cos{\tfrac{\Phi}{2}} \cos{\tfrac{\Theta}{2}}  \sin{\tfrac{\Psi}{2}}    ~~ &- ~~ \sin{\tfrac{\Phi}{2}}   \cos{\tfrac{\Psi}{2}}    \sin{\tfrac{\Theta}{2}} \\
+                \end{aligned}
+            \end{array}\right] .
         \end{equation}
 
         \paragraph
         The inverse of an quaternion is defined as,
         \begin{equation}
             \bm{q}^{-1} = 
-            \frac{\begin{bmatrix}
-                q_0 \\ 
-                -\bm{q}_v
-            \end{bmatrix}}{\sqrt{q_{0}^{2}+q_{1}^{2}+q_{2}^{2}+q_{3}^{2}}}
+            \frac{ \begin{bmatrix} q_0 \\ -\bm{q}_v \end{bmatrix} }{ \sqrt{ {q_{0}}^{2} + {q_{1}}^{2} + {q_{2}}^{2} + {q_{3}}^{2} } } .
         \end{equation}
 
         \paragraph
@@ -131,23 +131,21 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
         \begin{equation}
             Q( \bm{q} ) = 
             \left[\begin{array}{cccc}
-                q_{0} & -q_{1} & -q_{2} & -q_{3} \\
-                q_{1} & q_{0} & -q_{3} & q_{2} \\
-                q_{2} & q_{3} & q_{0} & -q_{1} \\
-                q_{3} & -q_{2} & q_{1} & q_{0}
-            \end{array}\right]
+                q_{0} &           - q_{1} &           - q_{2} &           - q_{3} \\
+                q_{1} & \phantom{-} q_{0} &           - q_{3} & \phantom{-} q_{2} \\
+                q_{2} & \phantom{-} q_{3} & \phantom{-} q_{0} &           - q_{1} \\
+                q_{3} &           - q_{2} & \phantom{-} q_{1} & \phantom{-} q_{0}
+            \end{array}\right] .
         \end{equation}
 
         \paragraph
-        Quaternions have the advatage that they ??
-        They will be applied in for attitude control ??
+        These equations will be applied in subsequent chapters.
 
 \FloatBarrier\section{Multirotor with a suspended payload}
 
     \paragraph
     The suspended payload is modelled as a rigid body attached by a link to the \gls{CoM} of the quadrotor rigid body.
-    Figure~\ref{fig:quad_payload} illustrates a quadrotor with a suspended payload.
-    The Euler ZYX angles of the suspended payload in the inertial frame are also shown.
+    Figure~\ref{fig:quad_payload} illustrates a quadrotor with a suspended payload and the Euler ZYX angles of the suspended payload in the inertial frame are also shown.
     The $x$-axis and $y$-axis Euler angles are denoted by $\theta_p$ and $\phi_p$ respectively.
     The $z$-axis Euler angle does not contribute to the system dynamics and is omitted. 
 
@@ -159,6 +157,7 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
         \label{fig:quad_payload}
     \end{figure}
     
+    \paragraph
     The following assumptions are made regarding the payload model:
     \begin{itemize}
         \item The payload is a point mass.
