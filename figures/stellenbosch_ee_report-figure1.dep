@@ -1,2 +1,3 @@
-figures/stellenbosch_ee_report-figure1.pdf: control/csv/compare_control_pid_Simulink_single_pend_mp0.1_l0.5_PID_vel_steps_tune_scale_0.7.csv
-figures/stellenbosch_ee_report-figure1.pdf: control/csv/compare_control_pid_Simulink_single_pend_mp0.2_l1_PID_vel_steps_tune_scale_0.7.csv
+figures/stellenbosch_ee_report-figure1.pdf: modelling/csv/prac_vs_sim_vel_step_Simulink_2021-08-20_02_l-2_mp-0.3-wind-0.5.csv.csv
+figures/stellenbosch_ee_report-figure1.pdf: modelling/csv/prac_vs_sim_vel_step_Simulink_2021-08-20_02_l-2_mp-0.3-wind-0.5.csv.csv
+figures/stellenbosch_ee_report-figure1.pdf: modelling/csv/prac_vs_sim_vel_step_Simulink_2021-08-20_02_l-2_mp-0.3-wind-0.5.csv.csv
