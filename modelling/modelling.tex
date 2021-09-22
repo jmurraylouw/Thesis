@@ -419,7 +419,7 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
     \FloatBarrier\subsection{Payload assumptions}
 
         \paragraph
-        The following assumptions are made regarding the payload model:
+        The following major assumptions are made regarding the payload model:
         \begin{itemize}
             \item The payload is a point mass.
             \item The link is massless.
@@ -465,7 +465,7 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
             \end{bmatrix} ,
         \end{equation}
         where $g$ is the acceleration due to gravity.
-        The vector of generalised coordinates, $\bm{p}$, of the whole system can now be defined as,
+        The vector of generalised coordinates, $\bm{p}$, of the system can now be defined as,
         \begin{equation} \label{eq:general_coords}
             \bm{p} = 
             \begin{bmatrix}
@@ -563,16 +563,28 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
             \end{bmatrix*}.
         \end{equation}
 
+        % ?? Check of dit reg is. Dalk nie conservative forces of qudrotor nie
+
         % ?? Check element wise multiplication equations
 
     \FloatBarrier\subsection{Equations of motion}
     
         \paragraph
-        Discuss weak link between altitude dynamics and swing angle
+        The set of Euler-Lagrange equations for this system are described by,
+        \begin{equation}
+            \frac{d}{dt}\left(\frac{\partial\mathcal{L}}{\partial\dot{p_j}}\right) - \frac{\partial\mathcal{L} }{\partial p_j} = Q_j,
+        \end{equation}
+        where 
+        $p_j$ is an element in $\bm{p}$,
+        $Q_j$ is the corresponding element in $\bm{Q}$,  and
+        $j = \{1,~2,~3,~4,~5\}$.
+        This set of coupled equations was solved with the Symbolic Maths Toolbox\texttrademark~\cite{SymbolicToolbox2021} in MATLAB to determine the payload equations of motions. 
+        This yields a set of decoupled \glspl{ODE} describing the motion of the payload as a function of the motion of the quadrotor \gls{CoM}.
 
+        % ?? Add odes in appendix
+        % ?? Discuss weak link between altitude dynamics and swing angle
 
-
-    \FloatBarrier\subsection{Quadrotor forces due to payload}
+    \FloatBarrier\subsection{Payload forces acting on the quadrotor}
 
 
 
