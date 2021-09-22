@@ -170,9 +170,9 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
                 $d$         & Distance from \gls{CoM} to each motor\\
                 $R_N$       & Virtual yaw moment arm \\
                 $\tau$      & Motor-propeller pair time constant \\ 
-                $C_{D_X}$   & Aerodynamic drag coefficient in $\bm{\bar{x}}_\mathcal{B}$ direction \\
-                $C_{D_Y}$   & Aerodynamic drag coefficient in $\bm{\bar{x}}_\mathcal{B}$ direction \\
-                $C_{D_Z}$   & Aerodynamic drag coefficient in $\bm{\bar{x}}_\mathcal{B}$ direction \\
+                $C_{Q_X}$   & Aerodynamic drag coefficient in $\bm{\bar{x}}_\mathcal{B}$ direction \\
+                $C_{Q_Y}$   & Aerodynamic drag coefficient in $\bm{\bar{x}}_\mathcal{B}$ direction \\
+                $C_{Q_Z}$   & Aerodynamic drag coefficient in $\bm{\bar{x}}_\mathcal{B}$ direction \\
             \bottomrule
         \end{tabularx}
         \label{tbl:quadrotor_params}
@@ -292,7 +292,7 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
     However the actuators collectively apply a force, $\bm{F}_\mathcal{B}^T$, 
     and moment, $\bm{M}_\mathcal{B}^T$, to the vehicle.
     This force and moment can be represented in terms of virtual actuator thrusts as,
-    \begin{equation}
+    \begin{equation} \label{eq:thurst_force_moment}
         \bm{F}_{\mathcal{B}}^T = 
         \begin{bmatrix}
             0\\
@@ -342,15 +342,12 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
     Multirotors experience aerodynamic forces due to the relative velocity of air over the vehicle.
     The aerodynamic model is based on work done by \cite{Moller2015} and is also applied successfully by \cite{Erasmus2020} and \cite{Slabber2020}.
     The model describes the aerodynamic forces as,
-    \begin{equation} \label{eq:drag}
-        \bm{F}_\mathcal{B}^A = \frac{1}{2} \rho \bm{V}_{\mathcal{B}_{w}} |\bm{V}_{\mathcal{B}_{w}}| 
-        \begin{bmatrix}
-            C_{D_X} \\ C_{D_Y} \\ C_{D_Z}
-        \end{bmatrix}
+    \begin{equation} \label{eq:drag_quad}
+        \bm{F}_\mathcal{B}^A = \frac{1}{2}   \rho   \bm{V}_{\mathcal{B}_{w}} |\bm{V}_{\mathcal{B}_{w}}|   \bm{C}_Q
     \end{equation}
     where $\rho$ is the air density, 
     \(\bm{V}_{\mathcal{B}_{w}}\) is the relative velocity of air over the quadrotor in the body frame, 
-    and $[C_{D_X}~~C_{D_Y}~~C_{D_Z}]^T$ is the drag coefficients and reference area lumped into a single damping coefficient per axis.
+    and $\bm{C}_Q = [C_{Q_X}~~C_{Q_Y}~~C_{Q_Z}]^T$ is the drag coefficients and reference area lumped into a single damping coefficient per axis.
     The relative velocity, \(\bm{V}_{\mathcal{B}_{w}}\), is calculated as
     \begin{equation}
         \bm{V}_{\mathcal{B}_{w}} = -\bm{V}_\mathcal{B} + \bm{R}_{V} \bm{V}_w, 
@@ -377,7 +374,7 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
         \begin{bmatrix}
             0 \\
             0 \\
-            m_q g
+            m_Q g
         \end{bmatrix}  \mbox{~~and~~}
         \bm{M}_\mathcal{B}^G =
         \begin{bmatrix}
@@ -389,55 +386,194 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
 
     \paragraph
     \textbf{Suspended payload} \newline
-    The suspended payload applies reaction forces and moments to the quadrotor due to its motion relative to the vehicle.
+    The suspended payload applies a reaction force and moment to the quadrotor which is dependant on the equations of motion of the suspended payload.
     The payload and cable also experience gravity and aerodynamic forces which influence its motion.
     These forces and moments will all be considered in the section below.
     
 \FloatBarrier\section{Suspended payload model}
 
     \paragraph
-    The suspended payload is modelled as a rigid body which is attached to the quadrotor \gls{CoM} by a rigid link.
-    Figure~\ref{fig:quad_payload} illustrates a quadrotor with a suspended payload and the Euler-ZYX angles of the suspended payload in the inertial frame are also shown.
-    The $x$-axis and $y$-axis Euler angles are denoted by $\theta_p$ and $\phi_p$ respectively.
-    The $z$-axis Euler angle does not contribute to the system dynamics and is omitted. 
+    The suspended payload can be modelled as a rigid body which is attached to the quadrotor by a rigid link.
+    Due to the acceleration of the payload, the payload applies a reaction force to the quadrotor through the link.
+    The equations of motion of the suspended payload need to be derived to define these reaction forces.
+    The considered payload model and modelling assumptions will first be discussed in this section.
+    Thereafter, the payload equations of motions will be derived with Lagrangian mechanics.
+    Finally, the resultant forces of the payload on the quadrotor will be presented.
+
+    \paragraph
+    Figure~\ref{fig:quad_payload} illustrates a quadrotor with a suspended payload, where
+    $m_Q$ is the mass of the quadrotor,
+    $m_p$ is the mass of the payload, and
+    $l$ is the length of the suspended cable.
+    The $x$-axis and $y$-axis Euler-ZYX angles in the inertial frame are denoted by $\theta_p$ and $\phi_p$ respectively.
+    Furthermore, $\bm{r}_Q = [x_Q~~y_Q~~z_Q]^T$ defines the position of the quadrotor \gls{CoM} in the inertial frame.
+    Likewise, $\bm{r}_p = [x_p~~y_p~~z_p]^T$ defines the position of the payload in the inertial frame.
 
     \begin{figure}[!htbp]
         \centering
-        \def\svgwidth{\columnwidth}
-        \scalebox{0.6}{\input{modelling/fig/quad_payload.pdf_tex}}
+        \includegraphics[width=0.7\linewidth]{modelling/fig/quad_payload_model}
         \caption{Schematic of a quadrotor with suspended payload from \cite{Slabber2020}}
         \label{fig:quad_payload}
     \end{figure}
     
-    \paragraph
-    The following assumptions are made regarding the payload model:
-    \begin{itemize}
-        \item The payload is a point mass.
-        \item The link is massless.
-        \item The link is rigid.
-        \item The link is attached to the \gls{CoM} of the multirotor.
-    \end{itemize}
+    \FloatBarrier\subsection{Payload assumptions}
 
-    \paragraph
-    The payloads used in the practical setup and described in Chapter~\ref{chap:exp_design}, 
-    are small relative to the quadrotor and the attachment point is close to the payload \gls{CoM}.
-    They are attached with a low-friction swivel to the suspended cable, therefore the rotation of the payload around the cable axis has a negligible effect on the quadrotor. 
-    Therefore modelling a payload as a point mass seems reasonable.
+        \paragraph
+        The following assumptions are made regarding the payload model:
+        \begin{itemize}
+            \item The payload is a point mass.
+            \item The link is massless.
+            \item The link is rigid.
+            \item The link is attached to the \gls{CoM} of the multirotor.
+        \end{itemize}
 
-    \paragraph
-    The cables used in Chapter~\ref{chap:exp_design} have a very low mass in comparison to the payloads and have a negligible amount of stretch.
-    Furthermore, the cable remains straight and rigid during flight due to the tension applied by the payload.
-    Aggressive flights may cause periods of zero cable tension where the load is in free-fall and the cable is slack \cite{Tang2015}.
-    However, such aggressive manoeuvres will not be considered in this work and the assumption of a rigid, massless cable appears reasonable.
+        \paragraph
+        The payloads used in the practical setup and described in Chapter~\ref{chap:exp_design}, 
+        are small relative to the quadrotor and the attachment point is close to the payload \gls{CoM}.
+        They are attached with a low-friction swivel to the suspended cable, therefore the rotation of the payload around the cable axis has a negligible effect on the quadrotor. 
+        Therefore modelling the payload as a point mass appears to be reasonable approximation.
 
-    \paragraph
-    In the practical setup shown in Chapter~\ref{chap:exp_design}, the cable is attached appears to be very near to the \gls{CoM} of the quadrotor.
-    It is assumed that if the attachment point is slightly below this point it will have a negligible effect on the dynamics.
+        \paragraph
+        The cables used in Chapter~\ref{chap:exp_design} have a low mass in comparison to the payloads and have a negligible amount of stretch.
+        Furthermore, the cable remains straight and rigid during flight due to the tension applied by the payload.
+        Aggressive manoeuvres may cause periods of zero cable tension where the load is in free-fall and the cable is slack \cite{Tang2015}.
+        However, such aggressive manoeuvres will not be considered in this work and the assumption of a rigid, massless cable appears reasonable.
 
-\FloatBarrier\section{Lagrangian mechanics}
-    \begin{enumerate}
-        \item Discuss weak link between altitude dynamics and swing angle
-    \end{enumerate}
+        \paragraph
+        In the practical setup shown in Chapter~\ref{chap:exp_design}, the cable attachment appears to be near to the \gls{CoM} of the quadrotor.
+        It is assumed that even if the attachment point is slightly below the actual \gls{CoM}, this will have a negligible effect on the dynamics and will still be approximated by a \gls{CoM} attachment.
+        Due to this assumption, the payload cannot apply a moment to quadrotor, hence the quadrotor attitude dynamics is decoupled from the payload dynamics.
+        Therefore, the quadrotor can be modelled as a point mass when considering the payload equations of motion.
+
+    \FloatBarrier\subsection{Lagrangian}
+
+        \paragraph
+        Lagrangian mechanics is an energy-based modelling approach which can be used to derive differential equations describing a system \cite{Erasmus2020}.
+        The dynamical equations of the same suspended payload system were derived by \cite{Slabber2020} and the derivation in this work closely follows that approach.
+        The derivation starts by defining the payload position as a function of the quadrotor position in the inertial frame as,
+        \begin{equation}
+            \bm{r}_p = 
+            \begin{bmatrix}
+                x_p \\
+                y_p \\
+                z_p
+            \end{bmatrix} = 
+            \begin{bmatrix}
+                x_Q + l \cos(\phi_p) \sin(\theta_p) \\
+                y_Q +   \sin(\phi_p) \\
+                z_Q + l \cos(\phi_p) \cos(\theta_p)
+            \end{bmatrix} ,
+        \end{equation}
+        where $g$ is the acceleration due to gravity.
+        The vector of generalised coordinates, $\bm{p}$, of the whole system can now be defined as,
+        \begin{equation} \label{eq:general_coords}
+            \bm{p} = 
+            \begin{bmatrix}
+                x_p \\
+                y_p \\
+                z_p \\
+                \phi_p \\
+                \theta_p
+            \end{bmatrix}.
+        \end{equation}
+
+        \paragraph
+        The total kinetic energy, $T_e$, and total potential energy, $V_e$, of the quadrotor and payload system can be determined as,
+        \begin{align}
+            T_e &= \frac{1}{2} m_Q | \bm{\dot{r}}_Q | ^2 + \frac{1}{2} m_p | \bm{\dot{r}}_p | ^2, \mbox{~~and~~} \\
+            V_e &= - m_Q g z_Q - m_p g z_p .
+        \end{align}
+        Note that these energy equations describe the system modelled as two point mass bodies and do not consider the attitude dynamics of the quadrotor as mentioned earlier.
+        The Lagrangian can now be determined as,
+        \begin{equation}
+            \mathcal{L} = T_e - V_e,
+        \end{equation}
+
+    \FloatBarrier\subsection{Non-conservative forces}
+
+        \paragraph
+        The non-conservative forces and moments acting on the system are also considered in this derivation.
+        This refers to the effects that add or remove energy from the considered system.
+        The following non-conservative forces and moments are considered in this derivation:
+        \begin{itemize}
+            \item The aerodynamic drag force acting on the quadrotor.
+            \item The aerodynamic drag force acting on the payload mass.
+            \item The thrust generated by the quadrotor actuators.
+            \item The moment caused by friction at the cable attachment point.
+        \end{itemize}
+        It is assumed that the cable is thin and short enough that the aerodynamic drag force acting on the cable is negligible.
+        
+        \paragraph
+        According to the aerodynamic model presented in Equation~\ref{eq:drag_quad}, 
+        the aerodynamic drag forces acting on the quadrotor and payload in the inertial frame are defined as,
+        \begin{align}
+            \bm{F}_Q^A & =
+            \begin{bmatrix}
+                F_{Q_x}^A \\
+                F_{Q_y}^A \\
+                F_{Q_z}^A
+            \end{bmatrix} = 
+            \begin{bmatrix}
+                \frac{1}{2} \phantom{.} \rho \phantom{.} C_{Q_x} \phantom{.} \dot{x_Q}^2 \\
+                \frac{1}{2} \phantom{.} \rho \phantom{.} C_{Q_y} \phantom{.} \dot{y_Q}^2 \\
+                \frac{1}{2} \phantom{.} \rho \phantom{.} C_{Q_z} \phantom{.} \dot{z_Q}^2
+            \end{bmatrix}  \mbox{ and}  \label{eq:quad_drag_inertial} \\
+            \bm{F}_p^A & = 
+            \begin{bmatrix}
+                F_{p_x}^A \\
+                F_{p_y}^A \\
+                F_{p_z}^A
+            \end{bmatrix} = 
+            \begin{bmatrix}
+                \frac{1}{2} \phantom{.} \rho \phantom{.} C_{p} \phantom{.} \dot{x_p}^2 \\
+                \frac{1}{2} \phantom{.} \rho \phantom{.} C_{p} \phantom{.} \dot{y_p}^2 \\
+                \frac{1}{2} \phantom{.} \rho \phantom{.} C_{p} \phantom{.} \dot{z_p}^2
+            \end{bmatrix}  \mbox{,} \label{eq:payload_drag_inertial}
+        \end{align}
+        where $C_p$ is the lumped aerodynamic drag coefficient and reference area of the payload.
+        It is assumed that the lumped payload drag coefficients are equal in all three axes, hence it is described by a single coefficient.
+
+        \paragraph
+        The actuator thrust force was derived in Equation~\ref{eq:thurst_force_moment}for the body frame.
+        This is transformed in the inertial frame with the \gls{DCM} as,
+        \begin{equation}
+            \bm{F}_\mathcal{I}^T = \bm{R}_V^{-1} \bm{F}_\mathcal{B}^T .
+        \end{equation}
+
+        \paragraph
+        Rotational friction of the cable attachment is modelled as linear damping.
+        It is assumed that the coefficient of friction is equal in each axis of rotation.
+        Therefore, the friction moments opposing the $\theta_p$ and $\phi_p$ rotations are given by,
+        \begin{align}
+            M_{\theta_p}^F  &= - c_{\theta} \dot{\theta}_p \\
+            M_{\phi_p}^F    &= - c_{\theta} \dot{\phi}_p
+        \end{align}
+        respectively, where $c_{\theta}$ is the rotational friction coefficient for $\theta_p$ and $\phi_p$ rotations.
+
+        \paragraph
+        A vector of non-conservative forces and moments corresponding to the system coordinates in $\bm{p}$ can now be defined as,
+        \begin{equation}
+            \bm{Q} = 
+            \begin{bmatrix*}[c]
+                F_{\mathcal{I}_x} - F_{Q_x}^A - F_{p_x}^A \\
+                F_{\mathcal{I}_y} - F_{Q_y}^A - F_{p_y}^A \\
+                F_{\mathcal{I}_z} - F_{Q_z}^A - F_{p_z}^A \\
+                M_{\theta_p}^F - F_{p_y}^A \cos{\phi}_p \\
+                M_{\phi_p}^F - F_{p_x}^A \cos{\theta}_p
+            \end{bmatrix*}.
+        \end{equation}
+
+        % ?? Check element wise multiplication equations
+
+    \FloatBarrier\subsection{Equations of motion}
+    
+        \paragraph
+        Discuss weak link between altitude dynamics and swing angle
+
+
+
+    \FloatBarrier\subsection{Quadrotor forces due to payload}
+
 
 
 \FloatBarrier\section{Model verification} \label{sec:model_verification}
