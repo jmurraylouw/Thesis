@@ -178,6 +178,8 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
         \label{tbl:quadrotor_params}
     \end{table}
 
+    % ?? Insert light rule under headings
+
     \paragraph
     The inertia tensor of the quadrotor is defined as,
     \begin{equation} \label{eq:inertia}
@@ -289,7 +291,7 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
     A quadrotor has four rotors which each produce a thrust as shown in Figure~\ref{fig:coord_frames}.
     However the actuators collectively apply a force, $\bm{F}_\mathcal{B}^T$, 
     and moment, $\bm{M}_\mathcal{B}^T$, to the vehicle.
-    This force and moment can be represented in terms of virtual actuators as,
+    This force and moment can be represented in terms of virtual actuator thrusts as,
     \begin{equation}
         \bm{F}_{\mathcal{B}}^T = 
         \begin{bmatrix}
@@ -304,7 +306,8 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
             R_N \cdot \delta_R
         \end{bmatrix} ,
     \end{equation}
-    where $d \delta_T$, $d \delta_A$, $d \delta_E$, and $d \delta_R$, represent the virtual aileron, elevator, and rudder actuators.
+    where $d$ is the distance from each motor to the \gls{CoM} of the quadrotor and $R_N$ is the virtual yaw moment arm and is a property of the motor-propeller configuration.
+    The virtual aileron, elevator, and rudder actuator thrusts are denoted by $d \delta_T$, $d \delta_A$, $d \delta_E$, and $d \delta_R$, respectively.
     These values are calculated with a mixing matrix, such that,
     \begin{equation} \label{eq:mixing_matrix}
             \begin{bmatrix}
@@ -326,15 +329,14 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
             T_4
         \end{bmatrix} ,
     \end{equation}
-    where $\bm{T} = [T_1~~T_2~~T_3~~T_4]^T$ is a vector of thrust forces produced by the four individual rotors.
+    where $\bm{T} = [T_1~~T_2~~T_3~~T_4]^T$ is a vector of actual thrust forces produced by the four individual rotors.
     Each motor-propeller pair receives a thrust setpoint and produces a corresponding thrust.
-    This is modelled with a first order Differential equation given by,
+    This is modelled with a first order differential equation given by,
     \begin{equation}
         \dot{\bm{T}} = \frac{ \bm{T}_{sp} - \bm{T} }{ \tau } ,
     \end{equation}
     where $\bm{T}_{sp}$ is a vector of thrust setpoints corresponding to $\bm{T}$, and $\tau$ is the time constant of the motor-propeller pair.
         
-    % ?? Define R_N
     \paragraph
     \textbf{Aerodynamics} \newline
     Multirotors experience aerodynamic forces due to the relative velocity of air over the vehicle.
@@ -389,7 +391,7 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
     \textbf{Suspended payload} \newline
     The suspended payload applies reaction forces and moments to the quadrotor due to its motion relative to the vehicle.
     The payload and cable also experience gravity and aerodynamic forces which influence its motion.
-    These forces and moments will be discussed in the section below.
+    These forces and moments will all be considered in the section below.
     
 \FloatBarrier\section{Suspended payload model}
 
