@@ -631,15 +631,22 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
     In this figure the velocity response do not correlate as well as they do for the experiment without a payload.
     This may be due to the added complexity of the model.
     The considered payload model adds a lot of modelling assumptions which add to the inaccuracy of the model.
-    However
+    The system also considers more state variables that each need to be assigned an accurate initial condition value.
+    Furthermore, the effect of wind disturbances is expected to be greater for the quadrotor-payload system than for the quadrotor without a load.
 
     \paragraph
-    With payload vel
+    However, the shape of the practical and simulated velocity curves are still well matched.
+    This seems to be an impressive result for such a complex system without so may different elements.
+    Both systems provide a overshoot of a similar value.
+    The amplitude and frequency of the velocity oscillation are also visibly very similar.
 
     \input{modelling/plots/prac_vs_sim_theta_with_payload.tex}
 
     \paragraph
-    With payload theta
+    Figure~\ref{fig:prac_vs_sim_theta_with_payload} shows the payload angle for the same flight as Figure~\ref{fig:prac_vs_sim_vel_step_with_payload}.
+    It is also clear that the payload angle response of the simulated system matches the practical data well. 
+    Overall, the results in this section show that the simulation model provides a good representation of the real quadrotor-payload system.
+    This mathematical model derived in this chapter will therefore be used for further simulations in subsequent chapters.
 
 \FloatBarrier\section{Linearised model}
     \label{sec:linear_model}
