@@ -386,23 +386,26 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
 
     \paragraph
     \textbf{Suspended payload} \newline
-    The suspended payload applies a reaction force and moment to the quadrotor which is dependant on the equations of motion of the suspended payload.
+    The suspended payload applies a reaction force, $\bm{F}_\mathcal{B}^P$, and moment, $\bm{M}_\mathcal{B}^P$, to the quadrotor which is dependant on the equations of motion of the suspended payload.
     The payload and cable also experience gravity and aerodynamic forces which influence its motion.
     These forces and moments will all be considered in the section below.
     
 \FloatBarrier\section{Suspended payload model}
 
     \paragraph
+    The dynamical model of the quadrotor is now fully defined, except for the force and moment applied to the vehicle by the payload.
     The suspended payload can be modelled as a rigid body which is attached to the quadrotor by a rigid link.
+    Hence, the movement of the quadrotor causes the suspended payload to move too.
     Due to the acceleration of the payload, the payload applies a reaction force to the quadrotor through the link.
-    The equations of motion of the suspended payload need to be derived to define these reaction forces.
-    The considered payload model and modelling assumptions will first be discussed in this section.
+    The equations of motion of the suspended payload need to be derived to determine these reaction forces and complete the dynamical model of the quadrotor-payload system.
+    
+    \paragraph
+    In this section, the payload model and modelling assumptions will firstly be discussed.
     Thereafter, the payload equations of motions will be derived with Lagrangian mechanics.
-    Finally, the resultant forces of the payload on the quadrotor will be presented.
+    Finally, the forces acting on the quadrotor due to the payload will be determined.
 
     \paragraph
     Figure~\ref{fig:quad_payload} illustrates a quadrotor with a suspended payload, where
-    $m_Q$ is the mass of the quadrotor,
     $m_p$ is the mass of the payload, and
     $l$ is the length of the suspended cable.
     The $x$-axis and $y$-axis Euler-ZYX angles in the inertial frame are denoted by $\theta_p$ and $\phi_p$ respectively.
@@ -449,7 +452,8 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
 
         \paragraph
         Lagrangian mechanics is an energy-based modelling approach which can be used to derive differential equations describing a system \cite{Erasmus2020}.
-        The dynamical equations of the same suspended payload system were derived by \cite{Slabber2020} and the derivation in this work closely follows that approach.
+        The dynamical equations of the same suspended payload system were derived by \cite{Slabber2020} and the derivation in this work follows parts of that approach.
+        It is important to note that the derivation in this section considers the payload dynamics as a function of the motion of the quadrotor \gls{CoM}.
         The derivation starts by defining the payload position as a function of the quadrotor position in the inertial frame as,
         \begin{equation}
             \bm{r}_p = 
@@ -478,15 +482,15 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
         \end{equation}
 
         \paragraph
-        The total kinetic energy, $T_e$, and total potential energy, $V_e$, of the quadrotor and payload system can be determined as,
+        The kinetic energy, $\mathcal{T}_p$, and potential energy, $\mathcal{V}_p$, of the payload can be determined as,
         \begin{align}
-            T_e &= \frac{1}{2} m_Q | \bm{\dot{r}}_Q | ^2 + \frac{1}{2} m_p | \bm{\dot{r}}_p | ^2, \mbox{~~and~~} \\
-            V_e &= - m_Q g z_Q - m_p g z_p .
+            \mathcal{T}_p &= \frac{1}{2} m_p | \bm{\dot{r}}_p | ^2, \mbox{~~and~~} \\
+            \mathcal{V}_p &= - m_p g z_p .
         \end{align}
         Note that these energy equations describe the system modelled as two point mass bodies and do not consider the attitude dynamics of the quadrotor as mentioned earlier.
         The Lagrangian can now be determined as,
         \begin{equation}
-            \mathcal{L} = T_e - V_e,
+            \mathcal{L} = \mathcal{T}_p - \mathcal{V}_p,
         \end{equation}
 
     \FloatBarrier\subsection{Non-conservative forces}
@@ -506,19 +510,8 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
         \paragraph
         According to the aerodynamic model presented in Equation~\ref{eq:drag_quad}, 
         the aerodynamic drag forces acting on the quadrotor and payload in the inertial frame are defined as,
-        \begin{align}
-            \bm{F}_Q^A & =
-            \begin{bmatrix}
-                F_{Q_x}^A \\
-                F_{Q_y}^A \\
-                F_{Q_z}^A
-            \end{bmatrix} = 
-            \begin{bmatrix}
-                \frac{1}{2} \phantom{.} \rho \phantom{.} C_{Q_x} \phantom{.} \dot{x_Q}^2 \\
-                \frac{1}{2} \phantom{.} \rho \phantom{.} C_{Q_y} \phantom{.} \dot{y_Q}^2 \\
-                \frac{1}{2} \phantom{.} \rho \phantom{.} C_{Q_z} \phantom{.} \dot{z_Q}^2
-            \end{bmatrix}  \mbox{ and}  \label{eq:quad_drag_inertial} \\
-            \bm{F}_p^A & = 
+        \begin{equation}
+            \bm{F}_p^A = 
             \begin{bmatrix}
                 F_{p_x}^A \\
                 F_{p_y}^A \\
@@ -529,16 +522,16 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
                 \frac{1}{2} \phantom{.} \rho \phantom{.} C_{p} \phantom{.} \dot{y_p}^2 \\
                 \frac{1}{2} \phantom{.} \rho \phantom{.} C_{p} \phantom{.} \dot{z_p}^2
             \end{bmatrix}  \mbox{,} \label{eq:payload_drag_inertial}
-        \end{align}
+        \end{equation}
         where $C_p$ is the lumped aerodynamic drag coefficient and reference area of the payload.
         It is assumed that the lumped payload drag coefficients are equal in all three axes, hence it is described by a single coefficient.
 
-        \paragraph
-        The actuator thrust force was derived in Equation~\ref{eq:thurst_force_moment}for the body frame.
-        This is transformed in the inertial frame with the \gls{DCM} as,
-        \begin{equation}
-            \bm{F}_\mathcal{I}^T = \bm{R}_V^{-1} \bm{F}_\mathcal{B}^T .
-        \end{equation}
+        % \paragraph
+        % The actuator thrust force was derived in Equation~\ref{eq:thurst_force_moment} for the body frame.
+        % This is transformed in the inertial frame with the \gls{DCM} as,
+        % \begin{equation}
+        %     \bm{F}_\mathcal{I}^T = \bm{R}_V^{-1} \bm{F}_\mathcal{B}^T .
+        % \end{equation}
 
         \paragraph
         Rotational friction of the cable attachment is modelled as linear damping.
@@ -555,15 +548,15 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
         \begin{equation}
             \bm{Q} = 
             \begin{bmatrix*}[c]
-                F_{\mathcal{I}_x} - F_{Q_x}^A - F_{p_x}^A \\
-                F_{\mathcal{I}_y} - F_{Q_y}^A - F_{p_y}^A \\
-                F_{\mathcal{I}_z} - F_{Q_z}^A - F_{p_z}^A \\
+                - F_{p_x}^A \\
+                - F_{p_y}^A \\
+                - F_{p_z}^A \\
                 M_{\theta_p}^F - F_{p_y}^A \cos{\phi}_p \\
                 M_{\phi_p}^F - F_{p_x}^A \cos{\theta}_p
             \end{bmatrix*}.
         \end{equation}
 
-        % ?? Check of dit reg is. Dalk nie conservative forces of qudrotor nie
+        % ?? Check of dit reg is. Dalk nie conservative forces of quadrotor nie
 
         % ?? Check element wise multiplication equations
 
