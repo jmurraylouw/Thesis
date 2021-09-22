@@ -604,9 +604,10 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
 
     \paragraph
     To verify whether the simulation model derived in previous sections is an accurate representation of the real-world dynamics, the simulation data is verified against practical data.
-    Firstly, a velocity step response was performed in a practical flight with a quadrotor to verify the quadrotor model without a payload.
+    Firstly, a North velocity step response was performed in a practical flight with a quadrotor to verify the quadrotor model without a payload.
     The practical quadrotor will be described in Chapter~\ref{chap:exp_design}.
-    This flight was performed on a day with minimal wind to try exclude the effect of wind disturbances in the comparison.
+    For simplicity in comparison, the body $\bar{\bm{x}}_{\mathcal{B}}$ axis was aligned with the inertial North axis for this flight.
+    This flight was also performed on a day with minimal wind to try exclude the effect of wind disturbances in the comparison.
     
     \paragraph
     Starting from the same initial condition, the same velocity step setpoint was commanded in simulation, and the resulting simulation data was compared to the practical flight data.
@@ -627,9 +628,9 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
     \paragraph
     The same procedure was followed to verify the quadrotor with a suspended payload model.
     Figure~\ref{fig:prac_vs_sim_vel_step_with_payload} compares the practical and simulated velocity step responses with a suspended payload attached to the vehicle.
-    In this figure the velocity response dot not correlate as well as they do in the experiment without a payload.
+    In this figure the velocity response do not correlate as well as they do for the experiment without a payload.
     This may be due to the added complexity of the model.
-    The considered system includes
+    The considered payload model adds a lot of modelling assumptions which add to the inaccuracy of the model.
     However
 
     \paragraph
