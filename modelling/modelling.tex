@@ -598,12 +598,32 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
         This completes the quadrotor dynamical model described in Section~\ref{sec:payload_model}.
         The set of \glspl{ODE} represented by Equation~\ref{eq:payload_odes} has coupled the quadrotor and payload dynamics.
         The quadrotor-payload system can now be simulated from a given initial condition with the \gls{ODE} solver in Simulink\texttrademark.
-        This simulation model will be verified with practical data in the following section. 
-
+        This simulation model will be verified with practical data in a subsequent section. 
+    
+    \FloatBarrier\section{Linearised model} \label{sec:linear_model}
+        
+        \paragraph
+        For LQR
+    
+    \FloatBarrier\section{Dynamic payloads}
+    
+        In this work, a dynamic payload refers to a payload with dynamics that differ significantly from a rigid mass.
+        When considering suspended payloads, a dynamic payload induces dynamics which differ from that of a simple pendulum.
+    
+        \begin{itemize}
+            \item Most control in literature model payload as rigid Mass. Give references.
+            \item Some add spring stiffness of cable (give references e.g. QuadLoad ElasticCable Prasanth Kotaru)
+            \item but not practical because can design which cable you used. Cannot design which payload needs to be transported
+            \item water looks like double payload
+        \end{itemize}
+    % https://hybrid-robotics.berkeley.edu/publications/ACC2017_QuadLoad_ElasticCable.pdf), 
+    % https://www.researchgate.net/publication/352394086_A_Hybrid_Control_Approach_for_the_Sw[…]=publicationTitle&_iepl%5BtargetEntityId%5D=PB%3A352394086
+    
+    
 \FloatBarrier\section{Model verification} \label{sec:model_verification}
 
     \paragraph
-    To verify whether the simulation model derived in previous sections is an accurate representation of the real-world dynamics, the simulation data is verified against practical data.
+    To verify whether the non-linear simulation model derived in previous sections is an accurate representation of the real-world dynamics, the simulation data is verified against practical data.
     Firstly, a North velocity step response was performed in a practical flight with a quadrotor to verify the quadrotor model without a payload.
     The practical quadrotor will be described in Chapter~\ref{chap:exp_design}.
     For simplicity in comparison, the body $\bar{\bm{x}}_{\mathcal{B}}$ axis was aligned with the inertial North axis for this flight.
@@ -648,22 +668,5 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
     Overall, the results in this section show that the simulation model provides a good representation of the real quadrotor-payload system.
     This mathematical model derived in this chapter will therefore be used for further simulations in subsequent chapters.
 
-\FloatBarrier\section{Linearised model}
-    \label{sec:linear_model}
-
-\FloatBarrier\section{Dynamic payloads}
-
-    In this work, a dynamic payload refers to a payload with dynamics that differ significantly from a rigid mass.
-    When considering suspended payloads, a dynamic payload induces dynamics which differ from that of a simple pendulum.
-
-    \begin{itemize}
-        \item Most control in literature model payload as rigid Mass. Give references.
-        \item Some add spring stiffness of cable (give references e.g. QuadLoad ElasticCable Prasanth Kotaru)
-        \item but not practical because can design which cable you used. Cannot design which payload needs to be transported
-        \item water looks like double payload
-    \end{itemize}
-% https://hybrid-robotics.berkeley.edu/publications/ACC2017_QuadLoad_ElasticCable.pdf), 
-% https://www.researchgate.net/publication/352394086_A_Hybrid_Control_Approach_for_the_Sw[…]=publicationTitle&_iepl%5BtargetEntityId%5D=PB%3A352394086
 
 }
-
