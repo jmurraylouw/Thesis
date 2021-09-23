@@ -1,17 +1,17 @@
 \FloatBarrier\section{LQR} \label{sec:lqr}
 
         \paragraph
-        \gls{LQR} is a popular optimal control technique which has been shown to be an effective swing-damping controller for multirotors with a suspended payload 
+        \gls{LQR} is a popular optimal control technique and has been shown to be an effective swing-damping controller for multirotors with a suspended payload 
         \cite{Erasmus2020} \cite{Slabber2020} \cite{Us2019}.
-        The \gls{LQG} technique combines this optimal control technique with a full-state estimator when all state variables cannot be measured \cite{Li2016}.
+        The \gls{LQG} technique combines \gls{LQR} with a full-state estimator to control systems where some state variables cannot be measured \cite{Li2016}.
         An \gls{LQG} was effectively used by \cite{Slabber2020} for swing-damping control of a multirotor and suspended payload system.
-        However, to focus on the controller performance without considering state estimation, it is assumed that full-state feedback is available in this work.
+        However, to focus on the controller performance without considering the effect of state estimation, it is assumed that full-state feedback is available in this work.
         Therefore, an \gls{LQR} for North velocity control with full-state feedback is presented in this section. 
-        This controller structure can be duplicated for East velocity control.
+        This controller structure can be duplicated for East velocity control due the symmetry of a quadrotor.
         
         \paragraph
         An \gls{LQR} does not inherently apply integral action and does not achieve zero steady-state tracking error in the presence of disturbances.
-        Therefore the state vector is augmented with an integral state of the velocity error, $\mathcal{V}_N$, such that:
+        Therefore the state vector is augmented with an integral state, $\mathcal{V}_N$, of the velocity error such that:
         \begin{equation}
             \dot{\mathcal{V}}_N = V_{N_{sp}} - V_N
         \end{equation}
@@ -38,18 +38,27 @@
             \bm{A}_A &= 
                 \begin{bmatrix}
                     0 & -1 & 0 & 0 \\
-                    0 & \frac{ -c_{air} }{m_Q} & \frac{ m_p \cdot g}{m_Q} & \frac{c_{\theta}}{(l\cdot m_Q)} \\
+                    0 & 0 & \frac{ m_p \cdot g}{m_Q} & \frac{c_{\theta}}{(l\cdot m_Q)} \\
                     0 & 0 & 0 & 1 \\
-                    0 & \frac{ c_{air} }{ (m_Q \cdot l) } & \frac{ (m_p+m_Q) \cdot g}{(m_Q \cdot l) } & \frac{ -c_{\theta} \cdot (m_p+m_Q)}{(l^2 \cdot m_Q \cdot m_p)}
+                    0 & 0 & \frac{ (m_p+m_Q) \cdot g}{(m_Q \cdot l) } & \frac{ -c_{\theta} \cdot (m_p+m_Q)}{(l^2 \cdot m_Q \cdot m_p)}
                 \end{bmatrix}, \mbox{ and} \\
             \bm{B}_A &= 
                 \begin{bmatrix}
                     0 \\ 
-                    \frac{1}{m_Q} \\
+                    1 \\
                     0 \\
-                    \frac{-1}{(m_Q \cdot l)} \\
+                    \frac{-1}{l} \\
                 \end{bmatrix}.
         \end{align}
+
+        % matrix with linear air damping
+        % \bm{A}_A &= 
+        % \begin{bmatrix}
+        %     0 & -1 & 0 & 0 \\
+        %     0 & \frac{ -c_{air} }{m_Q} & \frac{ m_p \cdot g}{m_Q} & \frac{c_{\theta}}{(l\cdot m_Q)} \\
+        %     0 & 0 & 0 & 1 \\
+        %     0 & \frac{ c_{air} }{ (m_Q \cdot l) } & \frac{ (m_p+m_Q) \cdot g}{(m_Q \cdot l) } & \frac{ -c_{\theta} \cdot (m_p+m_Q)}{(l^2 \cdot m_Q \cdot m_p)}
+        % \end{bmatrix}, \mbox{ and} \\
 
         \paragraph
         The \gls{LQR} control law is defined as:

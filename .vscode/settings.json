@@ -6,5 +6,6 @@
         "KWIK",
         "mvrate",
         "subfigure"
-    ]
+    ],
+    "ros.distro": "melodic"
 }

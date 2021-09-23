@@ -6,47 +6,38 @@
     % and has a minimal effect on the attitude dynamics.
     % The swing damping controllers are therefore applied in the translational velocity loop
     % and the original attitude controls are used for inner loop controllers.
-    % Therefore the attitude state variables of the quadrtotor are excluded from the system identification model.
+    % Therefore the attitude state variables of the quadrotor are excluded from the system identification model.
 
     % The model identified by \gls{DMDc} or \gls{HAVOKc} will be used to design a longitudinal velocity controller.
     % As shown in \ref{fig:system_id_plant}, the plant considered for system identification includes the dynamics of the inner loop, attitude controllers.
     % The swing damping controllers which will utilise the identified model act only in the translational velocity loop.
     % Because of the large time-scale separation between the inner and outer loop controllers, 
-    % the attitude states have a negilable effect on the plant dynamics seen by the velocity controller.
+    % the attitude states have a negligible effect on the plant dynamics seen by the velocity controller.
     % As discussed in Section~\ref{sec:linear_model}, the payload minimally effects the multirotor attitude because it is attached near the \gls{CoM} of the vehicle.
     % Therefore the attitude states are excluded from the system identification model.
 
     \paragraph
-    Only the North velocity controller will be considered in this section. 
-    Because of the symmetry of the multirotor, this controller can then duplicated for East velocity control.
-    The resulting input vector of the system identification plant is given by,
+    A specific subsystem of the quadrotor-payload system will be considered for system identification.
+    Because the proposed controllers in Chapter~\ref{chap:control} will be applied for North velocity control,
+    the longitudinal dynamics will be considered in this section, therefore
+    the resulting input vector of the system identification plant is given by,
     \begin{equation}
         \bm{u} = \begin{bmatrix}
             A_{N_{sp}}
-        \end{bmatrix} .
+        \end{bmatrix} ,
     \end{equation}
-    For swing damping control, the controllers require state feedback from both the multirotor and payload,
-    hence the state vector of the considered plant is,
+    where $A_{N_{sp}}$ is the North acceleration setpoint in the inertial frame.
+    $A_{N_{sp}}$ is used by the attitude controllers which will be explained in Section~\ref{sec:cascaded_pid}.
+    For swing damping control, the controllers will require feedback from both the multirotor and payload variables,
+    therefore the state vector of the considered plant is,
     \begin{equation}
         \bm{x} = \begin{bmatrix}
             V_N & \theta & \dot{\theta}
-        \end{bmatrix}^T .
+        \end{bmatrix}^T ,
     \end{equation}
-    % This is the state vector of the considered plant, 
-    % but the controllers apply an augmented state vector that will be discussed in Chapter~\ref{chap:control}.
-
-    \paragraph
-    Note that position is not included in the state vector because it does not affect the velocity controller.
-    Also note that the inner loop controllers handle the attitude dynamics of the multirotor.
-    During simulations of pure longitudinal velocity setpoints, 
-    it was observed that the multirotor experiences negligible altitude changes due the swinging payload.
-    % ?? This will be discussed in Section~\ref{sec:}
-    % This is due to the speed of the altitude controllers and the weak coupling between the payload angle and the altitude dynamics, 
-    % discussed in Chapter~\ref{chap:modelling}.
-    The plant seen by the system identification process therefore mimics the common pendulum-on-a-cart model.
+    where $\theta$ and $\dot{\theta}$ are the payload angle and angular rate about the inertial East axis,
+    and $V_N$ is the North velocity of the quadrotor in the inertial frame. 
     A schematic of this \gls{2D} plant is shown in Figure \ref{fig:floating_pend}.
-    In the following sections, simulations of the full multirotor and payload system will be performed
-    and different methods will be applied to identify different models of this plant.
 
     \begin{figure}[htb]
         \centering
@@ -55,8 +46,19 @@
         \label{fig:floating_pend}
     \end{figure}
 
+    
+
+    % Also note that the inner loop controllers handle the attitude dynamics of the multirotor.
+    % During simulations of pure longitudinal velocity setpoints, 
+    % it was observed that the multirotor experiences negligible altitude changes due the swinging payload.
+    % ?? This will be discussed in Section~\ref{sec:}
+    % This is due to the speed of the altitude controllers and the weak coupling between the payload angle and the altitude dynamics, 
+    % discussed in Chapter~\ref{chap:modelling}.
+    % The plant seen by the system identification process therefore mimics the common pendulum-on-a-cart model.
+    
     % The differential equations that describe the motion of this system 
-    % were derived with Lagrangian mechanics in Chapter~\ref{chap:modelling}. 
+    % were derived with Lagrangian mechanics in Chapter~\ref{chap:modelling}.
+    % ?? Linear state-space model 
 
     % From this derivation it is clear that the angular velocity of the payload, $\dot{\theta}$, is required to described the system dynamics.
     % However, $\dot{\theta}$ is not measured directly on the considered practical multirotor setup.
@@ -66,4 +68,7 @@
     % % Figure \ref{} shows the angle measurement during a practical experiment of the payload while Honeybee is held stationary
     % Numerical differentiation is applied to the noisy $\theta$ signal which results in a very inaccurate estimation of $\dot{\theta}$.
     % Therefore it is desirable to rather use $\theta$ in the system identification process. 
-
+    
+    \paragraph
+    In subsequent sections, simulations of the full, non-linear multirotor and payload system will be performed
+    and different methods will be applied to determine system identification models of this plant.

@@ -4,14 +4,76 @@
     The purpose of parameter estimation is to determine unknown values 
     required by a predetermined, white-box model.
     The identified model is used to design a \gls{LQR} controller and
-    therefore needs to be in a linear, continuous-time, state-space form.
-    This model was derived and linearised a priori in Section~\ref{sec:linear_model}.
+    therefore needs to be in the form of a linear, continuous-time, state-space model.
+    This model was derived by \cite{Slabber2020} and will be presented in the section below.
     The unknown parameters in the model include the payload mass, $m_p$ and the cable length, $l$.
     Two separate methods are used to estimate each of these parameters.
-    This method was used by \cite{Erasmus2020} and \cite{Slabber2020} 
-    to design a \gls{LQR} controller and implement swing damping control 
-    of a multirotor with an unknown suspended payload.
+    This approach was used successfully by \cite{Erasmus2020} and \cite{Slabber2020} 
+    to implement a \gls{LQR} swing damping controller for a multirotor with an unknown suspended payload.
     
+\subsection{White-box model}
+
+    \paragraph
+    A white-box model was derived a priori by \cite{Slabber2020} to represent the dynamics of the quadrotor-payload system.
+    The non-linear dynamical equations derived in Chapter~\ref{chap:modelling} were linearised to produce a linear state-space model.
+    The equations were linearised around hover by applying small angle approximations.
+    As discussed in Section~\ref{sec:payload_assumptions}, the payload is attached to the \gls{CoM} of the multirotor.
+    Therefore the vehicle attitude dynamics are decoupled from the payload dynamics and are not considered in this model.
+    Aerodynamic drag forces are assumed to be negligible and are ignored in this model.
+    It is also assumed that the attitude controllers have a large enough time-scale separation from the velocity controllers, such that $A_{N_{sp}} \approx A_N$.
+    
+    % \paragraph
+    % In the work \cite{Slabber2020}, it was assumed that aerodynamic drag forces are negligible and can be ignored.
+    % In this work however, a simplified linear damping model is used to account for aerodynamic drag forces.
+    % The aerodynamic drag force in the North axis is approximated by, 
+    % \begin{equation}
+    %     F_N^A = - c_{air} V_N
+    % \end{equation}
+    
+    \paragraph
+    The resultant linear state-space model of the longitudinal dynamics is given by,
+    \begin{equation}
+        \dot{\bm{x}}_{long} = \bm{A}_{long} \bm{x}_{long} + \bm{B}_{long} \bm{u}_{long} ,
+    \end{equation}
+    where
+    \begin{align}
+        \bm{x}_{long} &= 
+            \begin{bmatrix}
+                V_N & \theta & \dot{\theta}
+            \end{bmatrix}^T, \\
+        \bm{u}_{long} &= 
+            \begin{bmatrix}
+                A_{N_{sp}}
+            \end{bmatrix}, \\
+        \bm{A}_{long} &= 
+            \begin{bmatrix}
+                0 & \frac{ m_p \cdot g}{m_Q} & \frac{c_{\theta}}{(l\cdot m_Q)} \\
+                0 & 0 & 1 \\
+                0 & \frac{ (m_p+m_Q) \cdot g}{(m_Q \cdot l) } & \frac{ -c_{\theta} \cdot (m_p+m_Q)}{(l^2 \cdot m_Q \cdot m_p)}
+            \end{bmatrix}, \mbox{ and} \\
+        \bm{B}_{long} &= 
+            \begin{bmatrix}
+                1\\
+                0 \\
+                - \frac{1}{l} \\
+            \end{bmatrix} .
+    \end{align}
+
+    % matrix with linear air damping:
+    % \bm{A}_{long} &= 
+    % \begin{bmatrix}
+    %     \frac{ -c_{air} }{m_Q} & \frac{ m_p \cdot g}{m_Q} & \frac{c_{\theta}}{(l\cdot m_Q)} \\
+    %     0 & 0 & 1 \\
+    %     \frac{ c_{air} }{ (m_Q \cdot l) } & \frac{ (m_p+m_Q) \cdot g}{(m_Q \cdot l) } & \frac{ -c_{\theta} \cdot (m_p+m_Q)}{(l^2 \cdot m_Q \cdot m_p)}
+    % \end{bmatrix}, \mbox{ and} \\
+
+    \paragraph
+    It is assumed that the coefficient of friction, $c_{\theta}$, does not change for different payload, therefore this parameter can be determine experimentally and will known prior to flight.
+    Furthermore, it is assumed that $m_Q$ is known.
+    The payload parameters, 
+    $m_p$ and $l$, are unknown prior to flight. 
+    These parameters will be estimated in the sections below.    
+
 \subsection{Payload mass estimation}
 
     \paragraph

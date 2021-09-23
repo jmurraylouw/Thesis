@@ -405,21 +405,21 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
     Finally, the forces acting on the quadrotor due to the payload will be determined.
 
     \paragraph
-    Figure~\ref{fig:quad_payload} illustrates a quadrotor with a suspended payload, where
+    Figure~\ref{fig:quad_with_payload} illustrates a quadrotor with a suspended payload, where
     $m_p$ is the mass of the payload, and
     $l$ is the length of the suspended cable.
-    The $x$-axis and $y$-axis Euler-ZYX angles in the inertial frame are denoted by $\theta_p$ and $\phi_p$ respectively.
+    The $x$-axis and $y$-axis Euler-ZYX angles in the inertial frame are denoted by $\theta$ and $\phi$ respectively.
     Furthermore, $\bm{r}_Q = [x_Q~~y_Q~~z_Q]^T$ defines the position of the quadrotor \gls{CoM} in the inertial frame.
     Likewise, $\bm{r}_p = [x_p~~y_p~~z_p]^T$ defines the position of the payload in the inertial frame.
 
     \begin{figure}[!htbp]
         \centering
-        \includegraphics[width=0.7\linewidth]{modelling/fig/quad_payload_model}
+        \includegraphics[width=0.65\linewidth]{modelling/fig/quad_with_payload.png}
         \caption{Schematic of a quadrotor with suspended payload from \cite{Slabber2020}}
-        \label{fig:quad_payload}
+        \label{fig:quad_with_payload}
     \end{figure}
     
-    \FloatBarrier\subsection{Payload assumptions}
+    \FloatBarrier\subsection{Payload assumptions} \label{sec:payload_assumptions}
 
         \paragraph
         The following major assumptions are made regarding the payload model:
@@ -463,9 +463,9 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
                 z_p
             \end{bmatrix} = 
             \begin{bmatrix}
-                x_Q + l \cos(\phi_p) \sin(\theta_p) \\
-                y_Q +   \sin(\phi_p) \\
-                z_Q + l \cos(\phi_p) \cos(\theta_p)
+                x_Q + l \cos(\phi) \sin(\theta) \\
+                y_Q +   \sin(\phi) \\
+                z_Q + l \cos(\phi) \cos(\theta)
             \end{bmatrix} ,
         \end{equation}
         where $g$ is the acceleration due to gravity.
@@ -476,8 +476,8 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
                 x_p \\
                 y_p \\
                 z_p \\
-                \phi_p \\
-                \theta_p
+                \phi \\
+                \theta
             \end{bmatrix}.
         \end{equation}
 
@@ -531,12 +531,12 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
         \paragraph
         Rotational friction of the cable attachment is modelled as linear damping.
         It is assumed that the coefficient of friction is equal in each axis of rotation.
-        Therefore, the friction moments opposing the $\theta_p$ and $\phi_p$ rotations are given by,
+        Therefore, the friction moments opposing the $\theta$ and $\phi$ rotations are given by,
         \begin{align}
-            M_{\theta_p}^F  &= - c_{\theta} \dot{\theta}_p \\
-            M_{\phi_p}^F    &= - c_{\theta} \dot{\phi}_p
+            M_{\theta}^F  &= - c_{\theta} \dot{\theta} \\
+            M_{\phi}^F    &= - c_{\theta} \dot{\phi}
         \end{align}
-        respectively, where $c_{\theta}$ is the rotational friction coefficient for $\theta_p$ and $\phi_p$ rotations.
+        respectively, where $c_{\theta}$ is the rotational friction coefficient for $\theta$ and $\phi$ rotations.
         A vector, $\bm{Q}$, of non-conservative forces and moments corresponding to the system coordinates in $\bm{p}$ can now be defined as,
         \begin{equation}
             \bm{Q} = 
@@ -544,8 +544,8 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
                 - F_{p_x}^A \\
                 - F_{p_y}^A \\
                 - F_{p_z}^A \\
-                M_{\theta_p}^F - F_{p_y}^A \cos{\phi}_p \\
-                M_{\phi_p}^F - F_{p_x}^A \cos{\theta}_p
+                M_{\theta}^F - F_{p_y}^A \cos{\phi} \\
+                M_{\phi}^F - F_{p_x}^A \cos{\theta}
             \end{bmatrix*}.
         \end{equation}
 
@@ -586,7 +586,7 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
         % where describes the component of the acceleration of the quadrotor as a function of the motion
         The reaction force applied to the quadrotor due to the payload can now be determined in the inertial frame as,
         \begin{equation}
-            \bm{F}_{\mathcal{I}}^P = m_p \ddot{\bm{r}}_p ,
+            \bm{F}_{\mathcal{I}}^P = - m_p \ddot{\bm{r}}_p ,
         \end{equation}
         from Newton's second law.
         This force can be represented in the body frame as,
@@ -600,24 +600,37 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
         The quadrotor-payload system can now be simulated from a given initial condition with the \gls{ODE} solver in Simulink\texttrademark.
         This simulation model will be verified with practical data in a subsequent section. 
     
-    \FloatBarrier\section{Linearised model} \label{sec:linear_model}
+    % \FloatBarrier\section{Linearised model} \label{sec:linear_model}
         
-        \paragraph
-        For LQR
+    %     \paragraph
+    %     The dynamical equations derived in previous sections present a non-linear model of the quadrotor-payload system.
+    %     However, a linearised state-space model of this system is required for \gls{LQR} control, which will be discussed in Section~\ref{sec:lqr}.
+    %     The LQR controller and linear model derived by \cite{Slabber2020} will be discussed in this section and used in this work.
+    %     This controller is used for North velocity control of a quadrotor with a suspended payload.
+
+    %     \begin{figure}[htb]
+    %         \centering
+    %         \includegraphics[width=0.45\linewidth]{modelling/fig/lqr_pend_diagram}            
+    %         \caption{Schematic of a floating pendulum model considered for a North velocity controller}
+    %         \label{fig:lqr_pend_diagram}
+    %     \end{figure}
+
+    %     \paragraph
+    %     Figure~\ref{fig:lqr_pend_diagram} shows
     
-    \FloatBarrier\section{Dynamic payloads}
+    % \FloatBarrier\section{Dynamic payloads}
     
-        In this work, a dynamic payload refers to a payload with dynamics that differ significantly from a rigid mass.
-        When considering suspended payloads, a dynamic payload induces dynamics which differ from that of a simple pendulum.
+    %     In this work, a dynamic payload refers to a payload with dynamics that differ significantly from a rigid mass.
+    %     When considering suspended payloads, a dynamic payload induces dynamics which differ from that of a simple pendulum.
     
-        \begin{itemize}
-            \item Most control in literature model payload as rigid Mass. Give references.
-            \item Some add spring stiffness of cable (give references e.g. QuadLoad ElasticCable Prasanth Kotaru)
-            \item but not practical because can design which cable you used. Cannot design which payload needs to be transported
-            \item water looks like double payload
-        \end{itemize}
-    % https://hybrid-robotics.berkeley.edu/publications/ACC2017_QuadLoad_ElasticCable.pdf), 
-    % https://www.researchgate.net/publication/352394086_A_Hybrid_Control_Approach_for_the_Sw[…]=publicationTitle&_iepl%5BtargetEntityId%5D=PB%3A352394086
+    %     \begin{itemize}
+    %         \item Most control in literature model payload as rigid Mass. Give references.
+    %         \item Some add spring stiffness of cable (give references e.g. QuadLoad ElasticCable Prasanth Kotaru)
+    %         \item but not practical because can design which cable you used. Cannot design which payload needs to be transported
+    %         \item water looks like double payload
+    %     \end{itemize}
+    % % https://hybrid-robotics.berkeley.edu/publications/ACC2017_QuadLoad_ElasticCable.pdf), 
+    % % https://www.researchgate.net/publication/352394086_A_Hybrid_Control_Approach_for_the_Sw[…]=publicationTitle&_iepl%5BtargetEntityId%5D=PB%3A352394086
     
     
 \FloatBarrier\section{Model verification} \label{sec:model_verification}
@@ -666,7 +679,7 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
     Figure~\ref{fig:prac_vs_sim_theta_with_payload} shows the payload angle for the same flight as Figure~\ref{fig:prac_vs_sim_vel_step_with_payload}.
     It is also clear that the payload angle response of the simulated system matches the practical data well. 
     Overall, the results in this section show that the simulation model provides a good representation of the real quadrotor-payload system.
-    This mathematical model derived in this chapter will therefore be used for further simulations in subsequent chapters.
+    The mathematical model derived in this chapter will therefore be used for further simulations in subsequent chapters.
 
 
 }
