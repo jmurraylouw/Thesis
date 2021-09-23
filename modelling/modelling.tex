@@ -6,21 +6,15 @@
 \label{chap:modelling}
 
 \paragraph
-In this chapter, mathematical models of a multirotor with a suspended payload will be derived.
-These models will be used to simulate the multirotor system in subsequent chapters.
-The models will be based on the real multirotor named \emph{Honeybee}, which was built by \cite{Grobler2020} and will be described further in Chapter~\ref{chap:exp_design}.
-
-% ?? Write this section
+In this chapter, a non-linear mathematical model will be derived of a multirotor with a suspended payload.
+This model will be used to simulate the multirotor-payload system in subsequent chapters.
+The models will be based on the real quadrotor named \emph{Honeybee}, which was built by \cite{Grobler2020} and will be described further in Chapter~\ref{chap:exp_design}.
 
 \paragraph
-Firstly, 
-quadrotor modelled separately
-payload modelled separately
-% The system identification and control system techniques in later chapters will then be explained based on the \gls{2D} model to avoid unnecessary complexity.
-Finally, it will be described how this model and the techniques in later chapters are extended to the 3D case.
-This 3D mathematical model will be used in a non-linear simulation of a multirotor and suspended payload.
-
-% ?? For good modelling of multirotor, survey: https://arxiv.org/pdf/2011.11104.pdf
+The chapter starts by defining the coordinate frames and rotation representations used in the model.
+A \gls{6DOF} model is then derived of the quadrotor vehicle and the different forces and moments acting on this vehicle are described.
+A model of the suspended payload attached to the quadrotor is then derived.
+Finally the mathematical models are verified against practical flight data from \emph{Honeybee}.
 
 \FloatBarrier\section{Coordinate frames}
 
@@ -586,9 +580,9 @@ This 3D mathematical model will be used in a non-linear simulation of a multirot
         % where describes the component of the acceleration of the quadrotor as a function of the motion
         The reaction force applied to the quadrotor due to the payload can now be determined in the inertial frame as,
         \begin{equation}
-            \bm{F}_{\mathcal{I}}^P = - m_p \ddot{\bm{r}}_p ,
+            \bm{F}_{\mathcal{I}}^P = m_Q \ddot{\bm{r}}_Q ,
         \end{equation}
-        from Newton's second law.
+        from Newton's second law, where $\ddot{\bm{r}}_Q$ represents the component of the quadrotor acceleration caused by the suspended payload.
         This force can be represented in the body frame as,
         \begin{equation}
             \bm{F}_{\mathcal{B}}^P = \bm{R}_V \bm{F}_{\mathcal{I}}^P .
