@@ -556,7 +556,7 @@ Finally, the mathematical models will be verified against practical flight data 
         $p_j$ is an element in $\bm{p}$,
         $Q_j$ is the corresponding element in $\bm{Q}$,  and
         $j = \{1,~2,~3,~4,~5\}$.
-        This set of coupled equations was solved with the Symbolic Maths Toolbox\texttrademark~\cite{SymbolicToolbox2021} in MATLAB to determine the payload equations of motions. 
+        This set of coupled equations was solved with the Symbolic Maths Toolbox\texttrademark~\cite{SymbolicToolbox2021} in MATLAB to determine the payload equations of motion. 
         This yields a set of \glspl{ODE} in the form,
         \begin{equation} \label{eq:payload_odes}
             \ddot{\bm{p}} = f( \dot{\bm{p}}, \bm{p}, \ddot{\bm{r}}_Q, \dot{\bm{r}}_Q) ,
@@ -588,9 +588,9 @@ Finally, the mathematical models will be verified against practical flight data 
 
         \paragraph
         This completes the quadrotor dynamical model described in Section~\ref{sec:payload_model}.
-        The set of \glspl{ODE} represented by Equation~\ref{eq:payload_odes} has coupled the quadrotor and payload dynamics.
-        The quadrotor-payload system can now be simulated from a given initial condition with the \gls{ODE} solver in Simulink\texttrademark.
-        This simulation model will be verified with practical data in a subsequent section. 
+        The set of \glspl{ODE} represented by Equation~\ref{eq:payload_odes} provides a coupling between the quadrotor and payload dynamics.
+        The quadrotor-payload system can now be simulated from a given initial condition with an \gls{ODE} solver in Simulink\texttrademark.
+        This simulation model will be verified with practical data in the section below. 
     
     % \FloatBarrier\section{Linearised model} \label{sec:linear_model}
         
@@ -631,46 +631,47 @@ Finally, the mathematical models will be verified against practical flight data 
     To verify whether the non-linear simulation model derived in previous sections is an accurate representation of the real-world dynamics, the simulation data is verified against practical data.
     Firstly, a North velocity step response was performed in a practical flight with a quadrotor to verify the quadrotor model without a payload.
     The practical quadrotor will be described in Chapter~\ref{chap:exp_design}.
-    For simplicity in comparison, the body $\bar{\bm{x}}_{\mathcal{B}}$ axis was aligned with the inertial North axis for this flight.
-    This flight was also performed on a day with almost no wind to try to exclude the effect of wind disturbances in the comparison.
+    % For simplicity in comparison, the body $\bar{\bm{x}}_{\mathcal{B}}$ axis was aligned with the inertial North axis for this flight.
+    This flight was performed on a day with almost no wind to minimise the effect of wind disturbances in the comparison.
     
     \paragraph
-    Starting from the same initial condition, the same velocity step setpoint was commanded in a simulation, and the resulting simulation data was compared to the practical flight data.
+    Starting from the same initial condition, the velocity step setpoint was commanded in a simulation and the resulting simulation data was compared to the practical flight data.
+    This Simulink\texttrademark~simulation environment will be discussed in Chapter~\ref{chap:control}.
     Note that this includes the dynamics of the default quadrotor controllers which will be described in Chapter~\ref{chap:control}.
-    The Simulink\texttrademark~simulation environment will also be discussed in Chapter~\ref{chap:control}.
-    The results in this section, therefore, compare the combined quadrotor and controller simulation model to practical flight data.
+    Therefore the results in this section compare the combined quadrotor and controller simulation model to the practical flight data.
 
     \input{modelling/plots/prac_vs_sim_vel_step_no_payload.tex}
 
     \paragraph
-    Figure~\ref{fig:prac_vs_sim_vel_step_no_payload} shows the velocity step response of a practical and simulated flight.
+    Figure~\ref{fig:prac_vs_sim_vel_step_no_payload} shows the velocity step responses of a practical and a simulated flight.
     From a visual inspection of the plots, it is clear that the velocity responses match well.
     Note that the practical velocity curve is more irregular and not as smooth as the simulated curve.
-    This may be due to slight wind disturbances or measurement noise, which is not considered in this simulation.
+    This may be due to slight wind disturbances or sensor noise, which are not considered in this simulation.
 
     \input{modelling/plots/prac_vs_sim_vel_step_with_payload.tex}
 
     \paragraph
     The same procedure was followed to verify the quadrotor with a suspended payload model.
     Figure~\ref{fig:prac_vs_sim_vel_step_with_payload} compares the practical and simulated velocity step responses with a suspended payload attached to the vehicle.
-    In this figure, the velocity responses do not correlate as well as in the no-load experiment.
+    The shape of the velocity curves also match well in this comparison.
+    However, they do not correlate as well as they do in the no-load experiment.
     This may be due to the added complexity of the model.
-    The considered payload model adds a lot of modelling assumptions which add to the inaccuracy of the model.
-    The system also considers more state variables that each need to be assigned an accurate initial condition value.
+    The considered payload model adds modelling assumptions which add to the inaccuracy of the model.
+    The system also considers many state variables that each need to be assigned an accurate initial condition value.
     Furthermore, the effect of wind disturbances is expected to be greater for the quadrotor-payload system than for the quadrotor without a load.
 
     \paragraph
     However, the shape of the practical and simulated velocity curves are still well matched.
-    This seems to be an impressive result for such a complex system without many different elements.
+    This seems to be an impressive result for such a complex system with numerous interlinking elements.
     Both systems provide an overshoot of a similar value.
-    The amplitude and frequency of the velocity oscillation are also visibly very similar.
+    The amplitude and frequency of the velocity oscillations also appear to be very similar.
 
     \input{modelling/plots/prac_vs_sim_theta_with_payload.tex}
 
     \paragraph
     Figure~\ref{fig:prac_vs_sim_theta_with_payload} shows the payload angle for the same flight as Figure~\ref{fig:prac_vs_sim_vel_step_with_payload}.
     It is also clear that the payload angle response of the simulated system matches the practical data well. 
-    Overall, the results in this section show that the simulation model provides a good representation of the real quadrotor-payload system.
+    Overall, the results in this section show that the simulation model provides a good representation of the North velocity dynamics of the real quadrotor-payload system.
     The mathematical model derived in this chapter will therefore be used for further simulations in subsequent chapters.
 
 
