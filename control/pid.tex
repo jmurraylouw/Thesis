@@ -188,8 +188,8 @@
             % 
             \textbf{A}_{long} &= 
             \begin{bmatrix}
-                0 & \frac{ c_{\theta} }{ l m_Q } & \frac{ g m_p }{ m_Q }\\[0.5em]
-                0 & -\frac{ c_{\theta} (m_Q + m_p) }{ l^2 m_Q m_p } & -\frac{ g (m_Q + m_p) }{ l m_Q } \\[0.5em]
+                0 & \frac{ c }{ l m_Q } & \frac{ g m_p }{ m_Q }\\[0.5em]
+                0 & -\frac{ c (m_Q + m_p) }{ l^2 m_Q m_p } & -\frac{ g (m_Q + m_p) }{ l m_Q } \\[0.5em]
                 0 & 1 & 0
             \end{bmatrix}^T, \\
             % 
@@ -209,7 +209,7 @@
         The transfer function can therefore be calculated as, 
         \begin{align}\label{eq:lin_vel_quad_pl}
             G_{V_N}(s) &= \frac{V_N(s)}{A_N(s)} = \textbf{C}_{long} \left(s \textbf{I} - \textbf{A}_{long}\right)^{-1} \textbf{B}_{long} \\
-            G_{V_N}(s) &= \dfrac{s^2 + \frac{c_{\theta}}{m_p l^2}s + \dfrac{g}{l}}{s \left[s^2 + \dfrac{c_{\theta}(m_Q + m_p)}{m_Q m_p l^2}s + \dfrac{g(m_Q + m_p)}{m_Q l}\right]} 
+            G_{V_N}(s) &= \dfrac{s^2 + \frac{c}{m_p l^2}s + \dfrac{g}{l}}{s \left[s^2 + \dfrac{c(m_Q + m_p)}{m_Q m_p l^2}s + \dfrac{g(m_Q + m_p)}{m_Q l}\right]} 
         \end{align}
 
         % ?? Check for consistency and for Francois wording

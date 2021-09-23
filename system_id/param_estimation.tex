@@ -47,9 +47,9 @@
             \end{bmatrix}, \\
         \bm{A}_{long} &= 
             \begin{bmatrix}
-                0 & \frac{ m_p \cdot g}{m_Q} & \frac{c_{\theta}}{(l\cdot m_Q)} \\
+                0 & \frac{ m_p \cdot g}{m_Q} & \frac{c}{(l\cdot m_Q)} \\
                 0 & 0 & 1 \\
-                0 & \frac{ (m_p+m_Q) \cdot g}{(m_Q \cdot l) } & \frac{ -c_{\theta} \cdot (m_p+m_Q)}{(l^2 \cdot m_Q \cdot m_p)}
+                0 & \frac{ (m_p+m_Q) \cdot g}{(m_Q \cdot l) } & \frac{ -c \cdot (m_p+m_Q)}{(l^2 \cdot m_Q \cdot m_p)}
             \end{bmatrix}, \mbox{ and} \\
         \bm{B}_{long} &= 
             \begin{bmatrix}
@@ -62,13 +62,13 @@
     % matrix with linear air damping:
     % \bm{A}_{long} &= 
     % \begin{bmatrix}
-    %     \frac{ -c_{air} }{m_Q} & \frac{ m_p \cdot g}{m_Q} & \frac{c_{\theta}}{(l\cdot m_Q)} \\
+    %     \frac{ -c_{air} }{m_Q} & \frac{ m_p \cdot g}{m_Q} & \frac{c}{(l\cdot m_Q)} \\
     %     0 & 0 & 1 \\
-    %     \frac{ c_{air} }{ (m_Q \cdot l) } & \frac{ (m_p+m_Q) \cdot g}{(m_Q \cdot l) } & \frac{ -c_{\theta} \cdot (m_p+m_Q)}{(l^2 \cdot m_Q \cdot m_p)}
+    %     \frac{ c_{air} }{ (m_Q \cdot l) } & \frac{ (m_p+m_Q) \cdot g}{(m_Q \cdot l) } & \frac{ -c \cdot (m_p+m_Q)}{(l^2 \cdot m_Q \cdot m_p)}
     % \end{bmatrix}, \mbox{ and} \\
 
     \paragraph
-    It is assumed that the coefficient of friction, $c_{\theta}$, does not change for different payload, therefore this parameter can be determine experimentally and will known prior to flight.
+    It is assumed that the coefficient of friction, $c$, does not change for different payload, therefore this parameter can be determine experimentally and will known prior to flight.
     Furthermore, it is assumed that $m_Q$ is known.
     The payload parameters, 
     $m_p$ and $l$, are unknown prior to flight. 
