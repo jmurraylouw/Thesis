@@ -63,60 +63,18 @@
         \end{figure}
 
         \paragraph
-        Various suspended payload configurations have been considered in literture.
-        Elastic
-        Taut
-        multiple drones.
-        However, in many situations a single multirotor is sufficient to transport the load
+        The transportation of various suspended payload configurations have been considered in literature.
+        The classical suspended payload application involves a small payload suspended below the vehicle with rigid cable \cite{Guerrero-Sanchez2017} \cite{Klausen2017} \cite{Ichikawa2018} \cite{DeAngelis2019a} \cite{Erasmus2020} \cite{Slabber2020}. 
+        \author{Kotaru2017} \cite{Kotaru2017} considered a suspended payload system with an elastic cable modelled as a spring-damper system.
+        \author{Tang2015a} \cite{Tang2015a} modelled the multirotor-payload system with a hybrid dynamical model to consider aggressive manoeuvres where the cable transitions from taut to slack.
+        The transportation of payload loads with flexible cables have also been studied, where the cable is modelled as a set of serially-connected rigid links  \cite{Goodarzi2015} \cite{Goodarzi2014} \cite{Kotaru2018}. 
+        Furthermore, the control of a group of multirotors transporting a single suspended payload have also been considered \cite{Lee2015} \cite{Sanalitro2020} \cite{Klausen2014} \cite{Goodarzi2015}.
         
         \paragraph
-        Cable-suspended attachments are very useful in situations where the multirotor cannot land, since the payload can be attach during hover.
+        From numerous examples in literature, it is clear that the control of multirotors with suspended payloads is a popular research topic.
+        The cable-suspended payload configuration is very useful in situations where a multirotor cannot land, since the payload can be attached during hover.
         This configuration also has the advantage that a load can have an arbitrary shape or size as long as it has an attachment point for a cable.
         However, the suspended payload increases the degrees of underactuation of the system, which makes the control problem challenging \cite{Kotaru2018}.
-
-        % Active vs passive attachments
-        % https://hybrid-robotics.berkeley.edu/publications/ACC2017_QuadLoad_ElasticCable.pdf
-        % In terms of mechanical design, several methods have been
-        % proposed to attach a payload to a UAV, involving both active
-        % and passive attachments. Examples of active attachments
-        % include using actuated grippers to grip and pickup payloads
-        % [13], [10], and actuated manipulator arms to enable aerial
-        % manipulation [10]. These active mechanisms provide more
-        % degrees-of-freedom (DOFs) to the UAV, and help in active
-        % aerial manipulation. However, these advantages come at
-        % the cost of loss of agility of the small UAVs due to the
-        % added inertia to the system. Moreover, actuated gripper arms
-        % introduce dynamic coupling between the manipulator and
-        % quadrotor which needs to be accurately captured in the
-        % mathematical model and compensated by the controller.
-        % Passive type of attachments have also been developed,
-        % wherein the payload is attached to the UAVs through a mechanical cable or tether [2], [15], [17], [6], [18]. By attaching
-        % the payload through tethers, the payload could be connected
-        % to a single or multiple UAVs without directly modifying the
-        % UAV’s inertia. However, this becomes more challenging for
-        % control due to the additional degree-of-underactuation. Early
-        % work looked at the transportation of a single point-mass load
-        % 1P. Kotaru, G. Wu are with Department of Mechanical Engineering,
-        % Carnegie Mellon University, 5000 Forbes Avenue, Pittsburgh PA, 15213,
-        % email: {vkotaru,gwu}@andrew.cmu.edu.
-        % K. Sreenath is with the Depts. of Mechanical Engineering, The Robotics
-        % Institute, and Electrical and Computer Engineering, Carnegie Mellon University, Pittsburgh, PA 15213, email: koushils@cmu.edu.
-        % This work is supported in part by the Google Faculty Research Award
-        % and in part by NSF grants CMMI-1538869, IIS-1464337, IIS-1526515.
-        % Fig. 1: Quadrotor with load through a suspended cable, with
-        % the cable modeled as a spring-damper. The configuration
-        % space of the system is given as R
-        % 3 × SO(3) × S
-        % 2 × R,
-        % with 9 degrees-of-freedom and 4 actuators, resulting in 5
-        % degrees-of-underactuation.
-        % with single and multiple helicopters [2], with the objective
-        % being to actively cancel any swing in the cable. Furthermore,
-        % dynamic programming (DP) based methods were employed
-        % to plan dynamically-feasible trajectories that minimized the
-        % load swing along with an adaptive controller in [15].
-
-
 
 \section{Control of a multirotor with a suspended payload}
 
