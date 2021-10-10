@@ -1,0 +1,46 @@
+\begin{figure}[htb]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[            
+            xlabel = {Number of delay-coordinates, $q$},
+            ylabel = \%~CPU,
+            % x unit = \si{\second},
+            % y unit = \%,
+            xmin = 0,   xmax = 80,
+            ymin = 0,   ymax = 100,
+            grid = major,
+            legend cell align = left,
+            legend pos = north east,
+            grid style = dashed,
+            legend style = {font = \scriptsize},
+            label style = {font = \scriptsize},
+            tick label style = {font = \scriptsize},
+            width = 0.95\columnwidth,
+            height = 0.5\columnwidth,
+            % initialize Dark2
+            cycle list/Dark2,
+            % combine it with 'mark list*':
+            cycle multiindex* list = {
+                Dark2\nextlist
+            }
+        ]
+
+        \addplot+[mark = *, style = solid, ultra thick] 
+        table {
+            10  22.9
+            30  51.1
+            50  82.8
+            70  98.7
+        };
+        
+        % \addplot+[mark = none, style = solid, ultra thick] 
+        % table[x = q, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
+        % {system_id/csv/NMAE_vs_q_SITL_x_vel_noise_longer_times_q.csv_havok_angle_Ttrain_60.csv};
+        % \addlegendentry{HAVOK}
+
+        \end{axis}
+    \end{tikzpicture} 
+    
+    \caption{Percentage of CPU time used by the MPC node for different values of $q$ ($Ts =$~\SI{0.03}{\second})}
+    \label{fig:CPU_vs_q}
+\end{figure}
