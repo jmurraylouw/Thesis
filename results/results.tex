@@ -578,20 +578,21 @@
         A MPC node with $T_s =$~\SI{40}{\milli\second} runs with a low \%CPU, however it also results in unstable control.
         This is because the controller frequency is too low to provide adequate velocity control for the quadrotor-payload dynamics.
         A MPC node with $T_s =$~\SI{30}{\milli\second} provides stable control of the quadrotor-payload system.
-        The controller frequency of \SI{33.33}{\hertz} appears to be fast enough to control the quadrotor-payload dynamics.
-        The QP problem can also be solved fast enough with this sample time on the companion computer.
+        The controller frequency of \SI{33.33}{\hertz} appears to be fast enough to control the quadrotor-payload dynamics and the QP problem is solved within the given optimisation time.
 
         % ?? Simulations with latency included
 
         \input{results/plots/HITL_mpc_vel.tex}
 
         \paragraph
-        Figure~\ref{fig:HITL_mpc_vel}
+        Figure~\ref{fig:HITL_mpc_vel} plots the velocity responses of the PID and MPC controllers in HITL simulations of the qaudrotor and suspended payload system.
+        The MPC controller is based on a system identification model with $q = 50$ and has a sample time of $T_s =$~\SI{30}{\milli\second}.
+        It is clear from this plot that the MPC node running on the companion computer provides stable control of the quadrotor payload system and damps the velocity oscillations well.
 
         \input{results/plots/HITL_mpc_theta.tex}
 
         \paragraph
-        Figure~\ref{fig:HITL_mpc_theta}
+        Figure~\ref{fig:HITL_mpc_theta} shows the payload angle response of the PID and MPC controllers during the velocity step response
 
 
         % ?? Check if all plots degrees not radians
