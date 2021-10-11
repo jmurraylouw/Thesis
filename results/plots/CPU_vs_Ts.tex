@@ -1,0 +1,40 @@
+\begin{figure}[htb]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[            
+            xlabel = {Sample time, $T_s$},
+            ylabel = \%~CPU,
+            x unit = \si{\milli\second},
+            % y unit = \%,
+            xmin = 15,   xmax = 45,
+            ymin = 0,   ymax = 100,
+            grid = major,
+            legend cell align = left,
+            legend pos = north east,
+            grid style = dashed,
+            legend style = {font = \scriptsize},
+            label style = {font = \scriptsize},
+            tick label style = {font = \scriptsize},
+            width = 0.95\columnwidth,
+            height = 0.5\columnwidth,
+            % initialize Dark2
+            cycle list/Dark2,
+            % combine it with 'mark list*':
+            cycle multiindex* list = {
+                Dark2\nextlist
+            }
+        ]
+
+        \addplot+[mark = *, style = solid, ultra thick] 
+        table {
+            20  98.6
+            30  82.8
+            40  40.2
+        };
+
+        \end{axis}
+    \end{tikzpicture} 
+    
+    \caption{Maximum \% CPU used by the MPC node for different sample times ($q = 50$)}
+    \label{fig:CPU_vs_Ts}
+\end{figure}

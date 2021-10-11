@@ -1,0 +1,49 @@
+\begin{figure}[htb]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[            
+            xlabel = Time,
+            ylabel = North velocity,
+            x unit = \si{\second},
+            y unit = \si{\metre/\second},
+            xmin = 0,   xmax = 15,
+            ymin = 0.02,  ymax = 1.2,
+            grid = major,
+            legend cell align = left,
+            legend pos = south east,
+            grid style = dashed,
+            legend style = {font = \scriptsize},
+            label style = {font = \scriptsize},
+            tick label style = {font = \scriptsize},
+            width = 0.95\columnwidth,
+            height = 0.5\columnwidth,
+            % initialize Dark2
+            cycle list/Dark2,
+            % combine it with 'mark list*':
+            cycle multiindex* list = {
+                Dark2\nextlist
+            }
+        ]
+        
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x expr = \thisrow{time} - 7, y = vel_sp.x, col sep = comma] 
+        {results/csv/HITL_step_PID_pid_single_step.csv};
+        \addlegendentry{setpoint}
+
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x expr = \thisrow{time} - 7, y = vel.x, col sep = comma] 
+        {results/csv/HITL_step_PID_pid_single_step.csv};
+        \addlegendentry{PID}
+
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x expr = \thisrow{time} - 7, y = vel.x, col sep = comma] 
+        {results/csv/HITL_step_MPC_mpc_great_responce.csv};
+        \addlegendentry{MPC}
+
+        \end{axis}
+    \end{tikzpicture} 
+    
+    \caption{Velocity step responses of MPC and PID controllers for \gls{HITL} simulations
+        ($q = 50$, $T_s =$\SI{0.03}{\second})}
+    \label{fig:HITL_mpc_vel}
+\end{figure}

@@ -1,0 +1,46 @@
+\begin{figure}[htb]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[            
+            xlabel = Time,
+            ylabel = Payload angle,
+            x unit = \si{\second},
+            y unit = \si{\degree},
+            xmin = 0,   xmax = 15,
+            ymin = -15,  ymax = 10,
+            grid = major,
+            legend cell align = left,
+            legend pos = north east,
+            grid style = dashed,
+            legend style = {font = \scriptsize},
+            label style = {font = \scriptsize},
+            tick label style = {font = \scriptsize},
+            width = 0.95\columnwidth,
+            height = 0.5\columnwidth,
+            % initialize Dark2
+            cycle list/Dark2,
+            % combine it with 'mark list*':
+            cycle multiindex* list = {
+                Dark2\nextlist
+            }
+        ]
+
+        \pgfplotsset{cycle list shift=1} % So that MPC vs PID has consistent colour
+
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x expr = \thisrow{time} - 7, y expr = \thisrow{angle.y} * 57.2958, col sep = comma] 
+        {results/csv/HITL_step_PID_pid_single_step.csv};
+        \addlegendentry{PID}
+
+        \addplot+[mark = none, style = solid, ultra thick] 
+        table[x expr = \thisrow{time} - 7, y expr = \thisrow{angle.y} * 57.2958, col sep = comma] 
+        {results/csv/HITL_step_MPC_mpc_great_responce.csv};
+        \addlegendentry{MPC}
+
+        \end{axis}
+    \end{tikzpicture} 
+    
+    \caption{Payload angle responses of MPC and PID controllers for \gls{HITL} simulations
+        ($q = 50$, $T_s =$\SI{0.03}{\second})}
+    \label{fig:HITL_mpc_theta}
+\end{figure}

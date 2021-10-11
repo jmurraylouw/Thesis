@@ -1,0 +1,43 @@
+\begin{figure}[htb]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[            
+            xlabel = {Number of delay-coordinates, $q$},
+            ylabel = \%~RAM,
+            % x unit = \si{\second},
+            % y unit = \%,
+            xmin = 0,   xmax = 80,
+            ymin = 0,   ymax = 1.2,
+            grid = major,
+            legend cell align = left,
+            legend pos = north east,
+            grid style = dashed,
+            legend style = {font = \scriptsize},
+            label style = {font = \scriptsize},
+            tick label style = {font = \scriptsize},
+            width = 0.95\columnwidth,
+            height = 0.5\columnwidth,
+            % initialize Dark2
+            cycle list/Dark2,
+            % combine it with 'mark list*':
+            cycle multiindex* list = {
+                Dark2\nextlist
+            }
+        ]
+
+        \pgfplotsset{cycle list shift=1} % So that RAM and CPU does not have same colour
+
+        \addplot+[mark = *, style = solid, ultra thick] 
+        table {
+            10  0.4
+            30  0.7
+            50  0.8
+            70  0.9
+        };
+
+        \end{axis}
+    \end{tikzpicture} 
+    
+    \caption{Maximum \% RAM used by the MPC node for different values of $q$}
+    \label{fig:RAM_vs_q}
+\end{figure}

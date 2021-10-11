@@ -32,15 +32,10 @@
             50  82.8
             70  98.7
         };
-        
-        % \addplot+[mark = none, style = solid, ultra thick] 
-        % table[x = q, y expr = {\thisrow{NMAE_mean}*100}, col sep = comma] 
-        % {system_id/csv/NMAE_vs_q_SITL_x_vel_noise_longer_times_q.csv_havok_angle_Ttrain_60.csv};
-        % \addlegendentry{HAVOK}
 
         \end{axis}
     \end{tikzpicture} 
     
-    \caption{Percentage of CPU time used by the MPC node for different values of $q$ ($Ts =$~\SI{0.03}{\second})}
+    \caption{Maximum \% CPU used by the MPC node for different values of $q$ ($Ts =$~\SI{0.03}{\second})}
     \label{fig:CPU_vs_q}
 \end{figure}
