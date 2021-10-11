@@ -5,9 +5,9 @@
             xlabel = Time,
             ylabel = Payload angle,
             x unit = \si{\second},
-            y unit = \si{\radian},
+            y unit = \si{\degree},
             xmin = 0,   xmax = 15,
-            ymin = -0.2,  ymax = 0.1,
+            ymin = -12,  ymax = 6,
             grid = major,
             legend cell align = left,
             legend pos = north east,
@@ -31,7 +31,7 @@
         % {system_id/csv/pos_step_SITL_single_pos_step_m0.3_l1.csv.csv};
 
         \addplot+[mark = none, style = solid, ultra thick] 
-        table[x = time, y = theta, col sep = comma] 
+        table[x = time, y expr = \thisrow{theta} * 57.2958, col sep = comma] 
         {system_id/csv/single_step_predictions_SITL_x_vel_noise_l1_m0-3.csv.csv};
 
         \end{axis}

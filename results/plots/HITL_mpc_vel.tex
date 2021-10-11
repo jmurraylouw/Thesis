@@ -28,7 +28,7 @@
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x expr = \thisrow{time} - 7, y = vel_sp.x, col sep = comma] 
         {results/csv/HITL_step_PID_pid_single_step.csv};
-        \addlegendentry{setpoint}
+        \addlegendentry{Setpoint}
 
         \addplot+[mark = none, style = solid, ultra thick] 
         table[x expr = \thisrow{time} - 7, y = vel.x, col sep = comma] 
