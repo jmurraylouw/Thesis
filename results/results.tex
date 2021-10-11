@@ -594,7 +594,9 @@
             \paragraph
             Figure~\ref{fig:HITL_mpc_theta} shows the payload angle data of the PID and MPC controllers during the velocity step response.
             From this plot it is clearly visible that the MPC controller damps the payload angle well.
-            Overall, these plots show that the swing-damping performance shown in simulation in Section~\ref{sec:mpc}, is also achievable with the final controller software running on the actual hardware.
+            Overall, these plots show that the swing-damping control performance shown in simulation in Section~\ref{sec:mpc}, is also achievable with the final controller software running on the actual hardware.
+
+            % ?? Discuss practical feasiblity as in intro
 
     \FloatBarrier\section{Summary}
 
@@ -629,7 +631,10 @@
         Unlike the white-box model which only represented the dominant oscillation frequency, the DMDc model also predicted the irregular oscillations well.
 
         \paragraph
-        Finally, the full data-driven system identification with MPC control architecture was test in HITL simulations.
-        
-
+        Finally, the full data-driven system identification with MPC control architecture was tested in HITL simulations.
+        It was shown that the hardware successfully executes the MPC algorithm at the desired speed for the selected hyperparameters and sample time.
+        The velocity step response proved that the various software systems work together seamlessly.
+        It also showed that the control architecture can be implemented on the hardware of an actual multirotor to successfully apply swing-damping control for the quadrotor-payload system.
+            
+        % ?? Is hierdie te veel detail? Moet ek dit korter maak?
 }
