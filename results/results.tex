@@ -2,13 +2,13 @@
 {
 \tikzset{external/figure name/.add={results/}{}}
 
-\chapter{Practical implementation and results}
-\label{chap:results}
+\chapter{Practical implementation and results} \label{chap:results}
 
     \paragraph
-    In previous chapters, it was shown with simulation data that both the white-box and black-box system identification models could
+    In Chapter~\ref{chap:system_id}, it was shown within simulation that both the white-box and black-box system identification models could
     accurately represent the dynamics of a multirotor with a suspended payload.
-    However, practical flights may differ significantly from simulations, which would affect the performance of these techniques.
+    In Chapter~\ref{chap:control}, it was also shown within simulation that the proposed controllers effectively achieve swing-damping control. 
+    However, practical flights may differ significantly from simulations, which would affect the performance of these implementations.
     Wind is a common unmeasured disturbance that influences the flight dynamics of a multirotor, 
     but this disturbance was not considered in simulations.
     The practical dynamics and sensor noise may also differ from the simulation model, which further motivates the need for practical data.
@@ -16,13 +16,9 @@
     \paragraph
     In this chapter, the system identification techniques will be applied to practical flight data.
     The effect of different wind conditions and payloads on the performance of these techniques will be investigated.
-    These techniques will also be evaluated with a practical dynamic payload.
-    % Furthermore, the suitability of the system identification models
-    % for swing damping control will be investigated in simulations.
-    % The performance of the swing damping controllers will be evaluated for a range of different system configurations.
-    Furthermore, \gls{HITL} simulations will be performed to determine whether the proposed hardware can handle the computational complexity of these algorithms.
+    The performance of these techniques on a practical dynamic payload system will also be shown.
+    Furthermore, \gls{HITL} simulations will be performed to determine whether the available hardware can handle the computational complexity of the MPC implementation.
     Finally, the practical feasibility of the proposed system identification and control architectures will be discussed.
-    % ?? Add \gls{HITL} results to this chapter
 
     \FloatBarrier\section{Methodology}
         
@@ -600,9 +596,40 @@
             From this plot it is clearly visible that the MPC controller damps the payload angle well.
             Overall, these plots show that the swing-damping performance shown in simulation in Section~\ref{sec:mpc}, is also achievable with the final controller software running on the actual hardware.
 
-            % ?? Check if all plots degrees not radians
-
     \FloatBarrier\section{Summary}
 
+        \paragraph
+        In this chapter, the system identification techniques were applied to practical flight data.
+        Firstly, the methodology used to obtain the flight data and apply the techniques were described.
+        The cable length estimation technique described in Chapter~\ref{chap:system_id} was applied to data from flights with different payload masses and cable lengths.
+        It was shown that the estimated length converged quickly for each payload configuration and that the estimation error was consistently quite large.
+        
+        \paragraph
+        It was also shown that the estimated length converged for flight data with different wind conditions, and it that the estimation error was the largest for the data with the most wind.
+        Furthermore, the cable length estimation technique was applied to flight data with a double-pendulum payload.
+        The estimated value converged to a length corresponding to the dominant frequency in the data, and the resulting white-box model prediction captured the general shape of the data well.
+        However, the white-box model prediction was shown to be very sensitive to initial conditions.
+
+        \paragraph
+        The data-driven system identification techniques were also successfully applied to practical flight data.
+        As expected, the prediction error of the techniques were decrease for flights with lower wind speeds.
+        Even with a considerable amount of wind, the techniques were able to generate accurate prediction models.
+        However at very high wind speeds, the resultant models were unusable.
+
+        \paragraph
+        The DMDc and HAVOKc state predictions performed equally well on data from various different flights.
+        DMDc was chosen as the preferred method due to its lower complexity.
+        It was shown that DMDc could be applied to data from a range of different payload parameters and consistently generate accurate prediction models without prior knowledge of the payload configuration.
+        The Pareto front and `double-descent' trends discussed in Chapter~\ref{chap:system_id} were also identified in these results.
+        
+        \paragraph
+        DMDc was also extended to capture the North and East velocity dynamics simultaneously, and the resulting prediction model accurately reconstructed the system dynamics for test data.
+        Furthermore, DMDc was applied to flight data with a dynamic payload representing a double-pendulum system.
+        DMDc also accurately reconstructed the dynamics of this system for unseen test data.
+        Unlike the white-box model which only represented the dominant oscillation frequency, the DMDc model also predicted the irregular oscillations well.
+
+        \paragraph
+        Finally, the full data-driven system identification with MPC control architecture was test in HITL simulations.
+        
 
 }
