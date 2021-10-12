@@ -7,5 +7,6 @@
         "mvrate",
         "subfigure"
     ],
-    "ros.distro": "melodic"
+    "ros.distro": "melodic",
+    "cmake.configureOnOpen": false
 }
