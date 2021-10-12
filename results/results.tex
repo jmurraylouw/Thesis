@@ -469,24 +469,24 @@
 
             \paragraph
             As discussed in Section~\ref{sec:mpc}, the computational complexity of the \gls{MPC} optimisation problem increases for larger state-space matrices, and the hyper parameter, $q$, determines the size of these matrices.
-            Figure~\ref{fig:CPU_vs_q} shows the \%CPU consumption of \gls{MPC} nodes based on models with different $q$ values.
-            The \%CPU value represents the average percentage of \gls{CPU} time used by the \gls{MPC} node running on the companion computer.
-            From Figure~\ref{fig:CPU_vs_q} it is clear that \%CPU increases with increasing values of $q$.
+            Figure~\ref{fig:CPU_vs_q} shows the \scaleobj{0.8}{\%}CPU consumption of \gls{MPC} nodes based on models with different $q$ values.
+            The \scaleobj{0.8}{\%}CPU value represents the average percentage of \gls{CPU} time used by the \gls{MPC} node running on the companion computer.
+            From Figure~\ref{fig:CPU_vs_q} it is clear that \scaleobj{0.8}{\%}CPU increases with increasing values of $q$.
             % This shows that the optimisation problem increases in complexity, since more time is required to solve 
-            
+
             \paragraph
             In Section~\ref{sec:hyperparameters} it was shown that $q = 50$ appears to be near the Pareto optimum with practical flight data and that prediction accuracy does not increase significantly for $q > 50$.
-            Figure~\ref{fig:CPU_vs_q} shows that the companion computer runs the \gls{MPC} node with $q = 50$ and $T_s =$~\SI{0.03}{\second} at \%CPU~$= 82.8\%$.
+            Figure~\ref{fig:CPU_vs_q} shows that the companion computer runs the \gls{MPC} node with $q = 50$ and $T_s =$~\SI{0.03}{\second} at \scaleobj{0.8}{\%}CPU~$= 82.8\%$.
             The status of the QP solver was also monitored, which showed that the optimisation problem was consistently solved within the given optimisation time for $q = 50$.
             The \gls{MPC} node achieved stable, swing-damping control with this model.
-            However, for $q = 70$ the \gls{MPC} node used \%CPU~$= 98.7\%$ and the optimisation problem could not be solved fast enough for stable control.
+            However, for $q = 70$ the \gls{MPC} node used \scaleobj{0.8}{\%}CPU~$= 98.7\%$ and the optimisation problem could not be solved fast enough for stable control.
             This resulted in unstable control and the quadrotor-payload system crashed consistently with this \gls{MPC} node. 
 
             \input{results/plots/RAM_vs_q.tex}
 
             \paragraph
-            Figure~\ref{fig:RAM_vs_q} shows that the \%RAM also increases for larger values of $q$.
-            The \%RAM value represents the maximum percentage of \gls{RAM} space used by the \gls{MPC} node while running on the companion computer.
+            Figure~\ref{fig:RAM_vs_q} shows that the \scaleobj{0.8}{\%}RAM also increases for larger values of $q$.
+            The \scaleobj{0.8}{\%}RAM value represents the maximum percentage of \gls{RAM} space used by the \gls{MPC} node while running on the companion computer.
             It is clear that the companion computer has sufficient memory to handle the \gls{MPC} node memory requirements, since the \gls{MPC} uses less than 1\% RAM, even with $q = 70$.
 
         \FloatBarrier\subsection{Effect of sample time on computational requirements}    
@@ -494,16 +494,16 @@
             \input{results/plots/CPU_vs_Ts.tex}
 
             \paragraph
-            The sample time of the controller also affects the \%CPU consumption of the \gls{MPC} node.
-            Figure~\ref{fig:CPU_vs_Ts} shows the measured \%CPU of \gls{MPC} nodes with different sample times using a plant model with $q = 50$. 
-            It is clear that \%CPU decreases as $T_s$ increases.
+            The sample time of the controller also affects the \scaleobj{0.8}{\%}CPU consumption of the \gls{MPC} node.
+            Figure~\ref{fig:CPU_vs_Ts} shows the measured \scaleobj{0.8}{\%}CPU of \gls{MPC} nodes with different sample times using a plant model with $q = 50$. 
+            It is clear that \scaleobj{0.8}{\%}CPU decreases as $T_s$ increases.
             % In Section~\ref{sec:sample_time}, it was shown that the model prediction accuracy does not change much for different sample times in the range, $20 < q < 40$~ms.
             The standard \gls{PID} velocity controller in PX4 runs at \SI{50}{\hertz}, which corresponds to $T_s =$~\SI{20}{\milli\second}.
             However, an \gls{MPC} node with $T_s =$~\SI{20}{\milli\second} struggles to run fast enough on the given companion computer.
             This \gls{MPC} node resulted in unstable control because the QP problem cannot be solved within the given optimisation time.
             
             \paragraph
-            A \gls{MPC} node with $T_s =$~\SI{40}{\milli\second} runs with a low \%CPU, however it also results in unstable control.
+            A \gls{MPC} node with $T_s =$~\SI{40}{\milli\second} runs with a low \scaleobj{0.8}{\%}CPU, however it also results in unstable control.
             This is because the controller frequency is too low to provide adequate velocity control for the quadrotor-payload dynamics.
             A \gls{MPC} node with $T_s =$~\SI{30}{\milli\second} provides stable control of the quadrotor-payload system.
             The controller frequency of \SI{33.33}{\hertz} appears to be fast enough to control the quadrotor-payload dynamics and the QP problem is solved within the given optimisation time.
