@@ -4,8 +4,14 @@
 \tikzset{external/figure name/.add={lit_study/}{}}
 
 
-\chapter{Literature study}
-\label{chap:lit_study}
+\chapter{Literature study} \label{chap:lit_study}
+
+    \paragraph
+    This chapter will present a study of the literature regarding the transportation of payloads with multirotors.
+    Firstly, an overview of different payload configurations will be provided and control techniques for transporting unknown payloads will be discussed.
+    This study will specifically focus on different control techniques that consider unknown, cable-suspended payloads.
+    Furthermore, the different system identification methods for multirotor-payload systems will be discussed.
+    This chapter will conclude with a summary of the considered literature and will compare it the to focus of this thesis.
 
 \section{Payload transportation with multirotors}
 
@@ -36,7 +42,7 @@
         and an adaptive control law which is based on the estimated parameters and a dynamical model of the system.
 
         % \paragraph
-        % \author{Mellinger2011a} \cite{Mellinger2011a} proposed an adaptive controller for a multirotor with a rigidly connected payload.
+        % \citeauthor{Mellinger2011a} \cite{Mellinger2011a} proposed an adaptive controller for a multirotor with a rigidly connected payload.
         % Least-squares estimation techniques were applied to estimate the inertial parameters of the payload.
         % A adaptive control law was then applied which uses the estimated parameters in the control law.
         % Experimental results showed acceptable trajectory tracking performance with the adaptive controller.
@@ -65,8 +71,8 @@
         \paragraph
         The transportation of various suspended payload configurations have been considered in literature.
         The classical suspended payload application involves a small payload suspended below the vehicle with rigid cable \cite{Erasmus2020, Slabber2020, Guerrero-Sanchez2017, Klausen2017, Ichikawa2018, DeAngelis2019a}. 
-        \author{Kotaru2017} \cite{Kotaru2017} considered a suspended payload system with an elastic cable modelled as a spring-damper system.
-        \author{Tang2015a} \cite{Tang2015a} modelled the multirotor-payload system with a hybrid dynamical model to consider aggressive manoeuvres where the cable transitions from taut to slack.
+        Kotaru et al. \cite{Kotaru2017} considered a suspended payload system with an elastic cable modelled as a spring-damper system.
+        Tang et al. \cite{Tang2015a} modelled the multirotor-payload system with a hybrid dynamical model to consider aggressive manoeuvres where the cable transitions from taut to slack.
         The transportation of payload loads with flexible cables have also been studied, where the cable is modelled as a set of serially-connected rigid links  \cite{Goodarzi2015, Goodarzi2014, Kotaru2018}. 
         Furthermore, the control of a group of multirotors transporting a single suspended payload have also been considered in various studies \cite{Lee2015, Sanalitro2020, Klausen2014, Goodarzi2015}.
         
@@ -79,9 +85,29 @@
         % ?? Fi author cite and [12-15] to rather [12,13,14,15]
 \section{Control of a multirotor with a suspended payload}
 
-    \subsection{Input shapers}
+    \paragraph
+    A major drawback of transporting a cable-suspended payload is that the payload is free to swing during flight, which effects dynamics of the multirotor.
+    Two main control strategies are applied in literature to stabilise a multirotor with a suspended payload, namely, trajectory generation and active-damping control.
+    Trajectory generation methods involve executing trajectories that induce minimal oscillations.
+    Active-damping controllers involve feedback controllers that apply a control law to counteract the swing of the payload based on a measurement or estimate of the payload state.
+
+    \subsection{Trajectory generation}
+
+        \paragraph
+        The main trajectory generation techniques include, 
+        MPC,
+        input shapers,
+        etc
+        Name if simulation and practical
+
+        Add cases from slabber and erasmus.
+        Look for newer literature.
+
 
     \subsection{Active-damping controllers}
+
+        \paragraph
+        Also MPC
 
     
     % ?? Lit study: include different types of \gls{MPC}, e.g. DMC, MAC
