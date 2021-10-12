@@ -234,9 +234,7 @@
         is not too computational expensive for the available hardware.
         However, these scores require the computation of the maximum log likelihood of each model 
         over numerous simulations.
-        This is computationally intractable and unpractical for our use case 
-        because of the large number of hyperparameter combinations to compare, 
-        as explained in Section~\ref{sec:hyperparameters}.
+        This is computationally intractable and unpractical for our use case because of the large number of hyperparameter combinations to compare, as explained in Section~\ref{sec:hyperparameters}.
         Therefore an error metric will rather be used to evaluate model accuracy.
         
         % because it provides a good measure of a model prediction 
@@ -602,7 +600,7 @@
         perform well for the suspended payload use case.
         It was also shown in \cite{Slabber2020} and \cite{Erasmus2020} that this method can be used 
         in conjunction with \gls{LQR} control to minimize swing angles of an unknown payload.
-        However, many payloads do not satisfy the assumptions made in for the a priori model
+        However, many payloads do not satisfy the assumptions made in for the a~priori model
         which is detrimental to performance of white-box method.
         For example, for an elongated payload attached to the cable the point-mass assumption does not hold.
         The \gls{CoM} of the payload is well below the attachment point of the cable, 
@@ -645,7 +643,7 @@
         However, by the second swing, the double pendulum dynamics differ significantly from the model prediction.
         The single pendulum oscillations seen in Figure~\ref{fig:prediction_single_pend_white} are regular
         compared to double pendulum oscillations in Figure~\ref{fig:prediction_double_pend_white} which are noticeably irregular.
-        The a priori model expects regular, single frequency oscillations.
+        The a~priori model expects regular, single frequency oscillations.
         This can be seen in Figure~\ref{fig:prediction_double_pend_white} where the predicted peaks are equidistant.
         However, the actual dynamics have a superposition of two frequencies due to the double pendulum payload.
 
@@ -687,7 +685,7 @@
         An advantage of data-driven system identification techniques 
         is that the effect of damping is inherently included in the estimated model 
         without specifically estimating a damping coefficient.
-        In contrast, the white-box estimation technique requires the effect to be modelled a priori 
+        In contrast, the white-box estimation technique requires the effect to be modelled a~priori 
         and a designed algorithm to estimate every parameter that effects the dynamics.
 
         \input{system_id/plots/prediction_single_pend_black.tex}        
