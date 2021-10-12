@@ -116,7 +116,7 @@
 
         % \paragraph
         % As discussed before, the purpose of identifying a data-driven model of the plant dynamics 
-        % is to use it in a \gls{MPC} controller in the velocity loop, 
+        % is to use it in an \gls{MPC} controller in the velocity loop, 
         % therefore velocity inputs are used in the system identification process.
         % It is a common technique to use a step response for system identification \cite{Chen2011} because it exposes a 
         % large range of frequency data in the system dynamics.
@@ -129,7 +129,7 @@
     \subsection{Error metric}
 
         \paragraph        
-        It is common practice is to select a model for a \gls{MPC} based on k-step-ahead prediction errors \cite{Zhao2014}.
+        It is common practice is to select a model for an \gls{MPC} based on k-step-ahead prediction errors \cite{Zhao2014}.
         This is because the model is used to make k-step-ahead predictions during control optimisation.
         When model error is dominated by variance error (caused by disturbances), 
         it may be better to use one-step-prediction error \cite{Zhao2014}.
@@ -174,7 +174,7 @@
         therefore the scale of the \gls{MAPE} of velocity will significantly different from the \gls{MAPE} of the payload angle.
         
         \paragraph
-        \gls{MRAE} is also popular metric for comparing predictions models used with a \gls{MPC} \cite{Kaiser2018b},
+        \gls{MRAE} is also popular metric for comparing predictions models used with an \gls{MPC} \cite{Kaiser2018b},
         however, similarly to \gls{MAPE}, it also results in undefined values for the payload swing angle.
         \gls{MASE} does not have this problem and can compare predictions of different variables well, 
         because it expresses accuracy as the ratio between the MAE of the model prediction and the MAE of an in-sample
@@ -262,7 +262,7 @@
         while being extremely bad at steady-state predictions.
         This would result in an \gls{MPC} controlling the plant well during the initial step response,
         but becoming unstable during steady-state control.
-        In order to have a \gls{MPC} that can control the plant during the different stages of a flight, 
+        In order to have an \gls{MPC} that can control the plant during the different stages of a flight, 
         a model needs to be selected with accurate predictions over a range of different control conditions.
         
         \paragraph
@@ -764,7 +764,7 @@
         % \begin{equation}
         %     x_{k+1} = A x_k + B u_k ,
         % \end{equation} 
-        % which is used in a \gls{MPC}.
+        % which is used in an \gls{MPC}.
         % The k-step-ahead prediction accuracy of this model is important for the performance of the \gls{MPC}.
         % Therefore comparing the performance of the controllers which use these models 
         % is a better approach than comparing the model accuracy.

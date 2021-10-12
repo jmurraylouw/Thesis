@@ -5,9 +5,9 @@
 \chapter{Practical implementation and results} \label{chap:results}
 
     \paragraph
-    In Chapter~\ref{chap:system_id}, it was shown within simulation that both the white-box and black-box system identification models could
+    In Chapter~\ref{chap:system_id}, it was shown within simulations that both the white-box and black-box system identification models could
     accurately represent the dynamics of a multirotor with a suspended payload.
-    In Chapter~\ref{chap:control}, it was also shown within simulation that the proposed controllers effectively achieve swing-damping control. 
+    In Chapter~\ref{chap:control}, it was also shown within simulations that the proposed controllers effectively achieve swing-damping control. 
     However, practical flights may differ significantly from simulations, which would affect the performance of these implementations.
     Wind is a common unmeasured disturbance that influences the flight dynamics of a multirotor, 
     but this disturbance was not considered in simulations.
@@ -51,7 +51,7 @@
                 PE = \frac{ l_{estimated} - l_{actual} }{ l_{actual} } \times 100 \% ,
             \end{equation}
             where $l_{actual}$ is the actual cable length and $l_{estimated}$ is the estimated cable length.
-            The \gls{PE} can be interpretted as the percentage of the actual length by which the actual length differs from the estimated length.
+            The \gls{PE} can be interpreted as the percentage of the actual length by which the actual length differs from the estimated length.
             
             \input{results/plots/cable_length_vs_train_time.tex}
 
@@ -67,7 +67,7 @@
             Hence, an inaccurate length is estimated from the frequency peak identified in the \gls{FFT}.
             % The estimation accuracy could be improved by including the effect of damping in the calculation of the cable length from the measured natural frequency.
             % However, it was shown by \cite{Slabber2020} that this is
-            Unlike in the simulations, the actual cable attachement may be below the \gls{CoM} of the vehicle.
+            Unlike in the simulations, the actual cable attachment may be below the \gls{CoM} of the vehicle.
             This increases the effective suspended length and may also contribute to the error in parameters estimation.
             
             \input{results/plots/prediction_single_pend_white_prac.tex}
@@ -76,12 +76,12 @@
             Figure~\ref{fig:prediction_single_pend_white_prac} compares the actual payload angle to the predicted angle of the white-box model for a velocity step in a practical flight. 
             The cable length estimated from this flight is \SI{2.64}{\metre} resulting in a \gls{PE} of 32.0~\%.
             The prediction matches the general shape of the practical data well.
-            However, the transient response of the practical data, can be seen in the first two oscillation peaks, is noticeably different from the model prediction.
+            However, the transient response of the practical data, which can be seen in the first two oscillation peaks, is noticeably different from the model prediction.
             This is probably due to the inner loop controllers dynamics which affects the transient response of the practical data but are not accounted for in the white-box.
             
             \paragraph
-            Furthermore, the practical swing angle peaks are clearly attenuated by non-linear damping, which differs from the linear damping of the white-box model.
-            This is a minor modelling error expected from a simplistic linear approximation of a non-linear system. 
+            Furthermore, the practical swing angle peaks are attenuated by non-linear damping, which differs from the linear damping of the white-box model.
+            This is a minor modelling error expected from a linear approximation of a non-linear system. 
 
             % \input{results/plots/prediction_single_pend_white_prac_bad.tex}
             % \paragraph
@@ -140,7 +140,7 @@
             This reduced the considered suspended payload system to a simple pendulum in the white-box model.
             Figure~\ref{fig:practical_double_pendulum} shows a photo of an elongated payload suspended from Honeybee during a practical flight
             This is a practical example of a dynamic payload that deviates significantly from the point-mass assumption.
-            The mass distribution causes a relative rotation of the payload with respect to the suspended cable,
+            The mass distribution causes a rotation of the payload relative to the suspended cable,
             which significantly affects the flight dynamics.
             
             \begin{figure}
@@ -155,7 +155,7 @@
 
             \paragraph
             Figure~\ref{fig:FFT_vel_step_double_pend} shows a snapshot of the payload angle data from a practical flight with a dynamic payload.
-            Two superimposed frequencies are clearly visible in the payload oscillations due to the double pendulum action of the elongated pendulum.
+            Two superimposed frequencies are visible in the payload oscillations due to the double pendulum action of the elongated pendulum.
             The two peaks corresponding to these two frequencies can easily be identified from the FFT amplitude spectrum in Figure~\ref{fig:FFT_double_pend_prac}.
             The cable length estimation method uses the frequency of the dominant peak and calculates the effective length corresponding to that frequency.
             This results in a simple pendulum model that best matches the dynamic payload oscillations. 
@@ -249,7 +249,7 @@
 
             \paragraph
             Figure~\ref{fig:havok_vs_dmd_Ttrain_2mps} compares the prediction errors of \gls{DMDc} and \gls{HAVOKc} models.
-            It is evident that the two techniques produce similar prediction errors for different wind conditions.
+            This shows that the two techniques produce similar prediction errors for different wind conditions.
             The difference in prediction error is small and will probably not affect the performance of the controllers using these models.
             This affirms the observation in Chapter~\ref{chap:system_id} that the minor difference in the algorithm implementations has a negligible effect on prediction accuracy.
             The \gls{DMDc} implementation is therefore preferred over \gls{HAVOKc} for practical data due to lower computational complexity.
@@ -310,7 +310,7 @@
                 \bm{x}_{k+1} = \bm{A}_{dmd} \bm{x}_k + \bm{A}_d \bm{d}_k + \bm{B}_{dmd} \bm{u}_k .
             \end{equation}
             The state prediction starts at the initial condition, $\bm{x}_0$ and $\bm{d}_0$,
-            and predicts the state vector for each succesive time-step, $\bm{x}_{k+1}$, 
+            and predicts the state vector for each successive time-step, $\bm{x}_{k+1}$, 
             from the state vector, $\bm{x}_{k}$,
             delay vector, $\bm{d}_{k}$
             and input vector, $\bm{u}_{k}$
@@ -324,7 +324,7 @@
             \paragraph
             Figure~\ref{fig:prac_pediction_single_pend_vel_black} 
             shows the measured and predicted North velocity of the same flight.
-            The oscillations in the velocity response due to the swinging payload are clearly visible in this plot.
+            The oscillations in the velocity response due to the swinging payload are visible in this plot.
             The model predicts the frequency and size of these oscillations reasonably well.
             Note that predicting the payload angle is significantly easier than predicting the velocity response.
             The payload angle prediction inherently oscillates around a zero mean.
@@ -411,7 +411,7 @@
             Figure~\ref{fig:prac_pediction_double_pend_theta_black} shows the measured and predicted payload angle
             of the practical dynamic payload.
             The irregular oscillations due to the double pendulum action of an elongated payload are visible in the angle data.
-            The data-driven model clearly represents the actual payload dynamics well.
+            It is clear that the data-driven model represents the actual payload dynamics for unseen testing data well.
             It appears that the prediction differs slightly from the measurement data at the peaks, however, this does not appear to be a significant error.
             Overall, it is clear that the \gls{DMDc} model captures the multi-frequency oscillations of the dynamic payload well.
 
@@ -468,26 +468,32 @@
             \input{results/plots/CPU_vs_q.tex}
 
             \paragraph
-            As discussed in Section~\ref{sec:mpc}, the computational complexity of the \gls{MPC} optimisation problem increases for larger state-space matrices, and the hyper parameter, $q$, determines the size of these matrices.
+            As discussed in Section~\ref{sec:mpc}, the computational complexity of the \gls{MPC} optimisation problem increases for larger state-space matrices, and the hyperparameter, $q$, determines the size of these matrices.
             Figure~\ref{fig:CPU_vs_q} shows the \scaleobj{0.8}{\%}CPU consumption of \gls{MPC} nodes based on models with different $q$ values.
             The \scaleobj{0.8}{\%}CPU value represents the average percentage of \gls{CPU} time used by the \gls{MPC} node running on the companion computer.
             From Figure~\ref{fig:CPU_vs_q} it is clear that \scaleobj{0.8}{\%}CPU increases with increasing values of $q$.
-            % This shows that the optimisation problem increases in complexity, since more time is required to solve 
+            This shows that the computational complexity increases for larger values of $q$.
+            % This shows that the optimisation problem increases in complexity since more time is required to solve 
 
             \paragraph
-            In Section~\ref{sec:hyperparameters} it was shown that $q = 50$ appears to be near the Pareto optimum with practical flight data and that prediction accuracy does not increase significantly for $q > 50$.
-            Figure~\ref{fig:CPU_vs_q} shows that the companion computer runs the \gls{MPC} node with $q = 50$ and $T_s =$~\SI{0.03}{\second} at \scaleobj{0.8}{\%}CPU~$= 82.8\%$.
-            The status of the QP solver was also monitored, which showed that the optimisation problem was consistently solved within the given optimisation time for $q = 50$.
-            The \gls{MPC} node achieved stable, swing-damping control with this model.
-            However, for $q = 70$ the \gls{MPC} node used \scaleobj{0.8}{\%}CPU~$= 98.7\%$ and the optimisation problem could not be solved fast enough for stable control.
-            This resulted in unstable control and the quadrotor-payload system crashed consistently with this \gls{MPC} node. 
+            In Section~\ref{sec:hyperparameters}, it was shown that $q = 50$ is near the Pareto optimum for practical data and the prediction accuracy does not increase significantly for $q > 50$.
+            As shown in Figure~\ref{fig:CPU_vs_q}, an \gls{MPC} node with $q = 50$ and $T_s =$~\SI{0.03}{\second} run at \scaleobj{0.8}{\%}CPU~$= 82.8\%$ on the companion computer.
+            The status of the \gls{QP} solver was also monitored, which showed that the optimisation problem was consistently solved within the given optimisation time for $q = 50$.
+            The \gls{MPC} node achieves stable, swing-damping control with this model.
+            However, for $q = 70$ the \gls{MPC} node uses \scaleobj{0.8}{\%}CPU~$= 98.7\%$ and the optimisation problem can not be solved fast enough for stable quadrotor control.
+            This results in an unstable controller and the quadrotor-payload system crashes consistently with this \gls{MPC} node. 
+
+            % ?? Check tenses in body of whole thesis.
+            % Intro = future
+            % body = present
+            % conclusion = past
 
             \input{results/plots/RAM_vs_q.tex}
 
             \paragraph
             Figure~\ref{fig:RAM_vs_q} shows that the \scaleobj{0.8}{\%}RAM also increases for larger values of $q$.
             The \scaleobj{0.8}{\%}RAM value represents the maximum percentage of \gls{RAM} space used by the \gls{MPC} node while running on the companion computer.
-            It is clear that the companion computer has sufficient memory to handle the \gls{MPC} node memory requirements, since the \gls{MPC} uses less than 1\% RAM, even with $q = 70$.
+            It is clear that the companion computer has sufficient memory to handle the \gls{MPC}, since the \gls{MPC} node uses less than 1\% RAM, even for large models with $q = 70$.
 
         \FloatBarrier\subsection{Effect of sample time on computational requirements}    
 
@@ -498,15 +504,16 @@
             Figure~\ref{fig:CPU_vs_Ts} shows the measured \scaleobj{0.8}{\%}CPU of \gls{MPC} nodes with different sample times using a plant model with $q = 50$. 
             It is clear that \scaleobj{0.8}{\%}CPU decreases as $T_s$ increases.
             % In Section~\ref{sec:sample_time}, it was shown that the model prediction accuracy does not change much for different sample times in the range, $20 < q < 40$~ms.
-            The standard \gls{PID} velocity controller in PX4 runs at \SI{50}{\hertz}, which corresponds to $T_s =$~\SI{20}{\milli\second}.
+            The default velocity controller in PX4 runs at \SI{50}{\hertz}, which corresponds to $T_s =$~\SI{20}{\milli\second}.
             However, an \gls{MPC} node with $T_s =$~\SI{20}{\milli\second} struggles to run fast enough on the given companion computer.
-            This \gls{MPC} node resulted in unstable control because the QP problem cannot be solved within the given optimisation time.
+            This is clear from the high \scaleobj{0.8}{\%}CPU consumption (98.6\%) of the MPC node running at $T_s =$~\SI{20}{\milli\second}.
+            This node results in unstable control because the \gls{QP} problem cannot be solved within the given optimisation time.
             
             \paragraph
             A \gls{MPC} node with $T_s =$~\SI{40}{\milli\second} runs with a low \scaleobj{0.8}{\%}CPU, however it also results in unstable control.
-            This is because the controller frequency is too low to provide adequate velocity control for the quadrotor-payload dynamics.
-            A \gls{MPC} node with $T_s =$~\SI{30}{\milli\second} provides stable control of the quadrotor-payload system.
-            The controller frequency of \SI{33.33}{\hertz} appears to be fast enough to control the quadrotor-payload dynamics and the QP problem is solved within the given optimisation time.
+            This is because the controller frequency is too low to provide adequate velocity control of the quadrotor-payload dynamics.
+            However, an \gls{MPC} node with $T_s =$~\SI{30}{\milli\second} provides stable control of the quadrotor-payload system.
+            The \gls{QP} problem is solved within the given optimisation time and, as shown in the section below, the resulting controller frequency of \SI{33.33}{\hertz} appears to be fast enough to control the quadrotor-payload dynamics.
 
             % ?? Simulations with latency included
         \FloatBarrier\subsection{Velocity step response}    
@@ -514,7 +521,7 @@
             \input{results/plots/HITL_mpc_vel.tex}
 
             \paragraph
-            Figure~\ref{fig:HITL_mpc_vel} plots the velocity responses of the \gls{PID} and \gls{MPC} controllers in \gls{HITL} simulations of the qaudrotor and suspended payload system.
+            Figure~\ref{fig:HITL_mpc_vel} plots the velocity responses of the \gls{PID} and \gls{MPC} controllers in \gls{HITL} simulations of the quadrotor-payload system.
             The \gls{MPC} controller is based on a system identification model with $q = 50$ and has a sample time of $T_s =$~\SI{30}{\milli\second}.
             It is clear from this plot that the \gls{MPC} node running on the companion computer provides stable control of the quadrotor payload system and damps the velocity oscillations well.
 
@@ -522,8 +529,8 @@
 
             \paragraph
             Figure~\ref{fig:HITL_mpc_theta} shows the payload angle data of the \gls{PID} and \gls{MPC} controllers during the velocity step response.
-            From this plot it is clearly visible that the \gls{MPC} controller damps the payload angle well.
-            Overall, these plots show that the swing-damping control performance shown in simulation in Section~\ref{sec:mpc}, is also achievable with the final controller software running on the actual hardware.
+            From this plot, it is visible that the \gls{MPC} controller damps the payload angle well.
+            Overall, these plots show that the swing-damping control achieved in simulations in Section~\ref{sec:mpc}, is also achievable with the final controller software running on the actual hardware.
 
             % ?? Discuss practical feasibility as in intro
 
@@ -531,39 +538,39 @@
 
         \paragraph
         In this chapter, the system identification techniques were applied to practical flight data.
-        Firstly, the methodology used to obtain the flight data and apply the techniques were described.
         The cable length estimation technique described in Chapter~\ref{chap:system_id} was applied to data from flights with different payload masses and cable lengths.
-        It was shown that the estimated length converged quickly for each payload configuration and that the estimation error was consistently quite large.
+        The results showed that the estimated length converged quickly for each payload configuration and that the estimation error was consistently quite large.
+        The large error was attributed to cable attachment being below the vehicle \gls{CoM}, and the damping effect of the controller, which were not considered in the parameter estimation algorithm. 
         
         \paragraph
-        It was also shown that the estimated length converged for flight data with different wind conditions, and it that the estimation error was the largest for the data with the most wind.
-        Furthermore, the cable length estimation technique was applied to flight data with a double-pendulum payload.
-        The estimated value converged to a length corresponding to the dominant frequency in the data, and the resulting white-box model prediction captured the general shape of the data well.
+        It was also shown that the estimated length converged for flight data with different wind conditions and that the estimation error was the largest for the data with the most wind.
+        Furthermore, the cable length estimator was applied to flight data with a double-pendulum payload.
+        The estimated value converged to a length corresponding to the dominant frequency in the data, and the resulting white-box model prediction only captured the general shape of the data well.
         However, the white-box model prediction was shown to be very sensitive to initial conditions.
 
         \paragraph
         The data-driven system identification techniques were also successfully applied to practical flight data.
-        As expected, the prediction error of the techniques were decrease for flights with lower wind speeds.
-        Even with a considerable amount of wind, the techniques were able to generate accurate prediction models.
-        However at very high wind speeds, the resultant models were unusable.
+        As expected, the prediction error of the techniques decreased for flights with lower wind speeds.
+        With a reasonable amount of wind, the techniques were able to generate accurate prediction models.
+        However, at very high wind speeds, the resultant models were not usable.
 
         \paragraph
-        The \gls{DMDc} and \gls{HAVOKc} state predictions performed equally well on data from various different flights.
+        The \gls{DMDc} and \gls{HAVOKc} state predictions performed equally well on data from various flights.
         \gls{DMDc} was chosen as the preferred method due to its lower complexity.
-        It was shown that \gls{DMDc} could be applied to data from a range of different payload parameters and consistently generate accurate prediction models without prior knowledge of the payload configuration.
+        It was shown that \gls{DMDc} could be applied to data from a wide range of different payload parameters and that it consistently generated accurate prediction models without prior knowledge of the payload configuration.
         The Pareto front and `double-descent' trends discussed in Chapter~\ref{chap:system_id} were also identified in these results.
         
         \paragraph
         \gls{DMDc} was also extended to capture the North and East velocity dynamics simultaneously, and the resulting prediction model accurately reconstructed the system dynamics for test data.
         Furthermore, \gls{DMDc} was applied to flight data with a dynamic payload representing a double-pendulum system.
-        \gls{DMDc} also accurately reconstructed the dynamics of this system for unseen test data.
+        \gls{DMDc} accurately reconstructed the dynamics of this system for unseen test data.
         Unlike the white-box model which only represented the dominant oscillation frequency, the \gls{DMDc} model also predicted the irregular oscillations well.
 
         \paragraph
         Finally, the full data-driven system identification with \gls{MPC} control architecture was tested in \gls{HITL} simulations.
         It was shown that the hardware successfully executes the \gls{MPC} algorithm at the desired speed for the selected hyperparameters and sample time.
-        The velocity step response proved that the various software systems work together seamlessly.
-        It also showed that the control architecture can be implemented on the hardware of an actual multirotor to successfully apply swing-damping control for the quadrotor-payload system.
+        The successful velocity step response proved that the various software systems work together seamlessly.
+        It also showed that the control architecture can be implemented on the hardware of an actual multirotor to successfully apply swing-damping control of the quadrotor-payload system.
             
         % ?? Is hierdie te veel detail? Moet ek dit korter maak?
 }
