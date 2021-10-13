@@ -95,7 +95,7 @@
 
         \paragraph
         Trajectory generation methods for suspended payload systems are often based on open-loop control techniques.
-        % A trajectory is calculated in which the multirotor motion induces as little oscillations as possible.
+        A trajectory is calculated and executed in which the multirotor motion induces as little oscillations as possible.
         Input shaping is a common open-loop control method for minimal swing control of suspended payloads.
         This technique involves modifying a reference signal, usually with a set of timed impulses, to cancel oscillatory modes of the system \cite{Vaughan2008}.
         These techniques were originally designed for moving suspended payloads with gantry systems \cite{Smith1957, Starr1983}.
@@ -113,35 +113,44 @@
         % Dynamic programming??
 
         \paragraph
-        Slabber et al. \cite{Slabber2020} applied a notch filter to reduce the suspended payload oscillation for velocity control of a multirotor in simulation.
-        To improve robustness against parameter uncertainty, the frequency band of the notch filter can be increased at the expense of oscillation attenuation.
-        Slabber et al. \cite{Slabber2020} showed in simulation that a notch filter attenuated the payload oscillations to near swing free motion for cable length estimation errors of up to 20\%.
+        Slabber et al. \cite{Slabber2020} applied a notch filter to reduce the cable-suspended payload oscillation for velocity control of a multirotor in simulation.
+        Slabber et al. considered a system with an unknown payload mass and cable length, estimated with \gls{RLS} and \gls{FFT} parameter estimators respectively.
+        The natural frequency of the multirotor-payload system was then calculated based on these estimates.
+        The notch filter was applied to the velocity setpoint signal to suppress the frequency band containing this natural frequency. 
+        To improve the robustness against parameter uncertainty, a wider frequency band could be used.
+        It was shown in simulation that a notch filter attenuated the payload oscillations to near swing free motion even with large parameter estimation errors \cite{Slabber2020}.
 
+        \paragraph 
+        Several other open-loop methods have been successfully applied for effective suspended payload transportation.
+        \cite{Zeng2019} and \cite{Tang2015b} applied differential flatness based trajectory planning methods for multirotors in obstacle-filled environments.
+        Instead of only considering swing-reduction of the suspended payloads, these studies consider specific payload trajectories to avoid obstacles during aggressive motion.
+        Xian et al. \cite{Xian2020} proposed an efficient online trajectory planning method without iterative optimizations.
+        \cite{Xian2020} also verified the swing-reduction control performance with real-time experimental results.
 
-        \paragraph
+        % switch to natbib to use citeauthor.
+
+        
         reinforcement learning
 
         \paragraph
-        The main trajectory generation techniques include, 
-        MPC,
-        input shapers,
-        etc
-        Name if simulation and practical
-
+        Other proposed trajectory generation methods include dynamic programming \cite{??}, 
         Add cases from slabber and erasmus.
         Look for newer literature.
 
         \paragraph
-        Slabber technique combo of input shape and active damping
-
-        \paragraph
         MPC can be seen
-
 
     \subsection{Active vibration damping controllers}
 
         \paragraph
+        Closed-loop controllers show better performances than open-loop controllers in the presence of parameter uncertainties and unmeasured disturbances \cite{Liang2021}.
         Also MPC
+
+        \paragraph
+        Learning-based methods have also been proposed for multirotors with suspended payloads \cite{Hua2021}.
+        \cite{Hua2021} develops a non-linear control strategy embedded with \gls{RL} for position control and simueltaneous swing supression.
+        Experimental results showed that this method provided reliable swing suppression control in situations with model uncertainties, parameters drift, and external disturbances.
+        
 
     
     % ?? Lit study: include different types of \gls{MPC}, e.g. DMC, MAC
