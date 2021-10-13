@@ -87,9 +87,9 @@
 
     \paragraph
     A major drawback of transporting a cable-suspended payload is that the payload is free to swing during flight, which effects dynamics of the multirotor.
-    Two main control strategies are applied in literature to stabilise a multirotor with a suspended payload, namely, trajectory generation and active-damping control.
-    Trajectory generation methods involve executing trajectories that induce minimal oscillations.
-    Active-damping controllers involve feedback controllers that apply a control law to counteract the swing of the payload based on a measurement or estimate of the payload state.
+    Two main control strategies are applied in literature to stabilise a multirotor with a suspended payload, namely, trajectory generation and active vibration damping.
+    Trajectory generation methods involve determining and executing trajectories that induce minimal oscillations.
+    Active vibration damping controllers involve feedback controllers that apply a control law to counteract the swing of the payload based on a measurement or estimate of the payload state.
 
     \subsection{Trajectory generation}
 
@@ -97,11 +97,29 @@
         Trajectory generation methods for suspended payload systems are often based on open-loop control techniques.
         % A trajectory is calculated in which the multirotor motion induces as little oscillations as possible.
         Input shaping is a common open-loop control method for minimal swing control of suspended payloads.
-        These techniques were originally designed for gantry systems with suspended payloads \cite{??}.
-        Later these input shaping techniques were also applied for minimal swing control of helicopter \cite{??} and multirotor \cite{??} systems transporting suspended payloads.
-        
+        This technique involves modifying a reference signal, usually with a set of timed impulses, to cancel oscillatory modes of the system \cite{Vaughan2008}.
+        These techniques were originally designed for moving suspended payloads with gantry systems \cite{Smith1957, Starr1983}.
+        Later, these input shaping techniques were also applied for reduced swing control of 
+        helicopters \cite{Bisgaard2008, Potter2011} and 
+        multirotors \cite{Homolka2017, Sadr2014b, Fielding2019} transporting suspended payloads.
+
         \paragraph
-        Example of input shapers on multirotor system
+        Ichikawa et al. \cite{Ichikawa2018a} compared different input shaping techniques for velocity control of a quadrotor with a suspended payload in simulations.
+        The specific input shaping techniques considered were: \gls{ZV}, \gls{NZV}, \gls{EI}, and 2-hump \gls{EI}.
+        These methods convolve a baseline input command with precisely timed impulses based on the length of the suspended cable. 
+        Simulation results showed that the input shapers significantly decreased the residual payload oscillations compared to a baseline velocity controller.
+        It was also highlighted that \gls{EI} and 2-hump \gls{EI} were more robust to cable length uncertainty than \gls{ZV} and \gls{NZV}.
+
+        % Dynamic programming??
+
+        \paragraph
+        Slabber et al. \cite{Slabber2020} applied a notch filter to reduce the suspended payload oscillation for velocity control of a multirotor in simulation.
+        To improve robustness against parameter uncertainty, the frequency band of the notch filter can be increased at the expense of oscillation attenuation.
+        Slabber et al. \cite{Slabber2020} showed in simulation that a notch filter attenuated the payload oscillations to near swing free motion for cable length estimation errors of up to 20\%.
+
+
+        \paragraph
+        reinforcement learning
 
         \paragraph
         The main trajectory generation techniques include, 
@@ -117,10 +135,10 @@
         Slabber technique combo of input shape and active damping
 
         \paragraph
-        MPC
+        MPC can be seen
 
 
-    \subsection{Active-damping controllers}
+    \subsection{Active vibration damping controllers}
 
         \paragraph
         Also MPC
