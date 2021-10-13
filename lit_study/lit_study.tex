@@ -71,8 +71,8 @@
         \paragraph
         The transportation of various suspended payload configurations have been considered in literature.
         The classical suspended payload application involves a small payload suspended below the vehicle with rigid cable \cite{Erasmus2020, Slabber2020, Guerrero-Sanchez2017, Klausen2017, Ichikawa2018, DeAngelis2019a}. 
-        Kotaru et al. \cite{Kotaru2017} considered a suspended payload system with an elastic cable modelled as a spring-damper system.
-        Tang et al. \cite{Tang2015a} modelled the multirotor-payload system with a hybrid dynamical model to consider aggressive manoeuvres where the cable transitions from taut to slack.
+        \citet{Kotaru2017} considered a suspended payload system with an elastic cable modelled as a spring-damper system.
+        \citet{Tang2015a} modelled the multirotor-payload system with a hybrid dynamical model to consider aggressive manoeuvres where the cable transitions from taut to slack.
         The transportation of payload loads with flexible cables have also been studied, where the cable is modelled as a set of serially-connected rigid links  \cite{Goodarzi2015, Goodarzi2014, Kotaru2018}. 
         Furthermore, the control of a group of multirotors transporting a single suspended payload have also been considered in various studies \cite{Lee2015, Sanalitro2020, Klausen2014, Goodarzi2015}.
         
@@ -104,7 +104,7 @@
         multirotors \cite{Homolka2017, Sadr2014b, Fielding2019} transporting suspended payloads.
 
         \paragraph
-        Ichikawa et al. \cite{Ichikawa2018a} compared different input shaping techniques for velocity control of a quadrotor with a suspended payload in simulations.
+        \citet{Ichikawa2018a} compared different input shaping techniques for velocity control of a quadrotor with a suspended payload in simulations.
         The specific input shaping techniques considered were: \gls{ZV}, \gls{NZV}, \gls{EI}, and 2-hump \gls{EI}.
         These methods convolve a baseline input command with precisely timed impulses based on the length of the suspended cable. 
         Simulation results showed that the input shapers significantly decreased the residual payload oscillations compared to a baseline velocity controller.
@@ -113,8 +113,8 @@
         % Dynamic programming??
 
         \paragraph
-        Slabber et al. \cite{Slabber2020} applied a notch filter to reduce the cable-suspended payload oscillation for velocity control of a multirotor in simulation.
-        Slabber et al. considered a system with an unknown payload mass and cable length, estimated with \gls{RLS} and \gls{FFT} parameter estimators respectively.
+        \citet{Slabber2020} applied a notch filter to reduce the cable-suspended payload oscillation for velocity control of a multirotor in simulation.
+        \citet{Slabber2020} considered a system with an unknown payload mass and cable length, estimated with \gls{RLS} and \gls{FFT} parameter estimators respectively.
         The natural frequency of the multirotor-payload system was then calculated based on these estimates.
         The notch filter was applied to the velocity setpoint signal to suppress the frequency band containing this natural frequency. 
         To improve the robustness against parameter uncertainty, a wider frequency band could be used.
@@ -122,10 +122,10 @@
 
         \paragraph 
         Several other open-loop methods have been successfully applied for effective suspended payload transportation.
-        \cite{Zeng2019} and \cite{Tang2015b} applied differential flatness based trajectory planning methods for multirotors in obstacle-filled environments.
+        \citet{Zeng2019} and \citet{Tang2015b} applied differential flatness based trajectory planning methods for multirotors in obstacle-filled environments.
         Instead of only considering swing-reduction of the suspended payloads, these studies consider specific payload trajectories to avoid obstacles during aggressive motion.
-        Xian et al. \cite{Xian2020} proposed an efficient online trajectory planning method without iterative optimizations.
-        \cite{Xian2020} also verified the swing-reduction control performance with real-time experimental results.
+        \citet{Xian2020} proposed an efficient online trajectory planning method without iterative optimizations.
+        \citet{Xian2020} also verified the swing-reduction control performance with real-time experimental results.
 
         % switch to natbib to use citeauthor.
 
@@ -148,7 +148,7 @@
 
         \paragraph
         Learning-based methods have also been proposed for multirotors with suspended payloads \cite{Hua2021}.
-        \cite{Hua2021} develops a non-linear control strategy embedded with \gls{RL} for position control and simueltaneous swing supression.
+        \citet{Hua2021} develops a non-linear control strategy embedded with \gls{RL} for position control and simultaneous swing suppression.
         Experimental results showed that this method provided reliable swing suppression control in situations with model uncertainties, parameters drift, and external disturbances.
         
 
