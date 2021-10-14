@@ -83,7 +83,7 @@
         However, the suspended payload increases the degrees of underactuation of the system, which makes the control problem challenging \cite{Kotaru2018}.
 
         % ?? Fi author cite and [12-15] to rather [12,13,14,15]
-\section{Control of a multirotor with a suspended payload}
+\section{Control of multirotors with suspended payloads}
 
     \paragraph
     A major drawback of transporting a cable-suspended payload is that the payload is free to swing during flight, which effects dynamics of the multirotor.
@@ -96,8 +96,8 @@
 
         \paragraph
         Trajectory generation methods for suspended payload systems are based on open-loop control techniques.
-        The objective of these techniques is to determine a trajectory in which the multirotor motion would induces a specific payload trajectory to reduce oscillations or avoid obstacels.
-        Different trajectory generation methods have been applied successfully for suspended payload transportation.
+        The objective of these techniques is to determine a trajectory in which the multirotor motion would induces a specific payload trajectory to reduce oscillations or avoid obstacles.
+        Different trajectory generation methods have been applied successfully for suspended payload transportation \cite{Tang2015b, Geisert2016, Zeng2019, Xian2020}. % ?? Maybe add more examples?
         \citet{Zeng2019} and \citet{Tang2015b} applied differential flatness based trajectory planning methods for multirotors in obstacle-filled environments.
         Instead of only considering swing-reduction of the suspended payloads, these studies consider specific payload trajectories to avoid obstacles during aggressive motion.
         \citet{Xian2020} proposed an efficient online trajectory planning method without iterative optimizations.
@@ -109,6 +109,7 @@
         \gls{RL} methods do not require prior models of the dynamics and have also been applied for swing-free trajectory generation \cite{Palunko2013, Faust2013}.
         \citet{Faust2013} implemented a \gls{RL} method for minimal swing trajectories which provides sufficient criteria to allow the learned policy to be transferred to a variety of different models, starting positions, and trajectories.
         Furthermore, this \gls{RL} trajectory generation method was verified with simulation and experimental results.
+        % ?? Maybe continue this and explain more
 
         % Look for newer literature. ??
 
@@ -141,15 +142,46 @@
         To improve the robustness against parameter uncertainty, a wider frequency band could be used.
         It was shown in simulation that a notch filter attenuated the payload oscillations to near swing free motion even with large parameter estimation errors \cite{Slabber2020}.
     
-
     \subsection{Active vibration damping controllers}
+
+        % ?? Add pictures
 
         \paragraph
         Active vibration damping is a closed-loop control method where a feedback control law is applied that directly affects the payload states.
-        Instead of finding a trajectory that reduces oscillations, these controllers track a given trajectory as close as possible while trying to reduce payload oscillations simultaneously.
-        These controllers generally perform better than open-loop methods in the presence of parameter uncertainties and external disturbances \cite{Liang2021}.
+        These are also referred to as swing damping controllers.
+        Instead of finding a trajectory that reduces oscillations, these controllers follow a given trajectory as close as possible while trying to reduce payload oscillations.
+        These controllers generally perform better than open-loop methods in situations with model uncertainties and external disturbances \cite{Liang2021}.
          
+        % ?? Check if all citations refer to correct work. Sometimes copied wrongly
+
         \paragraph
+        Different types of controllers have been proposed for swing damping control of a multirotor with a suspended payload.
+        The types of controllers include geometric control, back stepping control, LQR, H-Infinity, Robust Integral of the Sign of the Error (RISE), \gls{MPC}, and learning based control techniques like \gls{BFBEL} \cite{??} and \gls{RL} \cite{??}
+
+        % Reword from anton:??
+        % \citet{Alothman2015} designed a LQR controller to achieve this goal. 
+        % They modeled the cable with a transitioning function to transition from slack to taut. 
+        % The LQR controller is designed around hover and applied in a simulation environment where the vehicle takes o↵ and the cable transitions from slack to taut. 
+        % The simulation results show an improvement of the LQR controller compared to a traditional PD controller.
+
+        % Reword from anton:??
+        % Goodarzi et al. [25] proposes a geometric control technique for the multirotor and payload system. 
+        % The authors modeled the payload as a system of serially-connected links to represent a cable. 
+        % A coordinate-free form of the equations of motion of the system was derived, 
+        % meaning that the complete equations of motion are represented in the inertial frame, 
+        % to minimize the complexity of the model. 
+        % Thus, there are no singularities that can occur with coordinate frame transformations. 
+        % The control algorithm focusses on stabilizing the position of the vehicle while aligning the payload links vertically below the vehicle. 
+        % They designed a non-linear controller that achieved this in a practical setup.
+
+        % Reword from anton:??
+        % Yang and Xian [26] used such a technique by designing separate controllers, 
+        % one for the po- sitioning of the vehicle and one for the swing angle of the payload. 
+        % The authors reduced the problem to the 2-Dimensional (2D) case, unlike the other 3-Dimensional (3D) solutions, 
+        % and used backstepping control for the positioning of the vehicle and a Robust Integral of the Sign of the Error (RISE) 
+        % based controller for the swing angle of the payload. 
+        % The algorithm was tested in simulation and the multirotor was able to track the position with minimal disturbances.
+
         backstepping control
         geometric control
 
@@ -167,7 +199,11 @@
         \citet{Huo2019} also used combo of input shape and closed loop control ??.
 
         \paragraph
-        \gls{MPC}
+        \gls{MPC} is combination between open-loop and closed-loop strategies.
+        Replanning.
+        % Open-loop vs closed-loop: 
+        % https://www.sciencedirect.com/science/article/pii/S0005109817302327
+        % https://engineering.stackexchange.com/questions/18992/open-loop-versus-closed-loop-model-predictive-control
 
     
     % ?? Lit study: include different types of \gls{MPC}, e.g. DMC, MAC
@@ -178,7 +214,7 @@
     % Unknown payloads
     % what is unknown
 
-    % See data driven is scarece?
+    % See data driven is scarce?
     % therefore data driven.
     % MPC is a good method of applying model
 

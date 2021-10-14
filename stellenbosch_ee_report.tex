@@ -75,6 +75,7 @@
 \usepackage{siunitx} % SI Units
 \usepackage{tabstackengine}
 \usepackage{relsize} % For large sum sign
+\usepackage{mathrsfs}
 \newcolumntype{M}[1]{>{\centering\arraybackslash$}m{#1}<{$}} % Middle (don't clash with C from tabularx)
 \newlength{\mycolwd} % array column width
 \settowidth{\mycolwd}{$\bm{x}_{w+q-1}$} % "width" of largest element in array
@@ -129,9 +130,9 @@
 \captionsetup[algorithm]{labelfont={bf,sf},font=small,labelsep=colon}
 
 % Bibliography
-% \usepackage[nocompress]{cite}  % automatically reorder inline citations
+% \usepackage[nocompress]{cite}  % cite is old and does not allow for author citation. Rather use natbib which has added functions
 % \bibliographystyle{IEEEtran}
-\usepackage[numbers]{natbib}  % automatically reorder inline citations
+\usepackage[numbers,sort]{natbib}  % automatically reorder inline citations
 \bibliographystyle{IEEEtranN}
 
 % \usepackage[hyphens]{url}
