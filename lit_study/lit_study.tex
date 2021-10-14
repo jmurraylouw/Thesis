@@ -88,15 +88,38 @@
     \paragraph
     A major drawback of transporting a cable-suspended payload is that the payload is free to swing during flight, which effects dynamics of the multirotor.
     Two main control strategies are applied in literature to stabilise a multirotor with a suspended payload, namely, trajectory generation and active vibration damping.
-    Trajectory generation methods involve determining and executing trajectories that induce minimal oscillations.
-    Active vibration damping controllers involve feedback controllers that apply a control law to counteract the swing of the payload based on a measurement or estimate of the payload state.
+    Some methods apply a hybrid strategy that combine the two methods into a single control architecture.
+    Trajectory generation methods involve determining multirotor trajectories that result in minimal oscillations or specific payload trajectories.
+    Active vibration damping controllers involve feedback controllers that apply a control law to actively counteract the swing of the payload,
 
     \subsection{Trajectory generation}
 
         \paragraph
-        Trajectory generation methods for suspended payload systems are often based on open-loop control techniques.
-        A trajectory is calculated and executed in which the multirotor motion induces as little oscillations as possible.
-        Input shaping is a common open-loop control method for minimal swing control of suspended payloads.
+        Trajectory generation methods for suspended payload systems are based on open-loop control techniques.
+        The objective of these techniques is to determine a trajectory in which the multirotor motion would induces a specific payload trajectory to reduce oscillations or avoid obstacels.
+        Different trajectory generation methods have been applied successfully for suspended payload transportation.
+        \citet{Zeng2019} and \citet{Tang2015b} applied differential flatness based trajectory planning methods for multirotors in obstacle-filled environments.
+        Instead of only considering swing-reduction of the suspended payloads, these studies consider specific payload trajectories to avoid obstacles during aggressive motion.
+        \citet{Xian2020} proposed an efficient online trajectory planning method without iterative optimizations.
+        The swing-reduction performance of this method was also verified with experimental results.
+        
+        \paragraph
+        Dynamic programming methods have also been implemented to generate swing-free trajectories with suspended payloads \cite{Starr2005, Palunko2012, Su2019}.
+        These methods require accurate models of the plant dynamics and are sensitive to the accuracy of these models.
+        \gls{RL} methods do not require prior models of the dynamics and have also been applied for swing-free trajectory generation \cite{Palunko2013, Faust2013}.
+        \citet{Faust2013} implemented a \gls{RL} method for minimal swing trajectories which provides sufficient criteria to allow the learned policy to be transferred to a variety of different models, starting positions, and trajectories.
+        Furthermore, this \gls{RL} trajectory generation method was verified with simulation and experimental results.
+
+        % Look for newer literature. ??
+
+        % ?? Maybe add this
+        % \paragraph 
+        % A drawback of \gls{MPC} and \gls{RL} methods is that they rely on cost functions with tuning weights and linear constraints for obstacle avoidance.
+        % \citet{Silveira2020} addressed this problem by implementing a \gls{RRT} algorithm that does not rely on cost functions and constraints for collision-free trajectories with a suspended payload.
+        % However, this approach does not provide an optimal solution, but rather finds any collision-free trajectory as a solution. 
+
+        \paragraph
+        Input shaping is another open-loop control method related to trajectory planning that has also been applied for minimal swing control of suspended payloads.
         This technique involves modifying a reference signal, usually with a set of timed impulses, to cancel oscillatory modes of the system \cite{Vaughan2008}.
         These techniques were originally designed for moving suspended payloads with gantry systems \cite{Smith1957, Starr1983}.
         Later, these input shaping techniques were also applied for reduced swing control of 
@@ -117,43 +140,23 @@
         The notch filter was applied to the velocity setpoint signal to suppress the frequency band containing this natural frequency. 
         To improve the robustness against parameter uncertainty, a wider frequency band could be used.
         It was shown in simulation that a notch filter attenuated the payload oscillations to near swing free motion even with large parameter estimation errors \cite{Slabber2020}.
-        
-        \paragraph 
-        Several other trajectory generation methods have been successfully applied for effective suspended payload transportation.
-        \citet{Zeng2019} and \citet{Tang2015b} applied differential flatness based trajectory planning methods for multirotors in obstacle-filled environments.
-        Instead of only considering swing-reduction of the suspended payloads, these studies consider specific payload trajectories to avoid obstacles during aggressive motion.
-        \citet{Xian2020} proposed an efficient online trajectory planning method without iterative optimizations.
-        The swing-reduction performance of this method was also verified with experimental results.
-        
-        \paragraph
-        Dynamic programming methods have also been implemented to generate swing-free trajectories with suspended payloads \cite{Starr2005, Palunko2012, Su2019}.
-        These methods require accurate models of the plant dynamics and are sensitive to the accuracy of these models.
-        \gls{RL} methods do not require prior models of the dynamics and have also been applied for swing-free trajectory generation \cite{Palunko2013, Faust2013}.
-        \citet{Faust2013} implemented a \gls{RL} method for minimal swing trajectories which provides sufficient criteria to allow the learned policy to be transferred to a variety of different models, starting positions, and trajectories.
-        Furthermore, this \gls{RL} trajectory generation method was verified with simulation and experimental results.
-
-        \paragraph
-        Add cases from slabber and erasmus.
-        Look for newer literature.
-
-        \paragraph
-        MPC can be seen
-
-        \paragraph
-        A drawback of \gls{MPC} and \gls{RL} methods is that they rely on cost functions with tuning weights and linear constraints for obstacle avoidance.
-        \citet{Silveira2020} addressed this problem by implementing a \gls{RRT} algorithm that does not rely on cost functions and constraints for collision-free trajectories with a suspended payload.
-        However, this approach does not provide an optimal solution, but rather finds any collision-free trajectory as a solution. 
-
+    
 
     \subsection{Active vibration damping controllers}
-    
-    backstepping control
-    geometric control
-
 
         \paragraph
-        Closed-loop controllers show better performances than open-loop controllers in the presence of parameter uncertainties and unmeasured disturbances \cite{Liang2021}.
-        Also MPC
+        Active vibration damping is a closed-loop control method where a feedback control law is applied that directly affects the payload states.
+        Instead of finding a trajectory that reduces oscillations, these controllers track a given trajectory as close as possible while trying to reduce payload oscillations simultaneously.
+        These controllers generally perform better than open-loop methods in the presence of parameter uncertainties and external disturbances \cite{Liang2021}.
+         
+        \paragraph
+        backstepping control
+        geometric control
+
+        \paragraph
+        Learning-based methods have also been proposed for multirotors with suspended payloads \cite{Hua2021}.
+        \citet{Hua2021} develops a non-linear control strategy embedded with \gls{RL} for position control and simultaneous swing suppression.
+        Experimental results showed that this method provided reliable swing suppression control in situations with model uncertainties, parameters drift, and external disturbances.
 
         \paragraph
         Erasmus
@@ -163,12 +166,8 @@
         \citet{Slabber2020} also showed that the input shaper can be augmented for improved closed-loop active vibration damping control.
         \citet{Huo2019} also used combo of input shape and closed loop control ??.
 
-
         \paragraph
-        Learning-based methods have also been proposed for multirotors with suspended payloads \cite{Hua2021}.
-        \citet{Hua2021} develops a non-linear control strategy embedded with \gls{RL} for position control and simultaneous swing suppression.
-        Experimental results showed that this method provided reliable swing suppression control in situations with model uncertainties, parameters drift, and external disturbances.
-        
+        \gls{MPC}
 
     
     % ?? Lit study: include different types of \gls{MPC}, e.g. DMC, MAC
@@ -183,9 +182,39 @@
     % therefore data driven.
     % MPC is a good method of applying model
 
-\section{System identification of a multirotor with an unknown suspended payload}
+\section{Multirotor control with unknown dynamics}
 
-   
+    \paragraph
+    Unknown states.
+    Erasmus.
+    Get more cites from erasmus.
+
+
+    \subsection{Unknown parameters}
+        
+        \paragraph
+
+    
+    \subsection{Unknown models}
+        
+        \paragraph
+
+        \paragraph
+        RL
+
+        \paragraph
+        MPC with system identification
+
+        \paragraph
+        DMD
+
+\section{Summary} 
+        
+    \paragraph
+    Where does my work fit in.
+
+    The major contribution of this work
+
 % \section{System Design}
 % Blok diagram
 % komponente
