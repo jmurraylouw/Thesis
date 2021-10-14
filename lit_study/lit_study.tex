@@ -110,42 +110,59 @@
         Simulation results showed that the input shapers significantly decreased the residual payload oscillations compared to a baseline velocity controller.
         It was also highlighted that \gls{EI} and 2-hump \gls{EI} were more robust to cable length uncertainty than \gls{ZV} and \gls{NZV}.
 
-        % Dynamic programming??
-
         \paragraph
         \citet{Slabber2020} applied a notch filter to reduce the cable-suspended payload oscillation for velocity control of a multirotor in simulation.
         \citet{Slabber2020} considered a system with an unknown payload mass and cable length, estimated with \gls{RLS} and \gls{FFT} parameter estimators respectively.
-        The natural frequency of the multirotor-payload system was then calculated based on these estimates.
+        The natural frequency of the multirotor-payload system was calculated based on these estimates.
         The notch filter was applied to the velocity setpoint signal to suppress the frequency band containing this natural frequency. 
         To improve the robustness against parameter uncertainty, a wider frequency band could be used.
         It was shown in simulation that a notch filter attenuated the payload oscillations to near swing free motion even with large parameter estimation errors \cite{Slabber2020}.
-
+        
         \paragraph 
         Several other trajectory generation methods have been successfully applied for effective suspended payload transportation.
         \citet{Zeng2019} and \citet{Tang2015b} applied differential flatness based trajectory planning methods for multirotors in obstacle-filled environments.
         Instead of only considering swing-reduction of the suspended payloads, these studies consider specific payload trajectories to avoid obstacles during aggressive motion.
         \citet{Xian2020} proposed an efficient online trajectory planning method without iterative optimizations.
         The swing-reduction performance of this method was also verified with experimental results.
-        % ?? Palunko et al. successfully applied dynamic programming to solve swing-free trajectories for quadrotors [14], [15]. However, dynamic programming requires that the dynamics of the system are known ahead of time, and is sensitive to the accuracy of the model
-        \citet{Faust2013} implemented a \gls{RL} method for generating trajectories with minimal payload oscillations.
-        This method provides sufficient criteria to allow the learned policy to be transferred to a variety of different models, starting positions, and trajectories.
-        Furthermore, this \gls{RL} trajectory generation method was verified with simulation and experimental results.
         
-        reinforcement learning
+        \paragraph
+        Dynamic programming methods have also been implemented to generate swing-free trajectories with suspended payloads \cite{Starr2005, Palunko2012, Su2019}.
+        These methods require accurate models of the plant dynamics and are sensitive to the accuracy of these models.
+        \gls{RL} methods do not require prior models of the dynamics and have also been applied for swing-free trajectory generation \cite{Palunko2013, Faust2013}.
+        \citet{Faust2013} implemented a \gls{RL} method for minimal swing trajectories which provides sufficient criteria to allow the learned policy to be transferred to a variety of different models, starting positions, and trajectories.
+        Furthermore, this \gls{RL} trajectory generation method was verified with simulation and experimental results.
 
         \paragraph
-        Other proposed trajectory generation methods include dynamic programming \cite{??}, 
         Add cases from slabber and erasmus.
         Look for newer literature.
 
         \paragraph
         MPC can be seen
 
+        \paragraph
+        A drawback of \gls{MPC} and \gls{RL} methods is that they rely on cost functions with tuning weights and linear constraints for obstacle avoidance.
+        \citet{Silveira2020} addressed this problem by implementing a \gls{RRT} algorithm that does not rely on cost functions and constraints for collision-free trajectories with a suspended payload.
+        However, this approach does not provide an optimal solution, but rather finds any collision-free trajectory as a solution. 
+
+
     \subsection{Active vibration damping controllers}
+    
+    backstepping control
+    geometric control
+
 
         \paragraph
         Closed-loop controllers show better performances than open-loop controllers in the presence of parameter uncertainties and unmeasured disturbances \cite{Liang2021}.
         Also MPC
+
+        \paragraph
+        Erasmus
+
+        \paragraph
+        Slabber
+        \citet{Slabber2020} also showed that the input shaper can be augmented for improved closed-loop active vibration damping control.
+        \citet{Huo2019} also used combo of input shape and closed loop control ??.
+
 
         \paragraph
         Learning-based methods have also been proposed for multirotors with suspended payloads \cite{Hua2021}.
@@ -157,6 +174,14 @@
     % ?? Lit study: include different types of \gls{MPC}, e.g. DMC, MAC
     % ?? different types of models \cite{}, 
     % ?? See \cite{Garcia1989} for good example of different implementations with different models
+
+    % ?? Table of literature
+    % Unknown payloads
+    % what is unknown
+
+    % See data driven is scarece?
+    % therefore data driven.
+    % MPC is a good method of applying model
 
 \section{System identification of a multirotor with an unknown suspended payload}
 
