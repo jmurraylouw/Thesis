@@ -155,35 +155,33 @@
         % ?? Check if all citations refer to correct work. Sometimes copied wrongly
 
         \paragraph
-        Different types of controllers have been proposed for swing damping control of a multirotor with a suspended payload.
-        The types of controllers include geometric control, back stepping control, LQR, H-Infinity, Robust Integral of the Sign of the Error (RISE), \gls{MPC}, and learning based control techniques like \gls{BFBEL} \cite{??} and \gls{RL} \cite{??}
+        Different types of controllers have been proposed for active swing damping control of \glspl{UAV} with suspended payloads.
+        These controllers include LQR \cite{Alothman2015}, geometric control \cite{Zeng2019a}, back-stepping control \cite{Mosco-Luciano2020, Allahverdy2021}, \gls{SMC} \cite{Martinez-Vasquez2020, Allahverdy2021}, \gls{H-inf} \cite{Rigatos2018}, \gls{RISE} \cite{Yang2018}, \gls{MPC} \cite{Son2017, Son2018, Son2019, Zurn2016, Alothman2018, Santos2016, Andrade2016, Alothman2018a, Trachte2014}.
+        Learning based control techniques like \gls{RL} \cite{Hua2021, Faust2014} and \gls{BFBEL} \cite{Muthusamy2021a} have also been implemented as closed-loop swing damping controllers.
+        
+        \paragraph
+        Different types of controllers have been proposed for active swing damping control of \glspl{UAV} with suspended payloads.
+        These controllers include: 
+        \begin{itemize}[noitemsep]
+            \item LQR \cite{Alothman2015}, 
+            \item Geometric control \cite{Zeng2019a}, 
+            \item Back-stepping control \cite{Mosco-Luciano2020, Allahverdy2021}, 
+            \item \gls{SMC} \cite{Martinez-Vasquez2020, Allahverdy2021}, 
+            \item \gls{H-inf} \cite{Rigatos2018}, 
+            \item \gls{RISE} \cite{Yang2018}, 
+            \item \gls{RL} \cite{Hua2021, Faust2014},
+            \item \gls{BFBEL} \cite{Muthusamy2021a}, and
+            \item \gls{MPC} \cite{Son2017, Son2018, Son2019, Zurn2016, Alothman2018, Santos2016, Andrade2016, Alothman2018a, Trachte2014}.
+        \end{itemize}
 
+        LQR good baseline??
+        
         % Reword from anton:??
         % \citet{Alothman2015} designed a LQR controller to achieve this goal. 
         % They modeled the cable with a transitioning function to transition from slack to taut. 
         % The LQR controller is designed around hover and applied in a simulation environment where the vehicle takes o↵ and the cable transitions from slack to taut. 
         % The simulation results show an improvement of the LQR controller compared to a traditional PD controller.
 
-        % Reword from anton:??
-        % Goodarzi et al. [25] proposes a geometric control technique for the multirotor and payload system. 
-        % The authors modeled the payload as a system of serially-connected links to represent a cable. 
-        % A coordinate-free form of the equations of motion of the system was derived, 
-        % meaning that the complete equations of motion are represented in the inertial frame, 
-        % to minimize the complexity of the model. 
-        % Thus, there are no singularities that can occur with coordinate frame transformations. 
-        % The control algorithm focusses on stabilizing the position of the vehicle while aligning the payload links vertically below the vehicle. 
-        % They designed a non-linear controller that achieved this in a practical setup.
-
-        % Reword from anton:??
-        % Yang and Xian [26] used such a technique by designing separate controllers, 
-        % one for the po- sitioning of the vehicle and one for the swing angle of the payload. 
-        % The authors reduced the problem to the 2-Dimensional (2D) case, unlike the other 3-Dimensional (3D) solutions, 
-        % and used backstepping control for the positioning of the vehicle and a Robust Integral of the Sign of the Error (RISE) 
-        % based controller for the swing angle of the payload. 
-        % The algorithm was tested in simulation and the multirotor was able to track the position with minimal disturbances.
-
-        backstepping control
-        geometric control
 
         \paragraph
         Learning-based methods have also been proposed for multirotors with suspended payloads \cite{Hua2021}.
