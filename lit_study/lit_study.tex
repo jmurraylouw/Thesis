@@ -154,16 +154,16 @@
          
         % ?? Check if all citations refer to correct work. Sometimes copied wrongly
 
-        \paragraph
-        Different types of controllers have been proposed for active swing damping control of \glspl{UAV} with suspended payloads.
-        These controllers include LQR \cite{Alothman2015}, geometric control \cite{Zeng2019a}, back-stepping control \cite{Mosco-Luciano2020, Allahverdy2021}, \gls{SMC} \cite{Martinez-Vasquez2020, Allahverdy2021}, \gls{H-inf} \cite{Rigatos2018}, \gls{RISE} \cite{Yang2018}, \gls{MPC} \cite{Son2017, Son2018, Son2019, Zurn2016, Alothman2018, Santos2016, Andrade2016, Alothman2018a, Trachte2014}.
-        Learning based control techniques like \gls{RL} \cite{Hua2021, Faust2014} and \gls{BFBEL} \cite{Muthusamy2021a} have also been implemented as closed-loop swing damping controllers.
+        % \paragraph
+        % Different types of controllers have been proposed for active swing damping control of \glspl{UAV} with suspended payloads.
+        % These controllers include LQR \cite{Alothman2015}, geometric control \cite{Zeng2019a}, back-stepping control \cite{Mosco-Luciano2020, Allahverdy2021}, \gls{SMC} \cite{Martinez-Vasquez2020, Allahverdy2021}, \gls{H-inf} \cite{Rigatos2018}, \gls{RISE} \cite{Yang2018}, \gls{MPC} \cite{Son2017, Son2018, Son2019, Zurn2016, Alothman2018, Santos2016, Andrade2016, Alothman2018a, Trachte2014}.
+        % Learning based control techniques like \gls{RL} \cite{Hua2021, Faust2014} and \gls{BFBEL} \cite{Muthusamy2021a} have also been implemented as closed-loop swing damping controllers.
         
         \paragraph
         Different types of controllers have been proposed for active swing damping control of \glspl{UAV} with suspended payloads.
         These controllers include: 
         \begin{itemize}[noitemsep]
-            \item LQR \cite{Alothman2015}, 
+            \item LQR \cite{Alothman2015, Alothman2016, Alothman2018a, Alothman2018b, Trachte2014, Fan2015}, 
             \item Geometric control \cite{Zeng2019a}, 
             \item Back-stepping control \cite{Mosco-Luciano2020, Allahverdy2021}, 
             \item \gls{SMC} \cite{Martinez-Vasquez2020, Allahverdy2021}, 
@@ -174,30 +174,31 @@
             \item \gls{MPC} \cite{Son2017, Son2018, Son2019, Zurn2016, Alothman2018, Santos2016, Andrade2016, Alothman2018a, Trachte2014}.
         \end{itemize}
 
-        LQR good baseline??
         
         % Reword from anton:??
         % \citet{Alothman2015} designed a LQR controller to achieve this goal. 
         % They modeled the cable with a transitioning function to transition from slack to taut. 
-        % The LQR controller is designed around hover and applied in a simulation environment where the vehicle takes o↵ and the cable transitions from slack to taut. 
+        % The LQR controller is designed around hover and applied in a simulation environment where the vehicle takes and the cable transitions from slack to taut. 
         % The simulation results show an improvement of the LQR controller compared to a traditional PD controller.
 
+        \paragraph
+        \gls{LQR} is a popular optimal control technique and has often been used as a baseline controller to evaluate the performance of other controller for multirotors with suspended payloads \cite{Trachte2014, Alothman2018a, Alothman2018b, Slabber2020, Alothman2016}
+        \citet{Erasmus2020article} proposed \gls{LQG} control for swing damping control of a multirotor with suspended cable.
+        The payload state remained unmeasured and a \gls{EKF} was implemented for full-state estimation of the multirotor-payload system.
+        The \gls{EKF} was combined with an \gls{LQR} full-state feedback controller to produce \gls{LQG} control.
+        Simulation results showed good swing damping control for position steps despite unmeasured states, external disturbances, sensor noise, and parameter uncertainty.
 
         \paragraph
-        Learning-based methods have also been proposed for multirotors with suspended payloads \cite{Hua2021}.
-        \citet{Hua2021} develops a non-linear control strategy embedded with \gls{RL} for position control and simultaneous swing suppression.
-        Experimental results showed that this method provided reliable swing suppression control in situations with model uncertainties, parameters drift, and external disturbances.
+        \citet{Slabber2020} implemented a \gls{LQR} controller augmented with a notch filter input shaper for improved swing damping performance.
+        A notch filter was applied to velocity step references to reduce the stimulation of the natural frequency of the suspended payload.
+        \gls{LQR} was then applied with the filtered reference signal for swing-damping control.
+        The \gls{LQR} was designed with integral action added to the velocity state to ensure zero steady-state velocity tracking. 
+        Furthermore, this work involved estimating the unknown payload state with a vision-based estimator for use in the full-state feedback controller. 
+        It was showed in simulation that this controller provides good swing damping performance external disturbances, sensor noise, and parameter uncertainty. 
 
         \paragraph
-        Erasmus
-
-        \paragraph
-        Slabber
-        \citet{Slabber2020} also showed that the input shaper can be augmented for improved closed-loop active vibration damping control.
-        \citet{Huo2019} also used combo of input shape and closed loop control ??.
-
-        \paragraph
-        \gls{MPC} is combination between open-loop and closed-loop strategies.
+        \gls{MPC} is an optimal control technique related to \gls{LQR} that has also been applied to suspended payload systems.
+        combination between open-loop and closed-loop strategies.
         Replanning.
         % Open-loop vs closed-loop: 
         % https://www.sciencedirect.com/science/article/pii/S0005109817302327
@@ -230,6 +231,11 @@
 
     
     \subsection{Unknown models}
+
+        \paragraph
+        Learning-based methods have also been proposed for multirotors with suspended payloads.
+        \citet{Hua2021} develops a non-linear control strategy embedded with \gls{RL} for position control and simultaneous swing suppression.
+        Experimental results showed that this method provided reliable swing suppression control in situations with model uncertainties, parameters drift, and external disturbances.
         
         \paragraph
 
