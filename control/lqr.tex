@@ -2,7 +2,7 @@
 
         \paragraph
         \gls{LQR} is a popular optimal control technique and has been shown to be an effective swing-damping controller for multirotors with a suspended payload 
-        \cite{Erasmus2020} \cite{Slabber2020} \cite{Us2019}.
+        \cite{Erasmus2020, Slabber2020, Us2019}.
         The \gls{LQG} technique combines \gls{LQR} with a full-state estimator to control systems where some state variables cannot be measured \cite{Li2016}.
         An \gls{LQG} was effectively used by \cite{Slabber2020} for swing-damping control of a multirotor and suspended payload system.
         However, to focus on the controller performance without considering the effect of state estimation, it is assumed that full-state feedback is available in this work.
@@ -96,6 +96,7 @@
         \begin{equation}
             \bm{Q} = diag([0.1~~10~~0~~100]),~~~\bm{R} = 13 .
         \end{equation}
+        The term $diag()$ refers to a diagonal matrix with the given vector as the principal diagonal.
         Note that the weight of the payload angle variable is 0.
         This is because the payload angle will have a non-zero steady-state value at constant velocity, $V_N$, due to aerodynamic drag.
         The payload angle is therefore damped by placing a heavy weighting on the derivative of the payload angle instead.
