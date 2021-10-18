@@ -194,7 +194,7 @@
             \item \gls{RISE} \cite{Yang2018}, 
             \item \gls{RL} \cite{Hua2021, Faust2014},
             \item \gls{BFBEL} \cite{Muthusamy2021a}, and
-            \item \gls{MPC} \cite{Son2017, Son2018, Son2019, Zurn2016, Alothman2018, Santos2016, Andrade2016, Alothman2018a, Trachte2014}.
+            \item \gls{MPC} \cite{Son2017, Son2018, Son2019, Zurn2016, Alothman2018, Santos2016, Andrade2016, Alothman2018a, Trachte2014, Trachte2015}.
         \end{itemize}
 
         \paragraph
@@ -225,10 +225,13 @@
 
         \paragraph
         \citet{Santos2018} implemented a robust tube-based \gls{MPC} for trajectory tracking and payload stabilisation of a tilt-rotor \gls{UAV} and suspended payload. 
-        This approach consists of a pre-stabilising control policy for the nominal system and an additive control policy for the mismatch error. 
-        The \gls{MPC} was applied for outer-loop position control, and a mixed $\mathcal{H}_2 / \mathcal{H}_\infty$ controller was applied for inner-loop attitude control.
-        Simulation results showed ??
-        It was also shown that this controller is robust against additive uncertainties from unmodelled dynamics, decoupling assumptions, linearization and discretisation simplifications.
+        This approach consists of a pre-stabilising control policy for the nominal system and an additive control policy for mismatch error. 
+        The \gls{MPC} was applied as a outer-loop position controller, and a mixed $\mathcal{H}_2 / \mathcal{H}_\infty$ controller was applied for inner-loop attitude control.
+        Integral action is applied in the \gls{MPC} to position states to ensure zero steady-state error with external disturbances and modelling errors.
+        A discrete, linear state-space plant model is derived and used in the \gls{MPC}.
+        The tube-based \gls{MPC} is designed to be robust against the additive uncertainties from the decoupling, linearization and discretisation modelling errors.
+        However, physical parameters of the model are assumed to be exactly known and non-additive parameter uncertainty is not considered.
+        Simulation results showed stabilised control of the system is achievable with this control architecture along a square-like trajectory with sharp corners.
 
         % \gls{MPC} can be viewed as
         % combination between open-loop and closed-loop strategies.
@@ -245,6 +248,13 @@
     % ?? Table of literature
     % Unknown payloads
     % what is unknown
+    As observed by \citet{Hua2021}, most of the reported controllers designed for multirotors with suspended payloads are based on accurate models where the model uncertainties are not considered in their studies.
+    
+    The column ``Parameter uncertainty'' does not consider uncertainty due to modelling errors as a result of a priori linearisation and discretisation.
+    Here uncertainty is considered as a result of the unknown physical properties or dynamics of a system prior to flight.
+    
+    In some studies, multiple controllers are applied to different parts of the control problem where the plant models considered by some controllers are non-linear, and others are linear \cite{Martinez-Vasquez2020}.
+    In Table~\ref{tbl:literature}, the column ``Plant model'' refers to the plant model representing the dynamics which include the suspended payload.
 
     % See data driven is scarce?
     % therefore data driven.
@@ -260,12 +270,12 @@
     Mention robust.
 
 
-    \subsection{Unknown parameters}
+    % \subsection{Unknown parameters}
         
         \paragraph
 
     
-    \subsection{Unknown models}
+    % \subsection{Unknown models}
 
         \paragraph
         Learning-based methods have also been proposed for multirotors with suspended payloads.
