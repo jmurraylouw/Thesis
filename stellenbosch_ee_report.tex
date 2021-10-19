@@ -54,6 +54,7 @@
 \usetikzlibrary{external}
 \usetikzlibrary{plotmarks} % For matlab2tikz
 \tikzexternalize[prefix=figures/] % Generate all tikz figures in one folder
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;} 
 
 % Plots
 \usepackage{pgfplots} % plots
@@ -146,6 +147,9 @@
 
 % Itemize modifications
 \usepackage{enumitem}
+
+% Random
+\usepackage{pdflscape} % make landscape page with \begin{landscape} ... \end{landscape}
 
 % Editing
 \usepackage{xcolor}

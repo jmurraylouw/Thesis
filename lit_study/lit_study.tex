@@ -164,38 +164,16 @@
         \citet{Slabber2020} showed that a wider frequency band could be used to improve robustness against parameter uncertainty.
         It was shown in simulation that the notch filter attenuated the payload oscillations to a near swing free motion even with large parameter estimation errors \cite{Slabber2020}.
     
-    \subsection{Active vibration damping controllers}
+    \FloatBarrier\subsection{Swing damping controllers}
 
         % ?? Add pictures
 
         \paragraph
-        Active vibration damping is a closed-loop control method where a feedback control law is applied that directly affects the payload states.
-        These controllers are also referred to as swing damping controllers.
+        Swing damping control is a closed-loop control method where a feedback control law is applied that directly affects the payload states.
+        This control method is also referred to as active vibration damping.
         Instead of finding a trajectory that reduces oscillations, these controllers follow a given trajectory as close as possible while trying to reduce payload oscillations.
-        These controllers generally perform better than open-loop methods for systems with model uncertainties and external disturbances \cite{Liang2021}.
          
         % ?? Check if all citations refer to correct work. Sometimes copied wrongly
-
-        % \paragraph
-        % Different types of controllers have been proposed for active swing damping control of \glspl{UAV} with suspended payloads.
-        % These controllers include \gls{LQR} \cite{Alothman2015}, geometric control \cite{Zeng2019a}, back-stepping control \cite{Mosco-Luciano2020, Allahverdy2021}, \gls{SMC} \cite{Martinez-Vasquez2020, Allahverdy2021}, \gls{H-inf} \cite{Rigatos2018}, \gls{RISE} \cite{Yang2018}, \gls{MPC} \cite{Son2017, Son2018, Son2019, Zurn2016, Alothman2018, Santos2016, Andrade2016, Alothman2018a, Trachte2014}.
-        % Learning based control techniques like \gls{RL} \cite{Hua2021, Faust2014} and \gls{BFBEL} \cite{Muthusamy2021a} have also been implemented as closed-loop swing damping controllers.
-        
-        % \paragraph
-        % Different types of controllers have been proposed for active swing damping control of \glspl{UAV} with suspended payloads.
-        % These controllers include: 
-        % \begin{itemize}[noitemsep]
-        %     \item \gls{LQR} \cite{Alothman2015, Alothman2016, Alothman2018a, Alothman2018b, Trachte2014, Fan2015}, 
-        %     \item Geometric control \cite{Zeng2019a}, 
-        %     \item Back-stepping control \cite{Mosco-Luciano2020, Allahverdy2021}, 
-        %     \item \gls{SMC} \cite{Martinez-Vasquez2020, Allahverdy2021}, 
-        %     \item \gls{H-inf} \cite{Rigatos2018}, 
-        %     \item \gls{MRAC} \cite{Erasmus2020}
-        %     \item \gls{RISE} \cite{Yang2018}, 
-        %     \item \gls{RL} \cite{Hua2021, Faust2014},
-        %     \item \gls{BFBEL} \cite{Muthusamy2021a}, and
-        %     \item \gls{MPC} \cite{Son2017, Son2018, Son2019, Zurn2016, Alothman2018, Santos2016, Andrade2016, Alothman2018a, Trachte2014, Trachte2015}.
-        % \end{itemize}
 
         \paragraph
         \gls{LQR} is a popular optimal control technique and has often been used as a baseline controller to evaluate the performance of other swing damping controllers for multirotors with suspended payloads \cite{Trachte2014, Alothman2018a, Alothman2018b, Slabber2020, Alothman2016, Notter2016}.
@@ -228,19 +206,25 @@
         This approach consists of a pre-stabilising control policy for the nominal system and an additive control policy for mismatch error. 
         The \gls{MPC} was applied as a outer-loop position controller, and a mixed $\mathcal{H}_2 / \mathcal{H}_\infty$ controller was applied for inner-loop attitude control.
         Integral action is applied in the \gls{MPC} to position states to ensure zero steady-state error with external disturbances and modelling errors.
-        A discrete, linear state-space plant model is derived and used in the \gls{MPC}.
+        
+        \paragraph
+        % A discrete, linear state-space plant model is derived and used in the \gls{MPC}.
         The tube-based \gls{MPC} is designed to be robust against the additive uncertainties from the decoupling, linearization and discretisation modelling errors.
         However, physical parameters of the model are assumed to be exactly known and non-additive parameter uncertainty is not considered.
         Simulation results showed stabilised control of the system is achievable with this control architecture along a square-like trajectory with sharp corners.
 
-        % \gls{MPC} can be viewed as
-        % combination between open-loop and closed-loop strategies.
-        % Replanning.
-        % Open-loop vs closed-loop: 
-        % https://www.sciencedirect.com/science/article/pii/S0005109817302327
-        % https://engineering.stackexchange.com/questions/18992/open-loop-versus-closed-loop-model-predictive-control
-
         \paragraph
+        Other types of controller have also been applied for active swing damping and will be discussed in Section~\ref{sec:review_swing_damping}.
+        Active swing damping controllers generally perform better than open-loop, trajectory generation methods for systems with model uncertainties and external disturbances \cite{Liang2021}.
+        This is expected, since trajectory generation requires accurate plant models and small modelling uncertainties can significantly alter a trajectory.
+        Active swing damping controllers will be focused on in the remainder of this study.
+
+    \input{lit_study/lit_table.tex}
+
+    \FloatBarrier\section{Review of studies on swing damping control} \label{sec:review_swing_damping}
+    
+        \paragraph
+        This section will discuss trends in literature regarding the swing damping control of multirotors with suspended payloads.
         Table~\ref{tbl:lit} lists other works in literature involving the active swing damping control of multirotors with suspended payloads.
         Studies that exclusively consider trajectory generation or cooperative transportation of a payload with multiple multirotors are excluded from this table.
         From Table~\ref{tbl:lit}, it is clear that transportation of a suspended payload with a multirotor is a popular and current research topic.
@@ -264,10 +248,11 @@
         This shows that a linearised plant model can provide a sufficient representation of the suspended payload dynamics for effective swing damping control.
         % In some studies, seperate controllers are applied to different parts of the control problem where the plant models considered by some controllers are non-linear, and others are linear \cite{Martinez-Vasquez2020}.
         % In Table~\ref{tbl:lit}, the \emph{Plant model} column considers the specific model that includes the suspended payload dynamics.
-        Some studies show in simulation that a controller with a non-linear plant model improves the trajectory tracking performance for aggressive manoeuvres compared to a controller with a linear plant model \cite{??}.
-        However, this greatly increases the computational complexity of the controller.
+        Non-linear \gls{MPC} implementations which depend on a non-linear plant model have also been studied for the quadrotor with a suspended payload \cite{Trachte2014, Trachte2015}.
+        However, the non-linear \gls{MPC} results were not compared to linear \gls{MPC} results, therefore the studies do not conclusively justify the need for a non-linear plant model.
+        Non-linear \gls{MPC} is more computationally intensive than linear \gls{MPC}, which makes it more challenging to implement in real-time for practical flights.
         None of the studies considered in Table~\ref{tbl:lit} that were implemented on practical systems used non-linear plant models.
-        Some practical implementation apply controllers which do not depend on a plant model and show promising results \cite{Muthusamy2021a, Hua2021, Faust2014}.
+        However, some practical implementation apply controllers which do not depend on a plant model and show promising results \cite{Muthusamy2021a, Hua2021, Faust2014}.
 
         \paragraph
         Note from Table~\ref{tbl:lit}, that many studies only consider the proposed controllers in simulation and do not include practical data.
@@ -283,10 +268,10 @@
         \end{figure}        
 
         \paragraph
-        It is also noted that very few studies in the literature consider outdoor flights.
+        It is also noted that few studies in the literature consider outdoor flights.
         Most studies only consider practical flights performed in controlled indoor environments.
         Figure~\ref{fig:motion_capture} shows an indoor motion capture setup used for multirotor experiments.
-        In these experiments, motion capture systems like Vicon \cite{Muthusamy2021a, Hua2021, Faust2014, Zurn2016, Son2019, Son2018} or Optitrack \cite{Mosco-Luciano2020} provide high accuracy state feedback data at rates of \SI{100}{\hertz} or more.
+        In these experiments, motion capture systems like Vicon \cite{Muthusamy2021a, Hua2021, Faust2014, Zurn2016, Son2019, Son2018}, Qualisys \cite{Liang2021} or Optitrack \cite{Mosco-Luciano2020} provide high accuracy state feedback data at rates of \SI{100}{\hertz} or more.
         This type of setup is often impractical for real-life multirotor applications.
         
         \paragraph
@@ -309,12 +294,11 @@
         Many controllers account for uncertainty in the parameter values of the plant model.
         These controllers either apply robust techniques \cite{Taylor2020} to ensure stability despite the parameter uncertainty, or adaptive techniques \cite{Dai2014} to change the control law to result in improved control with the resultant dynamics.
         Other controllers combine robust and adaptive techniques into a single control architecture \cite{Erasmus2020, Slabber2020}.
+        
+        \paragraph
         In Table~\ref{tbl:lit}, the \emph{Parameter uncertainty} column does not include uncertainty due to modelling errors as a result of a priori linearisation and discretisation.
         The uncertainty considered by this column results from unknown physical properties or dynamics of a system prior to the control system design.
-        
-    % See data driven is scarce?
-    % therefore data driven.
-    % MPC is a good method of applying model
+
 
 \section{Multirotor control with unknown dynamics}
 
@@ -325,21 +309,25 @@
     Mention adaptive.
     Mention robust.
 
-        \paragraph
-        Learning-based methods have also been proposed for multirotors with suspended payloads.
-        \citet{Hua2021} develops a non-linear control strategy embedded with \gls{RL} for position control and simultaneous swing suppression.
-        Experimental results showed that this method provided reliable swing suppression control in situations with model uncertainties, parameters drift, and external disturbances.
-        
-        \paragraph
+    \paragraph
+    Learning-based methods have also been proposed for multirotors with suspended payloads.
+    \citet{Hua2021} develops a non-linear control strategy embedded with \gls{RL} for position control and simultaneous swing suppression.
+    Experimental results showed that this method provided reliable swing suppression control in situations with model uncertainties, parameters drift, and external disturbances.
+    
+    \paragraph
+    Another summary
 
-        \paragraph
-        RL
+    \paragraph
+    Another summary
 
-        \paragraph
-        MPC with system identification
+    \paragraph
+                
+    % See data driven is scarce?
+    % therefore data driven.
+    % MPC is a good method of applying model
 
-        \paragraph
-        DMD
+    \paragraph
+    MPC with system identification
 
 \section{Summary} 
         
