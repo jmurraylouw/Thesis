@@ -181,21 +181,21 @@
         % These controllers include \gls{LQR} \cite{Alothman2015}, geometric control \cite{Zeng2019a}, back-stepping control \cite{Mosco-Luciano2020, Allahverdy2021}, \gls{SMC} \cite{Martinez-Vasquez2020, Allahverdy2021}, \gls{H-inf} \cite{Rigatos2018}, \gls{RISE} \cite{Yang2018}, \gls{MPC} \cite{Son2017, Son2018, Son2019, Zurn2016, Alothman2018, Santos2016, Andrade2016, Alothman2018a, Trachte2014}.
         % Learning based control techniques like \gls{RL} \cite{Hua2021, Faust2014} and \gls{BFBEL} \cite{Muthusamy2021a} have also been implemented as closed-loop swing damping controllers.
         
-        \paragraph
-        Different types of controllers have been proposed for active swing damping control of \glspl{UAV} with suspended payloads.
-        These controllers include: 
-        \begin{itemize}[noitemsep]
-            \item \gls{LQR} \cite{Alothman2015, Alothman2016, Alothman2018a, Alothman2018b, Trachte2014, Fan2015}, 
-            \item Geometric control \cite{Zeng2019a}, 
-            \item Back-stepping control \cite{Mosco-Luciano2020, Allahverdy2021}, 
-            \item \gls{SMC} \cite{Martinez-Vasquez2020, Allahverdy2021}, 
-            \item \gls{H-inf} \cite{Rigatos2018}, 
-            \item \gls{MRAC} \cite{Erasmus2020}
-            \item \gls{RISE} \cite{Yang2018}, 
-            \item \gls{RL} \cite{Hua2021, Faust2014},
-            \item \gls{BFBEL} \cite{Muthusamy2021a}, and
-            \item \gls{MPC} \cite{Son2017, Son2018, Son2019, Zurn2016, Alothman2018, Santos2016, Andrade2016, Alothman2018a, Trachte2014, Trachte2015}.
-        \end{itemize}
+        % \paragraph
+        % Different types of controllers have been proposed for active swing damping control of \glspl{UAV} with suspended payloads.
+        % These controllers include: 
+        % \begin{itemize}[noitemsep]
+        %     \item \gls{LQR} \cite{Alothman2015, Alothman2016, Alothman2018a, Alothman2018b, Trachte2014, Fan2015}, 
+        %     \item Geometric control \cite{Zeng2019a}, 
+        %     \item Back-stepping control \cite{Mosco-Luciano2020, Allahverdy2021}, 
+        %     \item \gls{SMC} \cite{Martinez-Vasquez2020, Allahverdy2021}, 
+        %     \item \gls{H-inf} \cite{Rigatos2018}, 
+        %     \item \gls{MRAC} \cite{Erasmus2020}
+        %     \item \gls{RISE} \cite{Yang2018}, 
+        %     \item \gls{RL} \cite{Hua2021, Faust2014},
+        %     \item \gls{BFBEL} \cite{Muthusamy2021a}, and
+        %     \item \gls{MPC} \cite{Son2017, Son2018, Son2019, Zurn2016, Alothman2018, Santos2016, Andrade2016, Alothman2018a, Trachte2014, Trachte2015}.
+        % \end{itemize}
 
         \paragraph
         \gls{LQR} is a popular optimal control technique and has often been used as a baseline controller to evaluate the performance of other swing damping controllers for multirotors with suspended payloads \cite{Trachte2014, Alothman2018a, Alothman2018b, Slabber2020, Alothman2016, Notter2016}.
@@ -240,21 +240,62 @@
         % https://www.sciencedirect.com/science/article/pii/S0005109817302327
         % https://engineering.stackexchange.com/questions/18992/open-loop-versus-closed-loop-model-predictive-control
 
-    
-    % ?? Lit study: include different types of \gls{MPC}, e.g. DMC, MAC
-    % ?? different types of models \cite{}, 
-    % ?? See \cite{Garcia1989} for good example of different implementations with different models
+        \paragraph
+        Table~\ref{tbl:lit} lists other works in literature involving the active swing damping control of multirotors with suspended payloads.
+        Studies that exclusively consider trajectory generation or cooperative transportation of a payload with multiple multirotors are excluded from this table.
+        From Table~\ref{tbl:lit}, it is clear that transportation of a suspended payload with a multirotor is a popular and current research topic.
+        
+        \paragraph
+        For each study in Table~\ref{tbl:lit}, the type of proposed controller is listed along with a baseline controller if applicable.
+        Baseline controllers are well known techniques applied to a considered problem to compare the performance of a proposed technique to a reference performance.
+        Other studies compare different variations of the proposed controller to highlight the effect of design decisions, but these comparisons are not considered as baseline comparisons. 
+        Many studies in Table~\ref{tbl:lit} do not consider a baseline controller, which makes it difficult to evaluate the performance of the proposed technique objectively.
+        These studies can conclude that a proposed techniques solves the considered problem, but it is not conclusive whether the technique improves on the performance of known controllers.
+        However, from Table~\ref{tbl:lit} it is clear that \gls{LQR} is a popular baseline controller for active swing damping techniques and especially for optimal control techniques.
 
-    % ?? Table of literature
-    % Unknown payloads
-    % what is unknown
-    As observed by \citet{Hua2021}, most of the reported controllers designed for multirotors with suspended payloads are based on accurate models where the model uncertainties are not considered in their studies.
-    
-    The column ``Parameter uncertainty'' does not consider uncertainty due to modelling errors as a result of a priori linearisation and discretisation.
-    Here uncertainty is considered as a result of the unknown physical properties or dynamics of a system prior to flight.
-    
-    In some studies, multiple controllers are applied to different parts of the control problem where the plant models considered by some controllers are non-linear, and others are linear \cite{Martinez-Vasquez2020}.
-    In Table~\ref{tbl:literature}, the column ``Plant model'' refers to the plant model representing the dynamics which include the suspended payload.
+        \paragraph
+        From the studies considered in Table~\ref{tbl:lit}, it also appears that \gls{MPC} is a popular technique for the considered control objective.
+        Historically, \gls{MPC} was designed for slow moving processes in the chemical industry because the computational intensity of this method limited the controller frequency on the available hardware \cite{Lee2011}.
+        However, due to improvements in the speed of computational hardware, \gls{MPC} has become a viable controller for faster systems.
+        Various \gls{MPC} implementations were successfully applied in experimental flight tests which shows that \gls{MPC} is suitable for practical multirotor implementations \cite{Zurn2016, Son2019, Son2018}
+
+        \paragraph
+        Note from Table~\ref{tbl:lit}, that many studies only consider the proposed controllers in simulation and do not include practical data.
+        Practical data may include sensor noise, modelling uncertainties, external disturbances, and other computational hardware effects like latency that are often not considered in simulation.
+        Unlike simulation results, experimental results clearly show that a proposed method is suitable for real-life applications.
+        These results also show that the proposed algorithms can run in real-time on the available hardware, which is often a challenge for complex techniques.
+        
+        \begin{figure}[ht]
+            \centering
+            \includegraphics[width=0.5\linewidth]{lit_study/fig/motion_capture}
+            \caption{Optitrack motion capture system for multirotor experiments \cite{Ireland2014}}
+            \label{fig:motion_capture}
+        \end{figure}        
+
+        \paragraph
+        It is also noted that very few studies in the literature consider outdoor flights.
+        Most studies only consider practical flights performed in controlled indoor environments.
+        Figure~\ref{fig:motion_capture} shows an indoor motion capture setup used for multirotor experiments.
+        In these experiments, motion capture systems like Vicon \cite{Muthusamy2021a, Hua2021, Faust2014, Zurn2016, Son2019, Son2018} or Optitrack \cite{Mosco-Luciano2020} provide high accuracy state feedback data at rates of \SI{100}{\hertz} or more.
+        This type of setup is often impractical for real-life multirotor applications.
+        Outdoor payload transportation is dependant on state feedback from inaccurate sensors like \gls{GPS} and potentiometers, which greatly increase the difficulty of the control problem.
+        The multirotor-payload system may also be exposed to uncontrolled wind disturbances which further complicates the control problem.
+
+        % ?? Lit study: include different types of \gls{MPC}, e.g. DMC, MAC
+        % ?? different types of models \cite{}, 
+        % ?? See \cite{Garcia1989} for good example of different implementations with different models
+
+        % ?? Table of literature
+        % https://docs.google.com/spreadsheets/d/1jw2rWzO23fUF4sSDTCzJE1Sc9mvNLo3NGZaDicredc8/edit#gid=1305340631
+
+        \paragraph
+        As observed by \citet{Hua2021}, most of the reported controllers are designed based on accurate models and model uncertainties are not considered in the studies.
+        
+        The column ``Parameter uncertainty'' does not consider uncertainty due to modelling errors as a result of a priori linearisation and discretisation.
+        Here uncertainty is considered as a result of the unknown physical properties or dynamics of a system prior to flight.
+        
+        In some studies, multiple controllers are applied to different parts of the control problem where the plant models considered by some controllers are non-linear, and others are linear \cite{Martinez-Vasquez2020}.
+        In Table~\ref{tbl:lit}, the column ``Plant model'' refers to the plant model representing the dynamics which include the suspended payload.
 
     % See data driven is scarce?
     % therefore data driven.
@@ -268,14 +309,6 @@
     Get more cites from erasmus.
     Mention adaptive.
     Mention robust.
-
-
-    % \subsection{Unknown parameters}
-        
-        \paragraph
-
-    
-    % \subsection{Unknown models}
 
         \paragraph
         Learning-based methods have also been proposed for multirotors with suspended payloads.
