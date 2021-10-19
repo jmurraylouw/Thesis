@@ -1,7 +1,9 @@
 \newpage
 
 \begin{landscape}
-    \begin{tiny}
+    % \begin{tiny}
+{
+    \fontsize{4}{6}\selectfont 
 
 % \begin{table}[!h]
 %     \mytable
@@ -23,38 +25,38 @@
     \renewcommand{\arraystretch}{0.9}
     \centering
     \caption{Summary of literature considered regarding swing damping control of multirotors with suspended payloads}
-    \begin{tabularx}{\linewidth}{@{}lllll@{}}
-        \toprule
-        \citet{Muthusamy2021a}       & \citeyear{Muthusamy2021a}       & BFBEL controller                                                       & -                                                                      & none                 \\
-        \citet{Hua2021}              & \citeyear{Hua2021}              & RL: nonlinear controller                                 & BS, Energy-based                                                       & none                 \\
-        \citet{Allahverdy2021}       & \citeyear{Allahverdy2021}       & BISMC with ILC                                                         & -                                                                      & non-linear           \\
-        \citet{Faust2014}            & \citeyear{Faust2014}            & RL: CAFVI                                                              & -                                                                      & none                 \\
-        \citet{Wang2020}             & \citeyear{Wang2020}             & ADRC                                                                   & -                                                                      & linear               \\
-        \citet{Taylor2020}           & \citeyear{Taylor2020}           & H-inf loop-shaping                                            & LQR                                                                    & linear               \\
-        \citet{Erasmus2020}          & \citeyear{Erasmus2020}          & MRAC                                                                   & LQR                                                                    & linear               \\
-        \citet{Slabber2020}          & \citeyear{Slabber2020}          & LQR                                                                    &                                                                        & linear               \\
-        \citet{Dai2014}              & \citeyear{Dai2014}              & RCAC                                                                   & -                                                                      & non-linear           \\
-        \citet{Santos2016}           & \citeyear{Santos2016}           & MPC                                                                    & -                                                                      & linear               \\
-        \citet{Andrade2016}          & \citeyear{Andrade2016}          & MPC                                                                    & LQR                                                                    & linear               \\
-        \citet{Zurn2016}             & \citeyear{Zurn2016}             & MPC                                                                    & -                                                                      & linear               \\
-        \citet{Son2019}              & \citeyear{Son2019}              & MPC                                                                    & -                                                                      & linear               \\
-        \citet{Son2018}              & \citeyear{Son2018}              & MPC                                                                    & -                                                                      & linear               \\
-        \citet{Son2017}              & \citeyear{Son2017}              & MPC                                                                    & -                                                                      & linear               \\
-        \citet{Trachte2014}          & \citeyear{Trachte2014}          & MPC                                                                    & LQR                                                                    & non-linear           \\
-        \citet{Trachte2015}          & \citeyear{Trachte2015}          & MPC                                                                    & LQR                                                                    & non-linear           \\
-        \citet{Liang2021}            & \citeyear{Liang2021}            & Nonlinear controller                                                   & LQR, PD                                                                & non-linear           \\
-        \citet{Zeng2019a}            & \citeyear{Zeng2019a}            & Geometric controller                                                   & -                                                                      & non-linear           \\
-        \citet{Yang2018}             & \citeyear{Yang2018}             & RISE                                                                   & -                                                                      & non-linear           \\
-        \citet{Martinez-Vasquez2020} & \citeyear{Martinez-Vasquez2020} & SMC                                                                    & -                                                                      & linear               \\
-        \citet{Mosco-Luciano2020}    & \citeyear{Mosco-Luciano2020}    & BS                                                                     & -                                                                      & linear               \\
-        \citet{Rigatos2018}          & \citeyear{Rigatos2018}          & H-infinity                                                             & -                                                                      & linear               \\
-        \citet{Alothman2015}         & \citeyear{Alothman2015}         & LQR                                                                    & PD                                                                     & linear               \\
-        \citet{Alothman2016}         & \citeyear{Alothman2016}         & iLQR                                                                   & LQR                                                                    & linear               \\
-        \bottomrule
+    \begin{tabularx}{\linewidth}{@{}lllllllllll@{}}
+            \textbf{Author}              & \textbf{Year}                   & \textbf{Proposed}          & \textbf{Baseline}      & \textbf{Plant model} & \textbf{Parameter} & \textbf{Unknown} & \textbf{Unmeasured} & \textbf{Different} & \textbf{Practical} & \textbf{Outdoor} \\
+            \citet{Muthusamy2021a}       & \citeyear{Muthusamy2021a}       & \gls{BFBEL}                & -                      & none                 & yes                & yes              & yes                 &                    & yes                &                  \\
+            \citet{Hua2021}              & \citeyear{Hua2021}              & \gls{RL} (nonlinear)       & \gls{BS}, Energy-based & none                 & yes                & yes              &                     &                    & yes                &                  \\
+            \citet{Allahverdy2021}       & \citeyear{Allahverdy2021}       & \gls{BISMC} with \gls{ILC} & -                      & non-linear           & yes                & yes              &                     &                    &                    &                  \\
+            \citet{Faust2014}            & \citeyear{Faust2014}            & \gls{RL} (\gls{CAFVI})     & -                      & none                 & yes                & yes              &                     &                    & yes                &                  \\
+            \citet{Wang2020}             & \citeyear{Wang2020}             & \gls{ADRC}                 & -                      & linear               & yes                & yes              & yes                 &                    & yes                & yes              \\
+            \citet{Taylor2020}           & \citeyear{Taylor2020}           & \gls{H-inf} loop-shaping   & \gls{LQR}              & linear               & yes                &                  &                     & yes                &                    &                  \\
+            \citet{Erasmus2020}          & \citeyear{Erasmus2020}          & \gls{MRAC}                 & \gls{LQR}              & linear               & yes                &                  & yes                 & yes                & yes                & yes              \\
+            \citet{Slabber2020}          & \citeyear{Slabber2020}          & \gls{LQR}                  &                        & linear               & yes                &                  &                     & yes                &                    &                  \\
+            \citet{Dai2014}              & \citeyear{Dai2014}              & \gls{RCAC}                 & -                      & non-linear           & yes                &                  &                     &                    &                    &                  \\
+            \citet{Santos2016}           & \citeyear{Santos2016}           & \gls{MPC}                  & -                      & linear               & yes                &                  &                     &                    &                    &                  \\
+            \citet{Andrade2016}          & \citeyear{Andrade2016}          & \gls{MPC}                  & \gls{LQR}              & linear               & yes                &                  &                     &                    &                    &                  \\
+            \citet{Zurn2016}             & \citeyear{Zurn2016}             & \gls{MPC}                  & -                      & linear               &                    &                  &                     &                    & yes                &                  \\
+            \citet{Son2019}              & \citeyear{Son2019}              & \gls{MPC}                  & -                      & linear               &                    &                  &                     &                    & yes                &                  \\
+            \citet{Son2018}              & \citeyear{Son2018}              & \gls{MPC}                  & -                      & linear               &                    &                  &                     &                    & yes                &                  \\
+            \citet{Son2017}              & \citeyear{Son2017}              & \gls{MPC}                  & -                      & linear               &                    &                  &                     &                    &                    &                  \\
+            \citet{Trachte2014}          & \citeyear{Trachte2014}          & \gls{MPC}                  & \gls{LQR}              & non-linear           &                    &                  &                     &                    &                    &                  \\
+            \citet{Trachte2015}          & \citeyear{Trachte2015}          & \gls{MPC}                  & \gls{LQR}              & non-linear           &                    &                  &                     &                    &                    &                  \\
+            \citet{Liang2021}            & \citeyear{Liang2021}            & Nonlinear                  & \gls{LQR}, \gls{PD}    & non-linear           &                    &                  &                     & yes                & yes                &                  \\
+            \citet{Zeng2019a}            & \citeyear{Zeng2019a}            & Geometric                  & -                      & non-linear           &                    &                  &                     &                    &                    &                  \\
+            \citet{Yang2018}             & \citeyear{Yang2018}             & \gls{RISE}                 & -                      & non-linear           &                    &                  &                     &                    &                    &                  \\
+            \citet{Martinez-Vasquez2020} & \citeyear{Martinez-Vasquez2020} & \gls{SMC}                  & -                      & linear               &                    &                  &                     &                    &                    &                  \\
+            \citet{Mosco-Luciano2020}    & \citeyear{Mosco-Luciano2020}    & \gls{BS}                   & -                      & linear               &                    &                  &                     &                    & yes                &                  \\
+            \citet{Rigatos2018}          & \citeyear{Rigatos2018}          & \gls{H-inf}                & -                      & linear               &                    &                  &                     &                    &                    &                  \\
+            \citet{Alothman2015}         & \citeyear{Alothman2015}         & \gls{LQR}                  & \gls{PD}               & linear               &                    &                  &                     &                    &                    &                  \\
+            \citet{Alothman2016}         & \citeyear{Alothman2016}         & \gls{iLQR}                 & \gls{LQR}              & linear               &                    &                  &                     &                    &                    &                  \\
     \end{tabularx}
     \label{tbl:lit}
 \end{table}
 
-
-    \end{tiny}
+}
+    % \end{tiny}
 \end{landscape}
+
