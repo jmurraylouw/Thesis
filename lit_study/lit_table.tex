@@ -1,9 +1,7 @@
 \newpage
 
 \begin{landscape}
-    % \begin{tiny}
-{
-    \fontsize{4}{6}\selectfont 
+    \begin{tiny}
 
 % \begin{table}[!h]
 %     \mytable
@@ -22,11 +20,13 @@
 % \end{table}
 
 \begin{table}[!htbp]
-    \renewcommand{\arraystretch}{0.9}
+    \renewcommand{\arraystretch}{1.1}
     \centering
     \caption{Summary of literature considered regarding swing damping control of multirotors with suspended payloads}
     \begin{tabularx}{\linewidth}{@{}lllllllllll@{}}
+        \toprule
             \textbf{Author}              & \textbf{Year}                   & \textbf{Proposed}          & \textbf{Baseline}      & \textbf{Plant model} & \textbf{Parameter} & \textbf{Unknown} & \textbf{Unmeasured} & \textbf{Different} & \textbf{Practical} & \textbf{Outdoor} \\
+        \midrule
             \citet{Muthusamy2021a}       & \citeyear{Muthusamy2021a}       & \gls{BFBEL}                & -                      & none                 & yes                & yes              & yes                 &                    & yes                &                  \\
             \citet{Hua2021}              & \citeyear{Hua2021}              & \gls{RL} (nonlinear)       & \gls{BS}, Energy-based & none                 & yes                & yes              &                     &                    & yes                &                  \\
             \citet{Allahverdy2021}       & \citeyear{Allahverdy2021}       & \gls{BISMC} with \gls{ILC} & -                      & non-linear           & yes                & yes              &                     &                    &                    &                  \\
@@ -52,11 +52,15 @@
             \citet{Rigatos2018}          & \citeyear{Rigatos2018}          & \gls{H-inf}                & -                      & linear               &                    &                  &                     &                    &                    &                  \\
             \citet{Alothman2015}         & \citeyear{Alothman2015}         & \gls{LQR}                  & \gls{PD}               & linear               &                    &                  &                     &                    &                    &                  \\
             \citet{Alothman2016}         & \citeyear{Alothman2016}         & \gls{iLQR}                 & \gls{LQR}              & linear               &                    &                  &                     &                    &                    &                  \\
+        \bottomrule
     \end{tabularx}
     \label{tbl:lit}
 \end{table}
 
-}
-    % \end{tiny}
+% Add \\ to last line otherwise error.
+% Use tabularx
+% ?? Remove year column to save space
+
+    \end{tiny}
 \end{landscape}
 
