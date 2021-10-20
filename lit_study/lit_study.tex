@@ -221,7 +221,7 @@
 
     \input{lit_study/lit_table.tex}
 
-    \FloatBarrier\section{Review of studies on swing damping control} \label{sec:review_swing_damping}
+    \FloatBarrier\section{Review of swing damping control studies} \label{sec:review_swing_damping}
     
         \paragraph
         This section will discuss trends in literature regarding the swing damping control of multirotors with suspended payloads.
@@ -285,27 +285,35 @@
             \caption{Multirotor with \gls{GPS} for outdoor experiments \cite{Wang2020}}
             \label{fig:outdoor_setup}
         \end{figure}  
-        % ?? Table of literature
-        % https://docs.google.com/spreadsheets/d/1jw2rWzO23fUF4sSDTCzJE1Sc9mvNLo3NGZaDicredc8/edit#gid=1305340631
-
+        
         \paragraph
-        As observed by \citet{Hua2021}, most reported controllers in literature are designed based on accurate models and dynamical uncertainties are not considered in the studies.
+        As observed by \citet{Hua2021}, most reported controllers in literature are designed based on accurate plant models without considering dynamical uncertainties in the studies.
         This is also evident from the literature considered in Table~\ref{tbl:lit}.
+        The \emph{Parameter uncertainty} column identifies studies that account for parameter uncertainty in the considered plant model.
         Many controllers account for uncertainty in the parameter values of the plant model.
         These controllers either apply robust techniques \cite{Taylor2020} to ensure stability despite the parameter uncertainty, or adaptive techniques \cite{Dai2014} to change the control law to result in improved control with the resultant dynamics.
         Other controllers combine robust and adaptive techniques into a single control architecture \cite{Erasmus2020, Slabber2020}.
         
         \paragraph
-        In Table~\ref{tbl:lit}, the \emph{Parameter uncertainty} column does not include uncertainty due to modelling errors as a result of a priori linearisation and discretisation.
-        The uncertainty considered by this column results from unknown physical properties or dynamics of a system prior to the control system design.
+        It is interesting to note that very few of these studies test the proposed controllers on more than one payload.
+        The \emph{Different payloads} column identifies studies that consider more than one payload.
+        Other studies designed controllers to account parameter uncertainty, but only tested the tuned controller on a single payload case.
+        This does not conclusively demonstrate the adaptability or robustness of a controller, 
+        since the payload could be cherry-picked or the controller could be specifically tuned for one payload.
+        It is therefore noted that it is valuable to demonstrate a controller on multiple payload cases.
 
+        \paragraph
+        In Table~\ref{tbl:lit}, the \emph{Unknown dynamics} column identifies studies that account for unknown dynamics of a multirotor with a suspended payload.
+        This does not include uncertainty due to modelling errors as a result of a priori linearisation and discretisation.
+        These studies make minimal assumptions regarding the dynamics of the payload and propose stabilising controllers that are effective despite the unknown dynamics.
+        This approach is useful for complicated working conditions where the model dynamics cannot be known prior to flight \cite{Hua2021}.
+        It is also interesting to note by the publication dates that most of these studies are quite recent.
+        This appears to be a promising research area that has been considered in only a few different studies.
 
-\section{Multirotor control with unknown dynamics}
+\section{Multirotor and suspended payload systems with unknown dynamics}
 
     \paragraph
     Unknown states.
-    Erasmus.
-    Get more cites from erasmus.
     Mention adaptive.
     Mention robust.
 
@@ -323,6 +331,7 @@
     \paragraph
                 
     % See data driven is scarce?
+    % Robust methods that absorb oscillations, but no optimal control
     % therefore data driven.
     % MPC is a good method of applying model
 
