@@ -19,11 +19,11 @@
     \paragraph
     The usage of \glspl{UAV} for payload transportation has significantly grown in popularity over recent years \cite{Nakamura2019}.
     % Examples of specific applications of \gls{UAV} transportation include package deliveries \cite{}, pesticide application in agriculture \cite{}, and 
-    Multirotor \glspl{UAV} are specifically useful for many transportation applications due to their agility, and their \gls{VTOL} capability.
+    Multirotor \glspl{UAV} are specifically useful for many transportation applications due to their agility and \gls{VTOL} capability.
     The types of payloads attached to multirotors can usually be categorised as either a sensor (e.g.~cameras and meteorological sensors), or freight (e.g.~mail parcels or fire extinguishing material) \cite{Vergouw2016}.
     Furthermore, the payload attachment is mainly categorised as either a rigid connection or a suspended connection \cite{Vergouw2016}.
-    In rare cases, a robotic actuator is attached to the multirotor to manipulate the payload \cite{Gonzalez-deSantos2020, Suthar2021}.
-    Figure~\ref{fig:rigid_suspended_actuated} shows three practical implementations each of these payload configurations.
+    In rare cases, a robotic actuator is attached to the multirotor to manipulate a payload \cite{Gonzalez-deSantos2020, Suthar2021}.
+    Figure~\ref{fig:rigid_suspended_actuated} shows practical implementations of these three payload configurations.
     % The payload configuration influences the multirotor flight dynamics and needs to be considered for control system design.   
     % In many applications, some aspects of the payload configuration are unknown before the flight and the control architecture needs to account for these unknowns.
 
@@ -55,10 +55,10 @@
         Often, the weight and size of the payload are unknown before a flight.
         
         \paragraph
-        Different control approaches have been proposed to deal with the altered flight dynamics for this applications, 
+        Different control approaches have been proposed to deal with the altered flight dynamics in this applications, 
         including \gls{ARC} \cite{Min2011} and \gls{MRAC} \cite{Emran2015}.
         These control architectures mostly involve a parameter estimation algorithm to estimate the inertial parameters,
-        and an adaptive control law based on the estimated parameters and predetermined dynamical model of the system.
+        and an adaptive control law based on the estimated parameters and the predetermined dynamical model of the system.
 
         % \paragraph
         % \citet{Mellinger2011a} proposed an adaptive controller for a multirotor with a rigidly connected payload.
@@ -69,14 +69,14 @@
         \paragraph
         An advantage of rigidly connected payloads is that the flight dynamics is not altered significantly.
         The payload does not add a degree of freedom to the system and only the inertial parameters need to be accounted for.
-        However, this configuration limits the shape and size of a potential payload, since the payload needs to be compatible with the vehicle gripper.
-        The multirotor also needs to land or approach the payload very closely to attach to the load, which may be impractical in many applications.
+        However, this configuration limits the shape and size of a potential payload, because the payload needs to be compatible with the vehicle gripper.
+        The multirotor also needs to land or approach the payload closely to attach to the payload, which may be impractical in many applications.
 
     \subsection{Suspended payloads}
 
         \paragraph
         Figure~\ref{fig:real_suspended_payload_example} shows an example of a practical application of a suspended payload used during search and rescue missions.
-        The shape and mass of the payload affect the flight dynamics, but the payload is often unknown before a flight.
+        The shape and mass of the payload affect the flight dynamics, but the payload parameters are often unknown before a flight.
         The control system should be able to account for these uncertainties and fly well despite the altered flight dynamics.
 
         \begin{figure}[htb]
@@ -91,24 +91,24 @@
         The classical suspended payload application involves a small payload suspended below the vehicle with a rigid link \cite{Erasmus2020, Slabber2020, Guerrero-Sanchez2017, Klausen2017, Ichikawa2018, DeAngelis2019a}. 
         \citet{Kotaru2017} considered a suspended payload system with an elastic cable modelled as a spring-damper system.
         \citet{Tang2015a} modelled the multirotor-payload system with a hybrid dynamical model to consider aggressive manoeuvres where the cable transitions from taut to slack.
-        The transportation of payload loads with flexible cables have also been studied, where the cable is modelled as a set of serially connected rigid links  \cite{Goodarzi2015, Goodarzi2014, Kotaru2018}. 
-        Furthermore, the control of a group of multirotors cooperatively transporting a suspended payload has also been considered in various studies \cite{Lee2015, Sanalitro2020, Klausen2014, Goodarzi2015}.
+        The transportation of payloads with flexible cables have also been studied, where the cable is modelled as a set of serially connected rigid links  \cite{Goodarzi2015, Goodarzi2014, Kotaru2018}. 
+        Furthermore, the control of a group of multirotors cooperatively transporting a suspended payload was also considered in various studies \cite{Lee2015, Sanalitro2020, Klausen2014, Goodarzi2015}.
         
         \paragraph % This paragraph seems out of place and does not flow well
         From numerous examples in the literature, it is clear that the control of multirotors with suspended payloads is a popular research topic.
         The suspended payload configuration is very useful in situations where a multirotor cannot land since the payload can be attached during hover.
-        This configuration also has the advantage that a load can have an arbitrary shape or size as long as it has an attachment point for a cable.
+        This configuration also has the advantage that a payload can have an arbitrary shape or size as long as it has an attachment point for a cable.
         However, the suspended payload increases the degrees of under-actuation of the system, which makes the control problem challenging \cite{Kotaru2018}.
 
         % ?? Fi author cite and [12-15] to rather [12,13,14,15]
 \section{Control of multirotors with suspended payloads}
 
     \paragraph
-    A major drawback of transporting a suspended payload is that the payload is free to swing during flight, which affects the dynamics of a multirotor.
-    Two main control strategies are applied in the literature to stabilise a multirotor with a suspended payload, namely, trajectory generation and active vibration damping.
+    A major drawback of transporting a suspended payload is that the payload is free to swing during flight, which affects the dynamics of the multirotor.
+    Two main control strategies are applied in the literature to stabilise a multirotor with a suspended payload, namely, trajectory generation and swing damping control.
     Some methods combine the two methods into a single control architecture.
     Trajectory generation methods involve determining multirotor trajectories that result in minimal oscillations or specific payload trajectories.
-    Active vibration damping controllers involve feedback controllers that apply a control law to actively counteract the swing of the payload.
+    Swing damping control involves feedback controllers that apply a control law to actively counteract the swing of a payload.
 
     \subsection{Trajectory generation}
 
@@ -122,14 +122,14 @@
         \citet{Zeng2019} and \citet{Tang2015b} applied differential flatness based trajectory planning methods for multirotors in obstacle-filled environments.
         Instead of only considering swing reduction of the suspended payloads, these studies consider specific payload trajectories to avoid obstacles during aggressive motion.
         \citet{Xian2020} proposed an efficient online trajectory planning method without iterative optimizations.
-        The swing-reduction performance of this method was also verified with experimental results.
+        The swing-reduction performance of this method was verified with experimental results.
         
         \paragraph
         Dynamic programming methods have also been implemented to generate swing-free trajectories with suspended payloads \cite{Starr2005, Palunko2012, Su2019}.
         These methods require accurate models of the plant dynamics and are sensitive to the accuracy of these models.
         \gls{RL} methods do not require prior models of the dynamics and have also been applied for swing-free trajectory generation \cite{Palunko2013, Faust2013}.
         \citet{Faust2013} implemented a \gls{RL} method for minimal swing trajectories which provides sufficient criteria to allow the learned policy to be transferred to a variety of different models, starting positions, and trajectories.
-        Furthermore, this \gls{RL} trajectory generation method was verified with simulation and experimental results.
+        Furthermore, this \gls{RL} trajectory generation method was verified with experimental results.
         % ?? Maybe continue this and explain more
 
         % Look for newer literature. ??
@@ -142,7 +142,7 @@
 
         \paragraph
         Input shaping is another open-loop control method applied for minimal swing control that is related to trajectory planning.
-        This technique involves modifying a reference signal, usually with a set of timed impulses, to cancel oscillatory modes of the system \cite{Vaughan2008}.
+        This technique involves modifying a reference signal, usually with a set of timed impulses, to cancel the oscillatory modes of a system \cite{Vaughan2008}.
         These techniques were originally designed for transporting suspended payloads using gantry systems \cite{Smith1957, Starr1983}.
         Later, these input shaping techniques were also applied for reduced swing control of 
         helicopters \cite{Bisgaard2008, Potter2011} and 
@@ -153,30 +153,29 @@
         The specific input shaping techniques considered were: \gls{ZV}, \gls{NZV}, \gls{EI}, and 2-hump \gls{EI}.
         These methods convolve a baseline input command with precisely timed impulses based on the length of the suspended cable. 
         Simulation results showed that the input shapers significantly decreased the residual payload oscillations compared to a baseline velocity controller.
-        It was highlighted that \gls{EI} and 2-hump \gls{EI} were more robust to cable length uncertainty than \gls{ZV} and \gls{NZV}.
+        The study highlighted that \gls{EI} and 2-hump \gls{EI} were more robust to cable length uncertainty than \gls{ZV} and \gls{NZV}.
 
         \paragraph
-        \citet{Slabber2020} applied a notch filter to reduce payload oscillations for velocity control of a multirotor in simulation.
-        \citet{Slabber2020} considered a system with unknown payload parameters.
+        \citet{Slabber2020} considered a system with unknown payload parameters and applied a notch filter to reduce payload oscillations for velocity control of a multirotor in simulation.
         The unknown payload mass and cable length were estimated with \gls{RLS} and \gls{FFT} parameter estimators respectively and the natural frequency was calculated based on these estimates.
-        The notch filter was applied to the velocity setpoint signal to suppress the frequency band containing this natural frequency. 
-        \citet{Slabber2020} showed that a wider frequency band could be used to improve robustness against parameter uncertainty.
-        It was shown in simulation that the notch filter attenuated the payload oscillations to a near swing free motion even with large parameter estimation errors \cite{Slabber2020}.
+        The notch filter could then be designed to suppress the frequency band containing this natural frequency and was applied to the velocity setpoint signal. 
+        % \citet{Slabber2020} showed that a wider frequency band could be used to improve robustness against parameter uncertainty.
+        It was shown in simulation that the notch filter attenuated the payload oscillations to a near swing-free motion despite large parameter estimation errors \cite{Slabber2020}.
     
     \FloatBarrier\subsection{Swing damping controllers}
 
         % ?? Add pictures
 
         \paragraph
-        Swing damping control is a closed-loop control method where a feedback control law is applied that directly affects the payload states.
+        Swing damping control is a closed-loop method where a feedback controller is applied to reduce the payload swing angles during a flight.
         This control method is also referred to as active vibration damping.
-        Instead of finding a trajectory that reduces oscillations, these controllers follow a given trajectory as close as possible while trying to reduce payload oscillations.
+        Instead of finding a trajectory that reduces oscillations, these controllers follow a given trajectory as close as possible while trying to reduce the payload oscillations.
          
         % ?? Check if all citations refer to correct work. Sometimes copied wrongly
 
         \paragraph
-        \gls{LQR} is a popular optimal control technique and has often been used as a baseline controller to evaluate the performance of other swing damping controllers for multirotors with suspended payloads \cite{Trachte2014, Alothman2018a, Alothman2018b, Slabber2020, Alothman2016, Notter2016}.
-        \citet{Erasmus2020article} proposed \gls{LQG} control for swing damping control of a multirotor with suspended cable.
+        \gls{LQR} is a popular optimal control technique and has often been used as a baseline controller to evaluate the performance of other swing damping controllers \cite{Trachte2014, Alothman2018a, Alothman2018b, Slabber2020, Alothman2016, Notter2016}.
+        \citet{Erasmus2020article} proposed a \gls{LQG} controller for swing damping control of a multirotor with suspended cable.
         The payload state remained unmeasured and a \gls{EKF} was implemented for full-state estimation of the multirotor-payload system.
         The \gls{EKF} was combined with an \gls{LQR} full-state feedback controller to produce \gls{LQG} control.
         Simulation results showed good swing damping control with position step inputs despite the unmeasured payload state, external disturbances, sensor noise, and parameter uncertainty.
@@ -187,36 +186,36 @@
         \gls{LQR} was then applied with the filtered reference signal for swing-damping control.
         The \gls{LQR} was designed with integral action added to the velocity state to ensure zero steady-state velocity tracking. 
         Furthermore, this work involved estimating the unknown payload state with a vision-based estimator for use in the full-state feedback controller. 
-        Simulation results showed that this controller provides good swing damping performance in the presence of external disturbances, sensor noise, and parameter uncertainty. 
+        Simulation results showed that this controller provided good swing damping performance in the presence of external disturbances, sensor noise, and parameter uncertainty. 
 
         \paragraph
-        \gls{MPC} is an optimal control technique related to \gls{LQR} that has also been applied to suspended payload systems.
+        \gls{MPC} is an optimal control technique related to \gls{LQR} and can also be applied to suspended payload systems.
         % \gls{MPC} solves control optimisation problem over a finite prediction horizon at every control interval based on a separately identifiable plant model \cite{Mayne2000}.
         \citet{Notter2016} implemented an \gls{MPC} for active swing damping control of a quadrotor with a suspended payload.
         A non-linear model of the quadrotor-payload system was linearised and discretised to apply a discrete, linear \gls{MPC} formulation.
-        The physical parameters of the quadrotor, cable, and payload were assumed to be exactly known and the controller is tested with only one payload.
+        The physical parameters of the quadrotor, cable, and payload were assumed to be exactly known and the controller was tested with only one payload.
         The controller received a position trajectory reference and determined force setpoints to control the vehicle.
         Furthermore, constraints were applied to the heigh, attitude, and control inputs to ensure safe flight manoeuvres. 
         Simulation results showed a superior trajectory tracking performance with the \gls{MPC} compared to a baseline \gls{LQR} controller.
-        The \gls{MPC} simulation results were also verified with experimental results in a practical indoor environment.
+        The \gls{MPC} simulation results were also verified with experimental results in an indoor environment.
 
         \paragraph
         \citet{Santos2018} implemented a robust tube-based \gls{MPC} for trajectory tracking and payload stabilisation of a tilt-rotor \gls{UAV} and suspended payload. 
-        This approach consists of a pre-stabilising control policy for the nominal system and an additive control policy for mismatch error. 
+        This approach consists of a pre-stabilising control policy for the nominal system and an additive control policy for the mismatch error. 
         The \gls{MPC} was applied as an outer-loop position controller and a mixed $\mathcal{H}_2 / \mathcal{H}_\infty$ controller was applied for inner-loop attitude control.
-        Integral action is applied in the \gls{MPC} to position states to ensure zero steady-state error with external disturbances and modelling errors.
+        Integral action is applied in the \gls{MPC} to the position states to ensure zero steady-state error despite external disturbances and modelling errors.
         
         \paragraph
         % A discrete, linear state-space plant model is derived and used in the \gls{MPC}.
-        The tube-based \gls{MPC} is designed to be robust against the additive uncertainties from the decoupling, linearization and discretisation modelling errors.
-        However, physical parameters of the model are assumed to be exactly known and non-additive parameter uncertainty is not considered.
-        Simulation results showed stabilised control of the system is achievable with this control architecture along a square-like trajectory with sharp corners.
+        The tube-based \gls{MPC} was designed to be robust against the additive uncertainties from the decoupling, linearization and discretisation modelling errors.
+        However, the physical parameters of the model were assumed to be exactly known and non-additive parameter uncertainty was not considered.
+        Simulation results showed successful stabilised control of the system along a square-like trajectory with sharp corners.
 
         \paragraph
-        Other types of controllers have also been applied for active swing damping and will be discussed in Section~\ref{sec:review_swing_damping}.
-        Active swing damping controllers generally perform better than open-loop, trajectory generation methods for systems with model uncertainties and external disturbances \cite{Liang2021}.
+        In other studies, more types of controllers were applied for active swing damping and these studies will be discussed in Section~\ref{sec:review_swing_damping}.
+        Swing damping controllers generally perform better than open-loop, trajectory generation methods for systems with model uncertainties and external disturbances \cite{Liang2021}.
         This is expected since trajectory generation requires accurate plant models and small modelling uncertainties can significantly alter a trajectory.
-        Active swing damping controllers will be focused on in the remainder of this study.
+        The remainder of this study will focus on swing damping controllers.
 
     \input{lit_study/lit_table.tex}
 
@@ -224,40 +223,42 @@
     
         \paragraph
         This section will discuss trends in the literature regarding the swing damping control of multirotors with suspended payloads.
-        Table~\ref{tbl:lit} lists other works in the literature involving the active swing damping control of multirotors with suspended payloads.
+        Table~\ref{tbl:lit} lists other studies in the literature that consider this topic.
         Studies that exclusively consider trajectory generation or cooperative transportation of a payload with multiple multirotors are excluded from this table.
-        From Table~\ref{tbl:lit}, it is clear that transportation of a suspended payload with a multirotor is a popular and current research topic.
+        From Table~\ref{tbl:lit}, it is clear that suspended payload transportation with multirotors is a popular and current research topic.
         
         \paragraph
         For each study in Table~\ref{tbl:lit}, the type of proposed controller is listed along with a baseline controller if applicable.
-        Baseline controllers are techniques that are considered well-known and are applied to a considered problem to compare the performance of a proposed technique to a reference.
-        Other studies compare different variations of the proposed controller to highlight the effect of design decisions, but these comparisons are not considered as baseline comparisons. 
+        Baseline controllers are techniques considered to be well-known that are applied to a task for a reference performance used to evaluate a proposed technique.
+        Other studies compare variations of the proposed controller to each other to highlight the effect of design decisions, but these comparisons are not considered as baseline comparisons. 
+        
+        \paragraph
         Many studies in Table~\ref{tbl:lit} do not consider a baseline controller, which makes it difficult to evaluate the performance of the proposed technique objectively.
-        These studies can conclude that the proposed technique solves the considered problem, but it is not conclusive whether the technique improves on the performance of known controllers.
-        However, from Table~\ref{tbl:lit} it is clear that \gls{LQR} is a popular baseline controller for active swing damping techniques and especially for optimal control techniques.
+        These studies can conclude that the proposed technique solves the considered problem, but can not determine whether the technique improves on the performance of known controllers.
+        However, from Table~\ref{tbl:lit} it is clear that \gls{LQR} is a popular baseline controller for swing damping techniques and especially for optimal control techniques.
 
         \paragraph
-        From the studies considered in Table~\ref{tbl:lit}, it also appears that \gls{MPC} is a popular technique for the considered control objective.
+        From the studies considered in Table~\ref{tbl:lit}, it also appears that \gls{MPC} is a popular technique for the considered control problem.
         Historically, \gls{MPC} was designed for slow-moving processes in the chemical industry because the computational intensity of this method limited the controller frequency on the available hardware \cite{Lee2011}.
         However, due to improvements in the speed of computational hardware, \gls{MPC} has become a viable controller for faster systems.
-        Various \gls{MPC} implementations were successfully applied in experimental flight tests which shows that \gls{MPC} is suitable for practical multirotor implementations \cite{Zurn2016, Son2019, Son2018}
+        Various \gls{MPC} implementations were successfully applied in experimental flight tests which shows that \gls{MPC} is suitable for practical multirotor implementations \cite{Zurn2016, Son2019, Son2018}.
         
         \paragraph
         It is also noted that most proposed controllers, including \gls{MPC} implementation, are based on a linearised plant model of the non-linear multirotor-payload dynamics.
         This shows that a linearised plant model can provide a sufficient representation of the suspended payload dynamics for effective swing damping control.
         % In some studies, separate controllers are applied to different parts of the control problem where the plant models considered by some controllers are non-linear, and others are linear \cite{Martinez-Vasquez2020}.
         % In Table~\ref{tbl:lit}, the \emph{Plant model} column considers the specific model that includes the suspended payload dynamics.
-        Non-linear \gls{MPC} implementations that depend on a non-linear plant model have also been studied for the quadrotor with a suspended payload \cite{Trachte2014, Trachte2015}.
+        Non-linear \gls{MPC} implementations that depend on a non-linear plant model have also been studied for multirotors with suspended payloads \cite{Trachte2014, Trachte2015}.
         However, the non-linear \gls{MPC} results were not compared to linear \gls{MPC} results, therefore the studies do not conclusively justify the need for a non-linear plant model.
-        Non-linear \gls{MPC} is more computationally intensive than linear \gls{MPC}, which makes it more challenging to implement in real-time for practical flights.
+        Non-linear \gls{MPC} is more computationally intensive than linear \gls{MPC}, which makes it more challenging to implement in practical flights.
         None of the studies considered in Table~\ref{tbl:lit} that were implemented on practical systems used non-linear plant models.
-        However, some practical implementations apply controllers which do not depend on a plant model and show promising results \cite{Muthusamy2021, Hua2021, Faust2014}.
+        However, some practical implementations apply controllers which do not depend on a plant model \cite{Muthusamy2021, Hua2021, Faust2014}.
 
         \paragraph
-        Note from Table~\ref{tbl:lit}, that many studies only consider the proposed controllers in simulation and do not include practical data.
-        Practical data may include sensor noise, modelling uncertainties, external disturbances, and other computational hardware effects like latency that are often not considered in simulations.
+        Note from Table~\ref{tbl:lit}, that many studies only consider the proposed controllers in simulations and do not include practical data.
+        Practical data may include sensor noise, modelling uncertainties, external disturbances, and other computational hardware effects such as latency that are often not considered in simulations.
         Unlike simulation results, experimental results clearly show that a proposed method is suitable for real-life applications.
-        These results also show that the proposed algorithms can run in real-time on the available hardware, which is often a challenge for complex techniques.
+        It also shows that the proposed algorithms can run in real-time on the available hardware, which is a challenge for complex techniques.
         
         \begin{figure}[ht]
             \centering
@@ -270,11 +271,11 @@
         It is also noted that few studies in the literature consider outdoor flights.
         Most studies only consider practical flights performed in controlled indoor environments.
         Figure~\ref{fig:motion_capture} shows an indoor motion capture setup used for multirotor experiments.
-        In these experiments, motion capture systems like Vicon \cite{Muthusamy2021, Hua2021, Faust2014, Zurn2016, Son2019, Son2018}, Qualisys \cite{Liang2021} or Optitrack \cite{Mosco-Luciano2020} provide high accuracy state feedback data at rates of \SI{100}{\hertz} or more.
-        This type of setup is often impractical for real-life multirotor applications.
+        In these experiments, motion capture systems like Vicon \cite{Muthusamy2021, Hua2021, Faust2014, Zurn2016, Son2019, Son2018}, Qualisys \cite{Liang2021} or Optitrack \cite{Mosco-Luciano2020} provide high accuracy state feedback data.
+        However, this setup is often impractical for real-life multirotor applications.
         
         \paragraph
-        Outdoor payload transportation is dependant on state feedback from inaccurate sensors like \gls{GPS} and potentiometers, which greatly increase the difficulty of the control problem.
+        Outdoor payload transportation is dependant on inaccurate sensors like \gls{GPS} and potentiometers, which greatly increase the difficulty of the control problem.
         The multirotor-payload system may also be exposed to uncontrolled wind disturbances which further complicates the control problem.
         Figure~\ref{fig:outdoor_setup} shows a multirotor in an outdoor practical experiment with a suspended payload \cite{Wang2020}.
 
@@ -287,33 +288,32 @@
         
         \paragraph
         As observed by \citet{Hua2021}, most reported controllers in the literature are designed based on accurate plant models without considering dynamical uncertainties in the studies.
-        This is also evident from the literature considered in Table~\ref{tbl:lit}.
+        This is also evident from the literature listed in Table~\ref{tbl:lit}.
         The \emph{Parameter uncertainty} column identifies studies that account for parameter uncertainty in the considered plant model.
-        Many controllers account for uncertainty in the parameter values of the plant model.
         These controllers either apply robust techniques \cite{Taylor2020} to ensure stability despite the parameter uncertainty, or adaptive techniques \cite{Dai2014} to change the control law to result in improved control with the resultant dynamics.
         Other controllers combine robust and adaptive techniques into a single control architecture \cite{Erasmus2020, Slabber2020}.
         
         \paragraph
-        It is interesting to note that very few of these studies test the proposed controllers on more than one payload.
         The \emph{Different payloads} column identifies studies that consider more than one payload.
-        Other studies designed controllers to account for parameter uncertainty, but only tested the tuned controller on a single payload case.
+        It is interesting to note that few studies test the proposed controllers on more than one payload.
+        Some studies proposed controllers to account for parameter uncertainty, but only tested the controller on a single payload case.
         This does not conclusively demonstrate the adaptability or robustness of a controller, 
-        since the payload could be cherry-picked or the controller could be specifically tuned for one payload.
+        because the payload could be cherry-picked or the controller could be specifically tuned for that payload only.
         Therefore, it is noted that it is valuable to demonstrate a controller on multiple payload cases.
 
         \paragraph
         In Table~\ref{tbl:lit}, the \emph{Unknown dynamics} column identifies studies that account for unknown dynamics of a multirotor with a suspended payload.
-        This does not include uncertainty due to modelling errors as a result of a priori linearisation and discretisation.
-        These studies make minimal assumptions regarding the dynamics of the payload and propose stabilising controllers that are effective despite the unknown dynamics.
-        This approach is useful for complicated working conditions with model uncertainties \cite{Hua2021}.
-        It is also interesting to note by the publication dates that most of these studies are quite recent.
+        This does not include the uncertainty due to modelling errors as a result of linearisation and discretisation methods.
+        Studies identified by this column propose stabilising controllers that are not design without a priori knowledge of the payload dynamics.
+        This approach is considered useful for complicated working conditions and model uncertainties \cite{Hua2021}.
         This appears to be a promising research area that has been considered in only a few different studies.
+        It is also interesting to note that the publication dates of most of these studies are quite recent.
 
 \section{Multirotor and suspended payload systems with unknown dynamics}
 
     \paragraph
-    Only a few studies have been identified that consider stabilised control of a multirotor and suspended payload without prior knowledge of the payload dynamics \cite{Muthusamy2021, Allahverdy2021, Faust2014, Wang2020}.
-    Some methods are not based on a plant model and learn a stabilising control law without knowledge of the system dynamics \cite{Muthusamy2021, Faust2014}.
+    Only a few studies have been identified that consider the stabilised control of a multirotor and suspended payload without prior knowledge of the payload dynamics \cite{Muthusamy2021, Allahverdy2021, Faust2014, Wang2020}.
+    Some methods are not based on a plant model and learn a stabilising control law without prior knowledge of the dynamics \cite{Muthusamy2021, Faust2014}.
     Other strategies control the multirotor with a model-based method and consider the effect of the suspended payload as an external disturbance \cite{Wang2020, Allahverdy2021}
 
     \begin{figure}[ht]
@@ -328,24 +328,26 @@
     A separate \gls{BFBEL} feedback controller was applied to each degree of freedom of the \gls{6DOF} multirotor system, as shown in Figure~\ref{fig:BFBEL}.
     The payload state remained unmeasured and the objective of the controller was to stabilise the multirotor system and provide accurate position tracking without knowledge of the multirotor-payload dynamics.
     Experimental results demonstrated the rapid adaptation capability and the trajectory tracking performance of the proposed \gls{BFBEL} controller.
-    Without prior knowledge of the system, the controller weights were autonomously tuned within \SI{30}{\second} of flight time to provide stable trajectory tracking of the multirotor.
+    Without prior knowledge of the system, the controller weights were autonomously tuned within \SI{30}{\second} of flight time to provide stable trajectory tracking with the multirotor.
     However, the payload state was not explicitly measured or damped, causing residual oscillations in the position data of the multirotor.
 
     \paragraph
-    A double \gls{ADRC} was proposed by \citet{Wang2020} for the control of a multirotor with an unknown suspended payload.
-    A second-order transfer function model of a practical multirotor without a load was determined with a frequency sweep excitation method of each control channel.
-    The effect of the suspended load was considered as an external disturbance and \glspl{ESO} were applied in the position and attitude loops to estimate the disturbance.
-    An \gls{ADRC} in the position and attitude loop could then actively reject the disturbance caused by the payload to stabilise the system without prior knowledge of the payload dynamics.
-    Experimental results showed that the proposed controller stabilised the suspended payload to within a tolerable swing angle faster than a \gls{PID} controller, even though the payload state was unmeasured.
-    It was shown that trajectory tracking was significantly improved.
-    It should be noted that this technique did not show significant swing damping performance but rather showed that the controller was robust against the effect of the swinging payload.
+    A \gls{ADRC} was proposed by \citet{Wang2020} for the control of a multirotor with an unknown suspended payload.
+    A transfer function model of a practical multirotor without a payload was determined with a frequency sweep excitation method of each control channel.
+    The effect of the suspended payload was considered as an external disturbance and \glspl{ESO} were applied to estimate the disturbance.
+    An \gls{ADRC} could then actively reject the disturbance caused by the payload and stabilise the system without prior knowledge of the payload dynamics.
+    Experimental results showed that trajectory tracking was significantly improved compared to a standard \gls{PID} controller.
+    It should be noted that this technique did not show significant swing damping performance but rather showed robustness against the disturbance effect of the swinging payload.
 
     \paragraph
-    These methods appear to provide stabilised control of the multirotor despite the effect of an unknown swinging payload, but do not provide optimised control of the entire multirotor-payload system.
-    These effects focus on counteracting the swinging payload disturbance as it happens and does not directly learn how to control the unknown payload.
-    System identification methods can determine a model of unknown dynamics and a controller can be designed based on the identified plant model for improved control of the entire dynamical system.
+    These methods provide stabilised control of the multirotor, but do not provide optimised control of the entire multirotor-payload system.
+    These controllers focus on counteracting the current swinging payload disturbance but does not learn how to directly control the unknown payload.
+    
+    \paragraph
+    System identification methods can determine a model of the unknown dynamics and a controller could be designed based on the identified plant model.
+    This could provide improved control of the entire dynamical system.
     Control architectures involving data-driven model identification and resultant model-based controller have been proposed for multirotors \cite{Tran2021, Wang2020}.
-    However, we were not able to find similar studies in the literature relating to model identification and control of a multirotor system which includes an unknown suspended payload.
+    However, we were not able to find similar studies in the literature that involves an unknown suspended payload.
     
     % \paragraph
     % Non-linear, data-driven techniques like \gls{SINDy} have been proposed as a model identification method with \gls{MPC} to control a fixed-wing \gls{UAV} with unknown dynamics \cite{Kaiser2018b}.
@@ -359,20 +361,20 @@
 \section{Summary} 
         
     \paragraph
-    This chapter reviewed a range of different control solutions for a multirotor with a suspended payload.
+    This chapter reviewed a range of different control solutions for multirotors with suspended payloads.
     A few observations were made regarding the literature on this subject, including the following:
     \begin{enumerate}
-        \item Most studied controllers are based on accurate models of the system dynamics.
+        \item Most of the studied controllers are based on accurate models of the system dynamics.
         \item Swing damping methods perform better than trajectory generation methods when considering model uncertainty.
-        \item Few studies consider some parameter uncertainty, but few studies consider unknown system dynamics.
-        \item Few studies that account for parameter uncertainty are demonstrated with different payload parameters.
+        \item Many studies consider some parameter uncertainty, but only a few studies consider unknown system dynamics.
+        \item Only a few studies that account for parameter uncertainty are also demonstrated with different payload parameters.
         \item Methods that consider unknown system dynamics usually consider the suspended payload as an unknown disturbance and do not attempt to actively control the payload.
-        \item No studies were found in the literature that considered data-driven system identification of multirotors with suspended payloads.
+        \item No studies were found in the literature that consider data-driven system identification and control of multirotors with suspended payloads.
     \end{enumerate}
 
     \paragraph
     The focus of this thesis will involve the stabilised control of a multirotor with an unknown suspended payload.
-    The model uncertainty will not only include the parameter uncertainty but the dynamics of the suspended payload system will be considered unknown before a flight.
+    The dynamics of the suspended payload system will be considered unknown before a flight.
     Furthermore, the proposed controller will be based on an estimated model of the multirotor-payload dynamics and it will be tested on different payloads.
 
 }
