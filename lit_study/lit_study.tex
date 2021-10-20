@@ -252,7 +252,7 @@
         However, the non-linear \gls{MPC} results were not compared to linear \gls{MPC} results, therefore the studies do not conclusively justify the need for a non-linear plant model.
         Non-linear \gls{MPC} is more computationally intensive than linear \gls{MPC}, which makes it more challenging to implement in real-time for practical flights.
         None of the studies considered in Table~\ref{tbl:lit} that were implemented on practical systems used non-linear plant models.
-        However, some practical implementation apply controllers which do not depend on a plant model and show promising results \cite{Muthusamy2021a, Hua2021, Faust2014}.
+        However, some practical implementation apply controllers which do not depend on a plant model and show promising results \cite{Muthusamy2021, Hua2021, Faust2014}.
 
         \paragraph
         Note from Table~\ref{tbl:lit}, that many studies only consider the proposed controllers in simulation and do not include practical data.
@@ -271,7 +271,7 @@
         It is also noted that few studies in the literature consider outdoor flights.
         Most studies only consider practical flights performed in controlled indoor environments.
         Figure~\ref{fig:motion_capture} shows an indoor motion capture setup used for multirotor experiments.
-        In these experiments, motion capture systems like Vicon \cite{Muthusamy2021a, Hua2021, Faust2014, Zurn2016, Son2019, Son2018}, Qualisys \cite{Liang2021} or Optitrack \cite{Mosco-Luciano2020} provide high accuracy state feedback data at rates of \SI{100}{\hertz} or more.
+        In these experiments, motion capture systems like Vicon \cite{Muthusamy2021, Hua2021, Faust2014, Zurn2016, Son2019, Son2018}, Qualisys \cite{Liang2021} or Optitrack \cite{Mosco-Luciano2020} provide high accuracy state feedback data at rates of \SI{100}{\hertz} or more.
         This type of setup is often impractical for real-life multirotor applications.
         
         \paragraph
@@ -306,37 +306,56 @@
         In Table~\ref{tbl:lit}, the \emph{Unknown dynamics} column identifies studies that account for unknown dynamics of a multirotor with a suspended payload.
         This does not include uncertainty due to modelling errors as a result of a priori linearisation and discretisation.
         These studies make minimal assumptions regarding the dynamics of the payload and propose stabilising controllers that are effective despite the unknown dynamics.
-        This approach is useful for complicated working conditions where the model dynamics cannot be known prior to flight \cite{Hua2021}.
+        This approach is useful for complicated working conditions with model uncertainties \cite{Hua2021}.
         It is also interesting to note by the publication dates that most of these studies are quite recent.
         This appears to be a promising research area that has been considered in only a few different studies.
 
 \section{Multirotor and suspended payload systems with unknown dynamics}
 
     \paragraph
-    Unknown states.
-    Mention adaptive.
-    Mention robust.
+    Only a few studies have been identified that consider stabilised control of a multirotor and suspended payload without prior knowledge of the payload dynamics \cite{Muthusamy2021, Allahverdy2021, Faust2014, Wang2020}.
+    Some methods are not based on a plant model and learn a stabilising control law without knowledge of the system dynamics \cite{Muthusamy2021, Faust2014}.
+    Other strategies control the multirotor with an model based method and consider the effect of the suspended payload as an external disturbance \cite{Wang2020, Allahverdy2021}
+
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=0.8\linewidth]{lit_study/fig/BFBEL.png}
+        \caption{Controller structure proposed by \citet{Muthusamy2021}}
+        \label{fig:BFBEL}
+    \end{figure} 
 
     \paragraph
-    Learning-based methods have also been proposed for multirotors with suspended payloads.
-    \citet{Hua2021} develops a non-linear control strategy embedded with \gls{RL} for position control and simultaneous swing suppression.
-    Experimental results showed that this method provided reliable swing suppression control in situations with model uncertainties, parameters drift, and external disturbances.
+    \citet{Muthusamy2021} proposed a \gls{BFBEL} controller which incorporates fuzzy inference, neural networks and the \gls{BBEL} algorithm.
+    A separate \gls{BFBEL} feedback controller is applied to each degree of freedom of the \gls{6DOF} multirotor system, as shown in Figure~\ref{fig:BFBEL}.
+    The payload state remains unmeasured and the objective of the controller is to stabilise the multirotor system and provide accurate position tracking without knowledge of the multirotor-payload dynamics.
+    Experimental results demonstrate the rapid adaptation capability and the trajectory tracking performance of the proposed \gls{BFBEL} controller.
+    Without prior knowledge of the system, the controllers weights are autonomously tuned within \SI{30}{\second} of flight time to provide stable trajectory tracking of the multirotor.
+    The payload state is not explicitly measured or damped, causing residual oscillations in the position data of the multirotor.
+
+    \paragraph
+    A double \gls{ADRC} was proposed by \citet{Wang2020} for the control of a multirotor with an unknown suspended payload.
+    An accurate second-order transfer function model of a practical multirotor without a load was determined with a frequency sweep excitation method of each control channel.
+    The effect of the suspended load was considered as an external disturbance and \glspl{ESO} were applied in the position and attitude loops to estimate the disturbance.
+    A \gls{ADRC} in the position and attitude loop could then actively reject the disturbance caused by the payload to stabilise the system without prior knowledge of the payload dynamics.
+    Experimental results showed that the proposed controller stabilised the suspended payload to within a tolerable swing angle faster than a \gls{PID} controller, even though the payload state was unmeasured.
+    It was was shown that trajectory tracking was significantly improved.
+    It should be noted that this technique did not show significant swing damping performance but rather showed that the controller was robust against the effect of the swinging payload.
+
+    \paragraph
+    These methods appear to stabilised control of the multirotor despite the effect of an unknown swinging payload, but do not provide optimised control of the entire multirotor-payload system.
+    These effects focus on counteracting the swinging payload disturbance as it happens and do not directly learn how to control the unknown payload.
+    System identification methods can determine a model of unknown dynamics and a controller can be designed based on the identified plant model for improved control of the entire dynamical system.
+    Control architectures involving data-driven model identification and resultant model based controller have been proposed for multirotors \cite{Tran2021, Wang2020},
+    however we were not able to find similar studies relating to model identification and control of a multirotor system which includes an unknown suspended payload.
     
-    \paragraph
-    Another summary
+    % \paragraph
+    % Non-linear, data-driven techniques like \gls{SINDy} have been proposed as a model identification method with \gls{MPC} to control a fixed wing \gls{UAV} with unknown dynamics \cite{Kaiser2018b}.
+    % However, \gls{SINDy} has been shown to be extremely sensitive to noise and rational non-linearities \cite{Kaheman2020c} which are present in the dynamical equations describing a multirotor with a suspended payload.
+    % Algorithms have been proposed to improve robustness against rational non-linearities \cite{Mangan2016b, Kaheman2020c}.
+    % However, these methods are still inherently sensitive to rational non-linearities which are form a significant part of the strongly coupled multirotor and suspended payload dynamics. 
 
-    \paragraph
-    Another summary
-
-    \paragraph
-                
-    % See data driven is scarce?
-    % Robust methods that absorb oscillations, but no optimal control
-    % therefore data driven.
-    % MPC is a good method of applying model
-
-    \paragraph
-    MPC with system identification
+    % \paragraph
+    % Related linear data-driven techniques such as DMDc ... 
 
 \section{Summary} 
         
@@ -344,10 +363,6 @@
     Where does my work fit in.
 
     The major contribution of this work
-
-% \section{System Design}
-% Blok diagram
-% komponente
 
 }
 
