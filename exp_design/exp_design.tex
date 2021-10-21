@@ -141,41 +141,38 @@
             %     \label{fig:gazebo_model}
             % \end{figure}
 
+            % ?? Added screenshot of honeybee Gazebo model
+
         \FloatBarrier\subsection{Robot Operating System}
 
             \paragraph
             \gls{ROS} is a communication framework with a set of tools used for robotics and control applications \cite{Quigley2009}. 
             \gls{ROS} is open-source and is supported by PX4.
             In this architecture, executables are called \gls{ROS} nodes and communicate with each other using messages in a publish-subscribe architecture.
-            A ROS node can publish messages to a topic, and a different node can subscribe to that topic to read those messages.
+            A \gls{ROS} node can publish messages to a topic, and a different node can subscribe to that topic to read those messages.
 
             \paragraph
-            MAVROS is a open-source ROS package which provides a bridge between ROS and PX4 through the MAVLink protocol.
+            MAVROS is a open-source \gls{ROS} package which provides a bridge between \gls{ROS} and PX4 through the MAVLink protocol.
             \gls{QGC} and Gazebo also communicate with PX4 through MAVLink.
-            A MAVROS node receives MAVLink messages from PX4 and converts this to published ROS topics for other ROS nodes to access.
-            The MAVROS node also subscribes to topics to receive ROS messages and send this data to PX4. 
+            A MAVROS node receives MAVLink messages from PX4 and converts this to published \gls{ROS} topics for other \gls{ROS} nodes to access.
+            The MAVROS node also subscribes to topics to receive \gls{ROS} messages and send this data to PX4. 
 
-            % \begin{figure}[ht]
-            %     \centering
-            %     \includegraphics[width=0.6\linewidth]{exp_design/fig/MAVROS}
-            %     \caption{Communication between \gls{ROS}, flight stack, simulator, and ground station \cite{Grobler2020}}
-            %     \label{fig:MAVROS}
-            % \end{figure}
-
-            % ?? Illustrate MAVROS
+            \begin{figure}[ht]
+                \centering
+                \includegraphics[width=0.9\linewidth]{exp_design/fig/MAVROS}
+                \caption{Communication between \gls{ROS}, flight stack, simulator, and ground station \cite{Grobler2020}}
+                \label{fig:MAVROS}
+            \end{figure}
 
             \paragraph
-            Figure~\ref{fig:MAVROS}
-
-            MATLAB/Simulink generate nodes
+            MATLAB/Simulink was used to convert the \gls{MPC} controller developed in Section~\ref{sec:mpc} to C\texttt{++} code and generate a standalone \gls{ROS} node.
+            Figure~\ref{fig:MAVROS} illustrates how the MPC node is used as an offboard controller with PX4 and MAVROS.
+            State estimate data is received by the MPC node by subscribing to the appropriate MAVROS topic.
+            After the MPC node calculates the next controller decision, it publishes the controller setpoint data to a MAVROS topic, and the MAVROS node sends it to PX4 via MAVLink.
 
     \FloatBarrier\section{Hardware-in-the-Loop simulations} \label{sec:exp_design_hitl}
 
         \paragraph
-        MATLAB is used to generate an \gls{MPC} \gls{ROS} node 
-        This \gls{ROS} node receives state feedback from the Gazebo simulator,
-        computes the optimal control action,
-        and sends the setpoint to PX4 through the package 'mavros'.
 
     \FloatBarrier\section{Practical flights}
         
