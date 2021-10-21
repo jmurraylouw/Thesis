@@ -107,7 +107,7 @@
     \FloatBarrier\section{Software Toolchain}
 
         \paragraph
-        The software toolchain used with Honeybee includes PX4-Autopilot, \gls{ROS}, and Gazebo simulator.
+        The software toolchain used with Honeybee includes PX4-Autopilot, QGroundControl, \gls{ROS}, and Gazebo simulator.
         This is a popular toolchain applied in research and was also used and described by \citet{Erasmus2020}, \citet{Slabber2020}, and \citet{Grobler2020}.
         A brief overview of the software toolchain is provided here.
         % MATLAB/Simulink was also used to generate standalone \gls{ROS} nodes which runs on the \gls{OBC}.
@@ -119,10 +119,13 @@
             This is a popular flight stack used in research and industry applications.
             \gls{SITL} and \gls{HITL} simulations are supported by PX4, which is helpful for research and development purposes.
             
+        \FloatBarrier\subsection{QGroundControl}
+        
             \paragraph
             \gls{QGC} is the recommended ground station software for PX4 systems.
             A ground station computer running \gls{QGC} can be used to monitor and control a PX4 vehicle.
             \gls{QGC} communicates with PX4 via the MAVLink protocol over a telemetry connection during practical flights.
+            During \gls{SITL} simulations \gls{QGC} connects to PX4 over a local \gls{UDP} connection.
             \gls{QGC} is also an open-source product.
             
         \FloatBarrier\subsection{Gazebo simulator}
@@ -141,7 +144,7 @@
             %     \label{fig:gazebo_model}
             % \end{figure}
 
-            % ?? Added screenshot of honeybee Gazebo model
+            % ?? Add screenshot of honeybee Gazebo model
 
         \FloatBarrier\subsection{Robot Operating System}
 
@@ -157,10 +160,10 @@
             A MAVROS node receives MAVLink messages from PX4 and converts this to published \gls{ROS} topics for other \gls{ROS} nodes to access.
             The MAVROS node also subscribes to topics to receive \gls{ROS} messages and send this data to PX4. 
 
-            \begin{figure}[ht]
+            \begin{figure}[!htbp]
                 \centering
                 \includegraphics[width=0.9\linewidth]{exp_design/fig/MAVROS}
-                \caption{Communication between \gls{ROS}, flight stack, simulator, and ground station \cite{Grobler2020}}
+                \caption{Communication between \gls{ROS}, flight stack, simulator, and ground station~\cite{Grobler2020}}
                 \label{fig:MAVROS}
             \end{figure}
 
@@ -173,54 +176,64 @@
     \FloatBarrier\section{Hardware-in-the-Loop simulations} \label{sec:exp_design_hitl}
 
         \paragraph
+        In \gls{HITL} simulations, the simulator mimics the sensor outputs, but the PX4 firmware and the accompanying software runs on the designated hardware.
+        Figure~\ref{fig:HITL} illustrates how the different software and hardware components interlink for HITL simulations.
+        
+        \paragraph
+        \gls{QGC} runs on the desktop computer and communicates with the Gazebo simulator with MAVlink via a local \gls{UDP} connection.
+        The Gazebo simulator also runs on the desktop computer and simulates the Honeybee quadrotor.
+        The simulator mimics the quadrotor sensor values and sends them to PX4 with MAVlink messages over a USB connection. 
+        The PX4 firmware runs on the \gls{FC} board.
+        Based on the received sensors values, the PX4 controllers determine \gls{PWM} actuator commands which are communicated back to Gazebo.
+        The \gls{OBC} runs the MPC and MAVROS nodes which send and receive MAVLink messages to the \gls{FC} via a serial port connection.
+
+        \begin{figure}[ht]
+            \centering
+            \includegraphics[width=0.9\linewidth]{exp_design/fig/HITL}
+            \caption{Different software and hardware components of a HITL simulation}
+            \label{fig:HITL}
+        \end{figure}
 
     \FloatBarrier\section{Practical flights}
-        
-        \paragraph
-        As discussed in Chapter~\ref{chap:system_id}, 
-        generating data for the parameter estimation techniques involves two distinct flight stages.
-        Firstly, the multirotor hovers with the suspended payload to gather data for payload mass estimation.
-        A velocity step setpoint is then commanded to stimulate the swinging payload system for cable length estimation.
-        Hence, the same methodology used for simulations will be used for practical flights.
 
-        \paragraph
-        For the data-driven techniques, the generation of practical training and testing data
-        also follows the same general methodology as simulated flights:
-        \begin{enumerate}
-            \item Data logging starts when the multirotor is armed
-            \item Takeoff and hover with the multirotor
-            \item Command velocity step setpoints
-            \item Land the multirotor
-            \item Data logging stops when the multirotor is disarmed
-            \item Download the data log from the multirotor
-            \item Split the data into separate training and testing periods
-            \item Build a model from the training data
-            \item Perform model predictions over the testing data to calculate an error metric
-        \end{enumerate}
-
-        \paragraph
-        Figure~\ref{fig:honeybee_with_payload} shows the Honeybee multirotor with a suspended payload during a practical flight.
-        Numerous flights were performed with different 
-        payload masses, 
-        cable lengths, 
-        wind conditions, 
-        and dynamic payloads.
-        The system identification methods were then performed for these different use cases.
-        
         \paragraph
         The major differences between the simulated and practical flights involve the attachment of the payload and wind disturbances.
         In simulations, the payload cable is attached to the exact \gls{CoM} of the multirotor.
         However, for practical flights the cable is attached slightly below the \gls{CoM} of Honeybee due to mechanical constraints.
-        Practical flights are also influenced by wind disturbances which were not considered in simulations.
+        Practical flights are also influenced by wind gusts which are difficult to model accurately in simulations.
         The measurement noise experienced by a practical multirotor may also differ from the noise models used in simulations.
 
         \begin{figure}[!htb]
             \centering
-            \includegraphics[width=0.5\linewidth]{honeybee_with_payload.jpg}
+            \includegraphics[width=0.6\linewidth]{honeybee_with_payload.jpg}
             \caption{Practical flight with Honeybee and a suspended payload}
             \label{fig:honeybee_with_payload}
         \end{figure}
 
+        \paragraph
+        Figure~\ref{fig:honeybee_with_payload} shows the Honeybee with a suspended payload during a practical flight.
+        Numerous flights were performed with different payload masses, cable lengths and wind conditions.
+        Different flights were also performed with a dynamic payload.
+        The system identification methods were then applied to the flight data logged by PX4.
+        The results of these flight experiments will be discussed in Chapter~\ref{chap:results}.
+        
+        \paragraph
+        The same general methodology used for simulations will be used for practical flights:
+        \begin{enumerate}
+            \item Data logging starts when the multirotor is armed.
+            \item Takeoff and hover with the multirotor.
+            \item Command velocity step setpoints.
+            \item Land the multirotor.
+            \item Data logging stops when the multirotor is disarmed.
+            \item Download the data log from the multirotor.
+            \item Split the data into separate training and testing periods.
+            \item Build a model from the training data.
+            \item Evaluate model predictions with the testing data.
+        \end{enumerate}
+
+        
+        
+        
     \FloatBarrier\section{Summary}
 
 }
