@@ -358,7 +358,7 @@
         \paragraph
         The \gls{MPC} acts in the velocity loop and commands an acceleration setpoint.
         The default \gls{PID} velocity controller runs at \SI{50}{\hertz} which corresponds to $T_s =~$\SI{0.02}{\second}.
-        Due to the computational complexity of an \gls{MPC}, the optimiser will struggle to run at \SI{50}{\hertz} on a companion computer on a multirotor.
+        Due to the computational complexity of an \gls{MPC}, the optimiser will struggle to run at \SI{50}{\hertz} on an \gls{OBC} on a multirotor.
         However, the controller needs to run as fast as possible 
         to have significant time-scale separation from the multirotor dynamics.
         If the controller runs too slowly, it may result in poor flight performance or unstable control.

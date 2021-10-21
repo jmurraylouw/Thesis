@@ -449,9 +449,9 @@
         % ?? see that exp design chapter links with this. 
         % ?? Check all "as described in refs"
         \paragraph
-        As described in Section~\ref{sec:exp_design_hitl}, a companion computer runs a \gls{ROS} node which implements the \gls{MPC} algorithm.
+        As described in Section~\ref{sec:exp_design_hitl}, an \gls{OBC} runs a \gls{ROS} node which implements the \gls{MPC} algorithm.
         The \gls{MPC} is based on a \gls{DMDc} plant model generated from training data from a \gls{HITL} simulation.
-        The companion computer receives state feedback and sends control signals via a \gls{UART} connection to the \gls{FC}.
+        The \gls{OBC} receives state feedback and sends control signals via a \gls{UART} connection to the \gls{FC}.
         The \gls{FC} runs the actual PX4 flight stack firmware and executes the control signals received from the \gls{MPC} node.
         Sensor values are generated and sent to PX4 by the Gazebo simulator, which runs on a desktop computer connected to the \gls{FC} via \gls{USB}.
         In this way, we can safely determine whether the practical hardware is suitable for the computational complexity of the control algorithms.
@@ -470,14 +470,14 @@
             \paragraph
             As discussed in Section~\ref{sec:mpc}, the computational complexity of the \gls{MPC} optimisation problem increases for larger state-space matrices, and the hyperparameter, $q$, determines the size of these matrices.
             Figure~\ref{fig:CPU_vs_q} shows the \scaleobj{0.8}{\%}CPU consumption of \gls{MPC} nodes based on models with different $q$ values.
-            The \scaleobj{0.8}{\%}CPU value represents the average percentage of \gls{CPU} time used by the \gls{MPC} node running on the companion computer.
+            The \scaleobj{0.8}{\%}CPU value represents the average percentage of \gls{CPU} time used by the \gls{MPC} node running on the \gls{OBC}.
             From Figure~\ref{fig:CPU_vs_q} it is clear that \scaleobj{0.8}{\%}CPU increases with increasing values of $q$.
             This shows that the computational complexity increases for larger values of $q$.
             % This shows that the optimisation problem increases in complexity since more time is required to solve 
 
             \paragraph
             In Section~\ref{sec:hyperparameters}, it was shown that $q = 50$ is near the Pareto optimum for practical data and the prediction accuracy does not increase significantly for $q > 50$.
-            As shown in Figure~\ref{fig:CPU_vs_q}, an \gls{MPC} node with $q = 50$ and $T_s =$~\SI{0.03}{\second} run at \scaleobj{0.8}{\%}CPU~$= 82.8\%$ on the companion computer.
+            As shown in Figure~\ref{fig:CPU_vs_q}, an \gls{MPC} node with $q = 50$ and $T_s =$~\SI{0.03}{\second} run at \scaleobj{0.8}{\%}CPU~$= 82.8\%$ on the \gls{OBC}.
             The status of the \gls{QP} solver was also monitored, which showed that the optimisation problem was consistently solved within the given optimisation time for $q = 50$.
             The \gls{MPC} node achieves stable, swing-damping control with this model.
             However, for $q = 70$ the \gls{MPC} node uses \scaleobj{0.8}{\%}CPU~$= 98.7\%$ and the optimisation problem can not be solved fast enough for stable quadrotor control.
@@ -492,8 +492,8 @@
 
             \paragraph
             Figure~\ref{fig:RAM_vs_q} shows that the \scaleobj{0.8}{\%}RAM also increases for larger values of $q$.
-            The \scaleobj{0.8}{\%}RAM value represents the maximum percentage of \gls{RAM} space used by the \gls{MPC} node while running on the companion computer.
-            It is clear that the companion computer has sufficient memory to handle the \gls{MPC}, since the \gls{MPC} node uses less than 1\% RAM, even for large models with $q = 70$.
+            The \scaleobj{0.8}{\%}RAM value represents the maximum percentage of \gls{RAM} space used by the \gls{MPC} node while running on the \gls{OBC}.
+            It is clear that the \gls{OBC} has sufficient memory to handle the \gls{MPC}, since the \gls{MPC} node uses less than 1\% RAM, even for large models with $q = 70$.
 
         \FloatBarrier\subsection{Effect of sample time on computational requirements}    
 
@@ -505,7 +505,7 @@
             It is clear that \scaleobj{0.8}{\%}CPU decreases as $T_s$ increases.
             % In Section~\ref{sec:sample_time}, it was shown that the model prediction accuracy does not change much for different sample times in the range, $20 < q < 40$~ms.
             The default velocity controller in PX4 runs at \SI{50}{\hertz}, which corresponds to $T_s =$~\SI{20}{\milli\second}.
-            However, an \gls{MPC} node with $T_s =$~\SI{20}{\milli\second} struggles to run fast enough on the given companion computer.
+            However, an \gls{MPC} node with $T_s =$~\SI{20}{\milli\second} struggles to run fast enough on the given \gls{OBC}.
             This is clear from the high \scaleobj{0.8}{\%}CPU consumption (98.6\%) of the MPC node running at $T_s =$~\SI{20}{\milli\second}.
             This node results in unstable control because the \gls{QP} problem cannot be solved within the given optimisation time.
             
@@ -523,7 +523,7 @@
             \paragraph
             Figure~\ref{fig:HITL_mpc_vel} plots the velocity responses of the \gls{PID} and \gls{MPC} controllers in \gls{HITL} simulations of the quadrotor-payload system.
             The \gls{MPC} controller is based on a system identification model with $q = 50$ and has a sample time of $T_s =$~\SI{30}{\milli\second}.
-            It is clear from this plot that the \gls{MPC} node running on the companion computer provides stable control of the quadrotor payload system and damps the velocity oscillations well.
+            It is clear from this plot that the \gls{MPC} node running on the \gls{OBC} provides stable control of the quadrotor payload system and damps the velocity oscillations well.
 
             \input{results/plots/HITL_mpc_theta.tex}
 

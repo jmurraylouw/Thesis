@@ -2,14 +2,106 @@
 {
 \tikzset{external/figure name/.add={exp_design/}{}}
 
-\chapter{Experimental design}
-\label{chap:exp_design}
+\chapter{Experimental design} \label{chap:exp_design}
 
-    \section{Hardware}
+    \paragraph
+    As discussed in Chapter~\ref{chap:chap:lit_study}, experimental data is a valuable part of any study involving multirotors control.
+    This chapter will provide an overview of the hardware components, software toolchain, HITL simulations, and practical methodology used in this work.
 
-    Introduce honeybee
+    \FloatBarrier\section{Hardware components}
 
-    \FloatBarrier\section{Methodology}
+        \paragraph
+        The hardware involved in this work include a multirotor vehicle, a custom-made payload state sensor, and an \gls{OBC}.
+        These hardware elements are coupled together into the final multirotor vehicle which will be used for practical flights.
+
+        % Diagram of components ??
+
+        \FloatBarrier\subsection{Multirotor}
+
+            \begin{figure}[ht]
+                \centering
+                \includegraphics[width=0.6\linewidth]{exp_design/fig/honeybee}
+                \caption{Honeybee quadrotor equipped with a \gls{OBC} and payload angle sensor}
+                \label{fig:honeybee}
+            \end{figure}
+
+            \paragraph
+            The multirotor used in this work is a lightweight and modular quadrotor named \emph{Honeybee} which was developed in the \gls{ESL} at Stellenbosch University \cite{Grobler2020}.
+            Figure~\ref{fig:honeybee} shows an photo of Honeybee equipped with an \gls{OBC} and payload angle sensor.
+            Table~\ref{tbl:honeybee_specs} summarises the physical parameters of this multirotor system.
+            Note that the mass and inertial parameters include the \gls{OBC} and payload state sensor.
+            The thrust profile of each motor is given by the third-order polynomial mapping the input \gls{PWM} signal, $x$, to the thrust output, $T_m$:
+            \begin{equation}
+                T_m(x) = -3.508 \cdot 10^{-9} x^3 + 1.627 \cdot 10^{5} x^2 - 0.0172 x + 4.528
+            \end{equation}
+
+            \begin{table}[!h]
+                \renewcommand{\arraystretch}{1.1}
+                \centering
+                \caption{Physical parameters of Honeybee.}
+                \begin{tabularx}{0.9\linewidth}{@{}lll@{}}
+                    \toprule
+                    \textbf{Description} & \textbf{Parameter} & \textbf{Value} \\
+                    \midrule
+                    Mass                        & $m_Q$     & 0.952~kg \\
+                    Motor distance              & $d$       & 0.11~m \\
+                    Virtual yaw moment arm      & $R_N$     & $7.997 \cdot 10^{-3}$~m \\
+                    Motor time constant         & $\tau$    & 15~ms \\
+                    Mass moment of inertia about $\bm{\bar{x}}_\mathcal{B}$                 & $I_{xx}$      & $2.00 \cdot 10^{-3}$~kg$\cdot$m$^2$ \\
+                    Mass moment of inertia about $\bm{\bar{y}}_\mathcal{B}$                 & $I_{yy}$      & $1.32 \cdot 10^{-3}$~kg$\cdot$m$^2$ \\
+                    Mass moment of inertia about $\bm{\bar{z}}_\mathcal{B}$                 & $I_{zz}$      & $3.35 \cdot 10^{-3}$~kg$\cdot$m$^2$ \\
+                    Aerodynamic drag coefficient in $\bm{\bar{x}}_\mathcal{B}$ direction    & $C_{Q_X}$     & 0.096~m$^2$ \\	
+                    Aerodynamic drag coefficient in $\bm{\bar{y}}_\mathcal{B}$ direction    & $C_{Q_Y}$     & 0.096~m$^2$ \\	
+                    Aerodynamic drag coefficient in $\bm{\bar{z}}_\mathcal{B}$ direction    & $C_{Q_Z}$     & 0.256~m$^2$ \\	
+                    \bottomrule
+                \end{tabularx}
+                \label{tbl:honeybee_specs}
+            \end{table}
+        
+
+            
+        \FloatBarrier\subsection{Payload angle sensor}
+
+            \paragraph
+            
+
+        \FloatBarrier\subsection{On-Board Computer}
+
+            \paragraph
+            
+    \FloatBarrier\section{Software Toolchain}
+
+        \paragraph
+        Intro
+
+        \FloatBarrier\subsection{PX4-Autopilot}
+
+            \paragraph
+            
+            
+        \FloatBarrier\subsection{Gazebo simulator}
+
+            \paragraph
+            
+
+        \FloatBarrier\subsection{Robot Operating System}
+
+            \paragraph
+            
+        \FloatBarrier\subsection{MATLAB/Simulink}
+
+            \paragraph
+            
+
+    \FloatBarrier\section{HITL} \label{sec:exp_design_hitl}
+
+        \paragraph
+        MATLAB is used to generate an \gls{MPC} \gls{ROS} node 
+        This \gls{ROS} node receives state feedback from the Gazebo simulator,
+        computes the optimal control action,
+        and sends the setpoint to PX4 through the package 'mavros'.
+
+    \FloatBarrier\section{Practical flights}
         
         \paragraph
         As discussed in Chapter~\ref{chap:system_id}, 
@@ -55,18 +147,5 @@
             \caption{Practical flight with Honeybee and a suspended payload}
             \label{fig:honeybee_with_payload}
         \end{figure}
-    
-    \section{Software}
-
-    \section{HITL} \label{sec:exp_design_hitl}
-
-    \paragraph
-    MATLAB is used to generate an \gls{MPC} \gls{ROS} node 
-    This \gls{ROS} node receives state feedback from the Gazebo simulator,
-    computes the optimal control action,
-    and sends the setpoint to PX4 through the package 'mavros'.
-
-    \section{Practical flights}
-
 
 }
