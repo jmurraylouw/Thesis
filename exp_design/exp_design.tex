@@ -5,13 +5,13 @@
 \chapter{Experimental design} \label{chap:exp_design}
 
     \paragraph
-    As discussed in Chapter~\ref{chap:chap:lit_study}, experimental data is a valuable part of any study involving multirotors control.
+    As discussed in Chapter~\ref{chap:lit_study}, experimental data is a valuable part of any study involving multirotors control.
     This chapter will provide an overview of the hardware components, software toolchain, HITL simulations, and practical methodology used in this work.
 
     \FloatBarrier\section{Hardware components}
 
         \paragraph
-        The hardware involved in this work include a multirotor vehicle, a custom-made payload state sensor, and an \gls{OBC}.
+        The hardware involved in this work include a multirotor vehicle, a custom-made payload angle sensor, and an \gls{OBC}.
         These hardware elements are coupled together into the final multirotor vehicle which will be used for practical flights.
 
         % Diagram of components ??
@@ -20,7 +20,7 @@
 
             \begin{figure}[ht]
                 \centering
-                \includegraphics[width=0.6\linewidth]{exp_design/fig/honeybee}
+                \includegraphics[width=0.5\linewidth]{exp_design/fig/honeybee}
                 \caption{Honeybee quadrotor equipped with a \gls{OBC} and payload angle sensor}
                 \label{fig:honeybee}
             \end{figure}
@@ -29,7 +29,7 @@
             The multirotor used in this work is a lightweight and modular quadrotor named \emph{Honeybee} which was developed in the \gls{ESL} at Stellenbosch University \cite{Grobler2020}.
             Figure~\ref{fig:honeybee} shows an photo of Honeybee equipped with an \gls{OBC} and payload angle sensor.
             Table~\ref{tbl:honeybee_specs} summarises the physical parameters of this multirotor system.
-            Note that the mass and inertial parameters include the \gls{OBC} and payload state sensor.
+            Note that the mass and inertial parameters include the \gls{OBC} and payload angle sensor.
             The thrust profile of each motor is given by the third-order polynomial mapping the input \gls{PWM} signal, $x$, to the thrust output, $T_m$:
             \begin{equation}
                 T_m(x) = -3.508 \cdot 10^{-9} x^3 + 1.627 \cdot 10^{5} x^2 - 0.0172 x + 4.528
@@ -58,25 +58,62 @@
                 \label{tbl:honeybee_specs}
             \end{table}
         
+            \paragraph
+            The \gls{FC} implemented on Honeybee is a \emph{Pixhawk 4 mini} which runs the flight stack firmware.
+            Figure~\ref{fig:pixhawk} shows what the Pixhawk 4 mini looks like.
+            This board includes internal \gls{IMU}, magnetometer, and barometer sensors and is connected to an external \gls{GPS} sensor and an additional magnetometer.
+            Furthermore, an \gls{RC} receiver is used to communicate with a radio transmitter for manual pilot control and a telemetry radio module is used for communication with a ground control station.
+            The \gls{OBC} and external payload angle sensors are also connected to the \gls{FC}.
 
+            \begin{figure}[ht]
+                \centering
+                \includegraphics[width=0.3\linewidth]{exp_design/fig/pixhawk}
+                \caption{Photo of a Pixhawk 4 mini \gls{FC} \cite{pixhawk4mini}}
+                \label{fig:pixhawk}
+            \end{figure}
             
         \FloatBarrier\subsection{Payload angle sensor}
 
             \paragraph
+            A sensor is required to measure the payload state as Euler angles about the $\bm{\bar{x}}_\mathcal{B}$ and $\bm{\bar{y}}_\mathcal{B}$ axes.
+            Figure~\ref{fig:payload_state_sensor} shows a customised sensor attached to the Honeybee airframe for this purpose.
             
+            \begin{figure}[ht]
+                \centering
+                \includegraphics[width=0.3\linewidth]{exp_design/fig/payload_state_sensor}
+                \caption{Payload angle sensor with linear potentiometers}
+                \label{fig:payload_state_sensor}
+            \end{figure}
+
+            \paragraph
+            This sensor was constructed from a two-axis joy-stick and two linear potentiometers.
+            Each potentiometer is implemented as a voltage divider and attached to an \gls{ADC} channel on the \gls{FC}. 
+            An experiment was performed to map the \gls{ADC} reading to an angle measurement with a straight line function, which is implemented on the \gls{FC}.
+            A cable can then be attached to this device to transport a suspended payload and measure the swing angles during flight.
 
         \FloatBarrier\subsection{On-Board Computer}
 
             \paragraph
+            An \gls{OBC}, also called a companion computer, is used to run intensive computational processes that cannot be handled by the \gls{FC}.
+            A NVIDIA\textsuperscript{\textregistered} Jetson Nano\texttrademark, shown in Figure~\ref{fig:jetson}, is used as the \gls{OBC} for Honeybee.
+            This has 4GB 64-bit LPDDR4 memory and a quad-core ARM A57 processor which runs at 1.43 GHz.
+            The \gls{OBC} is connected to a serial port on the \gls{FC} for communication.
+
+            \begin{figure}[ht]
+                \centering
+                \includegraphics[width=0.3\linewidth]{exp_design/fig/jetson}
+                \caption{NVIDIA\textsuperscript{\textregistered} Jetson Nano\texttrademark \cite{NVIDIA} used as a \gls{OBC}}
+                \label{fig:jetson}
+            \end{figure}
             
     \FloatBarrier\section{Software Toolchain}
 
         \paragraph
-        Intro
 
         \FloatBarrier\subsection{PX4-Autopilot}
 
             \paragraph
+            PX4-Autopilot is used as the flight stack and runs on the \gls{FC}.
             
             
         \FloatBarrier\subsection{Gazebo simulator}
@@ -87,11 +124,18 @@
         \FloatBarrier\subsection{Robot Operating System}
 
             \paragraph
-            
-        \FloatBarrier\subsection{MATLAB/Simulink}
+
+            \begin{figure}[ht]
+                \centering
+                \includegraphics[width=0.6\linewidth]{exp_design/fig/MAVROS}
+                \caption{Communication between ROS, flight stack, simulator, and ground station \cite{Grobler2020}}
+                \label{fig:MAVROS}
+            \end{figure}
 
             \paragraph
-            
+            Figure~\ref{fig:MAVROS}
+
+            MATLAB/Simulink generate nodes
 
     \FloatBarrier\section{HITL} \label{sec:exp_design_hitl}
 
