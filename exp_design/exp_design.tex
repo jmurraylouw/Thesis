@@ -5,14 +5,14 @@
 \chapter{Experimental design} \label{chap:exp_design}
 
     \paragraph
-    As discussed in Chapter~\ref{chap:lit_study}, experimental data is a valuable part of any study involving multirotors control.
+    As discussed in the literature study in Chapter~\ref{chap:lit_study}, experimental data is a valuable part of any work involving multirotors control.
     This chapter will provide an overview of the hardware components, software toolchain, HITL simulations, and practical methodology used in this work.
 
     \FloatBarrier\section{Hardware components}
 
         \paragraph
-        The hardware involved in this work includes a multirotor vehicle, a payload angle sensor, and an \gls{OBC}.
-        These hardware elements are coupled together into the final multirotor system which will be used for practical flights.
+        The main hardware components in this work includes a multirotor vehicle, a payload angle sensor, and an \gls{OBC}.
+        These components are coupled together into the final multirotor system which will be used for practical flights.
 
         \FloatBarrier\subsection{Multirotor}
 
@@ -24,20 +24,23 @@
             \end{figure}
 
             \paragraph
-            The multirotor used in this work is a lightweight and modular quadrotor named \emph{Honeybee} which was developed in the \gls{ESL} at Stellenbosch University \cite{Grobler2020}.
+            The multirotor used in this work is a custom-built, lightweight quadrotor named \emph{Honeybee}.
+            This vehicle was developed in the \gls{ESL} at Stellenbosch University \cite{Grobler2020}.
             Figure~\ref{fig:honeybee} shows an photo of Honeybee equipped with an \gls{OBC} and payload angle sensor.
-            Table~\ref{tbl:honeybee_specs} summarises the physical parameters of this multirotor system.
+            
+            \paragraph
+            The physical parameters of this multirotor is summarised in Table~\ref{tbl:honeybee_specs}.
             Note that the mass and inertial parameters include the \gls{OBC} and payload angle sensor.
-            The thrust profile of each motor is given by the third-order polynomial mapping the input \gls{PWM} signal, $x$, to the thrust output, $T_m$:
+            The thrust profile of each motor is given by the third-order polynomial mapping the input \gls{PWM} signal, $x$, to the thrust output, $T_m$ \cite{Grobler2020}:
             \begin{equation}
-                T_m(x) = -3.508 \cdot 10^{-9} x^3 + 1.627 \cdot 10^{5} x^2 - 0.0172 x + 4.528
+                T_m(x) = -3.508 \cdot 10^{-9} x^3 + 1.627 \cdot 10^{-5} x^2 - 0.0172 x + 4.528
             \end{equation}
 
             \begin{table}[!h]
                 \renewcommand{\arraystretch}{1.1}
                 \centering
                 \caption{Physical parameters of Honeybee.}
-                \begin{tabularx}{0.9\linewidth}{@{}lll@{}}
+                \begin{tabularx}{0.85\linewidth}{@{}lll@{}}
                     \toprule
                     \textbf{Description} & \textbf{Parameter} & \textbf{Value} \\
                     \midrule
@@ -45,22 +48,22 @@
                     Motor distance              & $d$       & 0.11~m \\
                     Virtual yaw moment arm      & $R_N$     & $7.997 \cdot 10^{-3}$~m \\
                     Motor time constant         & $\tau$    & 15~ms \\
-                    Mass moment of inertia about $\bm{\bar{x}}_\mathcal{B}$                 & $I_{xx}$      & $2.00 \cdot 10^{-3}$~kg$\cdot$m$^2$ \\
-                    Mass moment of inertia about $\bm{\bar{y}}_\mathcal{B}$                 & $I_{yy}$      & $1.32 \cdot 10^{-3}$~kg$\cdot$m$^2$ \\
-                    Mass moment of inertia about $\bm{\bar{z}}_\mathcal{B}$                 & $I_{zz}$      & $3.35 \cdot 10^{-3}$~kg$\cdot$m$^2$ \\
-                    Aerodynamic drag coefficient in $\bm{\bar{x}}_\mathcal{B}$ direction    & $C_{Q_X}$     & 0.096~m$^2$ \\	
-                    Aerodynamic drag coefficient in $\bm{\bar{y}}_\mathcal{B}$ direction    & $C_{Q_Y}$     & 0.096~m$^2$ \\	
-                    Aerodynamic drag coefficient in $\bm{\bar{z}}_\mathcal{B}$ direction    & $C_{Q_Z}$     & 0.256~m$^2$ \\	
+                    Mass moment of inertia about $\bm{\bar{x}}_\mathcal{B}$       & $I_{xx}$      & $2.00 \cdot 10^{-3}$~kg$\cdot$m$^2$ \\
+                    Mass moment of inertia about $\bm{\bar{y}}_\mathcal{B}$       & $I_{yy}$      & $1.32 \cdot 10^{-3}$~kg$\cdot$m$^2$ \\
+                    Mass moment of inertia about $\bm{\bar{z}}_\mathcal{B}$       & $I_{zz}$      & $3.35 \cdot 10^{-3}$~kg$\cdot$m$^2$ \\
+                    Aerodynamic drag coefficient in $\bm{\bar{x}}_\mathcal{B}$    & $C_{Q_X}$     & 0.096~m$^2$ \\	
+                    Aerodynamic drag coefficient in $\bm{\bar{y}}_\mathcal{B}$    & $C_{Q_Y}$     & 0.096~m$^2$ \\	
+                    Aerodynamic drag coefficient in $\bm{\bar{z}}_\mathcal{B}$    & $C_{Q_Z}$     & 0.256~m$^2$ \\	
                     \bottomrule
                 \end{tabularx}
                 \label{tbl:honeybee_specs}
             \end{table}
         
             \paragraph
-            The \gls{FC} implemented on Honeybee is a \emph{Pixhawk 4 mini} which runs the flight stack firmware.
-            Figure~\ref{fig:pixhawk} shows what the Pixhawk 4 mini looks like.
+            The \gls{FC} implemented on Honeybee is a \emph{Pixhawk 4 mini} shown in Figure~\ref{fig:pixhawk}.
             This board includes internal \gls{IMU}, magnetometer, and barometer sensors and is connected to an external \gls{GPS} sensor and an additional magnetometer.
-            Furthermore, an \gls{RC} receiver is used to communicate with a radio transmitter for manual pilot control and a telemetry radio module is used for communication with a ground control station.
+            Furthermore, an \gls{RC} receiver is used to communicate with a radio transmitter for manual pilot control.
+            A telemetry radio module is used for communication with a ground control station.
             The \gls{OBC} and external payload angle sensors are also connected to the \gls{FC}.
 
             \begin{figure}[ht]
@@ -86,14 +89,14 @@
             \paragraph
             This sensor was constructed from a two-axis joy-stick and two linear potentiometers.
             Each potentiometer is implemented as a voltage divider and attached to an \gls{ADC} channel on the \gls{FC}. 
-            An experiment was performed to map the \gls{ADC} reading to an angle measurement with a straight line function, which is implemented on the \gls{FC}.
-            A cable can then be attached to this device to transport a suspended payload and measure the swing angles during flight.
+            Experimental data was used to map the \gls{ADC} reading to an angle measurement with a best-fit straight line function.
+            A cable can therefore be attached to this device to transport a suspended payload and measure the payload swing angles during flight.
 
         \FloatBarrier\subsection{On-Board Computer}
 
             \paragraph
             An \gls{OBC}, also called a companion computer, is used to run intensive computational processes that cannot be handled by the \gls{FC}.
-            A NVIDIA\textsuperscript{\textregistered} Jetson Nano\texttrademark, shown in Figure~\ref{fig:jetson}, is used as the \gls{OBC} for Honeybee.
+            A NVIDIA\textsuperscript{\textregistered} Jetson Nano\texttrademark, which is shown in Figure~\ref{fig:jetson}, is used as the \gls{OBC} for Honeybee.
             This has 4GB memory and a quad-core processor which runs at 1.43 GHz.
             The \gls{OBC} is connected to a serial port on the \gls{FC} for communication.
 
@@ -108,24 +111,23 @@
 
         \paragraph
         The software toolchain used with Honeybee includes PX4-Autopilot, QGroundControl, \gls{ROS}, and Gazebo simulator.
-        This is a popular toolchain applied in research and was also used and described by \citet{Erasmus2020}, \citet{Slabber2020}, and \citet{Grobler2020}.
+        This toolchain and was also implemented and described well by \citet{Erasmus2020}, \citet{Slabber2020}, and \citet{Grobler2020}.
         A brief overview of the software toolchain is provided here.
         % MATLAB/Simulink was also used to generate standalone \gls{ROS} nodes which runs on the \gls{OBC}.
 
         \FloatBarrier\subsection{PX4-Autopilot}
 
             \paragraph
-            PX4-Autopilot is an open-source flight stack that focuses on autonomous \glspl{UAV} \cite{Meier2015}.
-            This is a popular flight stack used in research and industry applications.
-            \gls{SITL} and \gls{HITL} simulations are supported by PX4, which is helpful for research and development purposes.
+            PX4-Autopilot is an open-source flight stack that focuses on autonomous \glspl{UAV} \cite{Meier2015} and is used in research and industrial applications.
+            \gls{SITL} and \gls{HITL} simulations are supported by PX4, which is helpful for research and development.
             
         \FloatBarrier\subsection{QGroundControl}
         
             \paragraph
-            \gls{QGC} is the recommended ground station software for PX4 systems.
+            \gls{QGC} is the recommended ground station software for PX4 systems \cite{PX4userguide}.
             A ground station computer running \gls{QGC} can be used to monitor and control a PX4 vehicle.
             \gls{QGC} communicates with PX4 via the MAVLink protocol over a telemetry connection during practical flights.
-            During \gls{SITL} simulations \gls{QGC} connects to PX4 over a local \gls{UDP} connection.
+            During \gls{SITL} simulations, \gls{QGC} connects to PX4 over a local \gls{UDP} connection.
             \gls{QGC} is also an open-source product.
             
         \FloatBarrier\subsection{Gazebo simulator}
@@ -135,16 +137,14 @@
             This simulator is capable of both \gls{SITL} and \gls{HITL} simulations.
             The PX4 flight stack includes quadrotor models developed for Gazebo which include realistic sensor plugins.
             These plugins apply sensor noise, drift and bias which replicates the actual sensors used on Pixhawk boards.
-            The physical parameters of these models were changed to match Honeybee and a suspended payload was added to the model as shown in Figure~\ref{fig:gazebo_model}.
+            The physical parameters of these models were changed to match Honeybee and a suspended payload was added to the model as shown in Figure~\ref{fig:gazebo_honeybee}.
 
-            % \begin{figure}[ht]
-            %     \centering
-            %     \includegraphics[width=0.6\linewidth]{exp_design/fig/gazebo_model}
-            %     \caption{Model of Honeybee in Gazebo simulator}
-            %     \label{fig:gazebo_model}
-            % \end{figure}
-
-            % ?? Add screenshot of honeybee Gazebo model
+            \begin{figure}[ht]
+                \centering
+                \includegraphics[width=0.6\linewidth]{exp_design/fig/gazebo_honeybee}
+                \caption{Model of Honeybee in the Gazebo simulator}
+                \label{fig:gazebo_honeybee}
+            \end{figure}
 
         \FloatBarrier\subsection{Robot Operating System}
 
@@ -230,10 +230,12 @@
             \item Build a model from the training data.
             \item Evaluate model predictions with the testing data.
         \end{enumerate}
-
-        
-        
         
     \FloatBarrier\section{Summary}
+    
+        \paragraph
+        This chapter provided an overview of the hardware and software used in this work.
+        The \gls{HITL} simulation and practical flight setups were also discussed.
+        This provides a background for the experimental tests, results, and discussion in the next chapter.
 
 }
