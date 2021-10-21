@@ -11,10 +11,8 @@
     \FloatBarrier\section{Hardware components}
 
         \paragraph
-        The hardware involved in this work include a multirotor vehicle, a custom-made payload angle sensor, and an \gls{OBC}.
-        These hardware elements are coupled together into the final multirotor vehicle which will be used for practical flights.
-
-        % Diagram of components ??
+        The hardware involved in this work includes a multirotor vehicle, a payload angle sensor, and an \gls{OBC}.
+        These hardware elements are coupled together into the final multirotor system which will be used for practical flights.
 
         \FloatBarrier\subsection{Multirotor}
 
@@ -68,7 +66,7 @@
             \begin{figure}[ht]
                 \centering
                 \includegraphics[width=0.3\linewidth]{exp_design/fig/pixhawk}
-                \caption{Photo of a Pixhawk 4 mini \gls{FC} \cite{pixhawk4mini}}
+                \caption{Photo of a Pixhawk 4 mini \gls{FC} \cite{PX4userguide}}
                 \label{fig:pixhawk}
             \end{figure}
             
@@ -96,48 +94,82 @@
             \paragraph
             An \gls{OBC}, also called a companion computer, is used to run intensive computational processes that cannot be handled by the \gls{FC}.
             A NVIDIA\textsuperscript{\textregistered} Jetson Nano\texttrademark, shown in Figure~\ref{fig:jetson}, is used as the \gls{OBC} for Honeybee.
-            This has 4GB 64-bit LPDDR4 memory and a quad-core ARM A57 processor which runs at 1.43 GHz.
+            This has 4GB memory and a quad-core processor which runs at 1.43 GHz.
             The \gls{OBC} is connected to a serial port on the \gls{FC} for communication.
 
             \begin{figure}[ht]
                 \centering
                 \includegraphics[width=0.3\linewidth]{exp_design/fig/jetson}
-                \caption{NVIDIA\textsuperscript{\textregistered} Jetson Nano\texttrademark \cite{NVIDIA} used as a \gls{OBC}}
+                \caption{NVIDIA\textsuperscript{\textregistered} Jetson Nano\texttrademark~\cite{NVIDIA} used as a \gls{OBC}}
                 \label{fig:jetson}
             \end{figure}
             
     \FloatBarrier\section{Software Toolchain}
 
         \paragraph
+        The software toolchain used with Honeybee includes PX4-Autopilot, \gls{ROS}, and Gazebo simulator.
+        This is a popular toolchain applied in research and was also used and described by \citet{Erasmus2020}, \citet{Slabber2020}, and \citet{Grobler2020}.
+        A brief overview of the software toolchain is provided here.
+        % MATLAB/Simulink was also used to generate standalone \gls{ROS} nodes which runs on the \gls{OBC}.
 
         \FloatBarrier\subsection{PX4-Autopilot}
 
             \paragraph
-            PX4-Autopilot is used as the flight stack and runs on the \gls{FC}.
+            PX4-Autopilot is an open-source flight stack that focuses on autonomous \glspl{UAV} \cite{Meier2015}.
+            This is a popular flight stack used in research and industry applications.
+            \gls{SITL} and \gls{HITL} simulations are supported by PX4, which is helpful for research and development purposes.
             
+            \paragraph
+            \gls{QGC} is the recommended ground station software for PX4 systems.
+            A ground station computer running \gls{QGC} can be used to monitor and control a PX4 vehicle.
+            \gls{QGC} communicates with PX4 via the MAVLink protocol over a telemetry connection during practical flights.
+            \gls{QGC} is also an open-source product.
             
         \FloatBarrier\subsection{Gazebo simulator}
 
             \paragraph
-            
+            Gazebo is an open-source graphical-based physics simulator used for robotics and is the recommended simulator in the PX4 development toolchain \cite{PX4userguide}.
+            This simulator is capable of both \gls{SITL} and \gls{HITL} simulations.
+            The PX4 flight stack includes quadrotor models developed for Gazebo which include realistic sensor plugins.
+            These plugins apply sensor noise, drift and bias which replicates the actual sensors used on Pixhawk boards.
+            The physical parameters of these models were changed to match Honeybee and a suspended payload was added to the model as shown in Figure~\ref{fig:gazebo_model}.
+
+            % \begin{figure}[ht]
+            %     \centering
+            %     \includegraphics[width=0.6\linewidth]{exp_design/fig/gazebo_model}
+            %     \caption{Model of Honeybee in Gazebo simulator}
+            %     \label{fig:gazebo_model}
+            % \end{figure}
 
         \FloatBarrier\subsection{Robot Operating System}
 
             \paragraph
+            \gls{ROS} is a communication framework with a set of tools used for robotics and control applications \cite{Quigley2009}. 
+            \gls{ROS} is open-source and is supported by PX4.
+            In this architecture, executables are called \gls{ROS} nodes and communicate with each other using messages in a publish-subscribe architecture.
+            A ROS node can publish messages to a topic, and a different node can subscribe to that topic to read those messages.
 
-            \begin{figure}[ht]
-                \centering
-                \includegraphics[width=0.6\linewidth]{exp_design/fig/MAVROS}
-                \caption{Communication between ROS, flight stack, simulator, and ground station \cite{Grobler2020}}
-                \label{fig:MAVROS}
-            \end{figure}
+            \paragraph
+            MAVROS is a open-source ROS package which provides a bridge between ROS and PX4 through the MAVLink protocol.
+            \gls{QGC} and Gazebo also communicate with PX4 through MAVLink.
+            A MAVROS node receives MAVLink messages from PX4 and converts this to published ROS topics for other ROS nodes to access.
+            The MAVROS node also subscribes to topics to receive ROS messages and send this data to PX4. 
+
+            % \begin{figure}[ht]
+            %     \centering
+            %     \includegraphics[width=0.6\linewidth]{exp_design/fig/MAVROS}
+            %     \caption{Communication between \gls{ROS}, flight stack, simulator, and ground station \cite{Grobler2020}}
+            %     \label{fig:MAVROS}
+            % \end{figure}
+
+            % ?? Illustrate MAVROS
 
             \paragraph
             Figure~\ref{fig:MAVROS}
 
             MATLAB/Simulink generate nodes
 
-    \FloatBarrier\section{HITL} \label{sec:exp_design_hitl}
+    \FloatBarrier\section{Hardware-in-the-Loop simulations} \label{sec:exp_design_hitl}
 
         \paragraph
         MATLAB is used to generate an \gls{MPC} \gls{ROS} node 
@@ -191,5 +223,7 @@
             \caption{Practical flight with Honeybee and a suspended payload}
             \label{fig:honeybee_with_payload}
         \end{figure}
+
+    \FloatBarrier\section{Summary}
 
 }
