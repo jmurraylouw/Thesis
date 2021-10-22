@@ -6,12 +6,12 @@
 
     \paragraph
     As discussed in the literature study in Chapter~\ref{chap:lit_study}, experimental data is a valuable part of any work involving multirotors control.
-    This chapter will provide an overview of the hardware components, software toolchain, HITL simulations, and practical methodology used in this work.
+    This chapter will provide an overview of the hardware, software, HITL simulations, and practical methodology used in this work.
 
     \FloatBarrier\section{Hardware components}
 
         \paragraph
-        The main hardware components in this work includes a multirotor vehicle, a payload angle sensor, and an \gls{OBC}.
+        The main hardware components in this work include a multirotor vehicle, a payload angle sensor, and an \gls{OBC}.
         These components are coupled together into the final multirotor system which will be used for practical flights.
 
         \FloatBarrier\subsection{Multirotor}
@@ -26,10 +26,10 @@
             \paragraph
             The multirotor used in this work is a custom-built, lightweight quadrotor named \emph{Honeybee}.
             This vehicle was developed in the \gls{ESL} at Stellenbosch University \cite{Grobler2020}.
-            Figure~\ref{fig:honeybee} shows an photo of Honeybee equipped with an \gls{OBC} and payload angle sensor.
+            Figure~\ref{fig:honeybee} shows a photo of Honeybee equipped with an \gls{OBC} and payload angle sensor.
             
             \paragraph
-            The physical parameters of this multirotor is summarised in Table~\ref{tbl:honeybee_specs}.
+            The physical parameters of this multirotor are summarised in Table~\ref{tbl:honeybee_specs}.
             Note that the mass and inertial parameters include the \gls{OBC} and payload angle sensor.
             The thrust profile of each motor is given by the third-order polynomial mapping the input \gls{PWM} signal, $x$, to the thrust output, $T_m$ \cite{Grobler2020}:
             \begin{equation}
@@ -115,13 +115,13 @@
         A brief overview of the software toolchain is provided here.
         % MATLAB/Simulink was also used to generate standalone \gls{ROS} nodes which runs on the \gls{OBC}.
 
-        \FloatBarrier\subsection{PX4-Autopilot}
+        \subsection{PX4-Autopilot}
 
             \paragraph
             PX4-Autopilot is an open-source flight stack that focuses on autonomous \glspl{UAV} \cite{Meier2015} and is used in research and industrial applications.
             \gls{SITL} and \gls{HITL} simulations are supported by PX4, which is helpful for research and development.
             
-        \FloatBarrier\subsection{QGroundControl}
+        \subsection{QGroundControl}
         
             \paragraph
             \gls{QGC} is the recommended ground station software for PX4 systems \cite{PX4userguide}.
@@ -130,11 +130,11 @@
             During \gls{SITL} simulations, \gls{QGC} connects to PX4 over a local \gls{UDP} connection.
             \gls{QGC} is also an open-source product.
             
-        \FloatBarrier\subsection{Gazebo simulator}
+        \subsection{Gazebo simulator}
 
             \paragraph
-            Gazebo is an open-source graphical-based physics simulator used for robotics and is the recommended simulator in the PX4 development toolchain \cite{PX4userguide}.
-            This simulator is capable of both \gls{SITL} and \gls{HITL} simulations.
+            Gazebo is an open-source graphical-based physics simulator used for robotics.
+            This is the recommended simulator in the PX4 development toolchain and is capable of both \gls{SITL} and \gls{HITL} simulations \cite{PX4userguide}.
             The PX4 flight stack includes quadrotor models developed for Gazebo which include realistic sensor plugins.
             These plugins apply sensor noise, drift and bias which replicates the actual sensors used on Pixhawk boards.
             The physical parameters of these models were changed to match Honeybee and a suspended payload was added to the model as shown in Figure~\ref{fig:gazebo_honeybee}.
@@ -146,19 +146,19 @@
                 \label{fig:gazebo_honeybee}
             \end{figure}
 
-        \FloatBarrier\subsection{Robot Operating System}
+        \subsection{Robot Operating System}
 
             \paragraph
             \gls{ROS} is a communication framework with a set of tools used for robotics and control applications \cite{Quigley2009}. 
-            \gls{ROS} is open-source and is supported by PX4.
-            In this architecture, executables are called \gls{ROS} nodes and communicate with each other using messages in a publish-subscribe architecture.
+            \gls{ROS} is also open-source and is supported by PX4.
+            In this framework, executables are called \gls{ROS} nodes and these nodes interact with each with a publish-subscribe architecture.
             A \gls{ROS} node can publish messages to a topic, and a different node can subscribe to that topic to read those messages.
 
             \paragraph
-            MAVROS is a open-source \gls{ROS} package which provides a bridge between \gls{ROS} and PX4 through the MAVLink protocol.
-            \gls{QGC} and Gazebo also communicate with PX4 through MAVLink.
+            MAVROS is an open-source \gls{ROS} package that provides a bridge between \gls{ROS} and PX4 through the MAVLink protocol.
+            % \gls{QGC} and Gazebo also communicate with PX4 through MAVLink.
             A MAVROS node receives MAVLink messages from PX4 and converts this to published \gls{ROS} topics for other \gls{ROS} nodes to access.
-            The MAVROS node also subscribes to topics to receive \gls{ROS} messages and send this data to PX4. 
+            The MAVROS node also subscribes to other topics to receive \gls{ROS} messages and send this data to PX4. 
 
             \begin{figure}[!htbp]
                 \centering
@@ -170,8 +170,11 @@
             \paragraph
             MATLAB/Simulink was used to convert the \gls{MPC} controller developed in Section~\ref{sec:mpc} to C\texttt{++} code and generate a standalone \gls{ROS} node.
             Figure~\ref{fig:MAVROS} illustrates how the MPC node is used as an offboard controller with PX4 and MAVROS.
+            A MAVROS Master node receives data, including state estimates, from PX4 through MAVLink communication. 
+            This data is published by MAVROS to various ROS topics.
             State estimate data is received by the MPC node by subscribing to the appropriate MAVROS topic.
-            After the MPC node calculates the next controller decision, it publishes the controller setpoint data to a MAVROS topic, and the MAVROS node sends it to PX4 via MAVLink.
+            After the MPC node calculates the next controller decision, it publishes the controller setpoint data to a MAVROS topic.
+            The MAVROS node then sends it to PX4 via MAVLink.
 
     \FloatBarrier\section{Hardware-in-the-Loop simulations} \label{sec:exp_design_hitl}
 
@@ -180,16 +183,18 @@
         Figure~\ref{fig:HITL} illustrates how the different software and hardware components interlink for HITL simulations.
         
         \paragraph
-        \gls{QGC} runs on the desktop computer and communicates with the Gazebo simulator with MAVlink via a local \gls{UDP} connection.
+        \gls{QGC} runs on the desktop computer and communicates with the Gazebo simulator with MAVlink messages over a local \gls{UDP} connection.
         The Gazebo simulator also runs on the desktop computer and simulates the Honeybee quadrotor.
         The simulator mimics the quadrotor sensor values and sends them to PX4 with MAVlink messages over a USB connection. 
+        
+        \paragraph
         The PX4 firmware runs on the \gls{FC} board.
         Based on the received sensors values, the PX4 controllers determine \gls{PWM} actuator commands which are communicated back to Gazebo.
-        The \gls{OBC} runs the MPC and MAVROS nodes which send and receive MAVLink messages to the \gls{FC} via a serial port connection.
+        The \gls{OBC} runs the MPC and MAVROS nodes which send and receive MAVLink messages over a serial port connection to the \gls{FC}.
 
         \begin{figure}[ht]
             \centering
-            \includegraphics[width=0.9\linewidth]{exp_design/fig/HITL}
+            \includegraphics[width=0.8\linewidth]{exp_design/fig/HITL}
             \caption{Different software and hardware components of a HITL simulation}
             \label{fig:HITL}
         \end{figure}
@@ -197,7 +202,7 @@
     \FloatBarrier\section{Practical flights}
 
         \paragraph
-        The major differences between the simulated and practical flights involve the attachment of the payload and wind disturbances.
+        The major differences between simulated and practical flights involve wind disturbances and the attachment of the payload.
         In simulations, the payload cable is attached to the exact \gls{CoM} of the multirotor.
         However, for practical flights the cable is attached slightly below the \gls{CoM} of Honeybee due to mechanical constraints.
         Practical flights are also influenced by wind gusts which are difficult to model accurately in simulations.
@@ -205,33 +210,35 @@
 
         \begin{figure}[!htb]
             \centering
-            \includegraphics[width=0.6\linewidth]{honeybee_with_payload.jpg}
+            \includegraphics[width=0.7\linewidth]{honeybee_with_payload.jpg}
             \caption{Practical flight with Honeybee and a suspended payload}
             \label{fig:honeybee_with_payload}
         \end{figure}
 
         \paragraph
-        Figure~\ref{fig:honeybee_with_payload} shows the Honeybee with a suspended payload during a practical flight.
+        Figure~\ref{fig:honeybee_with_payload} shows Honeybee with a suspended payload during a practical flight.
         Numerous flights were performed with different payload masses, cable lengths and wind conditions.
         Different flights were also performed with a dynamic payload.
         The system identification methods were then applied to the flight data logged by PX4.
         The results of these flight experiments will be discussed in Chapter~\ref{chap:results}.
         
         \paragraph
+        % \begin{minipage}{\textwidth} % Use to keep on one page
         The same general methodology used for simulations will be used for practical flights:
         \begin{enumerate}
-            \item Data logging starts when the multirotor is armed.
+            \item Arm the multirotor for data logging to start.
             \item Takeoff and hover with the multirotor.
             \item Command velocity step setpoints.
             \item Land the multirotor.
-            \item Data logging stops when the multirotor is disarmed.
+            \item Disarm the multirotor for data logging to stop.
             \item Download the data log from the multirotor.
             \item Split the data into separate training and testing periods.
             \item Build a model from the training data.
             \item Evaluate model predictions with the testing data.
         \end{enumerate}
+        % \end{minipage}
         
-    \FloatBarrier\section{Summary}
+    \section{Summary}
     
         \paragraph
         This chapter provided an overview of the hardware and software used in this work.
