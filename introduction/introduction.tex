@@ -5,17 +5,41 @@
 
     \section{Background}
 
+        \paragraph
+        Recent years have seen a rise in the popularity of payload transportation with \glspl{UAV}.
+        Examples like Erasmus2020
+        Especially multirotors are popular vehicles for payload transportation tasks due to their hover and \gls{VTOL} abilities.
+
+        \paragraph
+        Sensors vs freight
+        Suspended vs rigid
+        
+        \paragraph
+        With sensor payloads, the payload dynamics are often well known and constant, hence a control system can be designed based on a predetermined model.
+        However, in package delivery application, the payload parameters is often unknown prior to flight.
+        Some payloads, such as elongated payloads or fluids in contains, induce interesting dynamics which are also unknown prior to flight.
+        This significantly alters the flight dynamics of a multirotor.
+        Therefore, the multirotor controller architecture needs to account for the payload dynamics for stabilised control.
+
+        \paragraph
+        In summary, multirotor 
+
 
     \section{Project definition and objectives}
 
         \paragraph
         The aim of this project is to design and implement a controller architecture for stabilised control of a multirotor with an unknown suspended payload.
-        The architecture has no prior knowledge of the suspended payload dynamics and applies a data-driven approach to determine a model of the unknown dynamics.
-        The pendulum motion of the payload significantly affects the flight dynamics by inducing oscillations into the system.
-        A controller uses the identified model for stabilised control of the multirotor by actively damping the payload swing angles.
+        The pendulum motion of the payload significantly affects the multirotor dynamics by inducing oscillations into the system.
+        The proposed controller should be compared to previous work involving a swing damping controller for a suspended payload with an unknown mass and cable length. 
+        
+        \paragraph
+        In contrast to an architecture based on a predetermined model with only two unknown parameters,
+        the proposed architecture should assume no prior knowledge of the suspended payload dynamics.
+        A data-driven approach should be applied to estimate a dynamical model of the unknown dynamics.
+        Based on the estimated model, a controller should stabilise the multirotor by actively damping the payload swing angles.
 
         \paragraph
-        Therefore, the research objectives are:
+        The research objectives can therefore be stated as the following:
         \begin{enumerate}
             \item Investigate the literature regarding multirotor payload transportation systems and specifically consider solutions or unknown suspended payload dynamics.
             \item Derive a dynamical model to describe a multirotor with a suspended payload.
