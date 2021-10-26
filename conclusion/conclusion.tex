@@ -3,17 +3,47 @@
 \chapter{Conclusion} \label{chap:conclusion}
 
     \paragraph
-    This thesis considered a stabilising controller for a multirotor with an unknown suspended payload.
+    This thesis considered the design and practical implementation of stabilising control architecture for a multirotor with an unknown suspended payload.
+    A broad scope was considered which includes two main categories, namely, 
+    \begin{itemize}
+        \item Data-driven system identification of unknown payload dynamics 
+        \item Optimal swing damping control of a multirotor
+    \end{itemize}
+    The content and outcome of this work will be summarised in this chapter.
 
     % ?? Use words from evaluation sheet. Like large scope...
 
     \section{Summary}
 
         \paragraph
-        Lit study
+        Existing solutions for stabilised multirotor control with a suspended payload were identified in the literature.
+        The literature study showed that few studies included experimental results or algorithm testing on practical hardware.
+        also, most studies did not account for uncertainty in the controlled system.
+        A thorough study of the literature showed that some solutions accounted for parameter uncertainty, but few studies assumed no knowledge of the payload dynamics.
+        
+        \paragraph
+        Furthermore, the few studies that achieved stabilised control despite unknown dynamics, 
+        counteracted the payload effect as an unknown disturbance instead of actively controlling the payload state. 
+        This focusses on robustness rather than smooth control of the complete multirotor-payload system. 
+
+        % \paragraph
+        % Therefore, this study aimed to design a stabilising control architecture that achieves smooth control of the complete system without prior payload knowledge.
+        % Furthermore, it was deemed important to demonstrate the technique using experimental data and practical computational hardware.
 
         \paragraph
-        Baseline technique
+        The controller design started with the mathematical derivation of a dynamical model for a quadrotor named Honeybee.
+        The dynamical equations of the multirotor-payload system and PX4 controller architecture were implemented in a MATLAB/Simulink simulation for controller design and testing.
+        This simulation environment was also verified with practical data from Honeybee and shown to be accurate.
+        
+        \paragraph
+        An LQR controller was identified as a popular baseline controller in the literature and was selected as the baseline swing damping controller for this work.
+        The specific implementation used in this work is based on a previous study which only considers parameter uncertainty. 
+        The LQR controller is based on a linearised, a priori model of the multirotor-payload system.
+        The payload mass and cable length are unknown before flight and are estimated with \gls{RLS} and \gls{FFT} estimators respectively.
+        
+        The uncertainty considered by the baseline method is that the payload mass and cable length are unknown.
+        The control architecture proposed by this work is not based on a predetermined model of the payload dynamics.
+        This method assumes that the dynamical model of the payload is also unknown prior to flight.
 
         \paragraph
         Modelling
