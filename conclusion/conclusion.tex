@@ -41,18 +41,33 @@
         The LQR controller is based on a linearised, a priori model of the multirotor-payload system.
         The payload mass and cable length are unknown before flight and are estimated with \gls{RLS} and \gls{FFT} estimators respectively.
         
-        The uncertainty considered by the baseline method is that the payload mass and cable length are unknown.
-        The control architecture proposed by this work is not based on a predetermined model of the payload dynamics.
-        This method assumes that the dynamical model of the payload is also unknown prior to flight.
+        \paragraph
+        The baseline parameter estimation technique was described and applied to data from \gls{SITL} simulations with Gazebo.
+        It was shown that the white-box model which uses the estimated parameters captured the general shape of the system state predictions well, despite estimation errors.
+        The white-box model based technique was also applied to a dynamic payload use case.
+        An elongated payload was suspended from the multirotor and acted as a double pendulum, inducing irregular oscillations in the system.
+        For this use case, the resultant white-box model predictions did not represent the general shape of the payload dynamics.
 
         \paragraph
-        Modelling
+        \gls{DMDc} and \gls{HAVOKc} were introduced as the data-driven system identification techniques proposed by this work.
+        These are linear regression techniques which produce a discrete, linear space-space model of the considered dynamics based on input and output data only.
+        The conventional \gls{HAVOK} is not designed to be applied to controlled systems.
+        However, this algorithm was adapted in this work to account for control inputs in a dynamical system.
+        The resultant algorithm is referred to as \gls{HAVOKc}.
+        The conventional \gls{DMDc} algorithm was also altered to include delay-coordinates in a similar way to \gls{HAVOK}.
 
         \paragraph
-        System identification techniques
+        These algorithms were applied to multiple SITL simulations for testing.
+        Train test split.
+        The performance of these techniques were based on an \gls{NMAE} error metric of the model predictions over a time horizon.
+        Results showed, hyperparameters, noise, system parameters, length of training data.
 
-        \paragraph
-        System identification results
+        Dynamic payload...
+
+        % \paragraph
+        % The uncertainty considered by the baseline method is that the payload mass and cable length are unknown.
+        % The control architecture proposed by this work is not based on a predetermined model of the payload dynamics.
+        % This method assumes that the dynamical model of the payload is also unknown prior to flight.
 
         \paragraph
         Control techniques
