@@ -7,32 +7,32 @@
 
         \paragraph
         Recent years have seen a rise in the popularity of payload transportation with \glspl{UAV} \cite{Nakamura2019}.
-        \gls{UAV} payloads are usually categorised as either a sensor, or freight \cite{Vergouw2016}.
-        Sensors like cameras or meteorological instruments can be carried by \glspl{UAV} for aerial photography or surveying.
-        Payloads carried as freight can be pesticides sprayed over agricultural land, medical parcels carried to hard to reach areas or mail parcels for consumer deliveries.
+        These payloads are usually categorised as either a sensor, or freight \cite{Vergouw2016}.
+        Sensors like cameras or meteorological instruments can be carried by a \glspl{UAV} for aerial photography or surveying.
+        Payloads carried as freight include pesticides sprayed over agricultural land, medical parcels carried to remote areas or consumer deliveries.
     
         \paragraph
         Commercial package deliveries with \glspl{UAV} have become especially popular.
         In 2015, the first \gls{FFA} approved drone delivery was successfully completed by Flirtey in the United States \cite{Vanian2015}.
         Domino's pizza has also been delivered by Flirtey multirotors in New Zealand \cite{Hidalgo2021}.
-        Another commercial example includes Wing food deliveries in Australia with multirotors \cite{Wing2021}.
+        Another commercial example includes Wing food deliveries with multirotors in Australia \cite{Wing2021}.
 
         \paragraph
-        Multirotor \glspl{UAV} are popular vehicles for payload transportation tasks due to their hover and \gls{VTOL} abilities.
-        In some applications, payloads are rigidly attached to a \gls{UAV}.
-        However, the flying characteristics of multirotors allow them to transport suspended payloads.
-        In this configuration, the payload is attached below the vehicle with a suspended cable and the payload is free to swing during flight.
+        Multirotor \glspl{UAV} are commonly used for payload transportation tasks due to their hover and \gls{VTOL} abilities.
+        In some applications, a payload is rigidly attached to the \gls{UAV}.
+        The flying characteristics of multirotors also allow them to transport suspended payloads, which is useful for arbitrarily shaped payload or for delivering payloads without landing.
+        In this configuration, the payload is suspended below the vehicle with a cable and the payload is free to swing during flight.
         This oscillatory motion affects the flight dynamics of the multirotor and makes stabilised control a challenging task.
         
         \paragraph
-        Control becomes even more difficult with increased uncertainty of the system dynamics.
-        With sensor payloads, the payload dynamics are often well known and constant.
-        However, package delivery applications often have payload parameter uncertainty before a flight.
-        Specific payloads such as elongated payloads or fluid containers add more uncertainty to the system by inducing interesting dynamics which are also unknown before a flight.
-        This significantly alters the flight dynamics of a multirotor and the controller may need to account for this uncertainty for effective control.
+        Control becomes even more difficult with increased uncertainty of the payload dynamics.
+        In some application the payload dynamics are well known and constant, hence a controller can be designed based on an accurate predermined model of the dynamics.
+        However, package delivery applications often involve uncertainty of the payload parameters.
+        Specific payloads such as elongated payloads or fluid containers add even more uncertainty to the system by inducing interesting dynamics which are also unknown before a flight.
+        This significantly effects the flight dynamics of a multirotor and the controller may need to account for this uncertainty for effective control.
 
         \paragraph
-        In summary, multirotor-payload transportation is becoming increasingly popular.
+        In summary, multirotor payload transportation is becoming increasingly popular.
         The suspended payload configuration offers strategic benefits but increases the difficulty of the control task.
         Furthermore, the uncertainty in payload dynamics makes the control task more challenging.
         In this study, a control architecture will be designed to address this problem.
@@ -41,7 +41,8 @@
 
         \paragraph
         This project aims to design and implement a control architecture for stabilised control of a multirotor with an unknown suspended payload.
-        This system includes payload uncertainty and the oscillatory motion of the payload significantly affects the multirotor dynamics.
+        The payload uncertainty should include parameter uncertainty and model uncertainty.
+        Furthermore, the oscillatory motion of the payload significantly affects the multirotor dynamics.
         The proposed controller should be compared to previous work involving a swing damping controller for a suspended payload with an unknown mass and cable length. 
         
         \paragraph
@@ -53,33 +54,33 @@
         \paragraph
         Therefore, the research objectives are stated as:
         \begin{enumerate}
-            \item Investigate the literature regarding multirotor-payload transportation systems and specifically consider solutions or unknown suspended payload dynamics.
+            \item Investigate the literature regarding multirotor-payload controllers and specifically consider solutions for unknown suspended payload dynamics.
             \item Derive a dynamical model to describe a multirotor with a suspended payload.
-            \item Identify and implement a baseline system identification and control method for this system in simulation.
+            \item Identify and implement a baseline architecture with a system identification and control method for this system in simulation.
             \item Design a data-driven system identification method for this system and implement it in simulation.
             \item Design a controller based on the proposed system identification model and implement it in simulation.
             \item Identify a hardware platform and software toolchain to implement the proposed control architecture.
-            \item Implement and verify the data-driven system identification method with experimental data from the practical system.
+            \item Implement and verify the data-driven system identification method with experimental data from practical flights.
             \item Implement, simulate and verify the controller algorithms on the practical hardware for effective swing damping control of the unknown suspended payload system.
         \end{enumerate}
 
     \section{Thesis outline}
 
         \paragraph
-        Chapter~\ref{chap:introduction} provides the background for the research, the project definition and objectives, and the outline of the thesis.
+        Chapter~\ref{chap:introduction} provides the background of this research, the project definition and objectives, and the thesis outline.
         
         \paragraph
-        Chapter~\ref{chap:lit_study} presents a study of the literature regarding multirotors payload transportation, with a focus on suspended payloads and uncertain payload dynamics.
+        Chapter~\ref{chap:lit_study} presents a study of the literature regarding multirotor payload transportation, with a focus on suspended payloads and uncertain payload dynamics.
         
         \paragraph
-        Chapter~\ref{chap:modelling} contains a derivation of a mathematical model for the multirotor and suspended payload dynamics, which is used in subsequent chapters.
+        Chapter~\ref{chap:modelling} contains a derivation of a mathematical model for the multirotor and suspended payload dynamics, which is used for simulations and for controller design.
         
         \paragraph
         Chapter~\ref{chap:system_id} describes the baseline and the proposed system identification methods considered in this thesis. 
         Furthermore, the performances of these methods are evaluated based on tests with simulation data.
         
         \paragraph
-        Chapter~\ref{chap:control} describes the different controllers and the corresponding controller design process used in this project.
+        Chapter~\ref{chap:control} describes the different controllers and the corresponding controller design processes used in this project.
         Using the system identification models from the previous chapter, the controllers are also applied to the multirotor-payload system in simulation and the results are compared.
         
         \paragraph
@@ -87,7 +88,7 @@
         Thereby, the hardware components, software toolchain, and \gls{HITL} simulations are discussed.
         
         \paragraph
-        Chapter~\ref{chap:results} presents and discusses the experimental results from implementing the system identification methods to practical flight data.
+        Chapter~\ref{chap:results} presents and discusses the experimental results from implementing the system identification methods with practical flight data.
         \gls{HITL} results are also presented to test the controller algorithms with the practical hardware and software systems.
         
         \paragraph
