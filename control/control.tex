@@ -31,14 +31,16 @@
             \cmidrule(lr){1-2}
             Model type    & Algorithm                     & \\
             \midrule
-            White-box   & RLS mass estimator, and       & \gls{LQR} \\
-                        & FFT cable length estimator    & \\
-            Black-box   & DMDc, or                      & \gls{MPC} \\
-                        & HAVOK                         & \\
+            White-box   & \gls{RLS} mass estimator, and       & \gls{LQR} \\
+                        & \gls{FFT} cable length estimator    & \\
+            Black-box   & \gls{DMDc}, or                      & \gls{MPC} \\
+                        & \gls{HAVOKc}                         & \\
             \bottomrule
         \end{tabularx}
         \label{tbl:controller_summary}
     \end{table}
+
+% ?? Where is it decided that DMDc will be used? SHould HAVOKc continue to be seen?
 
     % \paragraph
     % In this chapter, an overview of the different controllers will be given and the design process of each controller will be explained.

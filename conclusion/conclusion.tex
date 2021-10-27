@@ -83,13 +83,39 @@
         % This method assumes that the dynamical model of the payload is also unknown prior to flight.
 
         \paragraph
-        Furthermore, the different controllers used in this work were described 
+        Furthermore, the cascaded PID controller was described and the gains of each control loop was tuned in simualtion.
+        The baseline LQR controller was also described and the weights were tuned for the simulated multirotor-payload system.
+        The LQR is designed based on the white-box model and estimated parameters.
         The proposed control architecture includes a \gls{MPC} controller which uses a data-driven system identification model for predictive control.
         The \gls{MPC} implementation from the Model Predictive Control Toolbox\texttrademark~in Simulink was used and the algorithm was described in detail.
         This controller, using data-driven system identification models, was also successfully applied for swing damping control in simulation.
 
+% ?? Cntr F all gls LQR and MPC
+% ?? Velocity step tests
+
         \paragraph
-        Control results
+        Numerous tests were performed to evaulate the combined system identification and control architectrues.
+        For each test, the system identification stages of the LQR and MPC approaches firstly produced the parameter estimates and identified model respectively.
+        Thereafter, each controller was applied based on those results.
+        For a payload with a simple pendulum model, the LQR and MPC both achieved stabilised control resulting in near swing free motion.
+        The controllers showed similar swing damping performances, but the MPC produced a faster settling time.
+        The control architectures consistently achieved swing damping control with different payload masses and cable lengths, despite parameter uncertainty for the LQR approach and no prior payload knowledge for the MPC approach.
+        Both controllers also showed acceptable disturbance rejection during a constant unknown step input force to the multirotor.
+
+% ?? consistently
+% ?? Shown to be adaptive
+
+        \paragraph
+        The control approaches were also tested for the dynamic payload case.
+        Despite the data-driven model showing much better prediction accuracy than the white-box model, the LQR and MPC approached produced similar swing damping performances.
+        This was attributed ... 
+        The controller architectures were also applied to a simulation where the multirotor mass was changed to a non-default value. 
+        The LQR controller induced high frequency oscillations in the system responce due to the model inaccuracy because the naseline approach only considers parameter uncertainty in the payload mass and cable length.
+        However, the MPC approach produced the same swing free motion shown in previous simulations and clearly outperformed the LQR approach.
+        The proposed control architectrue does not rely on prior knowledge of the system dynamics, therefore it was shown that it can adapt to unconsidered system changes without redesigning the implementation.
+
+        \paragraph
+        Exp design
 
         \paragraph
         Practical data fro sys id
