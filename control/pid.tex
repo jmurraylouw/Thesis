@@ -9,7 +9,7 @@
     the error signal, 
     the integral of the error signal, 
     and the derivative of the error signal.
-    This is the control technique used in the default PX4-Autopilot multirotor controllers \cite{Meier2015}.
+    This is the default control architecture used in the PX4-Autopilot flight stack \cite{Meier2015}.
     PX4-Autopilot was chosen as the multirotor flight-stack because it is open-source and widely used in industry and research.
     The \gls{PID} implementation of PX4 does not provide active swing-damping of the payload, however, it is used in the system identification flight stage discussed in Chapter~\ref{chap:system_id}.
     
@@ -54,18 +54,20 @@
     \FloatBarrier\subsection{Angular rate controller}
 
         \paragraph
-        Three separate linear \gls{PID} controllers are used to control angular rates in the pitch, roll, and yaw axis of the multirotor body frame.
+        Three separate linear \gls{PID} controllers are used to control angular rates in the pitch, roll, and yaw axes of the multirotor body frame.
         The angular rate controller receives angular rate estimates from the PX4 state estimator and outputs virtual actuator commands to the mixer.
         Figure~\ref{fig:angular_rate_controller} shows a diagram of the PX4 angular rate controller.
         
         \input{control/diagrams/angular_rate_controller.tex}
 
+        % ?? Omega not defined as a symbol
+
         \paragraph
         In Figure~\ref{fig:angular_rate_controller}, the $j$ subscript denotes a specific element in the vectors $\bm{\Omega}_{sp}$ and $\bm{\Omega}$, and the corresponding virtual actuator, where $j = \{ 1, 2, 3 \}$.
-        Some elements in the controller improve the practical control implementation, but have a negligible effect on the design on the gains, namely:
+        Some elements in the controller improve the practical implementation, but have a negligible effect on the design on the gains, namely:
         \begin{itemize}
-            \item A \gls{LPF} is added in the derivative path to reduce the effect of noise.
-            \item The derivative path is implemented on the plant output signal, instead of the error signal to eliminate the derivative kick.
+            \item A \gls{LPF} is added in the derivative path to reduce the effect of sensor noise.
+            \item The derivative path is implemented on the plant output signal, instead of the error signal to eliminate derivative kick.
             \item Saturation is applied to the integral path to eliminate integral wind-up.
             \item The control signal is saturated to avoid dangerously large setpoint commands.
         \end{itemize}
@@ -83,7 +85,7 @@
         For a \SI{1}{\radian/\second} step response, the pitch rate controllers result in a 
         3.6~\% overshoot, 
         \SI{0.024}{\second} rise time, 
-        \SI{0.8}{\second} for a 2~\% settling time, 
+        \SI{0.8}{\second} 2~\% settling time, 
         and \SI{138}{\radian/\second} bandwidth \cite{Grobler2020}.
         These gains are well suited for Honeybee and will also be implemented in this work.
         The default roll-rate and yaw-rate controller gains are also implemented for the same reason.
@@ -101,7 +103,7 @@
             \bm{q}_e = \bm{q}^{-1} \cdot \bm{q}_{sp},
         \end{equation}
         where $\bm{q}_e$ is the quaternion error, 
-        $\bm{q}$ is the attitude quaternion of the multirotor,  
+        $\bm{q}$ is the current attitude quaternion of the multirotor,  
         and $\bm{q}_{sp}$ is the attitude quaternion setpoint.
         The resulting control law is given as:
         \begin{equation} \label{eq:angle_law}

@@ -59,7 +59,7 @@
     \path(ctrl_i)+(\nodesep,0) node (ctrl_i_gain) [simple_block] {$I_{V_N}$};
   %   \path(ref_sum)+(\nodesep,-1.5*\blockheight) node (ctrl_kd) [simple_block] {$K$};
     \path(ref_sum)+(\nodesep,-1.5*\blockheight) node (ctrl_d_filt) [simple_block] {LPF};
-    \path(ref_sum)+(2*\nodesep,-1.5*\blockheight) node (ctrl_d) [simple_block] {$\frac{\partial}{\partial t}$};
+    \path(ref_sum)+(2*\nodesep,-1.5*\blockheight) node (ctrl_d) [simple_block] {$\frac{d}{dt}$};
     \path(ctrl_d)+(\nodesep,0) node (ctrl_d_gain) [simple_block] {$D_{V_N}$};
     \path(ref_sum)+(3*\nodesep,1.5*\blockheight) node (ctrl_p_gain) [simple_block] {$P_{V_N}$};
     \path(ctrl_i_gain)+(\nodesep,0) node (ctrl_sum) [sum={+}{+}{-}{}] {};
