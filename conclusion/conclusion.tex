@@ -3,26 +3,26 @@
 \chapter{Conclusion} \label{chap:conclusion}
 
     \paragraph
-    This thesis considered the design and practical implementation of stabilising control architecture for a multirotor with an unknown suspended payload.
+    This thesis considered the design and practical implementation of a stabilising control architecture for a multirotor with an unknown suspended payload.
     A broad scope was considered which includes two different area of research, namely, 
     \begin{itemize}
-        \item Data-driven system identification of unknown payload dynamics 
-        \item Optimal swing damping control of a multirotor
+        \item Data-driven system identification of the unknown payload dynamics 
+        \item Optimal swing damping control of the multirotor-payload system
     \end{itemize}
-    The content and outcome of this work will be summarised in this chapter.
+    The content and outcome of this work will be discussed in this chapter.
 
     \section{Literature study}
 
         \paragraph
         Existing solutions for stabilised multirotor control with a suspended payload were identified in the literature.
-        The literature study showed that few studies included experimental results or algorithm testing on practical hardware.
-        also, most studies did not account for uncertainty in the controlled system.
-        A thorough study of the literature showed that some solutions accounted for parameter uncertainty, but few studies assumed no knowledge of the payload dynamics.
+        The literature study showed that studies seldomly include experimental results or algorithm testing on practical hardware.
+        It also showed that most studies do not account for uncertainty in the controlled system.
+        A thorough study of the literature showed that some solutions account for parameter uncertainty, but very few assume no knowledge of the payload dynamics.
         
         \paragraph
         Furthermore, the few studies that achieved stabilised control despite unknown dynamics, 
         counteracted the payload effect as an unknown disturbance instead of actively controlling the payload state. 
-        This focusses on robustness rather than smooth control of the complete multirotor-payload system. 
+        This places the focus on robustness rather than smooth control of the complete multirotor-payload system. 
 
         % \paragraph
         % Therefore, this study aimed to design a stabilising control architecture that achieves smooth control of the complete system without prior payload knowledge.
@@ -34,9 +34,9 @@
         
         \paragraph
         An \gls{LQR} controller was identified as a popular baseline controller in the literature and was selected as the baseline swing damping controller for this work.
-        The specific implementation used in this work is based on a previous study which only considers parameter uncertainty. 
-        The \gls{LQR} controller is based on a linearised, a priori model of the multirotor-payload system.
-        The payload mass and cable length are unknown before flight and are estimated with \gls{RLS} and \gls{FFT} estimators respectively.
+        The specific \gls{LQR} implementation considered in this work is based on a previous study which only considers parameter uncertainty. 
+        This \gls{LQR} controller is based on a linearised, predetermined model of the multirotor-payload system.
+        The payload mass and cable length are unknown prior to flight and are estimated with \gls{RLS} and \gls{FFT} estimators respectively.
     
     \section{System identification}  
 
