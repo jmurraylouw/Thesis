@@ -510,7 +510,7 @@
             This node results in unstable control because the \gls{QP} problem cannot be solved within the given optimisation time.
             
             \paragraph
-            A \gls{MPC} node with $T_s =$~\SI{40}{\milli\second} runs with a low \scaleobj{0.8}{\%}CPU, however it also results in unstable control.
+            An \gls{MPC} node with $T_s =$~\SI{40}{\milli\second} runs with a low \scaleobj{0.8}{\%}CPU, however it also results in unstable control.
             This is because the controller frequency is too low to provide adequate velocity control of the quadrotor-payload dynamics.
             However, an \gls{MPC} node with $T_s =$~\SI{30}{\milli\second} provides stable control of the quadrotor-payload system.
             The \gls{QP} problem is solved within the given optimisation time and, as shown in the section below, the resulting controller frequency of \SI{33.33}{\hertz} appears to be fast enough to control the quadrotor-payload dynamics.
