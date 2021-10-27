@@ -506,7 +506,7 @@
             % In Section~\ref{sec:sample_time}, it was shown that the model prediction accuracy does not change much for different sample times in the range, $20 < q < 40$~ms.
             The default velocity controller in PX4 runs at \SI{50}{\hertz}, which corresponds to $T_s =$~\SI{20}{\milli\second}.
             However, an \gls{MPC} node with $T_s =$~\SI{20}{\milli\second} struggles to run fast enough on the given \gls{OBC}.
-            This is clear from the high \scaleobj{0.8}{\%}CPU consumption (98.6\%) of the MPC node running at $T_s =$~\SI{20}{\milli\second}.
+            This is clear from the high \scaleobj{0.8}{\%}CPU consumption (98.6\%) of the \gls{MPC} node running at $T_s =$~\SI{20}{\milli\second}.
             This node results in unstable control because the \gls{QP} problem cannot be solved within the given optimisation time.
             
             \paragraph
