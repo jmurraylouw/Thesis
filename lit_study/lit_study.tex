@@ -11,7 +11,7 @@
     This chapter will present a study of the literature regarding the transportation of payloads with multirotors.
     Firstly, an overview of different payload configurations and control techniques for payload transportation will be discussed.
     Thereafter, the study will focus on control techniques that consider suspended payloads.
-    A summary will be provided of different swing damping controllers proposed for the multirotor-payload system and a few literature trends will be discussed.
+    A summary will be provided of different swing damping controllers proposed for the multirotor-payload system and a few literature trends will be highlighted.
     The chapter will conclude with a summary of the literature study and focus areas of this thesis.
 
 \section{Payload transportation with multirotors}
@@ -51,8 +51,9 @@
         \paragraph
         Payloads are often rigidly attached to a multirotor for transportation.
         This configuration is especially popular for commercial package deliveries \cite{San2018}.
-        There is minimal relative movement between the multirotor and the rigidly connected payload, hence, the payload only affects the \gls{CoM}, the moment of inertia, and the aerodynamics of the vehicle.
-        Often, the weight and size of the payload are unknown before a flight.
+        In this use case, the mass and size of the payload are often unknown before a flight.
+        There is minimal relative movement between the multirotor and the rigidly connected payload.
+        Therefore, the payload only affects the \gls{CoM}, the moment of inertia, and the aerodynamics of the vehicle.
         
         \paragraph
         Different control approaches have been proposed to deal with the altered flight dynamics in this applications, 
@@ -87,7 +88,7 @@
         \end{figure}
 
         \paragraph
-        Various suspended payload configurations have been considered in the literature.
+        Various suspended payload configurations have been considered in literature.
         The classical suspended payload application involves a small payload suspended below the vehicle with a rigid link \cite{Erasmus2020, Slabber2020, Guerrero-Sanchez2017, Klausen2017, Ichikawa2018, DeAngelis2019a}. 
         \citet{Kotaru2017} considered a suspended payload system with an elastic cable modelled as a spring-damper system.
         \citet{Tang2015a} modelled the multirotor-payload system with a hybrid dynamical model to consider aggressive manoeuvres where the cable transitions from taut to slack.
@@ -95,7 +96,7 @@
         Furthermore, the control of a group of multirotors cooperatively transporting a suspended payload was also considered in various studies \cite{Lee2015, Sanalitro2020, Klausen2014, Goodarzi2015}.
         
         \paragraph % This paragraph seems out of place and does not flow well
-        From numerous examples in the literature, it is clear that the control of multirotors with suspended payloads is a popular research topic.
+        From numerous examples in literature, it is clear that the control of multirotors with suspended payloads is a popular research topic.
         The suspended payload configuration is very useful in situations where a multirotor cannot land since the payload can be attached during hover.
         This configuration also has the advantage that a payload can have an arbitrary shape or size as long as it has an attachment point for a cable.
         However, the suspended payload increases the degrees of under-actuation of the system, which makes the control problem challenging \cite{Kotaru2018}.
@@ -246,7 +247,7 @@
         Various \gls{MPC} implementations were successfully applied in experimental flight tests which shows that \gls{MPC} is suitable for practical multirotor implementations \cite{Zurn2016, Son2019, Son2018}.
         
         \paragraph
-        It is also noted that most proposed controllers, including \gls{MPC} implementation, are based on a linearised plant model of the non-linear multirotor-payload dynamics.
+        It is also noted that most proposed controllers, including \gls{MPC} implementations, are based on a linearised plant model of the non-linear multirotor-payload dynamics.
         This shows that a linearised plant model can provide a sufficient representation of the suspended payload dynamics for effective swing damping control.
         % In some studies, separate controllers are applied to different parts of the control problem where the plant models considered by some controllers are non-linear, and others are linear \cite{Martinez-Vasquez2020}.
         % In Table~\ref{tbl:lit}, the \emph{Plant model} column considers the specific model that includes the suspended payload dynamics.
@@ -309,7 +310,7 @@
         Studies identified by this column propose stabilising controllers that are not design without a priori knowledge of the payload dynamics.
         This approach is considered useful for complicated working conditions and model uncertainties \cite{Hua2021}.
         This appears to be a promising research area that has been considered in only a few different studies.
-        It is also interesting to note that the publication dates of most of these studies are quite recent.
+        It is also interesting to note that these studies are quite recently published.
 
 \section{Multirotor and suspended payload systems with unknown dynamics}
 
@@ -334,7 +335,7 @@
     However, the payload state was not explicitly measured or damped, causing residual oscillations in the position data of the multirotor.
 
     \paragraph
-    A \gls{ADRC} was proposed by \citet{Wang2020} for the control of a multirotor with an unknown suspended payload.
+    An \glsfirst{ADRC} was proposed by \citet{Wang2020} for the control of a multirotor with an unknown suspended payload.
     A transfer function model of a practical multirotor without a payload was determined with a frequency sweep excitation method of each control channel.
     The effect of the suspended payload was considered as an external disturbance and \glspl{ESO} were applied to estimate the disturbance.
     An \gls{ADRC} could then actively reject the disturbance caused by the payload and stabilise the system without prior knowledge of the payload dynamics.
