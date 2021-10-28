@@ -335,7 +335,7 @@
     However, the payload state was not explicitly measured or damped, causing residual oscillations in the position data of the multirotor.
 
     \paragraph
-    An \glsfirst{ADRC} was proposed by \citet{Wang2020} for the control of a multirotor with an unknown suspended payload.
+    An \gls{ADRC} was proposed by \citet{Wang2020} for the control of a multirotor with an unknown suspended payload.
     A transfer function model of a practical multirotor without a payload was determined with a frequency sweep excitation method of each control channel.
     The effect of the suspended payload was considered as an external disturbance and \glspl{ESO} were applied to estimate the disturbance.
     An \gls{ADRC} could then actively reject the disturbance caused by the payload and stabilise the system without prior knowledge of the payload dynamics.
@@ -365,7 +365,8 @@
         
     \paragraph
     This chapter reviewed a range of different control solutions for multirotors with suspended payloads.
-    A few observations were made regarding the literature on this subject, including the following:
+    A few observations were made regarding the literature on this subject.
+    The main observations are:
     \begin{enumerate}
         \item Most of the studied controllers are based on accurate models of the system dynamics.
         \item Swing damping methods perform better than trajectory generation methods when considering model uncertainty.
