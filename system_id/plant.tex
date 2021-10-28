@@ -6,7 +6,7 @@
     % and has a minimal effect on the attitude dynamics.
     % The swing damping controllers are therefore applied in the translational velocity loop
     % and the original attitude controls are used for inner loop controllers.
-    % Therefore the attitude state variables of the quadrotor are excluded from the system identification model.
+    % Therefore the attitude state variables of the multirotor are excluded from the system identification model.
 
     % The model identified by \gls{DMDc} or \gls{HAVOKc} will be used to design a longitudinal velocity controller.
     % As shown in \ref{fig:system_id_plant}, the plant considered for system identification includes the dynamics of the inner loop, attitude controllers.
@@ -17,7 +17,7 @@
     % Therefore the attitude states are excluded from the system identification model.
 
     \paragraph
-    A specific subsystem of the quadrotor-payload system will be considered for system identification.
+    A specific subsystem of the multirotor-payload system will be considered for system identification.
     Because the proposed controllers in Chapter~\ref{chap:control} will be applied for North velocity control,
     the longitudinal dynamics will be considered in this section, therefore
     the resulting input vector of the system identification plant is given by,
@@ -36,7 +36,7 @@
         \end{bmatrix}^T ,
     \end{equation}
     where $\theta$ and $\dot{\theta}$ are the payload angle and angular rate about the inertial East axis,
-    and $V_N$ is the North velocity of the quadrotor in the inertial frame. 
+    and $V_N$ is the North velocity of the multirotor in the inertial frame. 
     A schematic of this \gls{2D} plant is shown in Figure \ref{fig:floating_pend}.
 
     \begin{figure}[htb]

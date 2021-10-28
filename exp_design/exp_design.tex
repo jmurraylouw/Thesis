@@ -19,12 +19,12 @@
             \begin{figure}[ht]
                 \centering
                 \includegraphics[width=0.5\linewidth]{exp_design/fig/honeybee}
-                \caption{Honeybee quadrotor equipped with a \gls{OBC} and payload angle sensor}
+                \caption{Honeybee multirotor equipped with a \gls{OBC} and payload angle sensor}
                 \label{fig:honeybee}
             \end{figure}
 
             \paragraph
-            The multirotor used in this work is a custom-built, lightweight quadrotor named \emph{Honeybee}.
+            The multirotor used in this work is a custom-built, lightweight multirotor named \emph{Honeybee}.
             This vehicle was developed in the \gls{ESL} at Stellenbosch University \cite{Grobler2020}.
             Figure~\ref{fig:honeybee} shows a photo of Honeybee equipped with an \gls{OBC} and payload angle sensor.
             
@@ -135,7 +135,7 @@
             \paragraph
             Gazebo is an open-source graphical-based physics simulator used for robotics.
             This is the recommended simulator in the PX4 development toolchain and is capable of both \gls{SITL} and \gls{HITL} simulations \cite{PX4userguide}.
-            The PX4 flight stack includes quadrotor models developed for Gazebo which include realistic sensor plugins.
+            The PX4 flight stack includes multirotor models developed for Gazebo which include realistic sensor plugins.
             These plugins apply sensor noise, drift and bias which replicates the actual sensors used on Pixhawk boards.
             The physical parameters of these models were changed to match Honeybee and a suspended payload was added to the model as shown in Figure~\ref{fig:gazebo_honeybee}.
 
@@ -184,8 +184,8 @@
         
         \paragraph
         \gls{QGC} runs on the desktop computer and communicates with the Gazebo simulator with MAVlink messages over a local \gls{UDP} connection.
-        The Gazebo simulator also runs on the desktop computer and simulates the Honeybee quadrotor.
-        The simulator mimics the quadrotor sensor values and sends them to PX4 with MAVlink messages over a USB connection. 
+        The Gazebo simulator also runs on the desktop computer and simulates the Honeybee multirotor.
+        The simulator mimics the multirotor sensor values and sends them to PX4 with MAVlink messages over a USB connection. 
         
         \paragraph
         The PX4 firmware runs on the \gls{FC} board.

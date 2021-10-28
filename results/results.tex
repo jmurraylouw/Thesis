@@ -22,7 +22,7 @@
     \FloatBarrier\section{Parameter estimation with practical data}
 
         \paragraph
-        In Section~\ref{sec:param_estimation}, a cable length parameter estimation technique was performed with simulation data and the resulting white-box models provided reasonably accurate representations of the simulated quadrotor-payload dynamics.
+        In Section~\ref{sec:param_estimation}, a cable length parameter estimation technique was performed with simulation data and the resulting white-box models provided reasonably accurate representations of the simulated multirotor-payload dynamics.
         In this section, the cable length estimation technique will be applied to practical flight data with different payload masses and cable lengths.
         The effect of wind on the parameter estimation technique will also be investigated.
         Finally, the cable length estimator will be applied to data from a dynamic payload.
@@ -479,8 +479,8 @@
             As shown in Figure~\ref{fig:CPU_vs_q}, an \gls{MPC} node with $q = 50$ and $T_s =$~\SI{0.03}{\second} run at \scaleobj{0.8}{\%}CPU~$= 82.8\%$ on the \gls{OBC}.
             The status of the \gls{QP} solver was also monitored, which showed that the optimisation problem was consistently solved within the given optimisation time for $q = 50$.
             The \gls{MPC} node achieves stable, swing-damping control with this model.
-            However, for $q = 70$ the \gls{MPC} node uses \scaleobj{0.8}{\%}CPU~$= 98.7\%$ and the optimisation problem can not be solved fast enough for stable quadrotor control.
-            This results in an unstable controller and the quadrotor-payload system crashes consistently with this \gls{MPC} node. 
+            However, for $q = 70$ the \gls{MPC} node uses \scaleobj{0.8}{\%}CPU~$= 98.7\%$ and the optimisation problem can not be solved fast enough for stable multirotor control.
+            This results in an unstable controller and the multirotor-payload system crashes consistently with this \gls{MPC} node. 
 
             % ?? Check tenses in body of whole thesis.
             % Intro = future
@@ -510,9 +510,9 @@
             
             \paragraph
             An \gls{MPC} node with $T_s =$~\SI{40}{\milli\second} runs with a low \scaleobj{0.8}{\%}CPU, however it also results in unstable control.
-            This is because the controller frequency is too low to provide adequate velocity control of the quadrotor-payload dynamics.
-            However, an \gls{MPC} node with $T_s =$~\SI{30}{\milli\second} provides stable control of the quadrotor-payload system.
-            The \gls{QP} problem is solved within the given optimisation time and, as shown in the section below, the resulting controller frequency of \SI{33.33}{\hertz} appears to be fast enough to control the quadrotor-payload dynamics.
+            This is because the controller frequency is too low to provide adequate velocity control of the multirotor-payload dynamics.
+            However, an \gls{MPC} node with $T_s =$~\SI{30}{\milli\second} provides stable control of the multirotor-payload system.
+            The \gls{QP} problem is solved within the given optimisation time and, as shown in the section below, the resulting controller frequency of \SI{33.33}{\hertz} appears to be fast enough to control the multirotor-payload dynamics.
 
             % ?? Simulations with latency included
         \FloatBarrier\subsection{Velocity step response}    
@@ -520,9 +520,9 @@
             \input{results/plots/HITL_mpc_vel.tex}
 
             \paragraph
-            Figure~\ref{fig:HITL_mpc_vel} plots the velocity responses of the \gls{PID} and \gls{MPC} controllers in \gls{HITL} simulations of the quadrotor-payload system.
+            Figure~\ref{fig:HITL_mpc_vel} plots the velocity responses of the \gls{PID} and \gls{MPC} controllers in \gls{HITL} simulations of the multirotor-payload system.
             The \gls{MPC} controller is based on a system identification model with $q = 50$ and a sample time of $T_s =$~\SI{30}{\milli\second}.
-            It is clear from this plot that the \gls{MPC} node running on the \gls{OBC} provides stable control of the quadrotor payload system and damps the velocity oscillations well.
+            It is clear from this plot that the \gls{MPC} node running on the \gls{OBC} provides stable control of the multirotor payload system and damps the velocity oscillations well.
 
             \input{results/plots/HITL_mpc_theta.tex}
 
@@ -569,7 +569,7 @@
         Finally, the full data-driven system identification with \gls{MPC} control architecture was tested in \gls{HITL} simulations.
         It was shown that the hardware successfully executes the \gls{MPC} algorithm at the desired speed for the selected hyperparameters and sample time.
         The successful velocity step response proved that the various software systems work together seamlessly.
-        It also showed that the control architecture can be implemented on the hardware of an actual multirotor to successfully apply swing-damping control of the quadrotor-payload system.
+        It also showed that the control architecture can be implemented on the hardware of an actual multirotor to successfully apply swing-damping control of the multirotor-payload system.
             
         % ?? Is hierdie te veel detail? Moet ek dit korter maak?
 }

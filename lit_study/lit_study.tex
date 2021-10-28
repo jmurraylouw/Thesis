@@ -150,7 +150,7 @@
         multirotors \cite{Homolka2017, Sadr2014b, Fielding2019} that carry suspended payloads.
 
         \paragraph
-        \citet{Ichikawa2018a} compared different input shaping techniques for velocity control of a quadrotor with a suspended payload in simulations.
+        \citet{Ichikawa2018a} compared different input shaping techniques for velocity control of a multirotor with a suspended payload in simulations.
         The specific input shaping techniques considered were: \gls{ZV}, \gls{NZV}, \gls{EI}, and 2-hump \gls{EI}.
         These methods convolve a baseline input command with precisely timed impulses based on the length of the suspended cable. 
         Simulation results showed that the input shapers significantly decreased the residual payload oscillations compared to a baseline velocity controller.
@@ -192,9 +192,9 @@
         \paragraph
         \gls{MPC} is an optimal control technique related to \gls{LQR} and can also be applied to suspended payload systems.
         % \gls{MPC} solves control optimisation problem over a finite prediction horizon at every control interval based on a separately identifiable plant model \cite{Mayne2000}.
-        \citet{Notter2016} implemented an \gls{MPC} for active swing damping control of a quadrotor with a suspended payload.
-        A non-linear model of the quadrotor-payload system was linearised and discretised to apply a discrete, linear \gls{MPC} formulation.
-        The physical parameters of the quadrotor, cable, and payload were assumed to be exactly known and the controller was tested with only one payload.
+        \citet{Notter2016} implemented an \gls{MPC} for active swing damping control of a multirotor with a suspended payload.
+        A non-linear model of the multirotor-payload system was linearised and discretised to apply a discrete, linear \gls{MPC} formulation.
+        The physical parameters of the multirotor, cable, and payload were assumed to be exactly known and the controller was tested with only one payload.
         The controller received a position trajectory reference and determined force setpoints to control the vehicle.
         Furthermore, constraints were applied to the heigh, attitude, and control inputs to ensure safe flight manoeuvres. 
         Simulation results showed a superior trajectory tracking performance with the \gls{MPC} compared to a baseline \gls{LQR} controller.
