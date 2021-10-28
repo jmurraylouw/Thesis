@@ -18,14 +18,14 @@
     and the output setpoint $\bm{y}_{sp}$, and determines the control action, $\bm{u}$, to drive the values in $\bm{y}$ to the values $\bm{y}_{sp}$.
     An optimiser uses an internal plant model to determine an optimal control sequence over a prediction horizon \cite{Mayne2000}.
     Therefore $\bm{y}_{sp}$ may be replaced by a target trajectory for the prediction horizon. 
-    Only the first control action of the optimal sequence is executed and the optimisation is re-calculated at every time-step.
+    In many implementations, only the first control action of the optimal sequence is executed and the optimisation is re-calculated at every time-step.
 
     \paragraph
     Each specific \gls{MPC} implementation is dependant on the plant model representation \cite{Garcia1989}.
     In this section, an overview will be given of the specific \gls{MPC} implementation used in this work.
     The \gls{MPC} objective function will be explained and the design process to tune the controller will be discussed.
     It will also be discussed how integral action is achieved with the \gls{MPC}.
-    Finally, the control response of the tuned \gls{MPC} will be shown and discussed for a simulated system.
+    Finally, the control response of the tuned \gls{MPC} will be shown and discussed for the simulated system.
 
     \FloatBarrier\subsection{Receding horizon}
 
@@ -55,8 +55,8 @@
         \end{equation}
         which minimizes a specific objective function over the prediction horizon.
         The controller decision produces the predicted trajectory when applied to the plant model.
-        Note that only the first control action, $\bm{u}( k | k )$, will be executed and a new controller decision will be determined at time-step $k+1$.
-        Also note that if $N_c < N_p$, the remaining control actions are set to,
+        % Note that only the first control action, $\bm{u}( k | k )$, will be executed and a new controller decision will be determined at time-step $k+1$.
+        Note that if $N_c < N_p$, the remaining control actions are set to,
         \begin{equation}
             \bm{u}( i | k ) = \bm{u}( N_c | k ), ~~ i > N_c .
         \end{equation}
@@ -427,7 +427,7 @@
 
         \paragraph
         The last variable to be tuned is $b_{ud}$, which influences the disturbance rejection performance of the controller.
-        A large value of $b_{ud}$ results in a fast disturbance rejection performance, however it also produces in a large overshoot.
+        A large value of $b_{ud}$ results in a fast disturbance rejection performance, however, it also produces a large overshoot.
         Starting at an initial guess of $b_{ud} = 1$, the value is iteratively tuned for a consistent performance with a range of different payloads and wind disturbances.
 
         \paragraph

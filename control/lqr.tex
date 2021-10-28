@@ -1,13 +1,13 @@
 \FloatBarrier\section{Linear Quadratic Regulator} \label{sec:lqr}
 
         \paragraph
-        \gls{LQR} is a popular optimal control technique and has been shown to be an effective swing-damping controller for multirotors with a suspended payload 
+        \gls{LQR} is a popular optimal control technique and is an effective swing-damping controller for multirotors with a suspended payload 
         \cite{Erasmus2020, Slabber2020, Us2019}.
         The \gls{LQG} technique combines \gls{LQR} with a full-state estimator to control systems where some state variables cannot be measured \cite{Li2016}.
         An \gls{LQG} was effectively used by \cite{Slabber2020} for swing-damping control of a multirotor and suspended payload system.
         However, to focus on the controller performance without considering the effect of state estimation, it is assumed that full-state feedback is available in this work.
         Therefore, an \gls{LQR} for North velocity control with full-state feedback is presented in this section. 
-        This controller structure can be duplicated for East velocity control due the symmetry of a quadrotor.
+        This controller structure can be duplicated for East velocity control due to the symmetry of a quadrotor.
         
         \paragraph
         An \gls{LQR} does not inherently apply integral action and does not achieve zero steady-state tracking error in the presence of disturbances.
@@ -19,8 +19,8 @@
         \paragraph
         The North velocity dynamics were derived and linearised in Chapter~\ref{chap:modelling} 
         to produce a state-space model which will be used to design the LQR.
-        It is assumed that all model parameter are known before a flight, 
-        except the payload parameters, $l$ and $m_p$, which are estimated in the system identification phase.
+        It is assumed that all model parameters are known before a flight, 
+        except for the payload parameters, $l$ and $m_p$, which are estimated in the system identification phase.
         The augmented state space model which includes the integral state is given by:
         \begin{equation}
             \dot{\bm{x}}_A = \bm{A}_A \bm{x}_A + \bm{B}_A \bm{u}_A ,
@@ -90,7 +90,7 @@
         \paragraph
         The general design requirements of the \gls{LQR} are to 
         produce a fast velocity response with zero steady-state error while damping the payload oscillations quickly.
-        The priority is to produce a smooth trajectory with minimal oscillation, however a reasonably fast response time is still required.
+        The priority is to produce a smooth trajectory with minimal oscillation, however, a reasonably fast response time is still required.
         An iterative tuning approach was used to determine the $\bm{Q}$ and $\bm{R}$ matrix entries that produce a good performance.
         The final \gls{LQR} weightings were selected as:
         \begin{equation}
@@ -98,7 +98,7 @@
         \end{equation}
         The term $diag()$ refers to a diagonal matrix with the given vector as the principal diagonal.
         Note that the weight of the payload angle variable is 0.
-        This is because the payload angle will have a non-zero steady-state value at constant velocity, $V_N$, due to aerodynamic drag.
+        This is because the payload angle will have a non-zero steady-state value at a constant velocity, $V_N$, due to aerodynamic drag.
         The payload angle is therefore damped by placing a heavy weighting on the derivative of the payload angle instead.
 
         \input{control/plots/lqr_tuning_plot.tex}

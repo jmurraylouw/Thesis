@@ -5,8 +5,7 @@
     % The \gls{PID} controllers will be designed based on a linearized model of the multirotor without a payload.
     % The design process used to determine the controller gains will also be discussed in this section.
     % Finally the controllers will be implemented with MATLAB and Simulink and are verified with practical flight data.
-    \gls{PID} control is a popular linear control technique that applies a control signal proportional to 
-    the error signal, 
+    \gls{PID} control is a popular linear control technique that applies a control signal proportional to the error signal, 
     the integral of the error signal, 
     and the derivative of the error signal.
     This is the default control architecture used in the PX4-Autopilot flight stack \cite{Meier2015}.
@@ -56,15 +55,25 @@
         \paragraph
         Three separate linear \gls{PID} controllers are used to control angular rates in the pitch, roll, and yaw axes of the multirotor body frame.
         The angular rate controller receives angular rate estimates from the PX4 state estimator and outputs virtual actuator commands to the mixer.
-        Figure~\ref{fig:angular_rate_controller} shows a diagram of the PX4 angular rate controller.
+        Figure~\ref{fig:angular_rate_controller} shows a diagram of the pitch angular rate controller.
+        The yaw and roll controllers are not shown here, but they replicate the same structure.
         
         \input{control/diagrams/angular_rate_controller.tex}
 
         % ?? Omega not defined as a symbol
 
         \paragraph
-        In Figure~\ref{fig:angular_rate_controller}, the $j$ subscript denotes a specific element in the vectors $\bm{\Omega}_{sp}$ and $\bm{\Omega}$, and the corresponding virtual actuator, where $j = \{ 1, 2, 3 \}$.
-        Some elements in the controller improve the practical implementation, but have a negligible effect on the design on the gains, namely:
+        In Figure~\ref{fig:angular_rate_controller},
+        $P_{\Omega_X}$,
+        $I_{\Omega_X}$, and
+        $D_{\Omega_X}$ are the \gls{PID} gains for the pitch angular rate controller.
+        As defined in Chapter~\ref{chap:modelling}, 
+        $\Omega_{B_X}$ is the pitch angular rate in the body axis,  
+        $\Omega_{B_{X,{sp}}}$ is the pitch angular rate setpoint, and
+        $\delta_{E_{sp}}$ is the virtual elevator setpoint.
+        
+        \paragraph
+        Some controller elements improve the practical implementation, but have a negligible effect on the design of the gains, namely:
         \begin{itemize}
             \item A \gls{LPF} is added in the derivative path to reduce the effect of sensor noise.
             \item The derivative path is implemented on the plant output signal, instead of the error signal to eliminate derivative kick.
@@ -132,12 +141,12 @@
 
 
         \paragraph
-        An integrator is not required in this controller, 
-        because it is placed between the velocity and angular rate controllers, which both include integrators to reject steady-state disturbances \cite{Erasmus2020}.
-        Therefore only a proportional term is applied in this control law.
-        The proportional gain was designed for Honeybee by \cite{Grobler2020} for a faster transient response than with the default ZMR250 gain.
-        This results in a \SI{1}{\radian} step response with a
-        0~\% overshoot, 
+        % An integrator is not required in this controller, 
+        % because it is placed between the velocity and angular rate controllers, which both include integrators to reject steady-state disturbances \cite{Erasmus2020}.
+        Only a proportional term is applied in this control law.
+        The proportional gain was designed for Honeybee by \cite{Grobler2020} for a transient response that is faster than the default ZMR250 response.
+        This results in a \SI{1}{\radian} step response with 
+        little to no overshoot, 
         \SI{0.3}{\second} rise time, 
         \SI{0.47}{\second} for a 2~\% settling time, 
         and \SI{11}{\radian/\second} bandwidth \cite{Grobler2020}.
