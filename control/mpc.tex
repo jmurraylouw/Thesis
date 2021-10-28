@@ -41,7 +41,7 @@
             \caption{Illustration of the receding horizon of an \gls{MPC} (adapted from \cite{horizon_diagram2021})}
             \label{fig:receding_horizon}
         \end{figure}
-        % ?? See \cite{Mayne2000} for good intro to
+        
         % ?? Remove background of figure, otherwise strange outline
 
         \paragraph
@@ -292,8 +292,6 @@
         The \gls{LQR} optimisation corresponds to solving the unconstrained \gls{MPC} optimisation problem for $N_p = \infty$.
         However, the \gls{LQR} optimisation is run only once to determine the \gls{LQR} gain, whereas the \gls{MPC} optimisation is re-run at every time-step.
         Also note that the \gls{LQR} uses a continuous-time model, but the \gls{MPC} considered in this work uses a discrete-time model.
-
-% ?? convert acronyms to \gls{}
 
     \FloatBarrier\subsection{Integral action}
 

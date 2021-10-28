@@ -2,14 +2,32 @@
 \addcontentsline{toc}{chapter}{Abstract}
 \makeatletter\@mkboth{}{Abstract}\makeatother
 
-\subsubsection*{English}
+\paragraph
+This thesis considers the problem of a stabilising a multirotor with an unknown suspended payload.
+The controller has no prior knowledge of the payload dynamics.
+The swinging payload negatively affects the multirotor flight dynamics by inducing oscillations in the system.
+In this work, an adaptive control architecture is proposed to damp these oscillations and produce stable flight.
+A data-driven system identification method is demonstrated in simulation and with practical flights.
+The final control architecture is also verified on practical hardware with \gls{HITL} simulations.  
 
-The English abstract.
+\paragraph
+An architecture with a parameter estimator and \gls{LQR} is used as a baseline method.
+For the controller design, this uses a predetermined model of the payload dynamics and only estimates the payload mass and cable length.
+The proposed architecture uses \gls{DMDc} to estimate a state-space model from a short length of flight data to approximate the unknown multirotor-payload dynamics.
+Thereafter, an \gls{MPC} uses this model to control the multirotor and damp the payload oscillations.
 
-% \selectlanguage{afrikaans}
+\paragraph
+A Simulink\texttrademark~simulation environment is designed and verified with practical data.
+Within simulation, both the baseline and proposed architectures produce near swing-free payload motion for velocity control with different payload masses, cable lengths, external disturbances, and sensor noise.
+Both architectures also produce effective disturbance rejection.
+With a dynamic payload producing irregular oscillations, both methods resulted in stabilised control.
 
-\subsubsection*{Afrikaans}
 
-Die Afrikaanse uittreksel.
+\paragraph
+The accuracy of \gls{DMDc} prediction models was successfully verified with training and testing data from practical flights.
+The proposed control architecture was also tested in \gls{HITL} simulations.
+The hardware successfully ran the \gls{MPC} at the desired speed, producing near swing-free control with a Gazebo simulator.
 
-\selectlanguage{british}
+% ?? make past tense
+
+\glsresetall

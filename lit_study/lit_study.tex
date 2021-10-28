@@ -95,13 +95,12 @@
         The transportation of payloads with flexible cables have also been studied, where the cable is modelled as a set of serially connected rigid links  \cite{Goodarzi2015, Goodarzi2014, Kotaru2018}. 
         Furthermore, the control of a group of multirotors cooperatively transporting a suspended payload was also considered in various studies \cite{Lee2015, Sanalitro2020, Klausen2014, Goodarzi2015}.
         
-        \paragraph % This paragraph seems out of place and does not flow well
+        \paragraph % This paragraph seems out of place and does not flow well ??
         From numerous examples in literature, it is clear that the control of multirotors with suspended payloads is a popular research topic.
         The suspended payload configuration is very useful in situations where a multirotor cannot land since the payload can be attached during hover.
         This configuration also has the advantage that a payload can have an arbitrary shape or size as long as it has an attachment point for a cable.
         However, the suspended payload increases the degrees of under-actuation of the system, which makes the control problem challenging \cite{Kotaru2018}.
 
-        % ?? Fi author cite and [12-15] to rather [12,13,14,15]
 \section{Control of multirotors with suspended payloads}
 
     \paragraph
@@ -131,15 +130,6 @@
         \gls{RL} methods do not require prior models of the dynamics and have also been applied for swing-free trajectory generation \cite{Palunko2013, Faust2013}.
         \citet{Faust2013} implemented a \gls{RL} method for minimal swing trajectories which provides sufficient criteria to allow the learned policy to be transferred to a variety of different models, starting positions, and trajectories.
         Furthermore, this \gls{RL} trajectory generation method was verified with experimental results.
-        % ?? Maybe continue this and explain more
-
-        % Look for newer literature. ??
-
-        % ?? Maybe add this
-        % \paragraph 
-        % A drawback of \gls{MPC} and \gls{RL} methods is that they rely on cost functions with tuning weights and linear constraints for obstacle avoidance.
-        % \citet{Silveira2020} addressed this problem by implementing a \gls{RRT} algorithm that does not rely on cost functions and constraints for collision-free trajectories with a suspended payload.
-        % However, this approach does not provide an optimal solution, but rather finds any collision-free trajectory as a solution. 
 
         \paragraph
         Input shaping is another open-loop control method applied for minimal swing control that is related to trajectory planning.
