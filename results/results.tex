@@ -458,7 +458,6 @@
         
         \paragraph
         In this section, the results of different \gls{HITL} simulations will be shown and discussed.
-        Firstly, the effect of the plant model size on the \gls{CPU} and \gls{RAM} consumption of the \gls{MPC} node will be investigated.
         The effect of the \gls{MPC} sample time on the \gls{CPU} consumption will also be investigated.
         Finally, it will be shown that an \gls{MPC} node, which is based on a data-driven system identification model, effectively implements swing-damping control in a \gls{HITL} simulation.
 
@@ -476,7 +475,7 @@
             % This shows that the optimisation problem increases in complexity since more time is required to solve 
 
             \paragraph
-            In Section~\ref{sec:hyperparameters}, it was shown that $q = 50$ is near the Pareto optimum for practical data and the prediction accuracy does not increase significantly for $q > 50$.
+            In Section~\ref{sec:hyperparameters}, it was shown that $q = 50$ is near the Pareto optimum for the practical data and the prediction accuracy does not increase significantly for $q > 50$.
             As shown in Figure~\ref{fig:CPU_vs_q}, an \gls{MPC} node with $q = 50$ and $T_s =$~\SI{0.03}{\second} run at \scaleobj{0.8}{\%}CPU~$= 82.8\%$ on the \gls{OBC}.
             The status of the \gls{QP} solver was also monitored, which showed that the optimisation problem was consistently solved within the given optimisation time for $q = 50$.
             The \gls{MPC} node achieves stable, swing-damping control with this model.
@@ -522,7 +521,7 @@
 
             \paragraph
             Figure~\ref{fig:HITL_mpc_vel} plots the velocity responses of the \gls{PID} and \gls{MPC} controllers in \gls{HITL} simulations of the quadrotor-payload system.
-            The \gls{MPC} controller is based on a system identification model with $q = 50$ and has a sample time of $T_s =$~\SI{30}{\milli\second}.
+            The \gls{MPC} controller is based on a system identification model with $q = 50$ and a sample time of $T_s =$~\SI{30}{\milli\second}.
             It is clear from this plot that the \gls{MPC} node running on the \gls{OBC} provides stable control of the quadrotor payload system and damps the velocity oscillations well.
 
             \input{results/plots/HITL_mpc_theta.tex}
