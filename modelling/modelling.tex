@@ -7,33 +7,34 @@
 
 \paragraph
 In this chapter, a non-linear mathematical model of a multirotor with a suspended payload will be derived.
-The model will be based on the multirotor named \emph{Honeybee}, which was built by \cite{Grobler2020} and will be described further in Chapter~\ref{chap:exp_design}.
-This model will be used to simulate the multirotor-payload system in subsequent chapters.
+The model will be based on the multirotor named \emph{Honeybee}, which was built by \citet{Grobler2020}.
+A simulation environnement will use this model to simulate the multirotor-payload system in subsequent chapters.
 
 \paragraph
-The chapter starts by defining the coordinate frames and rotation representations used in this work model.
-A \gls{6DOF} model of the multirotor vehicle will then be derived and the different forces and moments acting on this vehicle will be described.
-A model of the suspended payload attached to the multirotor will also be derived.
-Finally, the mathematical models will be verified against practical flight data from \emph{Honeybee}.
+The chapter starts by defining the coordinate frames and rotation representations used in this work.
+After a discussion of the different forces and moments acting on this vehicle described, 
+a \gls{6DOF} model of the multirotor vehicle will be derived.
+The derivation of the suspended payload model will also be shown.
+Finally, practical flight data will verify the mathematical models used in simulation.
 
 \FloatBarrier\section{Coordinate frames}
 
     \paragraph
     Honeybee is quadrotor vehicle, which is a type of multirotor with four rotors.
     The quadrotor X-configuration is considered in this work.
-    Figure~\ref{fig:coord_frames} shows the quadrotor schematic and two coordinate frames that will be used to describe this system.
+    Figure~\ref{fig:coord_frames} shows the quadrotor schematic and two coordinate frames that are used to describe this system.
     
     \begin{figure}[htb]
         \centering
         \includegraphics[width=0.6\linewidth]{modelling/fig/coord_frames}
-        \caption{Inertial and body coordinate frames of a quadrotor from \cite{Erasmus2020}}
+        \caption{Inertial and body coordinate frames of a quadrotor \cite{Erasmus2020}}
         \label{fig:coord_frames}
     \end{figure}
 
     \paragraph
     The inertial frame is denoted by $ \mathcal{I} = \{ \bm{\bar{x}}_\mathcal{I}, \bm{\bar{y}}_\mathcal{I}, \bm{\bar{z}}_\mathcal{I} \} $ and describes a \gls{NED} axis system.
     The $x$, $y$, and $z$ axis, align with the North, East, and Down inertial directions respectively.
-    The inertial frame assumes a flat, non-rotating earth since the multirotor will travel small distances in comparison to the curvature of the earth.
+    The inertial frame assumes a flat, non-rotating earth since the multirotor travels small distances in comparison to the curvature of the earth.
     The origin of this frame is fixed at the takeoff location of the multirotor.
 
     \paragraph
@@ -42,19 +43,19 @@ Finally, the mathematical models will be verified against practical flight data 
     The body frame is defined by a translation and rotation relative to the inertial frame.
     % The position of the multirotor \gls{CoM} in the inertial frame is denoted as $P = [P_N~~P_E~~P_D]^T$. 
     % This represents the translation of the body frame relative to the inertial frame.
-    The mathematical representation of rotations will be discussed in the section below.
+    The mathematical representation of rotations is be discussed in the section below.
 
 \FloatBarrier\section{Rotations}
     
     \paragraph
     The rotation of the body frame relative to the inertial frame is referred to as the attitude of the multirotor.
-    The attitude will be defined in terms of Euler angles or quaternions in this work, which will be described below.
+    The attitude is defined in terms of Euler angles or quaternions in this work, which is described below.
 
     \FloatBarrier\subsection{Euler angles}
 
         \paragraph
         Euler angles are a popular way of describing a \gls{3D} rotation as a sequence of three consecutive elementary rotations \cite{Brescianini2013}.
-        For aircraft applications, the ZYX-sequence is common \cite{Brescianini2013} and will be used in this work.
+        The ZYX-sequence is commonly used for aircraft applications \cite{Brescianini2013} and is also used in this work.
         The order of rotations are:
         \begin{enumerate}
             \item Rotate the body frame about the $z$-axis by the yaw angle, $\Psi$.
@@ -79,11 +80,11 @@ Finally, the mathematical models will be verified against practical flight data 
     \FloatBarrier\subsection{Quaternions}
 
         \paragraph
-        A quaternion provides way of representing a rotation with four parameters.
-        An advantage of quaternions is that it does not produce singularities like Euler angles do \cite{Brescianini2013}.
+        Quaternions provide a way of representing a rotation with four parameters.
+        An advantage of quaternions is that it does not have mathematical singularities like Euler angles do \cite{Brescianini2013}.
         A quaternion defines a rotation with a single rotation about a fixed axis, 
         which is parametrized by a rotation angle, $\alpha$, and a unit vector, $\vec{r}$.
-        A unit quaternion is therefore defined as,
+        A unit quaternion is defined as,
         \begin{equation}
             \bm{q} = [q_0~~q_1~~q_2~~q_3]^T = 
             \begin{bmatrix}
@@ -99,7 +100,7 @@ Finally, the mathematical models will be verified against practical flight data 
         where $q_0$ is the magnitude component and $\bm{q}_v$ is the vector component of the quaternion.
 
         \paragraph
-        A Euler-ZYX angle representation, $[\Theta~~\Phi~~\Psi]$, can be converted to a quaternion with the equation \cite{Brescianini2013},
+        A Euler-ZYX angle representation, $[\Theta~~\Phi~~\Psi]$, can be converted to a quaternion using \cite{Brescianini2013},
         \begin{equation}
             \bm{q}(\Theta, \Phi, \Psi) = 
             \left[\begin{array}{c}
@@ -113,7 +114,7 @@ Finally, the mathematical models will be verified against practical flight data 
         \end{equation}
 
         \paragraph
-        The inverse of an quaternion is defined as,
+        The inverse of a quaternion is defined as,
         \begin{equation}
             \bm{q}^{-1} = 
             \frac{ \begin{bmatrix} q_0 \\ -\bm{q}_v \end{bmatrix} }{ \sqrt{ {q_{0}}^{2} + {q_{1}}^{2} + {q_{2}}^{2} + {q_{3}}^{2} } } .
@@ -138,18 +139,19 @@ Finally, the mathematical models will be verified against practical flight data 
         \end{equation}
 
         \paragraph
-        These equations will be applied in subsequent chapters.
+        Successive rotations can therefore be represented mathematically by quaternion multiplication.
+        These equations are applied in subsequent chapters.
 
-\FloatBarrier\section{Quadrotor model}
+\FloatBarrier\section{Multirotor model}
 
     \paragraph
-    The multirotor is modelled as a rigid body with six degrees of freedom.
+    The multirotor is modelled as a \gls{6DOF} rigid body.
     This includes three translations and three rotational degrees of freedom.
-    This modelling process is well described by \cite{Erasmus2020} and \cite{Slabber2020}, and the same general procedure is followed in this work. 
+    This modelling process is well described by \cite{Erasmus2020} and \cite{Slabber2020}, and the same general procedure is used here. 
     
     \paragraph
     The system parameters describing the physical properties of the multirotor is listed in Table~\ref{tbl:multirotor_params}.
-    These parameters will be used in subsequent sections to derive a model of the multirotor.
+    These parameters are used in subsequent sections to derive a model of the multirotor.
 
     \begin{table}[!htbp]
         \renewcommand{\arraystretch}{1.1}
@@ -196,7 +198,7 @@ Finally, the mathematical models will be verified against practical flight data 
 
 
     \paragraph
-    The linear velocity and angular velocity of the multirotor with respect to the body frame is denoted by,
+    The linear velocity and angular velocity of the multirotor within the body frame is denoted by,
     \begin{align}
         \bm{V_\mathcal{B}}          &= 
         \begin{bmatrix}
@@ -268,7 +270,6 @@ Finally, the mathematical models will be verified against practical flight data 
 
     \paragraph
     % Starting at a specified initial condition, Equation~\ref{eq:forces} and Equation~\ref{eq:body_rates} can now be solved with an \gls{ODE} solver in a simulation environment like Simulink to describe the motion of the multirotor.
-    The forces and moments acting on the multirotor will be described in the next section.
  
 \FloatBarrier\section{Forces and moments}
 
@@ -279,13 +280,13 @@ Finally, the mathematical models will be verified against practical flight data 
         \bm{F}_\mathcal{B} &= \bm{F}_\mathcal{B}^T + \bm{F}_\mathcal{B}^A + \bm{F}_\mathcal{B}^G + \bm{F}_\mathcal{B}^P \mbox{ and}\\
         \bm{M}_\mathcal{B} &= \bm{M}_\mathcal{B}^T + \bm{M}_\mathcal{B}^A + \bm{M}_\mathcal{B}^G + \bm{M}_\mathcal{B}^P.
     \end{align}
-    The phenomena that cause the different forces and moments are denoted by the subscripts, T, A, G, and P, which refer to actuator thrust, aerodynamic drag, gravity, and the payload respectively. 
+    The phenomena that cause the different forces and moments are denoted by the superscripts, T, A, G, and P, which refer to actuator thrust, aerodynamic drag, gravity, and the payload respectively. 
     These phenomena are also considered and modelled by \cite{Erasmus2020} and \cite{Slabber2020}.    
 
     \paragraph
     \textbf{Actuator thrust} \newline
     A multirotor has four rotors which each produce a thrust as shown in Figure~\ref{fig:coord_frames}.
-    However the actuators collectively apply a force, $\bm{F}_\mathcal{B}^T$, 
+    However, the actuators collectively apply a force, $\bm{F}_\mathcal{B}^T$, 
     and moment, $\bm{M}_\mathcal{B}^T$, to the vehicle.
     This force and moment can be represented in terms of virtual actuator thrusts as,
     \begin{equation} \label{eq:thurst_force_moment}
@@ -349,7 +350,7 @@ Finally, the mathematical models will be verified against practical flight data 
         \bm{V}_{\mathcal{B}_{w}} = -\bm{V}_\mathcal{B} + \bm{R}_{V} \bm{V}_w, 
     \end{equation}
     where \(\bm{V}_w\) is the wind velocity in the inertial frame.
-    It is assumed that the moments caused by aerodynamics, such that,
+    It is assumed that no moments are caused by aerodynamics, such that,
     \begin{equation}
         \bm{M}_\mathcal{B}^A =
         \begin{bmatrix}
@@ -384,9 +385,9 @@ Finally, the mathematical models will be verified against practical flight data 
     \textbf{Suspended payload} \newline
     The suspended payload applies a reaction force, $\bm{F}_\mathcal{B}^P$, and moment, $\bm{M}_\mathcal{B}^P$, to the multirotor which is dependant on the dynamics of the suspended payload.
     The payload and cable also experience gravity and aerodynamic forces which influence its motion.
-    These forces and moments will all be considered in the section below.
+    These forces and moments are considered in greater detail in the next section.
     
-\FloatBarrier\section{Suspended payload model} \label{sec:payload_model}
+\section{Suspended payload model} \label{sec:payload_model}
 
     \paragraph
     The dynamical model of the multirotor is now fully defined, except for the force and moment applied to the vehicle by the payload.
@@ -396,25 +397,20 @@ Finally, the mathematical models will be verified against practical flight data 
     The equations of motion of the suspended payload need to be derived to determine these reaction forces and complete the dynamical model of the multirotor-payload system.
     
     \paragraph
-    In this section, the payload model and modelling assumptions will firstly be discussed.
-    Thereafter, the payload equations of motions will be derived with Lagrangian mechanics.
-    Finally, the forces acting on the multirotor due to the payload will be determined.
-
-    \paragraph
     Figure~\ref{fig:quad_with_payload} illustrates a multirotor with a suspended payload, where
     $m_p$ is the mass of the payload, and
     $l$ is the length of the suspended cable.
     The $x$-axis and $y$-axis Euler-ZYX angles in the inertial frame are denoted by $\theta$ and $\phi$ respectively.
     Furthermore, $\bm{r}_Q = [x_Q~~y_Q~~z_Q]^T$ defines the position of the multirotor \gls{CoM} in the inertial frame.
     Likewise, $\bm{r}_p = [x_p~~y_p~~z_p]^T$ defines the position of the payload in the inertial frame.
-
-    \begin{figure}[!htbp]
+    
+    \begin{figure}[h]
         \centering
-        \includegraphics[width=0.7\linewidth]{modelling/fig/quad_with_payload.png}
+        \includegraphics[width=0.6\linewidth]{modelling/fig/quad_with_payload.png}
         \caption{Schematic of a multirotor with suspended payload from \cite{Slabber2020}}
         \label{fig:quad_with_payload}
     \end{figure}
-    
+
     \subsection{Payload assumptions} \label{sec:payload_assumptions}
 
         \paragraph
@@ -429,26 +425,26 @@ Finally, the mathematical models will be verified against practical flight data 
         \paragraph
         The payloads used in the practical setup described in Chapter~\ref{chap:exp_design}, 
         are small relative to the multirotor and the attachment point is close to the payload \gls{CoM}.
-        They are attached with a low-friction swivel to the suspended cable, therefore the rotation of the payload around the cable axis has a negligible effect on the multirotor. 
+        They are attached with a low-friction joint to the suspended cable, therefore the rotation of the payload around the cable axis has a negligible effect on the multirotor. 
         Therefore modelling the payload as a point-mass appears to be a reasonable approximation.
 
         \paragraph
         The cables used in Chapter~\ref{chap:exp_design} have a low mass in comparison to the payloads and have a negligible amount of stretch.
-        Furthermore, the cable remains straight and rigid during flight due to the tension applied by the payload.
+        The cable remains straight and rigid during flight due to the tension applied by the payload.
         Aggressive manoeuvres may cause periods of zero cable tension where the load is in free-fall and the cable is slack \cite{Tang2015}.
-        However, such aggressive manoeuvres will not be considered in this work and the assumption of a rigid, massless cable appears reasonable.
+        However, such aggressive manoeuvres are not considered in this work and the assumption of a rigid, massless cable appears reasonable.
 
         \paragraph
         In the practical setup shown in Chapter~\ref{chap:exp_design}, the cable attachment appears to be near to the \gls{CoM} of the multirotor.
-        It is assumed that even if the attachment point is slightly below the actual \gls{CoM}, this will have a negligible effect on the dynamics and will still be approximated by a \gls{CoM} attachment.
+        It is assumed that even if the attachment point is slightly below the actual \gls{CoM}, this has a negligible effect on the dynamics and can still be approximated by a \gls{CoM} attachment.
         Due to this assumption, the payload cannot apply a moment to the multirotor, hence the multirotor attitude dynamics is decoupled from the payload dynamics.
         Therefore, the multirotor can be modelled as a point-mass when considering the payload equations of motion.
 
-    \FloatBarrier\subsection{Lagrangian}
+    \subsection{Lagrangian}
 
         \paragraph
         Lagrangian mechanics is an energy-based modelling approach that can be used to derive differential equations describing a system \cite{Erasmus2020}.
-        The dynamical equations of the suspended payload system were derived by \cite{Slabber2020} and the derivation in this work follows parts of that approach.
+        The dynamical equations of the suspended payload system were derived by \cite{Slabber2020} and the derivation in this work follows a similar approach.
         It is important to note that the derivation in this section considers the payload dynamics as a function of the motion of the multirotor \gls{CoM}.
         The derivation starts by defining the payload position as a function of the multirotor position in the inertial frame as,
         \begin{equation}
@@ -459,9 +455,9 @@ Finally, the mathematical models will be verified against practical flight data 
                 z_p
             \end{bmatrix} = 
             \begin{bmatrix}
-                x_Q + l \cos(\phi) \sin(\theta) \\
-                y_Q +   \sin(\phi) \\
-                z_Q + l \cos(\phi) \cos(\theta)
+                x_Q + l \cos \phi \sin \theta \\
+                y_Q +   \sin \phi \\
+                z_Q + l \cos \phi \cos \theta
             \end{bmatrix} ,
         \end{equation}
         where $g$ is the acceleration due to gravity.
@@ -483,10 +479,10 @@ Finally, the mathematical models will be verified against practical flight data 
             \mathcal{T}_p &= \frac{1}{2} m_p | \bm{\dot{r}}_p | ^2, \mbox{~~and~~} \\
             \mathcal{V}_p &= - m_p g z_p .
         \end{align}
-        Note that these energy equations describe the system modelled as two point-mass bodies and do not consider the attitude dynamics of the multirotor as mentioned earlier.
+        Note that these energy equations describe the system modelled as two point-mass bodies and do not consider the attitude dynamics of the multirotor.
         The Lagrangian can now be determined as,
         \begin{equation}
-            \mathcal{L} = \mathcal{T}_p - \mathcal{V}_p,
+            \mathcal{L} = \mathcal{T}_p - \mathcal{V}_p .
         \end{equation}
 
     \FloatBarrier\subsection{Non-conservative forces}
@@ -589,10 +585,8 @@ Finally, the mathematical models will be verified against practical flight data 
         \end{equation}
 
         \paragraph
-        This completes the multirotor dynamical model described in Section~\ref{sec:payload_model}.
         The set of \glspl{ODE} represented by Equation~\ref{eq:payload_odes} provides a coupling between the multirotor and payload dynamics.
         The multirotor-payload system can now be simulated from a given initial condition with an \gls{ODE} solver in Simulink\texttrademark.
-        This simulation model will be verified with practical data in the section below. 
     
     % \FloatBarrier\section{Linearised model} \label{sec:linear_model}
         
@@ -632,23 +626,22 @@ Finally, the mathematical models will be verified against practical flight data 
     \paragraph
     To verify whether the non-linear simulation model derived in previous sections is an accurate representation of the real-world dynamics, the simulation data is verified against practical data.
     Firstly, a North velocity step response was performed in a practical flight with a multirotor to verify the multirotor model without a payload.
-    The practical multirotor will be described in Chapter~\ref{chap:exp_design}.
+    The practical multirotor is described in Chapter~\ref{chap:exp_design}.
     % For simplicity in comparison, the body $\bar{\bm{x}}_{\mathcal{B}}$ axis was aligned with the inertial North axis for this flight.
-    This flight was performed on a day with almost no wind to minimise the effect of wind disturbances in the comparison.
     
     \paragraph
-    Starting from the same initial condition, the velocity step setpoint was commanded in a simulation and the resulting simulation data was compared to the practical flight data.
-    This Simulink\texttrademark~simulation environment will be discussed in Chapter~\ref{chap:control}.
-    Note that this includes the dynamics of the default multirotor controllers which will be described in Chapter~\ref{chap:control}.
-    Therefore the results in this section compare the combined multirotor and controller simulation model to the practical flight data.
+    This flight was performed on a day with almost no wind to minimise the effect of wind disturbances in the comparison.
+    Starting from the same initial condition, a velocity step setpoint was commanded in a simulation and the resulting simulation data was compared to the practical flight data.
+    This Simulink\texttrademark~simulation environment is discussed in Chapter~\ref{chap:control} and includes the dynamics of the default multirotor controllers.
+    The results compare the combined multirotor and controller simulation model to the practical flight data.
 
     \input{modelling/plots/prac_vs_sim_vel_step_no_payload.tex}
 
     \paragraph
     Figure~\ref{fig:prac_vs_sim_vel_step_no_payload} shows the velocity step responses of a practical and a simulated flight.
     From a visual inspection of the plots, it is clear that the velocity responses match well.
-    Note that the practical velocity curve is more irregular and not as smooth as the simulated curve.
-    This may be due to slight wind disturbances or sensor noise, which are not considered in this simulation.
+    Note that the practical velocity curve is slightly more irregular and not as smooth as the simulated curve.
+    This may be due to slight wind disturbances or sensor noise, which are not considered in the simulation.
 
     \input{modelling/plots/prac_vs_sim_vel_step_with_payload.tex}
 
@@ -672,9 +665,15 @@ Finally, the mathematical models will be verified against practical flight data 
 
     \paragraph
     Figure~\ref{fig:prac_vs_sim_theta_with_payload} shows the payload angle for the same flight as Figure~\ref{fig:prac_vs_sim_vel_step_with_payload}.
-    It is also clear that the payload angle response of the simulated system matches the practical data well. 
-    Overall, the results in this section show that the simulation model provides a good representation of the North velocity dynamics of the real multirotor-payload system.
-    The mathematical model derived in this chapter will therefore be used for further simulations in subsequent chapters.
+    It is clear that the payload angle response of the simulated system matches the practical data well. 
+    
+\section{Summary}
 
+    \paragraph
+    This chapter showed a detailed derivation of a mathematical model representing the Honeybee multirotor with a suspended payload.
+    A comparison of the simulation model and practical flight data showed that the model provides a good representation of the of the actual multirotor-payload system.
+    The mathematical model derived in this chapter can therefore be used for further simulations in subsequent chapters.
+
+% ?? Add summary of each chapter
 
 }
