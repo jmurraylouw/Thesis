@@ -42,6 +42,7 @@
             \label{fig:receding_horizon}
         \end{figure}
         % ?? See \cite{Mayne2000} for good intro to
+        % ?? Remove background of figure, otherwise strange outline
 
         \paragraph
         Figure~\ref{fig:receding_horizon} illustrates the receding horizon concept for a \gls{SISO} system.
@@ -113,19 +114,16 @@
             \bm{x}_{mpc} (k+1) \hspace{7pt}
             &=
             \hspace{15pt} \bm{A}_{mpc} 
-            \hspace{25pt} \bm{x}_{mpc} (k) 
+            \hspace{12pt} \cdot \hspace{5pt} \bm{x}_{mpc} (k) 
             \hspace{7pt} + 
             \hspace{7pt} \bm{B}_{mpc} 
-            \hspace{9pt} \bm{u}_{mpc} (k) ,
+            \hspace{1pt} \cdot \bm{u}_{mpc} (k) ,
             % 
         \end{align}
         where $\bm{I}_d$ is the identity matrix that links the corresponding entries in $[ \bm{x}_{dmd} (k) ~~ \bm{d} (k) ]^T$ to $\bm{d}(k+1)$.
         This produces large state-space matrices with many output variables (represented in $\bm{d}(k+1)$) that are necessary for state predictions but do not require setpoint tracking.
         To ignore these variables in the control optimisation, they are assigned a zero weight in the \gls{MPC} objective function.
         The objective function will be further discussed in the sections below.
-
-        % ?? correct \gls
-        % ?? State space model with $A_{mpc}$
 
         \paragraph
         Recall from Section~\ref{sec:payload_state_variable} that $\dot{\theta}$ is not used in the estimated model.
@@ -399,7 +397,7 @@
         $T_s$ is fixed by the system identification phase, since the sample time of the discrete model and the controller should match.
 
         \paragraph
-        In the controller tuning process, a large value of ${w^y}_{j}$ corresponds to aggressive control of the j\textsuperscript{th} output variable, 
+        In the controller tuning process, a large value of ${w^y}_{j}$ corresponds to aggressive control of the $j$\textsuperscript{th} output variable, 
         because the tracking error of that variable will be heavily penalised.
         In contrast, small values of ${w^u}_{j}$ or ${w^{\Delta u}}_{j}$, correspond to aggressive manoeuvres, 
         because the control values are not heavily penalised in the objective function. 
@@ -413,7 +411,7 @@
         $T_p = T_c = 2 \times t_{p}$
         where 
         $T_p = N_p \times T_s$,
-        $T_p = N_p \times T_s$, and
+        $T_c = N_c \times T_s$, and
         $t_{p}$ is the peak-time of the velocity step response with a \gls{PID} controller.
         The objective function weights were then tuned for a desired controller performance.
         
@@ -432,7 +430,7 @@
 
         \paragraph
         The final designed controller configuration parameters are shown in Table~\ref{tbl:mpc_params}.
-        Note that the weights in $\bm{w^y}$ correspond to the variables in, 
+        Note that the weights in $\bm{w}^y$ correspond to the variables in, 
         $ [ V_N ~~ \theta ~~ \dot{\theta} ] $,
         the weight in $\bm{w}^u$ corresponds to the variable $A_{N_{sp}}$, and 
         the weight in $\bm{w}^{\Delta u}$ corresponds to the variable $\Delta A_{N_{sp}} (k)  =  A_{N_{sp}} (k) - A_{N_{sp}} (k-1)$.
@@ -464,5 +462,4 @@
         It is clear that the controller damps the payload angles well and produces a smooth trajectory with different payloads.
         For each different payload, a \gls{DMDc} model is first estimated.
         Thereafter the \gls{MPC} is simulated with the same controller configuration defined in Table~\ref{tbl:mpc_params}.
-        The controller performance, including disturbance rejection, will be further discussed in Section~\ref{sec:control_implementation}.
     

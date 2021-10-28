@@ -32,7 +32,7 @@
         From simulation results, it appears that both the \gls{MPC} and \gls{LQR} effectively damp the payload oscillations while controlling the velocity of the multirotor.
         Figure~\ref{fig:compare_control_vel} shows the velocity step responses of the \gls{MPC}, \gls{LQR} and \gls{PID} controllers for a multirotor with a suspended payload.
         From Figure~\ref{fig:compare_control_vel} it is clear that both the \gls{LQR} and \gls{MPC} controllers actively damp the velocity oscillation caused by the swinging payload.
-        The \gls{PID} controller does not consider the payload angle, hence the oscillations are not damped as strongly.
+        The \gls{PID} controller does not consider the payload angle, hence the oscillations are not damped well.
 
         \paragraph
         For the \gls{MPC} and LQR, the respective models were first generated in the training phase of the simulation.
@@ -53,12 +53,11 @@
         % LQR.R = 8
 
         \input{control/plots/compare_control_theta.tex}
-
+% ?? Grammarly on this chapter
         \paragraph
         Figure~\ref{fig:compare_control_theta} shows the payload angle data of the velocity step response.
-        Both the \gls{MPC} and \gls{LQR} damp the payload angle well and the oscillations cease after only two or three swings.
-        In this case, the \gls{MPC} response results in a smaller initial swing angle, however, this is dependant on the specific tuning of each controller.
-        The \gls{LQR} can also be tuned to produce a similar swing angle.
+        Both the \gls{MPC} and \gls{LQR} damp the payload angle well and the oscillations cease after only two or three cycles.
+        In this case, the \gls{MPC} response results in a slightly smaller initial swing angle, however, this is dependant on the specific tuning of each controller.
 
         \input{control/plots/compare_control_acc_sp.tex}
 
@@ -66,7 +65,7 @@
         Figure~\ref{fig:compare_control_acc_sp} shows the acceleration setpoint commanded by the two controllers for this step response.
         This is probably due to the inherent similarity between the controller implementations as discussed in Section~\ref{sec:mpc}.
         The similarity in the acceleration setpoint responses also show that the energy expended in a velocity steps are roughly equal for these two controller implementations.
-        However, this is also highly dependant on the weightings used in optimisation problem of both controllers.
+        However, this is also highly dependant on the weightings used in the optimisation problem of both controllers.
         Both controllers also produce a non-zero steady-state setpoint as expected, which is required to counter aerodynamic drag.
 
     \FloatBarrier\subsection{Different payload parameters}
@@ -225,7 +224,7 @@
         \paragraph
         In Figure~\ref{fig:mq_changed} it appears that the \gls{LQR} results in lower payload oscillations than the \gls{PID} controller
         but induces higher frequency oscillations.
-        This results in a jittery velocity response with the \gls{LQR} and is undesirable for a multirotor flight.
+        This results in jitter in the velocity response with the \gls{LQR}.
         The \gls{LQR} control performance has degraded because the dynamics of the \gls{LQR} plant model differs significantly from the actual dynamics. 
         In contrast, the \gls{MPC} still results in a smooth velocity profile and damps the payload oscillations effectively, as in previous simulations.
         This is expected since the system identification model used by the \gls{MPC} included the effect of the changed mass by estimating the entire model without considering individual parameters.
@@ -239,19 +238,11 @@
 \FloatBarrier\section{Summary}
 
     \paragraph
-    From simulations without wind disturbances, it was shown that the \gls{MPC} and \gls{LQR} architectures deliver similar control performances for a range of different payload parameters.
+    From simulations without wind disturbances, the \gls{MPC} and \gls{LQR} architectures deliver similar control performances for a range of different payload parameters.
     Both controllers result in a similar response time and velocity overshoot, and the payload angle is damped well by both controllers.
     Therefore, in the absence of wind, 
     the control performance does not conclusively differentiate between the \gls{LQR} and \gls{MPC} architectures for a simple suspended payload.
     As expected, the \gls{PID} controller does not provide acceptable control of the multirotor with a suspended payload and does not actively damp the payload oscillations.
-    
-    \paragraph
-    Both the \gls{LQR} and the \gls{MPC} architectures handle different payload parameters well.
-    Even though the parameter estimation techniques (used with the LQR) did not consider the mass of the multirotor ($m_Q$),
-    the \gls{LQR} architecture still provided acceptable swing damping control with small changes in $m_Q$.
-    However, it was shown that the \gls{LQR} architecture produces an undesirable control performance for large changes in $m_Q$.
-    Therefore, parameter estimation procedure will need to be redesigned to account for such changes in other system parameters.
-    However, the data-driven approach does not rely on modelling assumptions, hence the \gls{MPC} still provides good control performance for different values of $m_Q$.
     
     \paragraph
     Both the \gls{LQR} and the \gls{MPC} effectively rejected the unmeasured input disturbance caused by wind, resulting in zero steady-state tracking error for the multirotor velocity.
@@ -260,11 +251,9 @@
 
     \paragraph
     For simulations with a dynamic payload, both the \gls{LQR} and \gls{MPC} effectively applied swing damping control.
-    However, there the trajectories were not as smooth as with the simple suspended payload.
+    However, the trajectories were not as smooth as with the simple suspended payload.
     Even though the simulated dynamics differed significantly from the simple suspended payload model used by the LQR,
-    the \gls{LQR} still managed to damp the payload oscillations quickly. 
-
-    \paragraph
+    the \gls{LQR} still managed to damp the payload oscillations effectively.
     The \gls{MPC} also managed to damp the payload oscillations, but did not conclusively outperform the \gls{LQR}.
     Even though the estimated model used by the \gls{MPC} showed good prediction accuracy with the given testing data set, 
     the actual system response did not follow the predicted trajectory of the \gls{MPC} well.
@@ -273,6 +262,14 @@
     Therefore, an improved data-driven system identification model, which provides an accurate approximation  of the dynamics for a larger domain, 
     is required for improved \gls{MPC} control of such a dynamic payload.
 
+    \paragraph
+    Both the \gls{LQR} and the \gls{MPC} architectures handle different payload parameters well.
+    Even though the parameter estimation techniques (used with the LQR) did not consider the mass of the multirotor ($m_Q$),
+    the \gls{LQR} architecture still provided acceptable swing damping control with small changes in $m_Q$.
+    However, it was shown that the \gls{LQR} architecture produces an undesirable control performance for large changes in $m_Q$.
+    Therefore, the parameter estimation procedure will need to be redesigned to account for such changes in other system parameters.
+    However, the data-driven approach does not rely on modelling assumptions, hence the \gls{MPC} still provides good control performance for different values of $m_Q$.
+    
     \paragraph
     The advantage of the \gls{LQR} architecture is that it is computationally simple in comparison to an \gls{MPC}.
     However, the \gls{LQR} architecture is designed for a specific system configuration and only accounts for changes in specific system parameters. 
