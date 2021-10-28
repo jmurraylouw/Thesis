@@ -18,13 +18,15 @@ Thereafter, an \gls{MPC} uses this model to control the multirotor and damp the 
 
 \paragraph
 A Simulink\texttrademark~simulation environment is designed and verified with practical data.
-Within simulation, both the baseline and proposed architectures produce near swing-free payload motion for velocity control with different payload masses, cable lengths, external disturbances, and sensor noise.
+Within simulation, both the baseline and proposed architectures produce near swing-free payload motion for multirotor velocity control with different payload masses, cable lengths, external disturbances, and sensor noise.
 Both architectures also produce effective disturbance rejection.
 With a dynamic payload producing irregular oscillations, both methods resulted in stabilised control.
-
+Despite the baseline using an accurate predetermined model, the proposed method produces an equal swing damping performance without an prior knowledge of the payload dynamics.
+The baseline control performance degrades significantly when the multirotor mass is changed, because this parameter is not considered unknown.
+However, the proposed method produced a consistently good performance. 
 
 \paragraph
-The accuracy of \gls{DMDc} prediction models was successfully verified with training and testing data from practical flights.
+The accuracy of the \gls{DMDc} prediction models was successfully verified with training and testing data from practical flights.
 The proposed control architecture was also tested in \gls{HITL} simulations.
 The hardware successfully ran the \gls{MPC} at the desired speed, producing near swing-free control with a Gazebo simulator.
 
