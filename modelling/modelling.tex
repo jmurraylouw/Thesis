@@ -8,21 +8,21 @@
 \paragraph
 In this chapter, a non-linear mathematical model of a multirotor with a suspended payload will be derived.
 The model will be based on the multirotor named \emph{Honeybee}, which was built by \citet{Grobler2020}.
-A simulation environnement will use this model to simulate the multirotor-payload system in subsequent chapters.
+% A simulation environnement based on this model will be used to simulate the multirotor-payload system in subsequent chapters.
 
 \paragraph
-The chapter starts by defining the coordinate frames and rotation representations used in this work.
-After a discussion of the different forces and moments acting on this vehicle described, 
+The chapter starts by defining the coordinate frames and types of rotations used in this work.
+After a discussion of the different forces and moments acting on this vehicle, 
 a \gls{6DOF} model of the multirotor vehicle will be derived.
 The derivation of the suspended payload model will also be shown.
-Finally, practical flight data will verify the mathematical models used in simulation.
+Finally, practical flight data will be used to verify the simulated mathematical model.
 
 \FloatBarrier\section{Coordinate frames}
 
     \paragraph
-    Honeybee is quadrotor vehicle, which is a type of multirotor with four rotors.
+    Honeybee is quadrotor vehicle, which is a type of multirotor with four propellers.
     The quadrotor X-configuration is considered in this work.
-    Figure~\ref{fig:coord_frames} shows the quadrotor schematic and two coordinate frames that are used to describe this system.
+    Figure~\ref{fig:coord_frames} shows the quadrotor schematic and the two coordinate frames used to describe this system.
     
     \begin{figure}[htb]
         \centering
@@ -49,12 +49,12 @@ Finally, practical flight data will verify the mathematical models used in simul
     
     \paragraph
     The rotation of the body frame relative to the inertial frame is referred to as the attitude of the multirotor.
-    The attitude is defined in terms of Euler angles or quaternions in this work, which is described below.
+    In this work, the attitude is defined in terms of Euler angles or quaternions.
 
     \FloatBarrier\subsection{Euler angles}
 
         \paragraph
-        Euler angles are a popular way of describing a \gls{3D} rotation as a sequence of three consecutive elementary rotations \cite{Brescianini2013}.
+        Euler angles describe a \gls{3D} rotation as a sequence of three consecutive elementary rotations \cite{Brescianini2013}.
         The ZYX-sequence is commonly used for aircraft applications \cite{Brescianini2013} and is also used in this work.
         The order of rotations are:
         \begin{enumerate}
@@ -69,21 +69,23 @@ Finally, practical flight data will verify the mathematical models used in simul
             \def\svgwidth{\columnwidth}
             \scalebox{0.85}{\input{modelling/fig/Euler_rotations.pdf_tex}}
             \vspace{0.5cm}
-            \caption{Illustration of Euler angles from \cite{Slabber2020}}
+            \caption{Illustration of Euler angles \cite{Slabber2020}}
             \label{fig:Euler_rotations}
         \end{figure}
 
         \paragraph
         Figure~\ref{fig:Euler_rotations} gives a simple illustration of the Euler-ZYX angles.
-        Note that $\Theta$ and $\Phi$ are each illustrated here as a pure pitch and roll angle from the inertial frame, without a prior Euler rotation.
+        For simplicity in the illustration, $\Theta$ and $\Phi$ are each shown as a pure pitch and roll angle, without a prior Euler rotation.
 
     \FloatBarrier\subsection{Quaternions}
 
         \paragraph
         Quaternions provide a way of representing a rotation with four parameters.
         An advantage of quaternions is that it does not have mathematical singularities like Euler angles do \cite{Brescianini2013}.
-        A quaternion defines a rotation with a single rotation about a fixed axis, 
-        which is parametrized by a rotation angle, $\alpha$, and a unit vector, $\vec{r}$.
+        A quaternion defines a \gls{3D} rotation as a single rotation about a fixed axis.
+        This is parametrized by a rotation angle, $\alpha$, and a unit vector, $\vec{r}$.
+        
+        \paragraph
         A unit quaternion is defined as,
         \begin{equation}
             \bm{q} = [q_0~~q_1~~q_2~~q_3]^T = 
@@ -140,18 +142,18 @@ Finally, practical flight data will verify the mathematical models used in simul
 
         \paragraph
         Successive rotations can therefore be represented mathematically by quaternion multiplication.
-        These equations are applied in subsequent chapters.
+        These equations will be referred to and used in subsequent chapters.
 
 \FloatBarrier\section{Multirotor model}
 
     \paragraph
     The multirotor is modelled as a \gls{6DOF} rigid body.
-    This includes three translations and three rotational degrees of freedom.
+    This includes three translational and three rotational degrees of freedom.
     This modelling process is well described by \cite{Erasmus2020} and \cite{Slabber2020}, and the same general procedure is used here. 
     
     \paragraph
     The system parameters describing the physical properties of the multirotor is listed in Table~\ref{tbl:multirotor_params}.
-    These parameters are used in subsequent sections to derive a model of the multirotor.
+    % These parameters are used in subsequent sections to derive a model of the multirotor.
 
     \begin{table}[!htbp]
         \renewcommand{\arraystretch}{1.1}
