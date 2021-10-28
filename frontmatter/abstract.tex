@@ -2,33 +2,37 @@
 \addcontentsline{toc}{chapter}{Abstract}
 \makeatletter\@mkboth{}{Abstract}\makeatother
 
+\vspace{-5mm}
 \paragraph
-This thesis considers the problem of a stabilising a multirotor with an unknown suspended payload.
-The controller has no prior knowledge of the payload dynamics.
+This thesis considers the problem of stabilised control for a multirotor with an unknown suspended payload.
+The controller assumes no prior knowledge of the payload dynamics.
 The swinging payload negatively affects the multirotor flight dynamics by inducing oscillations in the system.
-In this work, an adaptive control architecture is proposed to damp these oscillations and produce stable flight.
-A data-driven system identification method is demonstrated in simulation and with practical flights.
-The final control architecture is also verified on practical hardware with \gls{HITL} simulations.  
+An adaptive control architecture is proposed to damp these oscillations and produce stable flight with different unknown payloads.
+A data-driven system identification method forms part of the archicture and is demonstrated in simulation and with practical flight data.
+\gls{MPC} is applied for swing damping control and is verified with \gls{HITL} simulations.  
 
 \paragraph
-An architecture with a parameter estimator and \gls{LQR} is used as a baseline method.
-For the controller design, this uses a predetermined model of the payload dynamics and only estimates the payload mass and cable length.
-The proposed architecture uses \gls{DMDc} to estimate a state-space model from a short length of flight data to approximate the unknown multirotor-payload dynamics.
-Thereafter, an \gls{MPC} uses this model to control the multirotor and damp the payload oscillations.
+A parameter estimator and \gls{LQR} is used in the baseline architecture.
+The \gls{LQR} uses a predetermined model of the payload, which is completed with estimates of the payload mass and cable length.
+The architecture proposed in this work uses \gls{DMDc} to estimate a linear state-space model and approximate the unknown dynamics.
+A short length of flight data is used for training.
+An \gls{MPC} uses the model to control the multirotor and damp the payload oscillations.
 
 \paragraph
-A Simulink\texttrademark~simulation environment is designed and verified with practical data.
-Within simulation, both the baseline and proposed architectures produce near swing-free payload motion for multirotor velocity control with different payload masses, cable lengths, external disturbances, and sensor noise.
-Both architectures also produce effective disturbance rejection.
-With a dynamic payload producing irregular oscillations, both methods resulted in stabilised control.
-Despite the baseline using an accurate predetermined model, the proposed method produces an equal swing damping performance without an prior knowledge of the payload dynamics.
-The baseline control performance degrades significantly when the multirotor mass is changed, because this parameter is not considered unknown.
-However, the proposed method produced a consistently good performance. 
+A Simulink\texttrademark~simulator was designed and verified with practical data.
+Within simulation, both the baseline and proposed architectures produced near swing-free multirotor control with different payload masses and cable lengths.
+Even with a dynamic payload producing irregular oscillations, both methods resulted in stabilised control.
+Both architectures also showed effective disturbance rejection.
+Despite the baseline method using an accurate predetermined model, the proposed method produced equal performances without prior knowledge of the dynamics.
+The baseline performance degraded significantly for a different multirotor mass, because this parameter was not considered as an unknown.
+In contrast, the proposed method consistently produced good performances. 
 
 \paragraph
-The accuracy of the \gls{DMDc} prediction models was successfully verified with training and testing data from practical flights.
-The proposed control architecture was also tested in \gls{HITL} simulations.
-The hardware successfully ran the \gls{MPC} at the desired speed, producing near swing-free control with a Gazebo simulator.
+The accuracy of the \gls{DMDc} models was verified with practical flight data.
+The proposed control architecture was also demonstrated in \gls{HITL} simulations.
+The hardware executed the \gls{MPC} at the desired speed, producing near swing-free control within a Gazebo simulator.
+Overall, it was shown that the proposed control architecture is practically feasible.
+Without knowledge of the payload dynamics, a data-driven model is used with \gls{MPC} for effective swing damping control.
 
 % ?? make past tense
 
