@@ -2,12 +2,84 @@
 \makeatletter\@mkboth{}{Appendix}\makeatother
 \label{appen:pid_gains}
 
-This is an appendix about \gls{PID} gains used for Honeybee.
-% ?? Add something to appendix
-% Maybe PID gains of Honeybee
+This appendix documents the \gls{PID} gains used for Honeybee.
+\vspace{-5mm}
+\paragraph
+The angular rate controller gains are given in Table~\ref{tab:angular_rate_gains}.
 
-\chapter{Random appendix}
-\makeatletter\@mkboth{}{Appendix}\makeatother
-\label{appen:random}
+\begin{table}[!h]
+	\mytable
+	\begin{tabularx}{0.7\linewidth}{@{}|l|C|C|C|@{}}
+		\hline
+		\textbf{Controller~~~~~~~~~~~} & \textbf{P gain} & \textbf{I gain} &  \textbf{D gain} \\
+		\hline
+		Roll rate   & 0.150 & 0.200 & 0.003 \\
+		\hline
+		Pitch rate  & 0.150 & 0.200 & 0.003 \\
+		\hline
+		Yaw rate    & 0.200 & 0.100 & 0.000 \\
+		\hline
+	\end{tabularx}
+	
+	\caption{\label{tab:angular_rate_gains} The angular rate controller gains.}
+\end{table}
+\vspace{-5mm}
+\paragraph
+The angle controller gains are given in Table~\ref{tab:angular_gains}.
 
-This is another appendix.
+\begin{table}[!h]
+	\mytable
+	\begin{tabularx}{0.7\linewidth}{@{}|l|C|@{}}
+		\hline
+		\textbf{Controller~~~~~~~~~~~} & \textbf{P gain} \\
+		\hline
+		Roll angle  & 6.5\\
+		\hline
+		Pitch angle & 6.5\\
+		\hline
+		Yaw angle   & 2.8\\
+		\hline
+	\end{tabularx}
+	
+	\caption{\label{tab:angular_gains} The angle controller gains.}
+\end{table}
+\vspace{-5mm}
+\paragraph
+The velocity controller gains are given in Table~\ref{tab:vel_gains}.
+
+\begin{table}[!h]
+	\mytable
+	\begin{tabularx}{0.7\linewidth}{@{}|l|C|C|C|@{}}
+		\hline
+		\textbf{Controller} & \textbf{P gain} & \textbf{I gain} &  \textbf{D gain} \\
+		\hline
+		North velocity  & 1.8 & 0.4 & 0.2\\
+		\hline
+		East velocity   & 1.8 & 0.4 & 0.2\\
+		\hline
+		Down velocity   & 4.0 & 2.0 & 0.0\\
+		\hline
+	\end{tabularx}
+	
+	\caption{\label{tab:vel_gains} The velocity controller gains.}
+\end{table}
+\vspace{-5mm}
+\paragraph
+The position controller gains are given in Table~\ref{tab:pos_gains}.
+
+\begin{table}[!h]
+	\mytable
+	\begin{tabularx}{0.7\linewidth}{@{}|l|C|@{}}
+		\hline
+		\textbf{Controller~~~~~~~~~~~} & \textbf{P gain} \\
+		\hline
+		North position  & 0.95\\
+		\hline
+		East position & 0.95\\
+		\hline
+		Down position & 1.0\\
+		\hline
+	\end{tabularx}
+	
+	\caption{\label{tab:pos_gains} The position controller gains.}
+\end{table}

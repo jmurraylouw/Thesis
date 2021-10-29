@@ -87,7 +87,8 @@
         This same process is also explained in detail by \cite{Erasmus2020}.
         The controller gains were designed for a transient response that is as fast as possible while retaining fast disturbance rejection, and minimal overshoot.            
         It was determined by \cite{Grobler2020} that the default PX4 angular rate controller gains of the ZMR250 airframe provide excellent control for Honeybee and satisfy these design requirements.
-        
+        These gains are documented in Appendix~\ref{appen:pid_gains}.
+
         % ?? Input figure of the angular rate step response
 
         \paragraph
@@ -144,7 +145,8 @@
         % An integrator is not required in this controller, 
         % because it is placed between the velocity and angular rate controllers, which both include integrators to reject steady-state disturbances \cite{Erasmus2020}.
         Only a proportional term is applied in this control law.
-        The proportional gain was designed for Honeybee by \cite{Grobler2020} for a transient response that is faster than the default ZMR250 response.
+        The proportional gains were designed for Honeybee by \cite{Grobler2020} for a transient response that is faster than the default ZMR250 response.
+        These gains are documented in Appendix~\ref{appen:pid_gains}.
         This results in a \SI{1}{\radian} step response with 
         little to no overshoot, 
         \SI{0.3}{\second} rise time, 
@@ -247,6 +249,7 @@
 
         \paragraph
         Figure~\ref{fig:pid_tuning_subfigs} shows a velocity step response for the resulting cascaded \gls{PID} controller with a specific payload.
+        The gains used are documented in Appendix~\ref{appen:pid_gains}.
         Note that the response results in a large overshoot, however, this aids in keeping the payload angles low.
         The initial swing angle is quite large, however, this attenuates to lower angles quickly enough for stable flight.
         The velocity oscillations are clearly visible in Figure~\ref{fig:pid_tuning_plot_vel}.
