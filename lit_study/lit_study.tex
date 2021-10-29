@@ -91,7 +91,7 @@
         Various suspended payload configurations have been considered in literature.
         The classical suspended payload application involves a small payload suspended below the vehicle with a rigid link \cite{Erasmus2020, Slabber2020, Guerrero-Sanchez2017, Klausen2017, Ichikawa2018, DeAngelis2019a}. 
         \citet{Kotaru2017} considered a suspended payload system with an elastic cable modelled as a spring-damper system.
-        \citet{Tang2015a} modelled the multirotor-payload system with a hybrid dynamical model to consider aggressive manoeuvres where the cable transitions from taut to slack.
+        \citet{Tang2015} modelled the multirotor-payload system with a hybrid dynamical model to consider aggressive manoeuvres where the cable transitions from taut to slack.
         The transportation of payloads with flexible cables have also been studied, where the cable is modelled as a set of serially connected rigid links  \cite{Goodarzi2015, Goodarzi2014, Kotaru2018}. 
         Furthermore, the control of a group of multirotors cooperatively transporting a suspended payload was also considered in various studies \cite{Lee2015, Sanalitro2020, Klausen2014, Goodarzi2015}.
         
@@ -116,10 +116,10 @@
         Trajectory generation methods for suspended payload systems are based on open-loop control techniques.
         The objective of these techniques is to determine a trajectory in which the multirotor motion would induce a specific payload trajectory to reduce oscillations or avoid obstacles.
         Numerous trajectory generation methods have been explored in the literature for suspended payload transportation 
-        \cite{Tang2015b, Geisert2016, Zeng2019, Xian2020, Starr2005, Palunko2012, Su2019, Palunko2013, Faust2013}. % ?? Maybe remove this long citation?
+        \cite{Tang2015, Geisert2016, Zeng2019, Xian2020, Starr2005, Palunko2012, Su2019, Palunko2013, Faust2013}. % ?? Maybe remove this long citation?
 
         \paragraph
-        \citet{Zeng2019} and \citet{Tang2015b} applied differential flatness based trajectory planning methods for multirotors in obstacle-filled environments.
+        \citet{Zeng2019} and \citet{Tang2015} applied differential flatness based trajectory planning methods for multirotors in obstacle-filled environments.
         Instead of only considering swing reduction of the suspended payloads, these studies consider specific payload trajectories to avoid obstacles during aggressive motion.
         \citet{Xian2020} proposed an efficient online trajectory planning method without iterative optimizations.
         The swing-reduction performance of this method was verified with experimental results.
@@ -140,7 +140,7 @@
         multirotors \cite{Homolka2017, Sadr2014b, Fielding2019} that carry suspended payloads.
 
         \paragraph
-        \citet{Ichikawa2018a} compared different input shaping techniques for velocity control of a multirotor with a suspended payload in simulations.
+        \citet{Ichikawa2018} compared different input shaping techniques for velocity control of a multirotor with a suspended payload in simulations.
         The specific input shaping techniques considered were: \gls{ZV}, \gls{NZV}, \gls{EI}, and 2-hump \gls{EI}.
         These methods convolve a baseline input command with precisely timed impulses based on the length of the suspended cable. 
         Simulation results showed that the input shapers significantly decreased the residual payload oscillations compared to a baseline velocity controller.

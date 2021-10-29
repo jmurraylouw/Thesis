@@ -408,7 +408,7 @@ Finally, practical flight data will be used to verify the simulated mathematical
     \begin{figure}[h]
         \centering
         \includegraphics[width=0.6\linewidth]{modelling/fig/quad_with_payload.png}
-        \caption{Schematic of a multirotor with suspended payload from \cite{Slabber2020}}
+        \caption{Schematic of a multirotor with suspended payload \cite{Slabber2020}}
         \label{fig:quad_with_payload}
     \end{figure}
 
@@ -650,18 +650,16 @@ Finally, practical flight data will be used to verify the simulated mathematical
     \paragraph
     The same procedure was followed to verify the multirotor with a suspended payload model.
     Figure~\ref{fig:prac_vs_sim_vel_step_with_payload} compares the practical and simulated velocity step responses with a suspended payload attached to the vehicle.
-    The shape of the velocity curves also matches well in this comparison.
-    However, they do not correlate as well as they do in the no-load experiment.
-    This may be due to the added complexity of the model.
-    The considered payload model adds modelling assumptions which add to the inaccuracy of the model.
-    The system also considers many state variables that each need to be assigned an accurate initial condition value.
-    Furthermore, the effect of wind disturbances is expected to be greater for the multirotor-payload system than for the multirotor without a load.
-
-    \paragraph
-    However, the shape of the practical and simulated velocity curves are still well matched.
-    This seems to be an impressive result for such a complex system with numerous interlinking elements.
+    The velocity curve shapes matches well in this comparison.
+    This seems to be an impressive result for a complex system with many interlinking elements.
     Both systems provide an overshoot of a similar value.
     The amplitude and frequency of the velocity oscillations also appear to be very similar.
+
+    \paragraph
+    The slight difference between the curves is attributed to the high complexity of the multirotor-payload model. 
+    The suspended payload model adds modelling assumptions to the system which decreases the accuracy of the model.
+    The system considers many state variables that each need to be assigned an accurate initial condition.
+    Furthermore, the effect of wind disturbances is expected to be greater for the multirotor-payload system than for the multirotor without a load.
 
     \input{modelling/plots/prac_vs_sim_theta_with_payload.tex}
 
