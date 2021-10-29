@@ -161,13 +161,13 @@
         Other open-source \gls{MPC} implementations are also available as \gls{ROS} packages from work done by \cite{kamelmpc2016} or \cite{Falanga2018}.
         
         \paragraph
-        The Simulink implementation of an \gls{MPC} from the Model Predictive Control Toolbox\texttrademark~ \cite{MPCtoolbox2019} was selected for this work. 
+        The Simulink\texttrademark~implementation of an \gls{MPC} from the Model Predictive Control Toolbox\texttrademark~ \cite{MPCtoolbox2019} was selected for this work. 
         It was selected because it integrates well with our simulation environment in Simulink
         and it specifically uses a discrete state-space plant model.
         The Model Predictive Control Toolbox\texttrademark~ also supports C\texttt{++} code generation for stand-alone \gls{ROS} nodes.
         Therefore, it can integrate with the SITL implementation of PX4 and it can be run on an \gls{OBC} for practical implementations.
 
-        % ?? Check all Simulink without TM
+        % ?? Check all Simulink\texttrademark~without TM
         
         \paragraph
         The Model Predictive Control Toolbox\texttrademark ~solves the control optimisation problem as a \gls{QP} at each time interval \cite{MPCtoolbox2019}.

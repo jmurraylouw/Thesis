@@ -30,7 +30,7 @@
 
         % \paragraph
         % The controller design started with the mathematical derivation of a dynamical model for a multirotor named Honeybee.
-        % The dynamical equations of the multirotor-payload system and PX4 controller architecture were implemented in a MATLAB/Simulink simulation for controller design and testing.
+        % The dynamical equations of the multirotor-payload system and PX4 controller architecture were implemented in a Simulink\texttrademark~simulation for controller design and testing.
         
         \paragraph
         An \gls{LQR} controller was identified as a popular baseline controller in the literature and was selected as the baseline swing damping controller for this work.
@@ -92,7 +92,7 @@
         The baseline \gls{LQR} controller was also described and the weights were tuned for the simulated multirotor-payload system.
         The \gls{LQR} was designed based on the white-box model which uses estimated parameters for each different payload.
         The control architecture proposed in this work includes an \gls{MPC} controller which uses a data-driven system identification model for predictive control.
-        The \gls{MPC} implementation from the Model Predictive Control Toolbox\texttrademark~in Simulink was used and the algorithm was described in detail.
+        The \gls{MPC} implementation from the Model Predictive Control Toolbox\texttrademark~in Simulink\texttrademark~was used and the algorithm was described in detail.
         This controller, using data-driven system identification models, was also successfully applied for swing damping control in simulation.
 
 % ?? Velocity step tests
@@ -136,7 +136,7 @@
         \paragraph
         Finally, \gls{HITL} simulations were performed to demonstrate the computationally intensive controller algorithm working with the actual hardware and software toolchain.
         This involved a complex system of different, interconnected software tools.
-        The \gls{MPC} algorithm ran as a standalone \gls{ROS} node on the \gls{OBC} and was generated from MATLAB/Simulink code.
+        The \gls{MPC} algorithm ran as a standalone \gls{ROS} node on the \gls{OBC} and was generated from Simulink\texttrademark~code.
         Tests showed that the OBC was acceptable for the processing requirements of the \gls{MPC} and the algorithm could run at the desired speed.
         It was also shown that the final system produces smooth, swing damping control of the multirotor-payload system as seen in previous simulations.
 

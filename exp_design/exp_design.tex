@@ -113,7 +113,7 @@
         The software toolchain used with Honeybee includes PX4-Autopilot, QGroundControl, \gls{ROS}, and Gazebo simulator.
         This toolchain and was also implemented and described well by \citet{Erasmus2020}, \citet{Slabber2020}, and \citet{Grobler2020}.
         A brief overview of the software toolchain is provided here.
-        % MATLAB/Simulink was also used to generate standalone \gls{ROS} nodes which runs on the \gls{OBC}.
+        % Simulink\texttrademark~was also used to generate standalone \gls{ROS} nodes which runs on the \gls{OBC}.
 
         \subsection{PX4-Autopilot}
 
@@ -168,7 +168,7 @@
             \end{figure}
 
             \paragraph
-            MATLAB/Simulink was used to convert the \gls{MPC} controller developed in Section~\ref{sec:mpc} to C\texttt{++} code and generate a standalone \gls{ROS} node.
+            Simulink\texttrademark~was used to convert the \gls{MPC} controller developed in Section~\ref{sec:mpc} to C\texttt{++} code and generate a standalone \gls{ROS} node.
             Figure~\ref{fig:MAVROS} illustrates how the \gls{MPC} node is used as an offboard controller with PX4 and MAVROS.
             A MAVROS Master node receives data, including state estimates, from PX4 through MAVLink communication. 
             This data is published by MAVROS to various \gls{ROS} topics.
