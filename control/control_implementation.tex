@@ -53,7 +53,7 @@
         % LQR.R = 8
 
         \input{control/plots/compare_control_theta.tex}
-% ?? Grammarly on this chapter
+
         \paragraph
         Figure~\ref{fig:compare_control_theta} shows the payload angle data of the velocity step response.
         Both the \gls{MPC} and \gls{LQR} damp the payload angle well and the oscillations cease after only two or three cycles.
@@ -64,7 +64,7 @@
         \paragraph
         Figure~\ref{fig:compare_control_acc_sp} shows the acceleration setpoint commanded by the two controllers for this step response.
         This is probably due to the inherent similarity between the controller implementations as discussed in Section~\ref{sec:mpc}.
-        The similarity in the acceleration setpoint responses also show that the energy expended in a velocity steps are roughly equal for these two controller implementations.
+        The similarity of the acceleration setpoint data also shows that the energy expended in a velocity step is roughly equal for these two controller implementations.
         However, this is also highly dependant on the weightings used in the optimisation problem of both controllers.
         Both controllers also produce a non-zero steady-state setpoint as expected, which is required to counter aerodynamic drag.
 
@@ -72,7 +72,7 @@
 
         \paragraph
         The system identification and control implementations are required to perform well with different unknown payload parameters.
-        Therefore, numerous flights with a range of different payload were simulated, the respective models were trained and the controllers were implemented.
+        Therefore, numerous flights with a range of different payloads were simulated, the respective models were trained and the controllers were implemented.
         Figure~\ref{fig:compare_control_vel_l1} and Figure~\ref{fig:compare_control_vel_l05} show velocity step responses with \gls{LQR} and \gls{MPC} implementations with two payloads flights.
         Both the parameter estimation with \gls{LQR} implementation, and the \gls{DMDc} with \gls{MPC} implementation, handle flights with different cable lengths and payload masses well.
         In each flight, \gls{LQR} and \gls{MPC} damp the payload oscillations and control the multirotor velocity well.
@@ -124,8 +124,6 @@
         whereas the \gls{LQR} applies integral action proportional to the integral of the tracking error.
         Therefore the \gls{MPC} implementation produces less integrator build up which results in a lower overshoot.
 
-        % Could add effect of bad models. ??
-
     \FloatBarrier\subsection{Dynamic payload}
 
         \paragraph
@@ -154,7 +152,7 @@
         However, the superimposed, high-frequency oscillations are smaller in the \gls{LQR} response than in the \gls{MPC} response.
         The \gls{LQR} naively damps the payload oscillations because its controller gain is determined from the same dynamical model as for a simple suspended payload.
         Because the angle of the payload relative to the cable is not measured or considered in the \gls{LQR} plant model, it does not directly damp these high-frequency oscillations.
-        The \gls{MPC} should account for the superimposed frequency and provide a smoother response than the \gls{LQR}, since the black-box model includes the double pendulum dynamics in its prediction model.
+        The \gls{MPC} should account for the superimposed frequency and provide a smoother response than the \gls{LQR} since the black-box model includes the double pendulum dynamics in its prediction model.
         Therefore it is expected that the \gls{MPC} optimiser determines a smooth trajectory that damps both the low and high-frequency oscillations. 
 
         \input{control/plots/mpc_vel_prediction_vs_actual.tex}
@@ -164,7 +162,7 @@
         Even though the \gls{MPC} generates a smooth optimised trajectory with the plant model, the actual response of the simulated system differs from this prediction.
         Figure~\ref{fig:mpc_vel_prediction_vs_actual} shows the predicted velocity of the \gls{MPC} optimiser, given the velocity setpoint and initial condition at Time~=~\SI{1.1}{\second}.
         The actual simulated response, resulting from replanning at every time-step with the \gls{MPC}, is also shown in Figure~\ref{fig:mpc_vel_prediction_vs_actual}.
-        For the first part of the velocity response, the the actual response matches the optimised trajectory well.
+        For the first part of the velocity response, the actual response matches the optimised trajectory well.
         However, after Time~=~\SI{3.2}{\second}, the predicted dynamics is noticeably different from the actual response to the optimised input sequence.
 
         \input{control/plots/mpc_theta_prediction_vs_actual.tex}
@@ -194,12 +192,12 @@
     \FloatBarrier\subsection{Change in unconsidered system parameters}
 
         \paragraph
-        The control architectures have been shown to be adaptable to variations in the payload parameters.
+        The control architectures were shown to be adaptable to variations in the payload parameters.
         However, changing other system parameters may affect the performance of the different controllers. 
         As mentioned in Chapter~\ref{chap:system_id}, a disadvantage of the white-box system identification approach used by the LQR,
         is that parameter estimation techniques need to be manually designed for each unknown parameter.
         In the specific implementation, the \gls{LQR} model assumes that the multirotor mass is known.
-        Hence, changing the mass of the multirotor is detrimental to the accuracy of plant model and therefore affects the \gls{LQR} performance.
+        Hence, changing the mass of the multirotor is detrimental to the accuracy of the plant model and therefore affects the \gls{LQR} performance.
         In contrast, the data-driven system identification method for the \gls{MPC} plant model does not rely on such modelling assumptions.
         
         \begin{figure}
@@ -254,7 +252,7 @@
     However, the trajectories were not as smooth as with the simple suspended payload.
     Even though the simulated dynamics differed significantly from the simple suspended payload model used by the LQR,
     the \gls{LQR} still managed to damp the payload oscillations effectively.
-    The \gls{MPC} also managed to damp the payload oscillations, but did not conclusively outperform the \gls{LQR}.
+    The \gls{MPC} also managed to damp the payload oscillations but did not conclusively outperform the \gls{LQR}.
     Even though the estimated model used by the \gls{MPC} showed good prediction accuracy with the given testing data set, 
     the actual system response did not follow the predicted trajectory of the \gls{MPC} well.
     It appears that the optimised trajectory of the \gls{MPC} is beyond the domain where the linear model provides an accurate approximation of the non-linear dynamics.
