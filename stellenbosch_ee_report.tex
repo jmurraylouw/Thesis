@@ -135,7 +135,7 @@
 % \bibliographystyle{IEEEtran}
 \usepackage[numbers,sort]{natbib}  % automatically reorder inline citations
 \bibliographystyle{IEEEtranN}
-% \usepackage[style=ieee,dashed=false]{biblatex} Figure out way to make dashed line of repeated authors go away
+\usepackage{IEEEtrantools} % Remove dash for repeated author
 
 % \usepackage[hyphens]{url}
 
@@ -185,6 +185,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
+\bstctlcite{IEEEexample:BSTcontrol} % Remove dash for repeated author
 
 \selectlanguage{british}
 
