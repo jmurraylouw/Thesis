@@ -13,8 +13,8 @@
     \paragraph
     The original formulation of \gls{HAVOK} is only defined for uncontrolled dynamical systems \cite{Brunton2017a}.
     In this work, we have adapted the standard \gls{HAVOK} algorithm to account for the effect of control.
-    This implementation well be referred to as \gls{HAVOKc} 
-    \gls{HAVOKc} results in a discrete, linear model that approximates the behaviour of a controlled dynamical system.
+    This implementation well be referred to as \gls{HAVOKc}.
+    This algorithm results in a discrete, linear model that approximates the behaviour of a controlled dynamical system.
     In this section, a brief overview is provided of this implementation of \gls{HAVOKc}.
     
     \paragraph
@@ -153,8 +153,11 @@
         \label{fig:havok_force_entries}
     \end{figure}
 
-    % \paragraph
-    % ?? High level comparison of \gls{DMDc} and HAVOKc
+    \paragraph
+    For a high-level comparison of the data-driven methods, recall from Section~\ref{sec:dmdc} that \gls{DMDc} applies least-squares regression directly to the collected state and input data matrices.
+    \gls{HAVOKc} first applies an \gls{SVD} to the state and input data, and truncates the insignificant modes.
+    Least-squares regression is then applied to the pseudo-state data from the truncated \gls{SVD} to determine a state-space model.
+    This model is then transformed back into the original coordinate frame.
 
 
 
