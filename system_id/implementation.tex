@@ -7,56 +7,45 @@
     and \ref{sec:havok} 
     will be applied to simulation data.
     Firstly, the influence of design parameters on the algorithm performance will be discussed.
-    These parameters include hyperparameters, the length of training data and the algorithm sample time.
-    The effect of conditions that are not determined by algorithm design will also be explored, 
-    like measurement noise, and the physical properties of the payload.
-    Finally, the white-box and black-box techniques will be tested on a dynamic payload 
-    which does not satisfy the assumptions of a simple pendulum.
+    These parameters include hyperparameters, length of training data and sample time.
+    The effect of measurement noise and the physical properties of the payload will also be explored.
+    Finally, the white-box and black-box techniques will be tested on a dynamic payload which does not satisfy the modelling assumptions of a single pendulum.
 
     \subsection{Methodology} \label{sec:sys_id_methodology}
 
         \paragraph
-        A \gls{SITL} implementation of the PX4 Autopilot \cite{Meier2015} using the Gazebo simulator \cite{Koenig2004} is used to generate data
+        A \gls{SITL} implementation of the PX4 flight-stack \cite{Meier2015} with the Gazebo simulator \cite{Koenig2004} is used to generate data
         for system identification.
         Testing these techniques within simulations allows us to investigate a much larger range of system configurations 
         than possible with practical flights.
-        The simulation model used in Gazebo was verified in Chapter~\ref{chap:modelling}.
-        Using PX4 in \gls{SITL} also ensures that the controller dynamics in simulation 
-        is as close as possible to practical flights since the same flight stack is used in both cases.
-        Gazebo applies realistic measurement noise to the signals received by PX4 
-        and the PX4 flight stack applies an \gls{EKF} for state estimation.
-        Therefore the data seen by the system identification techniques 
-        include the same \gls{EKF} filtering as practical flight data.
+        The simulation model was verified in Chapter~\ref{chap:modelling}.
+        Using \gls{SITL} ensures that the simulated controller dynamics is as close as possible to practical flights.
+        Gazebo applies realistic levels of sensor noise and PX4 applies an \gls{EKF} for state estimation.
 
         \paragraph
         The procedure used to evaluate the black-box techniques is as follows:
         \begin{enumerate}
-            \item Takeoff and hover with the multirotor
-            \item Start logging input and output data
-            \item Command a series of velocity step setpoints with random step sizes and time intervals
-            \item Stop logging data
-            \item Split data into separate training and testing periods
-            \item Build a model from the training data
-            \item Calculate an error metric for the model from the testing data
+            \item Takeoff and hover.
+            \item Start logging input and output data.
+            \item Command a series of velocity step setpoints with random step sizes and time intervals.
+            \item Stop logging data.
+            \item Split data into separate training and testing periods.
+            \item Build a model from the training data.
+            \item Calculate an error metric for the model from the testing data.
         \end{enumerate}
 
         \paragraph
-        The default \gls{PID} velocity controller from PX4 is used during these simulation.
+        The default \gls{PID} controllers from PX4 are used within simulations.
         The implemented controller gains are documented in Appendix~\ref{appen:pid_gains}.
         A \gls{ROS} node is used to read and log the payload angle measurement from Gazebo 
         and a different \gls{ROS} node is used to send velocity setpoints to PX4 
-        with the MAVLink protocol through the popular \gls{ROS} package, 'mavros'.
+        with the MAVLink protocol through the \gls{ROS} package called MAVROS.
         
         \paragraph
-        A algorithm schedules the series of velocity step commands 
-        by assigning random step values and time-intervals within a specified range.
-        These values are selected from a uniform distribution 
-        within the ranges specified in Table~\ref{tbl:input_ranges}
-        The maximum velocity step is determined in simulation by iteratively increasing the maximum velocity step 
-        to a safe value where the multirotor remains in stable flight
-        and the payload angles do not swing out of control.
-        The time interval range is set iteratively to ensure 
-        that the generated data includes both transient and steady-state dynamics.
+        An algorithm schedules the series of velocity step commands by assigning random step values and time intervals within a specified range.
+        These values are selected from a uniform distribution within the ranges specified in Table~\ref{tbl:input_ranges}.
+        The maximum velocity step is determined in simulation by iteratively increasing the maximum velocity step to a safe value where the multirotor remains in stable flight.
+        The time interval range is set iteratively to ensure that the generated data includes both transient and steady-state dynamics.
  
         \begin{table}[!ht]
             \renewcommand{\arraystretch}{1.1}
@@ -77,18 +66,16 @@
 
         \paragraph
         Figure~\ref{fig:training_data} 
-        shows an example of random velocity steps and the resulting velocity response used as training data.
+        shows an example of velocity step responses used as training data.
         Using random velocity steps and time intervals prevents the system identification methods 
         from overfitting to a specific set of control conditions.
-        The method should rather determine a generalised model 
-        that works over a range of possible control conditions.
-        The data logged for the duration of the training data shows minimal altitude fluctuations.
-        These fluctuations appear to be due to \gls{GPS} noise rather than the swinging payload, 
-        since they do not show high frequency oscillations as seen in the North velocity.
-        This supports the assertion in \ref{sec:plant_considered} 
-        that the considered plant approximates a pendulum-on-a-cart model during longitudinal control.
+        The method should produce a generalised model that works for a range of different control conditions.
+        
+        % \paragraph
+        % The training data shows minimal altitude fluctuations.
+        % These fluctuations appear to be due to \gls{GPS} noise rather than the swinging payload.
+        % This supports the assertion in Section~\ref{sec:plant_considered} that the considered plant approximates a pendulum-on-a-cart model during longitudinal control.
 
-        % ?? Add plot and paragraph if there is time
         % \input{system_id/plots/training_data_altitude.tex}
 
         % \paragraph
@@ -97,19 +84,15 @@
         % This is due to speed of the altitude controllers
 
         \paragraph
-        The data logged from simulation is then divided into testing and training data.
-        The training data is used by the system identification algorithms to generate a regression model
-        and the model is then used to determine a prediction error metric over the unseen testing data.
-        It is common practice in model evaluations
-        to use separate sets of data for training and testing.
+        The simulation data is divided into testing and training data.
+        The training data is used to generate a model and this model is used to calculate a prediction error over the unseen testing data.
         This ensures that good prediction scores do not result from models that overfit the training data. 
         
         \paragraph
-        The testing data spans a fixed length of time and is taken from the start of the simulation period.
+        The testing data spans a fixed length of time and is taken from the start of each simulation period.
         The training data is then extracted from the remainder of the data.
-        The same setpoint schedules are used to generate this data for different simulations
-        to ensure that the metrics determined from different simulations are comparable. 
-        The error metric calculated from the testing data is used to evaluate and rank the performances of each model.       
+        The same setpoint schedules are used to generate this data for different simulations to ensure that the error metrics determined from different simulations are comparable. 
+        These error metrics are used to evaluate and rank the performances of each model.       
         % It is important to note that the testing data contains steps sizes and intervals not captured in the training data.
         % Write about generalisable models and that different steps sizes??
         % Edit this part ??
@@ -129,26 +112,24 @@
     \subsection{Error metric}
 
         \paragraph        
-        It is common practice is to select a model for an \gls{MPC} based on k-step-ahead prediction errors \cite{Zhao2014}.
-        This is because the model is used to make k-step-ahead predictions during control optimisation.
-        When model error is dominated by variance error (caused by disturbances), 
+        It is common practice is to select a model for an \gls{MPC} based on k-step-ahead prediction errors because the model is used to make k-step-ahead predictions during control optimisation\cite{Zhao2014}.
+        When model error is dominated by variance error caused by disturbances, 
         it may be better to use one-step-prediction error \cite{Zhao2014}.
-        However, for the case of a multirotor with a payload, it is assumed that variance error 
-        (caused by under-modelling) dominates the model error.
+        However, for the case of a multirotor with a payload, it is assumed that variance error caused by under-modelling dominates the model error.
 
         \paragraph
         Different metrics are used in literature to quantify prediction accuracy for different applications.
-        Very common, scale-dependant error metrics are \gls{MSE} and MAE.
+        Common, scale-dependant error metrics include \gls{MSE} and \gls{MAE}.
         These metrics are dependant on the unit and scale of a variable, 
         hence they cannot be used to compare predictions of different variables.
         \gls{MSE} ($l_2$~norm of error values) penalises larger errors more than smaller errors, 
-        whereas MAE ($l_1$~norm) penalises errors equally.
-        For our use case the $l_1$~norm provides a more intuitive metric than the $l_2$~norm
-        because it has the same unit as the prediction variable
-        and there is no motivation to penalise larger errors more than smaller errors for our use case.
+        whereas \gls{MAE} ($l_1$~norm) penalises errors equally.
+        For our use case, the $l_1$~norm provides a more intuitive metric than the $l_2$~norm
+        because it has the same unit as the prediction variable.
+        There is no motivation for penalising larger errors more than smaller errors.
 
         \paragraph
-        MAE is calculated as:
+        \gls{MAE} is calculated as:
         % \begin{equation}
         %     \bm{MAE} = \frac{1}{N_{run}} \cdot \sum_{k = 1}^{N_{run}} \left\lvert \bm{\hat{x_k}} - \bm{x_k} \right\rvert ,
         % \end{equation}
@@ -157,7 +138,7 @@
         \end{equation}
         where 
         % $N_{run}$ is the number of samples used in the prediction run,
-        $\bm{MAE}$ is a vector with the MAE of each state,
+        $\bm{MAE}$ is a vector with the \gls{MAE} of each state,
         $\bm{x_k}$ is the actual state vector at time-step $k$, 
         $\bm{\hat{x_k}}$ is the state prediction, 
         and 
@@ -171,22 +152,18 @@
         \gls{MAPE} expresses accuracy as the absolute ratio between the error and actual value at each time-step.
         This results in undefined or extremely large values for the payload angle predictions because the state has a zero mean.
         The velocity state variable has a non-zero mean, 
-        therefore the scale of the \gls{MAPE} of velocity will significantly different from the \gls{MAPE} of the payload angle.
+        therefore the scale of the \gls{MAPE} of velocity will be significantly different from the \gls{MAPE} of the payload angle.
         
         \paragraph
-        \gls{MRAE} is also popular metric for comparing predictions models used with an \gls{MPC} \cite{Kaiser2018b},
-        however, similarly to \gls{MAPE}, it also results in undefined values for the payload swing angle.
-        \gls{MASE} does not have this problem and can compare predictions of different variables well, 
-        because it expresses accuracy as the ratio between the MAE of the model prediction and the MAE of an in-sample
-        naive forecast \cite{Hyndman2006}.
-        However, an in-sample forecast is a naive prediction for a one-step-ahead prediction, 
-        but not for a k-step-ahead prediction.
-        Therefore \gls{MASE} is not a helpful ratio for our use case.
+        \gls{MRAE} is also popular metric for comparing predictions models used with an \gls{MPC} \cite{Kaiser2018b}.
+        However, it also results in undefined values for the payload swing angle similarly to \gls{MAPE}.
+        \gls{MASE} does not have this problem because it expresses accuracy as the ratio between the \gls{MAE} of the model prediction and the \gls{MAE} of an in-sample naive forecast \cite{Hyndman2006}.
+        However, an in-sample forecast is a naive prediction for a one-step-ahead prediction, but not for a k-step-ahead prediction.
+        Therefore \gls{MASE} is not a helpful ratio in our use case.
 
         \paragraph
-        \gls{NMAE} (Normalised Mean Absolute Error) is a scale-free error metric which provides a fair comparison of different variables in our use case.
-        In this work \gls{NMAE} normalises the MAE of a variable by the range of that variable, 
-        thereby variables with different ranges or different means can be compared.
+        \gls{NMAE} is a scale-free error metric that provides a fair comparison of different variables in our use case.
+        In this work, the \gls{MAE} of a variable is normalised by the range of that variable.
         This value is calculated as:
         % \begin{equation}
         %     metric = \frac{1}{n_x} \cdot \sum_{i = 1}^{n_x} \left( \frac{ \bm{MAE_i} }{ x_{i, max} } \right) 
@@ -201,39 +178,29 @@
         % ?? write that it is understood as percentage
 
         \paragraph
-        This results in an error metric for each predicted variable, 
-        but a single value is required per model 
-        to rank the overall accuracy of different models.
-        Therefore the average of the NMAE of all state variables
-        is used as the single value representing the overall accuracy of a model
-        and is denoted as $\overline{NMAE}$.
-        This is the final error metric used to evaluate the model predictions 
-        in the sections to follow.
+        This produces an error metric for each predicted variable.
+        However, a single value is required per model to rank the overall accuracy of different models.
+        Therefore the average of the \gls{NMAE} of all state variables is used to quantify model accuracy and is denoted as $\overline{NMAE}$.
 
         % \paragraph
         % Other considered error metrics are IAE and ITAE which adds up error over the prediction period.
         % IAE integrates the absolute error over time and weights all error equally.
         % ITAE integrates the absolute error multiplied by time over time 
         % hence errors that occur later in the prediction are weighted more than those that that occur earlier.
-        % MAE was chosen over these metrics 
+        % \gls{MAE} was chosen over these metrics 
         % since it is closer to the loss function of the \gls{MPC} than IAE or ITAE.
         % Especially, ITAE achieves the opposite of what is desired because it penalises earlier errors less.
         % For the \gls{MPC} it is more important that early prediction errors are small since it will re-optimise later  
 
         \paragraph
-        Other criteria which are more statistically rigorous in model selection 
-        than error metrics are \gls{AIC} and \gls{BIC} scores.
+        Other criteria which are more statistically rigorous in model selection than error metrics are \gls{AIC} and \gls{BIC} scores.
         % These are information criteria scores which compute the maximum log likelihood of the model 
         % and add a penalty based on the number of terms in the model.
-        Thereby they provide a quantitative way of performing a Pareto analysis, 
+        They provide a quantitative way of performing a Pareto analysis, 
         which balances model complexity with model accuracy \cite{Mangan2017}.
-        It is generally advantageous to use a parsimonious model, 
-        which has a low prediction error but is not overly complex, 
-        than a complex model with a slightly lower prediction error.
-        This not only reduces overfitting, but also ensures that the \gls{MPC} optimisation problem 
-        is not too computational intensive for the available hardware.
-        However, these scores require the computation of the maximum log likelihood of each model 
-        over numerous simulations.
+        It is generally more advantageous to use a parsimonious model (which has a low prediction error but is not overly complex) than a complex model with a slightly lower prediction error.
+        This reduces overfitting and ensures that the \gls{MPC} optimisation problem is not unnecessarily computationally intensive.
+        However, these scores require the computation of the maximum log-likelihood of each model over numerous simulations.
         This is computationally intractable and unpractical for our use case because of the large number of hyperparameter combinations to compare, as explained in Section~\ref{sec:hyperparameters}.
         Therefore an error metric will rather be used to evaluate model accuracy.
         
@@ -244,35 +211,23 @@
         % will result in a negligible improvement in control performance
 
         \paragraph
-        The error metric of one model may change significantly
-        different starting conditions or prediction horizons.
+        The error metric of one model may vary significantly for different starting conditions or prediction horizons.
         The prediction horizon used for model analysis is selected as \SI{20}{\second}
         which is at least twice as long as the desired \gls{MPC} prediction horizon.
-        Some models have very accurate transient predictions, but prove to be unstable over a longer time horizon.
-        If the prediction horizon is too short, these models may score unreasonably low error metrics.
-        Selecting these such a model could result in unstable control at certain control conditions.
-        Therefore a long prediction horizon is used for testing so that marginally unstable models 
-        are penalised heavily in model selection. 
+        Some models have accurate transient predictions but are unstable over longer time horizons.
+        If the prediction horizon is too short, these models may score unreasonably well.
+        Selecting such a model could result in unstable control at certain control conditions.
+        Therefore a long prediction horizon is used for testing so that marginally unstable models are penalised heavily in model selection. 
 
         % \murray{Maybe insert example of good initial prediction but bad long term ??}
 
         \paragraph
-        Different starting conditions also have a large influence on the prediction score of a model.
-        Some models may accurately predict transient behaviour, 
-        while being extremely bad at steady-state predictions.
-        This would result in an \gls{MPC} controlling the plant well during the initial step response,
-        but becoming unstable during steady-state control.
-        In order to have an \gls{MPC} that can control the plant during the different stages of a flight, 
-        a model needs to be selected with accurate predictions over a range of different control conditions.
-        
-        \paragraph
+        Different starting conditions also have a large influence on calculated error metrics.
         Therefore the error metric needs to include predictions from multiple starting conditions in the testing data.
-        The resulting testing procedure is to first specify a number of equispaced starting conditions within the testing data.
-        The model is then run multiple times for the length of the prediction horizon, 
-        stating with different initial conditions each time.
-        The \gls{NMAE} is determined for each run, 
-        whereafter the average of these scores gives the final \gls{NMAE} score of the model.
-        In order to balance the variety of testing conditions with the computational time per error metric calculation, 
+        The testing procedure specifies different starting conditions within the testing data.
+        The model is then run multiple times with a fixed prediction horizon, but starting at different initial conditions.
+        The \gls{NMAE} is determined for each run and the average of these scores gives the final \gls{NMAE} of the model.
+        To balance the variety of testing conditions with the computational time per error metric calculation, 
         10 prediction runs with different initial conditions used in the final \gls{NMAE} score. 
         
         % \paragraph
@@ -282,32 +237,26 @@
         % For example, the multirotor velocity reaches values of \SI{3}{\metre/\second} but the payload swing angle has a maximum of only \SI[]{0.526}{\radian}.
         % The velocity prediction error is therefore inherently larger than the payload angle prediction error
         % and will bias the error metric towards favouring models with good velocity predictions.
-        % The proposed scaled error metric ensures that the MAE of each state variable can be compared to each other.
+        % The proposed scaled error metric ensures that the \gls{MAE} of each state variable can be compared to each other.
         % It also provides an error metric that is better and unbiased representative of the model prediction performance across all state variables. 
 
     \subsection{Hyperparameters} \label{sec:hyperparameters}
         
         \paragraph
-        As discussed in Section~\ref{sec:dmdc} and \ref{sec:havok} 
-        \gls{DMDc} and \gls{HAVOKc} models are dependent on two hyperparameters: 
+        As discussed in Section~\ref{sec:dmdc} and \ref{sec:havok}, \gls{DMDc} and \gls{HAVOKc} models are dependent on two hyperparameters: 
         the number of delay-coordinates, $q$, 
         and the \gls{SVD} truncation rank, $p$.
         For each system identification run with different system parameters or a different length of training data,
         a hyperparameter search is performed to find the combination of hyperparameters 
-        that results the lowest prediction error.
+        that produces the lowest prediction error.
         Firstly, a coarsely spaced grid search is performed with large intervals between tested hyperparameter values.
         The range of tested hyperparameters is then reduced and a finer hyperparameter search is performed.
-        From numerous simulation iterations, the range of significant hyperparameter values is conservatively determined to be,
-        \begin{equation}
-            5 < q < 30, \phantom{--} 5 < p < 50
-        \end{equation}.
 
         \input{system_id/plots/MAE_vs_q.tex} 
 
         \paragraph
         Figure~\ref{fig:NMAE_vs_q} shows the prediction error of \gls{DMDc} and \gls{HAVOKc} models for different values of $q$.
-        For each value of a $q$, a new model is generated with every $p$ in the considered range 
-        and the lowest prediction error is plotted.
+        For each value of $q$, a new model is generated with every $p$ in the considered range and the lowest prediction error is plotted.
         There is only a slight difference between the results of \gls{DMDc} and \gls{HAVOKc}.
         As expected, the models with the least number of terms have the highest prediction errors.
         As the number of terms available to the model increases, the error decreases.
@@ -316,41 +265,32 @@
         as model complexity increases past $q > 12$.        
 
         \paragraph
-        This `elbow' in the plot can be considered as the Pareto front, 
+        This `elbow' in the plot is the Pareto front, 
         where there is a balance between model complexity and accuracy \cite{Mangan2017}.
-        It is desirable to select a parsimonious model on this front that has just enough free parameters 
-        to capture the plant dynamics and have good accuracy, 
-        without being overly complex \cite{Brunton2019b}.
-        These models are less prone to overfitting 
-        and also lead to lower computational complexity in the \gls{MPC} optimisation problem.        
+        It is desirable to select a parsimonious model on this front that has enough free parameters for good accuracy, without being overly complex \cite{Brunton2019b}.
+        These models are also less prone to overfitting. 
 
         \input{system_id/plots/singular_values.tex}
 
         \paragraph
-        Figure~\ref{fig:singular_values} plots the singular values of the \gls{SVD} from a \gls{HAVOKc} model in a log scale.
-        The singular values of the \gls{SVD} can be loosely interpreted as 
-        a measure of significance of the corresponding \gls{POD} mode to the plant dynamics \cite{Brunton2019d}. 
-        That is, modes with higher singular values contain more relevant information about the plant dynamics 
-        than modes with lower singular values.
-        The $p$ number of significant singular values, 
-        which correspond to the \gls{POD} modes used to reconstruct the observed dynamics,
-        are specifically shown in the plot.
+        Figure~\ref{fig:singular_values} plots the singular values of the \gls{SVD} from a \gls{HAVOKc} model on a log scale.
+        The singular values of the \gls{SVD} are loosely interpreted as a measure of the significance of each \gls{POD} mode in the plant dynamics \cite{Brunton2019d}. 
+        That is, modes with higher singular values contain more relevant information about the plant dynamics than modes with lower singular values.
+        The $p$ number of singular values used to reconstruct the dynamics are shown in the plot.
         The truncated singular values are also shown, which correspond to the discarded modes.
         
         \paragraph
-        The Pareto `elbow' is also visible in this plot where there is noticeable change in gradient
-        roughly at the split between significant and truncated values.
+        The Pareto `elbow' is also visible in this plot where there is a noticeable change in gradient roughly at the split between significant and truncated values.
         This change in gradient shows that after $p$ modes, 
         there is a significant drop in information contributed per remaining mode.
-        Note that the number $p$ was selected from a hyperparameter search using an error metric
-        which did not consider the singular values.
-        This seems to confirm the notion that the Pareto optimal solution 
+        Note that the number $p$ was selected from a hyperparameter search using an error metric that does not consider the singular values.
+        This appears to confirm the notion that the Pareto optimal solution 
         is often the most accurate representation of the actual dynamics \cite{Brunton2019d}.
 
     \subsection{Sample time} \label{sec:sample_time}
 
         \paragraph
-        The sample time, $T_s$, used for system identification is the sample time of the discrete model, 
+        The sample time, $T_s$, used for system identification determines the sample time of the discrete model, 
         which determines the sample time of the \gls{MPC}.
         Resampling strategies can enable the \gls{MPC} to run at a different frequency to the discrete model 
         but this adds unnecessary complexity to the control architecture.
@@ -359,11 +299,10 @@
         The \gls{MPC} acts in the velocity loop and commands an acceleration setpoint.
         The default \gls{PID} velocity controller runs at \SI{50}{\hertz} which corresponds to $T_s =~$\SI{0.02}{\second}.
         Due to the computational complexity of an \gls{MPC}, the optimiser will struggle to run at \SI{50}{\hertz} on an \gls{OBC} on a multirotor.
-        However, the controller needs to run as fast as possible 
-        to have significant time-scale separation from the multirotor dynamics.
+        However, the controller needs to run as fast as possible to have significant time-scale separation from the multirotor dynamics.
         If the controller runs too slowly, it may result in poor flight performance or unstable control.
-        The highest natural frequency of the payload based on the range of physical parameters considered 
-        is~\SI{8.39}{\hertz} corresponding to a period of \SI{0.119}{\second}.
+        % The highest natural frequency of the payload based on the range of physical parameters considered 
+        % is~\SI{8.39}{\hertz} corresponding to a period of \SI{0.119}{\second}.
 
         \input{system_id/plots/MAE_vs_Ts_vs_L.tex}
 
@@ -385,14 +324,16 @@
         at such slow sample times.
         Hence the long term prediction of the models fits the general shape of the dynamics well and results in low errors.
         However, this sample time is too slow for controlling the practical multirotor.
-        $T_s =$~\SI{0.03}{\second} is selected as the sample time for system identification 
-        because it provides a good balance between being fast enough for the multirotor dynamics and slow enough for a practical \gls{MPC} implementation.
+        
+        \paragraph
+        A sample time of $T_s =$~\SI{0.03}{\second} is selected for system identification because it appears provides a good balance between being fast enough for control and slow enough for practical implementation on the available hardware.
+        This selection was made after an iterative simulation process with the \gls{MPC} controller discussed in Chapter~\ref{chap:control}.
 
     \subsection{Choice of payload variable in the state vector} \label{sec:payload_state_variable}
 
         \paragraph
         As discussed in Section~\ref{sec:plant_considered}, 
-        the equations of motion in continuous-time of a floating pendulum are dependent on $\dot{\theta}$ and $V_N$, 
+        the continuous-time equations of motion of a floating pendulum are dependent on $\dot{\theta}$ and $V_N$, 
         but are not dependent on $\theta$.
         Therefore it is expected that 
         $
@@ -401,8 +342,7 @@
         \end{bmatrix}^T
         $
         will be used as the state vector for system identification.
-        However, if $\dot{\theta}$ is not included in the state vector of a discrete model, 
-        it can still be represented with numerical differentiation of $\theta$.
+        However, $\dot{\theta}$ can be represented with numerical differentiation of $\theta$.
         An example of this is the backward Euler form,
         \begin{equation}
             \dot{\theta}_k = (\frac{1}{T_s}) \cdot \theta_k - (\frac{1}{T_s}) \cdot \theta_{k-1} .
@@ -411,7 +351,7 @@
         $
             \bm{x} = \begin{bmatrix}
                 V_N & \theta
-            \end{bmatrix}^T
+            \end{bmatrix}^T ,
         $
         for system identification.
 
@@ -419,8 +359,8 @@
         Based on the floating pendulum equations, it is expected that a model derived from $\dot{\theta}$ data 
         will better approximate the actual dynamics than one using $\theta$.
         This is because $\dot{\theta}$ is directly related to the dynamics, 
-        compared to $\theta$ which needs to be related to $\dot{\theta}$ to be relevant for the dynamics.
-        However, an experiment to compare the performances of these models shows that this has a  negligible effect.
+        compared to $\theta$ which needs to be related to $\dot{\theta}$ before it is relevant.
+        However, an experiment to compare the performances of these models shows that this has a negligible effect.
 
         \input{system_id/plots/different_state_vectors.tex}
 
@@ -428,50 +368,43 @@
         Figure~\ref{fig:different_state_vectors} shows the prediction error of \gls{HAVOKc} models using $\dot{\theta}$ or $\theta$ 
         for a range training data lengths.
         Only for very short lengths of training data, do models using $\dot{\theta}$ outperform those using $\theta$.
-        For longer lengths of training data there is a negligible difference in prediction error between the methods.
-        Therefore $\theta$ will be used for system identification to avoid unnecessary complexity, 
-        since there is no direct measurement of $\dot{\theta}$ on the practical multirotor.
+        For longer lengths of training data, there is a negligible difference in prediction error between the methods.
+        Therefore $\theta$ will be used for system identification to avoid unnecessary complexity because there is no direct measurement of $\dot{\theta}$ on the practical multirotor.
 
     \subsection{Noise} \label{sec:noise}
 
         \paragraph
         Measurement noise is bad for system identification because it adds high-frequency information to the output signals
         which are not part of the actual dynamics.
-        On the practical multirotor the \gls{IMU}, barometer, magnetometer and \gls{GPS} sensors experience measurement noise.
-        The \gls{EKF} performs sensor fusion and smooths out most of the measurement noise 
-        to provide a state estimate that is less noisy than raw sensor values.
+        On the practical multirotor the barometer, magnetometer, \gls{IMU}, and \gls{GPS} sensors experience measurement noise.
+        The \gls{EKF} performs sensor fusion and smooths out most of the measurement noise to provide a state estimate that is less noisy than raw sensor values.
         Therefore the output from the \gls{EKF} is used for system identification.
         
         \paragraph
-        The potentiometer and \gls{ADC} which measure the payload angle on the multirotor also has experience measurement noise.
-        This signal is not smoothed by an onboard \gls{EKF}.
-        In simulation noise is applied to the payload angle as band-limited white-noise.
+        The potentiometer and \gls{ADC} (discussed in Chapter~\ref{chap:exp_design}) which measure the payload angle also produce measurement noise.
+        The angle signal is not smoothed by an onboard \gls{EKF}.
+        Within simulations, noise is applied to the payload angle as band-limited white-noise.
         The applied noise power was iteratively adjusted to match that of the practical payload measurements.
-        The noisy signals from both the multirotor \gls{EKF} and payload swing angle are smoothed 
-        with a quadratic regression smoother from MATLAB\textsuperscript{\textregistered} before applying system identification.
-        The smoother uses a fixed window length of 20 samples which was selected iteratively 
-        to remove high-frequency variation without loosing the general shape of the data.
+        The noisy signals from the multirotor \gls{EKF} and payload swing angle are smoothed with a quadratic regression smoother from MATLAB\textsuperscript{\textregistered}.
+        This uses a fixed window length of 20 samples which was selected iteratively to remove high-frequency variation without losing the general shape of the data.
 
         \input{system_id/plots/acc_sp.tex}
         
         \paragraph
-        The input signal also needs to be smoothed to remove high-frequency noise from the logged signal.
-        The quadratic regression smoother does not fit the shape of the input data well 
-        because of the sharp, non-differentiable edges in the acceleration setpoint signal.
-        Therefore a Gaussian-weighted moving average smoother 
-        from MATLAB\textsuperscript{\textregistered} is used for the input signal.
+        The input signal needs to be smoothed to remove high-frequency noise.
+        The quadratic regression smoother does not fit the shape of the input data well because of the sharp, non-differentiable edges in the acceleration setpoint signal.
+        Therefore a Gaussian-weighted moving average smoother from MATLAB\textsuperscript{\textregistered} is used for the input signal.
         
         \paragraph
-        Figure~\ref{fig:acc_sp} shows the North acceleration setpoint for a period of training data.
-        Without noise the acceleration setpoint should have a zero mean, 
+        Figure~\ref{fig:acc_sp} shows the North acceleration setpoint for a sample of training data.
+        Without noise, the acceleration setpoint should have a zero mean, 
         however the signal mean shows a constant offset.
         % This offset may be due to the integrators in the controllers correcting for an \gls{CoM} imbalance to keep the vehicle steady.
-        The is due to a measurement offset in the \gls{IMU} which causes a offset in the orientation vector 
+        The is due to a measurement offset in the \gls{IMU} which causes an offset in the orientation vector 
         and therefore affects the control signals.
         The setpoint mean is calculated from the training data and subtracted from the signal to correct for the offset.
-        This results in a input signal with a zero mean.
-        The calculated mean is reapplied to the \gls{MPC} control signal during implementation
-        to readjust for the required offset.
+        This results in an input signal with a zero mean.
+        The calculated mean is reapplied to the \gls{MPC} control signal during implementation to readjust for the required offset.
 
         % \paragraph
         % However, since there is no direct measurement of $\dot{\theta}$, 
@@ -484,29 +417,29 @@
         
         \input{system_id/plots/noise_vs_no_noise.tex}
 
+        \paragraph
         Figure~\ref{fig:noise_vs_no_noise} compares the prediction errors of \gls{HAVOKc} models generated from data with or without noise.
         The plot shows that when using short lengths of training data, 
-        the prediction errors are smaller for model generated with noiseless signals.
+        the prediction errors are smaller for models generated with noiseless signals.
         However, it appears that the prediction errors are almost equal with longer lengths of training data.
-        This is because with a short length of data, the signal variation or energy contributed of the noise is a significant part of the data
-        and has a strong influence on the model.
+        This is because with a short length of data, the signal variation or energy contributed by the noise is a significant part of the data.
         However, with longer lengths of data, the variation caused by the actual plant dynamics 
         dominates the low energy contribution of the measurement noise. 
         Hence, the noise has a smaller influence on the model.        
-        It also appears that at long training data lengths noise has a negligible effect on the prediction error of the resulting models.
+        It also appears that at long lengths of training data, noise has a negligible effect on prediction error.
 
         \input{system_id/plots/havok_vs_dmd_noise.tex}
 
+        \paragraph
         Figure~\ref{fig:havok_vs_dmd_noise} compares the performance of \gls{HAVOKc} and \gls{DMDc} model when using noisy data.
         The prediction error curves of the two methods are very similar, with \gls{HAVOKc} producing slightly lower prediction errors than \gls{DMDc}.
         However, this difference in error may be so small that it has a negligible effect on control.  
 
-    \subsection{System parameters} \label{sec:system_params}
+    \FloatBarrier\subsection{System parameters} \label{sec:system_params}
             
         \paragraph
-        The suspended payload, as described in Section~\ref{sec:plant_considered},
-        has two system parameters, $m_p$ and $l$.
-        For the practical multirotor considered, the payload mass is limited to,
+        The suspended payload has two system parameters, $m_p$ and $l$ , as described in Section~\ref{sec:plant_considered}.
+        For the practical multirotor, the payload mass is limited to,
         $
             0.1 \leq m_p \leq \SI{0.3}{\kilo\gram} ,
         $
@@ -520,6 +453,7 @@
 
         \input{system_id/plots/system_param_subfigs.tex}
 
+        \paragraph
         From Figure~\ref{fig:different_lengths} it seems that there is not a great difference in prediction error 
         for different cable length setups.
         From Figure~\ref{fig:different_masses} it appears that $m_p$ has a greater effect on prediction error,
@@ -529,7 +463,7 @@
         % When no external payload is attached, the connection device attached to the end of the cable is 
         % $m_p = \SI{0.01}{\kilo\gram}$.
         % % It becomes unsafe to Flying without a cable attached to the cable, or with a payload with a very small mass, 
-        % % may become unsafe since the cable may not always  kept taut by the mass. 
+        % % may become unsafe since the cable may not always kept taut by the mass. 
         % On the other limit, $m_p = \SI{0.4}{\kilo\gram}$ is determined to be the maximum payload mass the multirotor can carry safely 
         % based on the maximum thrust of the motors.
 
@@ -545,19 +479,16 @@
     \subsection{Length of training data} \label{sec:sys_id_length_of_data}
     
         \paragraph
-        From the plots discussed in previous sections, 
-        it is obvious that the accuracy of a model depends 
-        on the length of training data exposed to the system identification algorithm.
-        The general relationship between length of training data and prediction error 
+        From the results shown in previous sections, it is clear that the accuracy of a model depends on the length of training data exposed to the system identification algorithm.
+        The general relationship between the length of training data and prediction error 
         is illustrated in Figure~\ref{fig:system_param_subfigs}.
-        For very short lengths of training data the prediction error is large, 
-        but as training length increases, the prediction error improves up to a point.
-        After this point, the prediction error slowly worsens with increasing lengths of training data.
+        For short lengths of training data, the prediction error is large, 
+        but as the training length increases, the prediction error improves up to a point.
+        After this point, the prediction error slowly degrades with increasing lengths of training data.
         
         \paragraph
-        This trend may be counter-intuitive, because it is generally expected that more training data leads to better models.
-        The logic follows that more training data leads to less overfitting 
-        which leads to better test data predictions.
+        This trend may be counter-intuitive because it is generally expected that more training data leads to better models.
+        The logic follows that more training data leads to less overfitting which leads to better test data predictions.
         However, a phenomenon named `double-descent' occurs when the dimension of a regression model, $D$ 
         is near the number of training samples, $N_{train}$ \cite{Nakkiran2019}.
         In this critical region at the transition between over-parameterized and under-parameterized models,
@@ -576,36 +507,32 @@
         This value is indeed within the range of considered training data lengths,
         which explains why our training experiments experience this phenomenon.
 
-        \paragraph
-        Note that the plot for $l =$~\SI{0.5}{\metre} in Figure~\ref{fig:different_lengths}
-        does not follow the `double-descent' trend.
-        This may be because the short cable length corresponds to large swing angles and a high natural frequency.
-        The onboard \gls{PID} controllers do not damp these oscillations as quickly 
-        as the smaller angle and lower frequency oscillations of longer cables.
-        Hence there is not enough information exposed in the first few step responses of the training data and
-        the algorithm needs more step responses to accurately capture the steady-state behaviour of the plant.
+        % \paragraph
+        % Note that the plot for $l =$~\SI{0.5}{\metre} in Figure~\ref{fig:different_lengths}
+        % does not follow the `double-descent' trend.
+        % This may be because the short cable length corresponds to large swing angles and a high natural frequency.
+        % The onboard \gls{PID} controllers do not damp these oscillations as quickly as the smaller angle and lower frequency oscillations of longer cables.
+        % Hence there is not enough information exposed in the first few step responses of the training data and
+        % the algorithm needs more step responses to accurately capture the steady-state behaviour of the plant.
 
         \paragraph
-        In a practical implementations, training data is costly and it is desirable to use less training data.
-        Less training data means less flight time will be wasted on training a model before the multirotor can fly with a updated controller.
+        In practical implementations, training data is costly.
+        Less training data means less flight time will be wasted on training a model before the multirotor can fly with an updated controller.
         Less training data also corresponds to lower memory usage on the multirotor hardware and lower time-complexity for the algorithm.
         Therefore it is not practical to increase the amount of training data to the under-parameterized region.
-        Hence, the critical region of training data lengths will be used and
-        the data length corresponding to the lowest prediction error will be selected per simulation.
+        Hence, the critical region of training data lengths will be used and the data length corresponding to the lowest prediction error per simulation will be selected.
 
     \subsection{Dynamic payload} \label{sec:dynamic_payload}
         
         \paragraph
-        In Section~\ref{sec:param_estimation} it was shown that the white-box system identification method
-        perform well for the suspended payload use case.
+        In Section~\ref{sec:param_estimation} it was shown that the white-box system identification method performs well for the suspended payload use case.
         It was also shown in \cite{Slabber2020} and \cite{Erasmus2020} that this method can be used 
-        in conjunction with \gls{LQR} control to minimize swing angles of an unknown payload.
-        However, many payloads do not satisfy the assumptions made in for the a~priori model
-        which is detrimental to performance of white-box method.
-        For example, for an elongated payload attached to the cable the point-mass assumption does not hold.
+        in conjunction with an \gls{LQR} controller to minimize the swing angles of an unknown payload.
+        However, many payloads do not satisfy the considered modelling assumptions, which is detrimental to the performance of white-box method.
+        For example, an elongated payload attached to the cable does not satisfy the point-mass assumption.
         The \gls{CoM} of the payload is well below the attachment point of the cable, 
-        which creates a double pendulum model that differs significantly from a simple pendulum.
-        Such a payload is better represented in \gls{2D} by the double pendulum modelled in Figure~\ref{fig:double_pend}, 
+        which creates a double pendulum model that differs significantly from a single pendulum.
+        This payload is better represented by the double pendulum modelled in Figure~\ref{fig:double_pend}, 
         than the model defined in Figure~\ref{fig:floating_pend}.
 
         \begin{figure}[htb]
@@ -626,41 +553,38 @@
         The exact $m_p$ is used for the model, but the cable length is estimated from a \gls{FFT} of the payload swing angle 
         as described in Section~\ref{sec:length_estimation}.
         It is clear that the prediction is accurate for the first few oscillations, 
-        but the slight difference in frequency accumulates over time causing an increasingly large offset.
-        However, the general shape of the dynamics is still captured by the model.
-        Also note that the prediction oscillations are damped linearly 
-        but the actual oscillations experience non-linear damping.
+        but the slight difference in frequency causes an increasingly large oscillations-peak offset as time progresses.
+        Furthermore, the prediction oscillations are damped linearly but the actual oscillations experience non-linear damping.
         This difference is an approximation error because the non-linear plant is modelled with a linear model. 
+        However, the general shape of the dynamics is represented well.
 
         \input{system_id/plots/prediction_single_pend_white.tex}
         
         \paragraph
-        Figure~\ref{fig:prediction_double_pend_white} also shows the k-step-ahead prediction 
-        of a white-box model, but this prediction is for a double pendulum simulation.
-        The cable length was estimated from the same method 
-        by calculating the \gls{FFT} of the cable swing angle and identifying the dominant frequency.
+        Figure~\ref{fig:prediction_double_pend_white} also shows the k-step-ahead prediction of the white-box model for a double pendulum simulation.
+        The cable length was also estimated by identifying the dominant frequency from the \gls{FFT}.
         Note how the prediction of the first oscillation is quite accurate and is similar to the initial swing of the single pendulum.
         However, by the second swing, the double pendulum dynamics differ significantly from the model prediction.
+        
+        \paragraph
         The single pendulum oscillations seen in Figure~\ref{fig:prediction_single_pend_white} are regular
-        compared to double pendulum oscillations in Figure~\ref{fig:prediction_double_pend_white} which are noticeably irregular.
-        The a~priori model expects regular, single frequency oscillations.
-        This can be seen in Figure~\ref{fig:prediction_double_pend_white} where the predicted peaks are equidistant.
+        compared to the double pendulum oscillations in Figure~\ref{fig:prediction_double_pend_white} which are noticeably irregular.
+        The a~priori model expects regular, single-frequency oscillations.
+        This can be seen in Figure~\ref{fig:prediction_double_pend_white}, since the predicted peaks are equidistant.
         However, the actual dynamics have a superposition of two frequencies due to the double pendulum payload.
 
         \input{system_id/plots/prediction_double_pend_white.tex}
         
         \paragraph
-        The \gls{FFT} amplitude spectrum of the single pendulum is shown in Figure~\ref{fig:FFT_double_pend}.
-        This plot shows a single peak which corresponds to the natural frequency of the suspended payload.
-        Figure~\ref{fig:FFT_single_pend} shows the \gls{FFT} amplitude spectrum of the double pendulum.
-        Two peaks are revealed in this plot 
-        which correspond to the two superimposed frequencies caused by the double pendulum.
-        The frequency content of the two plants are clearly different 
-        so the white-box model and parameter estimation techniques would need to be redesigned for these payloads specifically.
+        The \gls{FFT} amplitude spectrum of the single pendulum is shown in Figure~\ref{fig:FFT_single_pend}.
+        This plot shows a single peak that corresponds to the natural frequency of the suspended payload.
+        Figure~\ref{fig:FFT_double_pend} shows the \gls{FFT} amplitude spectrum of the double pendulum.
+        Two peaks are revealed in this plot which corresponds to the two superimposed frequencies caused by the double pendulum.
+        The frequency content of the two plants is clearly different.
+        Therefore the white-box model and parameter estimation algorithms would need to be redesigned for these payloads specifically.
         This is the great disadvantage of the white-box system identification technique.
         For every model with different dynamics, a new technique needs to be designed and used.
-        In contrast, the proposed data-driven method provides a general solution 
-        for a large range of different payloads and dynamics.
+        In contrast, the proposed data-driven method provides a general solution for a large range of different payloads and dynamics.
 
         % The \gls{FFT} of the single pendulum leads to an estimated cable length of \SI{1.19}{\metre}        
         % The \gls{FFT} of the double pendulum leads to an estimated cable length of \SI{1.39}{\metre}
@@ -672,12 +596,11 @@
         for a single pendulum simulation.
         Note that there is less of a frequency difference in this prediction than the white-box prediction in 
         Figure~\ref{fig:prediction_single_pend_white}.
-        The shape of the predicted damping is also more similar to the actual dynamics than the white-box prediction.
-        This may be because the data-driven methods effectively fit a higher order damping model to the dynamics,
-        compared to the simple, linear damping applied in the white-box model.
+        The predicted damping also represents the actual damping better than the white-box prediction.
+        The data-driven methods effectively fit a high-order damping model to the dynamics, in contrast to the simplistic damping model applied in the white-box model.
 
         \paragraph
-        The damping seen in these plots is a complicated effect which depends on 
+        The damping seen in these plots depends on 
         the payload connection, 
         the aerodynamic drag, 
         and
@@ -685,22 +608,19 @@
         An advantage of data-driven system identification techniques 
         is that the effect of damping is inherently included in the estimated model 
         without specifically estimating a damping coefficient.
-        In contrast, the white-box estimation technique requires the effect to be modelled a~priori 
-        and a designed algorithm to estimate every parameter that effects the dynamics.
+        In contrast, the white-box estimation technique requires the damping effect to be modelled accurately.
 
         \input{system_id/plots/prediction_single_pend_black.tex}        
         
         \paragraph
-        Figure~\ref{fig:prediction_double_pend_black} shows the prediction of the same data-driven methods 
-        but for a double pendulum simulation.
-        The same cable length and effective payload mass is used here as in the single pendulum simulation.
+        Figure~\ref{fig:prediction_double_pend_black} shows the predictions the data-driven methods for a double pendulum simulation.
         Notice how accurate the prediction is for the first \SI{20}{\second} of the plot.
         In contrast to the white-box model, the black-box model oscillations follow the irregular, 
         multi-frequency response of the actual dynamics.
         The state-space model can approximate the multi-frequency dynamics of the plant 
         because of the delay-coordinates in the model.
-        As expected, the prediction accuracy is also much better than the white-box models 
-        for both the single and double pendulum simulations. 
+        As expected, the prediction accuracy is better than the white-box models 
+        for the single and double pendulum simulations. 
 
         \input{system_id/plots/prediction_double_pend_black.tex}
         
@@ -710,26 +630,23 @@
         is required to fully describe the state of the system.
         However, the \gls{DMDc} and \gls{HAVOKc} models are still able to approximate the dynamics quite accurately 
         without measuring this state variable.
-        This is due to the extent of the delay embedding of the models \cite{Kamb2020}.
-        Figure~\ref{fig:MAE_vs_q_double_pend} shows the prediction error 
-        as a function of the number of delays in the model for a double pendulum.
-        Note how much more delays is required before the prediction error reaches steady-state 
-        than for a single pendulum showed in Figure~\ref{fig:NMAE_vs_q}.
-        This is because the dynamics are more complex 
-        and model needs a lot more parameters to account for the hidden state variable.
-        % Also note that \gls{HAVOKc} seems to mostly produces slightly lower errors for low values of $q$,
+        This is due to the delay embedding of the models \cite{Kamb2020}.
+        
+        \paragraph
+        Figure~\ref{fig:MAE_vs_q_double_pend} shows the prediction error as a function of the number of delays in the model for a double pendulum.
+        Note how many more delays are required for the prediction error to reach steady-state, compared to the single pendulum in Figure~\ref{fig:NMAE_vs_q}.
+        The double pendulum dynamics are more complex and the model needs more parameters to account for the hidden state variable.
+        % Also note that \gls{HAVOKc} seems to mostly produce slightly lower errors for low values of $q$,
         % but \gls{DMDc} and \gls{HAVOKc} produce very similar
                 
         \input{system_id/plots/MAE_vs_q_double_pend}
 
         \paragraph
-        Overall, the data-driven system identification approaches were shown to work well 
+        Overall, the data-driven system identification methods were shown to work well 
         for both the single and double pendulum payloads.
-        In contrast, the white-box method describes the general shape of the single pendulum dynamics well, 
-        but do not perform well for a double pendulum simulation 
-        because it was specifically designed for the single pendulum payload.
-        The data-driven approaches therefore provide an accurate system identification method 
-        for a much larger range of payload types without needing a redesign for specific payload dynamics.
+        In contrast, the white-box method described the general shape of the single pendulum dynamics well but did not perform well for a double pendulum simulation.
+        This is because it was specifically designed for the single pendulum payload.
+        The data-driven approach provides an accurate system identification method for a much larger range of payloads without being redesigned for specific payload dynamics.
         
         % ?? plot q of single pend on the same axis
 

@@ -101,7 +101,7 @@
         Numerous tests were performed to evaluate the combined system identification and control architectures.
         For each test, the system identification stages firstly produced the parameter estimates and identified model for the \gls{LQR} and \gls{MPC} approaches respectively.
         Thereafter, each controller was applied based on those results.
-        For a payload with a simple pendulum model, the \gls{LQR} and \gls{MPC} both achieved stabilised control resulting in near swing-free motion.
+        For a payload with a single pendulum model, the \gls{LQR} and \gls{MPC} both achieved stabilised control resulting in near swing-free motion.
         The controllers showed similar swing damping performances, but the \gls{MPC} produced a faster settling time.
         The control architectures consistently achieved swing damping control with different payload masses and cable lengths, despite parameter uncertainty for the \gls{LQR} approach and no prior payload knowledge for the \gls{MPC} approach.
         Both controllers also showed acceptable disturbance rejection during a constant unknown step input force to the multirotor.
@@ -114,7 +114,7 @@
         Despite the data-driven model showing a much better prediction accuracy than the white-box model, the \gls{LQR} and \gls{MPC} approached produced similar swing damping performances.
         It was shown that even though the data-driven model is accurate in the domain of the state and input vectors considered in training, the optimised trajectory of the \gls{MPC} goes beyond that domain.
         Hence, the model approximation is inaccurate and the resulting \gls{MPC} control is suboptimal.
-        Both controller responses were not as smooth as for the simple pendulum model.
+        Both controller responses were not as smooth as for the single pendulum model.
         However, both controllers showed stabilised swing damping control of the system and reduced system oscillations quickly.
 
         \paragraph

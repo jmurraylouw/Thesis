@@ -137,7 +137,7 @@
             \paragraph
             One of the a~priori modelling assumptions mentioned in Section~\ref{sec:param_estimation},
             is that the suspended payload is a point-mass.
-            This reduced the considered suspended payload system to a simple pendulum in the white-box model.
+            This reduced the considered suspended payload system to a single pendulum in the white-box model.
             Figure~\ref{fig:practical_double_pendulum} shows a photo of an elongated payload suspended from Honeybee during a practical flight
             This is a practical example of a dynamic payload that deviates significantly from the point-mass assumption.
             The mass distribution causes a rotation of the payload relative to the suspended cable,
@@ -158,7 +158,7 @@
             Two superimposed frequencies are visible in the payload oscillations due to the double pendulum action of the elongated pendulum.
             The two peaks corresponding to these two frequencies can easily be identified from the FFT amplitude spectrum in Figure~\ref{fig:FFT_double_pend_prac}.
             The cable length estimation method uses the frequency of the dominant peak and calculates the effective length corresponding to that frequency.
-            This results in a simple pendulum model that best matches the dynamic payload oscillations. 
+            This results in a single pendulum model that best matches the dynamic payload oscillations. 
 
             \input{results/plots/double_pend_cable_length_vs_train_time.tex}
             
@@ -202,9 +202,9 @@
 
             \paragraph
             However, as the size of the swing angles attenuate the relative oscillations of the elongated payload also decrease.
-            Therefore the effect of the superimposed higher frequency oscillations become less prominent and the system dynamics approximate a simple pendulum more closely.
+            Therefore the effect of the superimposed higher frequency oscillations become less prominent and the system dynamics approximate a single pendulum more closely.
             For example, in Figure~\ref{fig:predictions_double_pend_prac_subfigs} it can be seen that the oscillations after \SI{12}{\second} are much less irregular than before. 
-            Therefore the simple pendulum model provides a decent representation of a practical dynamic payload for small swing angles.
+            Therefore the single pendulum model provides a decent representation of a practical dynamic payload for small swing angles.
             Overall, the white-box model represents the general shape of the practical data, but does not capture the transient response of the system and is very sensitive to initial conditions. 
             
     \FloatBarrier\section{Data-driven system identification with practical data} \label{sec:data_driven_sys_id_prac}
@@ -452,7 +452,7 @@
         As described in Section~\ref{sec:exp_design_hitl}, an \gls{OBC} runs a \gls{ROS} node which implements the \gls{MPC} algorithm.
         The \gls{MPC} is based on a \gls{DMDc} plant model generated from training data from a \gls{HITL} simulation.
         The \gls{OBC} receives state feedback and sends control signals via a \gls{UART} connection to the \gls{FC}.
-        The \gls{FC} runs the actual PX4 flight stack firmware and executes the control signals received from the \gls{MPC} node.
+        The \gls{FC} runs the actual PX4 flight-stack firmware and executes the control signals received from the \gls{MPC} node.
         Sensor values are generated and sent to PX4 by the Gazebo simulator, which runs on a desktop computer connected to the \gls{FC} via \gls{USB}.
         In this way, we can safely determine whether the practical hardware is suitable for the computational complexity of the control algorithms.
         
@@ -543,7 +543,7 @@
         
         \paragraph
         It was also shown that the estimated length converged for flight data with different wind conditions and that the estimation error was the largest for the data with the most wind.
-        Furthermore, the cable length estimator was applied to flight data with a double-pendulum payload.
+        Furthermore, the cable length estimator was applied to flight data with a double pendulum payload.
         The estimated value converged to a length corresponding to the dominant frequency in the data, and the resulting white-box model prediction only captured the general shape of the data well.
         However, the white-box model prediction was shown to be very sensitive to initial conditions.
 
@@ -561,7 +561,7 @@
         
         \paragraph
         \gls{DMDc} was also extended to capture the North and East velocity dynamics simultaneously, and the resulting prediction model accurately reconstructed the system dynamics for test data.
-        Furthermore, \gls{DMDc} was applied to flight data with a dynamic payload representing a double-pendulum system.
+        Furthermore, \gls{DMDc} was applied to flight data with a dynamic payload representing a double pendulum system.
         \gls{DMDc} accurately reconstructed the dynamics of this system for unseen test data.
         Unlike the white-box model which only represented the dominant oscillation frequency, the \gls{DMDc} model also predicted the irregular oscillations well.
 

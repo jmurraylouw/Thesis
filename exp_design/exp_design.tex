@@ -110,15 +110,15 @@
     \FloatBarrier\section{Software Toolchain}
 
         \paragraph
-        The software toolchain used with Honeybee includes PX4-Autopilot, QGroundControl, \gls{ROS}, and Gazebo simulator.
+        The software toolchain used with Honeybee includes PX4, QGroundControl, \gls{ROS}, and Gazebo simulator.
         This toolchain and was also implemented and described well by \citet{Erasmus2020}, \citet{Slabber2020}, and \citet{Grobler2020}.
         A brief overview of the software toolchain is provided here.
         % Simulink\texttrademark~was also used to generate standalone \gls{ROS} nodes which runs on the \gls{OBC}.
 
-        \subsection{PX4-Autopilot}
+        \subsection{PX4}
 
             \paragraph
-            PX4-Autopilot is an open-source flight stack that focuses on autonomous \glspl{UAV} \cite{Meier2015} and is used in research and industrial applications.
+            PX4 is an open-source flight-stack that focuses on autonomous \glspl{UAV} \cite{Meier2015} and is used in research and industrial applications.
             \gls{SITL} and \gls{HITL} simulations are supported by PX4, which is helpful for research and development.
             
         \subsection{QGroundControl}
@@ -135,7 +135,7 @@
             \paragraph
             Gazebo is an open-source graphical-based physics simulator used for robotics.
             This is the recommended simulator in the PX4 development toolchain and is capable of both \gls{SITL} and \gls{HITL} simulations \cite{PX4userguide}.
-            The PX4 flight stack includes multirotor models developed for Gazebo which include realistic sensor plugins.
+            The PX4 flight-stack includes multirotor models developed for Gazebo which include realistic sensor plugins.
             These plugins apply sensor noise, drift and bias which replicates the actual sensors used on Pixhawk boards.
             The physical parameters of these models were changed to match Honeybee and a suspended payload was added to the model as shown in Figure~\ref{fig:gazebo_honeybee}.
 
@@ -163,7 +163,7 @@
             \begin{figure}[!htbp]
                 \centering
                 \includegraphics[width=0.9\linewidth]{exp_design/fig/MAVROS}
-                \caption{Communication between \gls{ROS}, flight stack, simulator, and ground station~\cite{Grobler2020}}
+                \caption{Communication between \gls{ROS}, flight-stack, simulator, and ground station~\cite{Grobler2020}}
                 \label{fig:MAVROS}
             \end{figure}
 

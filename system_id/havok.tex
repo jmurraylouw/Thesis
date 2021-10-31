@@ -70,7 +70,7 @@
         \bm{v}_{k+1} = \bm{\Lambda} \bm{v}_k .
     \end{equation}
     \gls{HAVOKc} determines the best fit linear operator $\bm{\Lambda}$ that maps the pseudo-state $\bm{v}_k$ to $\bm{v}_{k+1}$.
-    In order to setup an over-determined equality for Equation~\ref{eq:v_ss}, $\Tilde{\bm{V}}^T$ is divided into two matrices:
+    To setup an over-determined equality for Equation~\ref{eq:v_ss}, $\Tilde{\bm{V}}^T$ is divided into two matrices:
     \begin{align} \label{eq:v1v2}
         \bm{V}_1 &= \left [
             \begin{array}{*{5}{@{}M{\mycolwd}@{}}} 
@@ -139,7 +139,7 @@
     Also note that the state vector, $\bm{a}_k$, includes delay-coordinates, therefore some matrix entries are independent of the dynamics.
     This is illustrated in Figure~\ref{fig:havok_force_entries} for an example model with $q = 4$.
     For example, the mapping of $\bm{x}_k$ in the state vector to $\bm{x}_k$ in the predicted state vector
-    corresponds to a entry of 1 in the $\bm{A}_H$ matrix.
+    corresponds to an entry of 1 in the $\bm{A}_H$ matrix.
     This is fixed by the model format and is not a function of the system dynamics.
     Due to the least-squares fitting and the coordinate transformation of the algorithm, 
     \gls{HAVOKc} does not produce these exact values in $\bm{A}_H$ and $\bm{B}_H$. 

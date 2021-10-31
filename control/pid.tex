@@ -8,8 +8,8 @@
     \gls{PID} control is a popular linear control technique that applies a control signal proportional to the error signal, 
     the integral of the error signal, 
     and the derivative of the error signal.
-    This is the default control architecture used in the PX4-Autopilot flight stack \cite{Meier2015}.
-    PX4-Autopilot was chosen as the multirotor flight-stack because it is open-source and widely used in industry and research.
+    This is the default control architecture used in the PX4 flight-stack \cite{Meier2015}.
+    PX4 was chosen as the multirotor flight-stack because it is open-source and widely used in industry and research.
     The \gls{PID} implementation of PX4 does not provide active swing-damping of the payload, however, it is used in the system identification flight stage discussed in Chapter~\ref{chap:system_id}.
     
     \paragraph
@@ -168,7 +168,7 @@
         \input{control/diagrams/velocity_controller.tex}
 
         \paragraph
-        In order to drive the multirotor to a given velocity setpoint, the velocity controller commands an acceleration setpoint in the inertial frame.
+        To drive the multirotor to a given velocity setpoint, the velocity controller commands an acceleration setpoint in the inertial frame.
         This acceleration setpoint is transformed to an attitude setpoint which is used by the angle controller.
         This transformation is based on work done by \cite{Mellinger2011}. 
 

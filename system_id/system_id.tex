@@ -34,19 +34,19 @@
 
         \paragraph
         \gls{DMDc} and \gls{HAVOKc} produce very similar prediction errors for a range of different simulation conditions.
-        \gls{HAVOKc} generally has slightly lower errors, but this may have a negligible effect on the control performance based on such a model.
-        \gls{DMDc} will be used in the remainder of this work because it is less computationally complex.
+        \gls{HAVOKc} generally has slightly lower errors, but this may have a negligible effect on a controller which is based on such a model.
+        \gls{DMDc} will be used in the remainder of this work because it is has a lower computationally complexity.
         
         \paragraph
-        The data-driven methods were shown to produce accurate prediction models of the payload dynamics 
-        with sample times and lengths of training data that appear to be practically feasible for implementation with an adaptive controller.
+        The data-driven methods were shown to produce accurate prediction models of the multirotor-payload dynamics 
+        with sample times and lengths of training data that appear to be practically feasible for a control architecture.
         The methods also produced accurate models despite a realistic level of sensor noise.
         
         \paragraph
         Furthermore, the data-driven methods were tested with a range of different payload parameters
         and with an elongated dynamic payload acting as a double pendulum.
         The methods produced consistently accurate models with these different payloads.
-        The white-box system identification technique produced accurate models for different payload parameters but failed to represent the dynamics of the dynamic payload.
+        The white-box system identification technique produced accurate models with different payload parameters but failed to represent the motion of the dynamic payload.
         Therefore, the data-driven approach provides a better general system identification method 
         that can be used for a range of different payloads without being redesigned for specific dynamics.
 
