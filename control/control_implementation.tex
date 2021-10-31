@@ -6,7 +6,7 @@
 
     \paragraph
     After the system identification phase, active swing damping control can be applied
-    to the multirotor and payload system.
+    to the multirotor-payload system.
     The control architectures are summarised in Table~\ref{tbl:controller_summary} 
     by pairing the system identification techniques with the appropriate controllers.
     In this work, the \emph{\gls{MPC} architecture} refers to the entire control implementation, 
@@ -57,7 +57,7 @@
         \paragraph
         Figure~\ref{fig:compare_control_theta} shows the payload angle data of the velocity step response.
         Both the \gls{MPC} and \gls{LQR} damp the payload angle well and the oscillations cease after only two or three cycles.
-        In this case, the \gls{MPC} response results in a slightly smaller initial swing angle, however, this is dependant on the specific tuning of each controller.
+        In this case, the \gls{MPC} response results in a slightly smaller initial swing angle, however, this depends on the specific tuning of each controller.
 
         \input{control/plots/compare_control_acc_sp.tex}
 
@@ -135,7 +135,7 @@
         In Section~\ref{sec:dynamic_payload}, the proposed system identification techniques were tested on simulated flight data with such a payload.
         For the white-box system identification approach, it was shown that the white-box model captures the dynamics of the dominant frequency of the oscillating payload but ignores the higher frequency dynamics.
         For the black-box approach, a prediction model was generated from a set of training data.
-        This model accurately predicted the multirotor and payload dynamics, including the low and high-frequency dynamics, of a set of testing data.
+        This model accurately predicted the multirotor-payload dynamics, including the low and high-frequency dynamics, of a set of testing data.
 
         \input{control/plots/compare_control_vel_dynamic.tex}
 
@@ -228,7 +228,7 @@
         This is expected since the system identification model used by the \gls{MPC} included the effect of the changed mass by estimating the entire model without considering individual parameters.
         
         \paragraph
-        It should be noted that another mass estimator can be implemented to estimate $m_Q$ in a flight stage before the payload is added.
+        Note that another mass estimator can be implemented to estimate $m_Q$ in a flight stage before the payload is added.
         However, this involves manually redesigning the system identification procedure for each new unknown system parameter such as $m_Q$.
         In these simulations, it was shown that changing non-estimated system parameters in the white-box approach can be detrimental to the control performance.
         Unlike the white-box approach, the black-box approach handles changes in different system parameters well without prior knowledge of these parameters.
@@ -249,7 +249,7 @@
 
     \paragraph
     For simulations with a dynamic payload, both the \gls{LQR} and \gls{MPC} effectively applied swing damping control.
-    However, the trajectories were not as smooth as with the simple suspended payload.
+    However, the trajectories were not as smooth as with the simply suspended payload.
     Even though the simulated dynamics differed significantly from the simple suspended payload model used by the LQR,
     the \gls{LQR} still managed to damp the payload oscillations effectively.
     The \gls{MPC} also managed to damp the payload oscillations but did not conclusively outperform the \gls{LQR}.

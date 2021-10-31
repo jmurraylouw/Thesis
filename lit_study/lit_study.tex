@@ -268,7 +268,7 @@
         However, this setup is often impractical for real-life multirotor applications.
         
         \paragraph
-        Outdoor payload transportation is dependant on inaccurate sensors like \gls{GPS} and potentiometers, which greatly increase the difficulty of the control problem.
+        Outdoor payload transportation depends on inaccurate sensors like \gls{GPS} and potentiometers, which greatly increase the difficulty of the control problem.
         The multirotor-payload system may also be exposed to uncontrolled wind disturbances which further complicates the control problem.
         Figure~\ref{fig:outdoor_setup} shows a multirotor in an outdoor practical experiment with a suspended payload \cite{Wang2020}.
 
@@ -297,7 +297,7 @@
         \paragraph
         In Table~\ref{tbl:lit}, the \emph{Unknown dynamics} column identifies studies that account for unknown dynamics of a multirotor with a suspended payload.
         This does not include the uncertainty due to modelling errors as a result of linearisation and discretisation methods.
-        Studies identified by this column propose stabilising controllers that are not design without a priori knowledge of the payload dynamics.
+        Studies identified by this column propose stabilising controllers that are not design without a~priori knowledge of the payload dynamics.
         This approach is considered useful for complicated working conditions and model uncertainties \cite{Hua2021}.
         This appears to be a promising research area that has been considered in only a few different studies.
         It is also interesting to note that these studies are quite recently published.
@@ -330,7 +330,7 @@
     The effect of the suspended payload was considered as an external disturbance and \glspl{ESO} were applied to estimate the disturbance.
     An \gls{ADRC} could then actively reject the disturbance caused by the payload and stabilise the system without prior knowledge of the payload dynamics.
     Experimental results showed that trajectory tracking was significantly improved compared to a standard \gls{PID} controller.
-    It should be noted that this technique did not show significant swing damping performance but rather showed robustness against the disturbance effect of the swinging payload.
+    Note that this technique did not show significant swing damping performance but rather showed robustness against the disturbance effect of the swinging payload.
 
     \paragraph
     These methods provide stabilised control of the multirotor, but do not provide optimised control of the entire multirotor-payload system.

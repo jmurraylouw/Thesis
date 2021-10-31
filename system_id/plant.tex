@@ -18,9 +18,8 @@
 
     \paragraph
     A specific subsystem of the multirotor-payload system will be considered for system identification.
-    Because the proposed controllers in Chapter~\ref{chap:control} will be applied for North velocity control,
-    the longitudinal dynamics will be considered in this section, therefore
-    the resulting input vector of the system identification plant is given by,
+    The proposed controllers in Chapter~\ref{chap:control} will be applied for North velocity control, therefore the longitudinal dynamics will be considered in this section.
+    The input vector of the plant model is given by,
     \begin{equation}
         \bm{u} = \begin{bmatrix}
             A_{N_{sp}}
@@ -28,8 +27,7 @@
     \end{equation}
     where $A_{N_{sp}}$ is the North acceleration setpoint in the inertial frame.
     $A_{N_{sp}}$ is used by the attitude controllers which will be explained in Section~\ref{sec:cascaded_pid}.
-    For swing damping control, the controllers will require feedback from both the multirotor and payload variables,
-    therefore the state vector of the considered plant is,
+    The state vector of the considered plant is,
     \begin{equation}
         \bm{x} = \begin{bmatrix}
             V_N & \theta & \dot{\theta}
@@ -37,7 +35,7 @@
     \end{equation}
     where $\theta$ and $\dot{\theta}$ are the payload angle and angular rate about the inertial East axis,
     and $V_N$ is the North velocity of the multirotor in the inertial frame. 
-    A schematic of this \gls{2D} plant is shown in Figure \ref{fig:floating_pend}.
+    A schematic of this \gls{2D} plant is shown in Figure \ref{fig:floating_pend}, where $m_Q$ is the multirotor mass, $m_p$ is the payload mass, and $l$ is the cable length.
 
     \begin{figure}[htb]
         \centering
@@ -70,5 +68,5 @@
     % Therefore it is desirable to rather use $\theta$ in the system identification process. 
     
     \paragraph
-    In subsequent sections, simulations of the full, non-linear multirotor and payload system will be performed
+    In subsequent sections, simulations of the full, non-linear multirotor-payload system will be performed
     and different methods will be applied to determine system identification models of this plant.

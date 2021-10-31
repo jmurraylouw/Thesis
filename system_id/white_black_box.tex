@@ -2,58 +2,53 @@
 
     \paragraph
     Models determined from data-driven system identification methods are generally called black-box models.
-    The user is only concerned with the inputs and output of the model
-    and does not need to derive mathematical relationships from theoretical deductions.
-    In contrast, white-box models are determined from a~priori modelling and
-    the user defines the physics of white-box models.
+    The user is only concerned with the inputs and output of the model and does not need to derive mathematical equations from theoretical deductions.
+    In contrast, white-box models are determined from a~priori modelling.
 
     \subsection{White-box techniques}
 
         \paragraph 
-        The underlying physics of a white-box model is usually determined from first principles.
+        The underlying physics of a white-box model is usually derived from first principles.
         This is done by modelling physical processes with techniques such as Lagrangian or Newton mechanics.
-        Hence, the mathematical relations between system parameters in the model are predefined in the modelling phase.
-        The system identification process is therefore reduced to parameter estimation 
-        which determines the best fit values of the system parameters.
+        Hence, the mathematical relations between system parameters are predefined in the modelling phase.
+        The system identification process is therefore reduced to parameter estimation to determine values for the system parameters.
 
         \paragraph 
-        This approach is used by \cite{Erasmus2020} and \cite{Slabber2020} for system identification 
-        for swing damping control of a multirotor with an unknown suspended payload.
-        Recall from Chapter~\ref{chap:modelling} that the system was modelled as two connected rigid bodies with the following assumptions:
+        This approach is used by \cite{Erasmus2020} and \cite{Slabber2020} for system identification in a swing damping control architecture for a multirotor with an unknown suspended payload.
+        The same system definition and modelling process are used in this thesis.
+        Recall from Chapter~\ref{chap:modelling} that the multirotor-payload system is modelled with the following assumptions:
         \begin{itemize}
             \item The payload is a point-mass.
             \item The link is massless.
             \item The link is rigid.
             \item The link is attached to the \gls{CoM} of the multirotor.
         \end{itemize}
-        The only unknown parameters in the multirotor and payload model is the payload mass and the link length.
-        These parameters are first estimated and then inserted into the predefined, linearised model.
-        This model is used by a \gls{LQR} controller to damp swing angles while also controlling the vehicle.
+        The only unknown parameters in the multirotor-payload model are the payload mass and the link length.
+        These parameters are estimated and inserted into the predefined, linearised model.
+        This model is used by a \gls{LQR} controller to damp swing angles while controlling the vehicle.
 
         \paragraph
         The main advantage of this approach is its simplicity.
         In the case considered by \cite{Erasmus2020} and \cite{Slabber2020}, only two parameters are estimated.
         In contrast, numerous values need to be estimated to reproduce the system dynamics with a black-box model.
-        Therefore, white-box system identification methods are often less computationally complex
-        and can easily be applied on low cost hardware.
+        Therefore, white-box system identification methods are often less computationally complex and are easily implemented on low-cost hardware.
         Due to the lower complexity, 
         parameter estimation algorithms often require shorter lengths of training data 
         than data-driven methods to produce accurate models.
 
         \paragraph 
-        Therefore the white-box approach works well for systems with predictable physics, 
-        however is not very adaptable to systems that deviate from the predefined dynamics.
-        The payload considered by \cite{Erasmus2020} and \cite{Slabber2020} is limited to a small rigid mass 
-        suspended from the multirotor by a non-stretching cable. 
-        In this configuration it was shown that a \gls{LQR} controller 
-        successfully controls a multirotor and minimises the payload swing angles.
-        However, if a payload or cable is used that violates one of the modelling assumptions, 
-        the predefined model no longer accurately represents the system.
+        Therefore the white-box approach works well for systems with predictable dynamics. 
+        However, is not very adaptable to systems that deviate from the predefined dynamics.
+        The payload considered by \cite{Erasmus2020} and \cite{Slabber2020} is limited to specific modelling assumptions. 
+        However, if a payload or cable is used that violates one of the assumptions, the predefined model will no longer represent the system accurately.
         Many payloads considered for practical drone deliveries do not conform to these assumptions.
+        
+        \paragraph
+        Furthermore, the payload uncertainty is limited to selected parameters.
+        A change in a parameter value that is not considered by the parameter estimator may result in large modelling errors.
         Since the controller is dependent on this model, 
-        the mismatch between the model and actual dynamics may result in undesirable controller behaviour.
-        Therefore a new model and parameter estimation technique will need to be derived 
-        for every use case that deviates significantly from the a~priori model.
+        this may result in undesirable controller behaviour.
+        Therefore a new model and parameter estimation technique will need to be derived for every use case that deviates significantly from the a~priori model.
 
     \subsection{Black-box techniques}
 
@@ -63,54 +58,33 @@
         % The user only considers what goes into, and comes out of, the black-box.
         % Something imagery about why it is called black-box
         No prior knowledge of the physics of the system are considered and no modelling assumptions are made.
-        Black-box techniques determine the mathematical relationship between inputs and outputs of a system 
-        using information from measurement data only.
+        Black-box techniques determine the mathematical relationship between the inputs and outputs of a system using information from measurement data only.
 
         \paragraph
         A disadvantage of the data-driven system identification approach is its computational complexity.
         Data-driven algorithms generally have a much higher computational complexity than parameter estimation techniques.
-        This is expected since a lot more model parameter values are generated 
-        to populate a black-box model than a predefined white-box model.
-        In the multirotor use case, this may mean that more expensive computational hardware is required 
-        to implement a data-driven method compared to parameter estimation methods.
-        Also, most data-driven methods have hyperparameters that affect the performance of the method 
-        and need to be tuned for a specific use case.
-        This can be done automatically, but this process increases the computational demand on the hardware.
+        This is expected since a lot more values are generated to populate a black-box model than a predefined white-box model.
+        In the multirotor use case, more expensive computational hardware is required to implement a data-driven method compared to parameter estimation methods.
         Furthermore, data-driven methods generally require more training data than parameter estimation methods.
         This means that more flight time is wasted on system identification before an updated controller can be activated.
         
         \paragraph
-        However, black-box techniques are very adaptable 
-        and provide a general system identification solution for a broad range of different dynamics.
-        This is a major advantage over white-box system identification techniques, 
-        which need to be manually redesigned for different use cases.
+        However, black-box techniques are very adaptable and provide a general system identification solution for a broad range of different dynamics.
+        This is a major advantage over white-box techniques, which need to be manually redesigned for different use cases.
         % Add more advantages ??
 
         \paragraph
-        Dynamical models can be categorised as either non-linear or linear models.
-        Non-linear models are often more accurate than linear models 
-        because real-world system mostly contain non-linear dynamics.
-        The dynamics of a multirotor and suspended payload are also non-linear.
+        Black-box models can be categorised as non-linear or linear models.
+        The dynamics of a multirotor and suspended payload are non-linear and are better represented by non-linear models.
         % Examples of black-box models with multirotors and payloads in literature ???
-
-        \paragraph
-        However, non-linear models are inherently more complex than linear models. 
-        Controllers based on non-linear models are usually more computationally complex than those with linear models.
-        The control architectures used for multirotors in practical applications are mostly implemented on onboard hardware.
-        Therefore there is value in low-complexity, linear models because these may be simple enough to execute on low cost hardware.
+        However, non-linear models are more complex than linear models. 
+        Non-linear models may require control implementations that are too computationally intensive to be implemented with the hardware available on multirotors.
+        Controllers based on low-complexity, linear models are attractive because these may be simple enough to execute on low-cost hardware.
         % trade-off between accuracy and complexity.??
-        Non-linear models may require control implementations that are too computationally intensive and may not be practically realisable on the available hardware on a multirotor.
         
         \paragraph
-        \gls{DMDc} and \gls{HAVOKc} are the two data-driven system identification methods investigated in this work. 
-        These are linear regression techniques that produce linear models that approximate non-linear dynamics.
-        Non-linear data-driven techniques like Neural Networks and SINDy \cite{Brunton2016a} 
-        may produce models that are more accurate than linear techniques.
-        However the gain in accuracy will be at the cost of a greater computational complexity.
-        % \murray{Name more techniques ??}
-        \gls{DMDc} and \gls{HAVOKc} are less computationally complex 
-        and their models are suitable for linear \gls{MPC}, 
-        which is significantly faster than non-linear \gls{MPC}.
-        This is desirable for a practical multirotor implementation, where onboard computational power is limited.
-
-    % \subsection{Comparison of the techniques} ??
+        \gls{DMDc} and \gls{HAVOKc} are the data-driven system identification methods investigated in this work. 
+        These are linear regression techniques that produce linear models to approximate non-linear dynamics.
+        Non-linear data-driven techniques like Neural Networks and \gls{SINDy} \cite{Brunton2016a} 
+        may produce models with higher accuracy at the cost of greater computational complexity.
+        \gls{DMDc} and \gls{HAVOKc} are preferred due to their lower complexity which may improve their practical feasibility for multirotor systems.

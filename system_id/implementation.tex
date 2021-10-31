@@ -6,7 +6,7 @@
     \ref{sec:dmdc}, 
     and \ref{sec:havok} 
     will be applied to simulation data.
-    Firstly, the influence of the design parameters on the algorithm performance will be discussed.
+    Firstly, the influence of design parameters on the algorithm performance will be discussed.
     These parameters include hyperparameters, the length of training data and the algorithm sample time.
     The effect of conditions that are not determined by algorithm design will also be explored, 
     like measurement noise, and the physical properties of the payload.
@@ -133,8 +133,8 @@
         This is because the model is used to make k-step-ahead predictions during control optimisation.
         When model error is dominated by variance error (caused by disturbances), 
         it may be better to use one-step-prediction error \cite{Zhao2014}.
-        However for the multirotor and payload case it is assumed that variance error 
-        (caused by under modelling) dominates the model error.
+        However, for the case of a multirotor with a payload, it is assumed that variance error 
+        (caused by under-modelling) dominates the model error.
 
         \paragraph
         Different metrics are used in literature to quantify prediction accuracy for different applications.
@@ -370,7 +370,7 @@
         \paragraph
         Figure~\ref{fig:MAE_vs_Ts_vs_L} shows the prediction error of different \gls{DMDc} models 
         generated with a range of different sample times.
-        The natural frequency of the payload pendulum is dependant on the cable length 
+        The natural frequency of the payload pendulum depends on the cable length 
         and influences the frequency response of the plant.
         Therefore Figure~\ref{fig:MAE_vs_Ts_vs_L} plots the experiment result 
         for different cable lengths to see if it has an effect on the prediction error of the models.
@@ -546,7 +546,7 @@
     
         \paragraph
         From the plots discussed in previous sections, 
-        it is obvious that the accuracy of a model is dependant 
+        it is obvious that the accuracy of a model depends 
         on the length of training data exposed to the system identification algorithm.
         The general relationship between length of training data and prediction error 
         is illustrated in Figure~\ref{fig:system_param_subfigs}.
@@ -577,7 +577,7 @@
         which explains why our training experiments experience this phenomenon.
 
         \paragraph
-        It should be noted that the plot for $l =$~\SI{0.5}{\metre} in Figure~\ref{fig:different_lengths}
+        Note that the plot for $l =$~\SI{0.5}{\metre} in Figure~\ref{fig:different_lengths}
         does not follow the `double-descent' trend.
         This may be because the short cable length corresponds to large swing angles and a high natural frequency.
         The onboard \gls{PID} controllers do not damp these oscillations as quickly 
@@ -744,7 +744,7 @@
         % Another payload case that will cause inaccuracies in estimated white-box model 
         % is if a payload is attached rigidly to the multirotor while also carrying a suspended payload.
         % The payload mass estimation is based on the assumption that the multirotor mass is known.
-        % However if a mass is rigidly attached to the vehicle, the effective multirotor mass is changed and the \gls{RLS} payload mass estimation is no longer accurate.
+        % However, if a mass is rigidly attached to the vehicle, the effective multirotor mass is changed and the \gls{RLS} payload mass estimation is no longer accurate.
         
         % \paragraph
         % To determine whether the white-box or data-driven methods perform better with these payloads, 

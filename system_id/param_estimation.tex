@@ -1,15 +1,13 @@
 \section{Parameter estimation} \label{sec:param_estimation}
 
     \paragraph
-    The purpose of parameter estimation is to determine unknown values 
-    required by a predetermined, white-box model.
-    The identified model is used to design a \gls{LQR} controller and
-    therefore needs to be in the form of a linear, continuous-time, state-space model.
-    This model was derived by \cite{Slabber2020} and will be presented in the section below.
+    Parameter estimation algorithms determine the unknown values required by the predetermined, white-box model.
+    This model is used to design a \gls{LQR} controller and therefore needs to be a linear, continuous-time, state-space model.
+    The white-box model was derived by \cite{Slabber2020} and will be presented in the section below.
     The unknown parameters in the model include the payload mass, $m_p$ and the cable length, $l$.
-    Two separate methods are used to estimate each of these parameters.
-    This approach was used successfully by \cite{Erasmus2020} and \cite{Slabber2020} 
-    to implement a \gls{LQR} swing damping controller for a multirotor with an unknown suspended payload.
+    Two separate methods are used to estimate each parameter.
+    This approach was successfully used by \cite{Erasmus2020} and \cite{Slabber2020} 
+    to implement a \gls{LQR} swing damping controller for a multirotor with unknown suspended payload parameters.
     
 \subsection{White-box model}
 
@@ -68,10 +66,9 @@
     % \end{bmatrix}, \mbox{ and} \\
 
     \paragraph
-    It is assumed that the coefficient of friction, $c$, does not change for different payload, therefore this parameter can be determine experimentally and will known before a flight.
+    It is assumed that the coefficient of friction, $c$, does not change for different payloads, therefore this parameter can be determined experimentally and is before a flight.
     Furthermore, it is assumed that $m_Q$ is known.
-    The payload parameters, 
-    $m_p$ and $l$, are unknown before a flight. 
+    The payload parameters, $m_p$ and $l$, are unknown before a flight. 
     These parameters will be estimated in the sections below.    
 
 \subsection{Payload mass estimation}
@@ -81,24 +78,20 @@
     It is assumed that the multirotor mass is known before a flight, 
     therefore the payload mass can be estimated from the additional trust required during hover.
     In both \cite{Erasmus2020} and \cite{Slabber2020} it is demonstrated 
-    that \gls{RLS} is very accurate for a system nearly identical to the one considered in this work.
+    that \gls{RLS} is very accurate for the system considered in this work.
     To compare other aspects of the white-box and black-box techniques with more clarity, 
-    it will be assumed that the method estimates $m_p$ with perfect accuracy.
-    This isolates any inaccuracies in the white-box model to 
-    either the a~priori modelling or the cable length estimation.
+    it will be assumed that the \gls{RLS} method estimates $m_p$ with perfect accuracy.
+    This isolates any inaccuracies in the white-box model to a~priori modelling errors or cable length estimation errors.
 
     \paragraph
-    It should be noted however that this method is dependant on the assumption 
-    that the vehicle mass is known and remains unchanged.
-    The method will clearly be inaccurate if an unknown mass is added to the multirotor 
-    in conjunction with the suspended payload.
-    Common practical examples of this include adding a camera to the vehicle or using a different battery for a different flight range.
+    Note that this method depends on the assumption that the vehicle mass is known and remains unchanged.
+    The method will be inaccurate if an unknown mass is added to the multirotor.
+    Common examples include adding a camera to the vehicle or using a different battery.
     In these cases, the mass estimation method will have to be redesigned.
-    This is an inherent problem of the white-box techniques.
-    The parameter estimation methods are designed for specific modelling assumptions 
-    and are not adaptable to different types of payload loadings.
+    This is an inherent problem of the white-box technique.
+    The technique is designed for specific modelling assumptions and is not adaptable to different types of payload loadings.
     In contrast, data-driven techniques are adaptable to different payload loadings 
-    because it does not depend on a~priori modelling assumptions.
+    because it does not depend on a~priori modelling.
 
 \subsection{Cable length estimation} \label{sec:length_estimation}
 
@@ -108,38 +101,29 @@
     \begin{equation} \label{eq:nat_freq}
         \omega_n = \sqrt{ \frac{g}{l} \cdot \frac{m_Q + m_p}{m_Q}} .
     \end{equation}
-    The cable length can clearly be calculated from Equation~\ref{eq:nat_freq} if the other parameters are known.
-    The natural frequency is measured by performing a \gls{FFT} on the payload swing angle response 
-    after a velocity step by the multirotor.
-    The dominant frequency identified by the \gls{FFT} during free swing is an approximate measurement
-    of the natural frequency of the payload.
-    Note that the measured frequency rather corresponds to the damped natural frequency.
-    The swing angle damping is caused by 
-    the velocity controller, 
-    friction at the attachment of the cable to the drone,
-    and air drag.
-    However, it is assumed that the damping coefficient is small enough for
-    the damped natural frequency to closely approximate the theoretical natural frequency.
+    The cable length can be calculated from Equation~\ref{eq:nat_freq} if the other parameters are known.
+    The natural frequency is measured by performing a \gls{FFT} on the payload swing angle response after a velocity step by the multirotor.
+    The dominant frequency identified by the \gls{FFT} during free swing is an approximate measurement of the natural frequency of the payload.
+    
+    \paragraph
+    Note that the measured frequency actually represents the damped natural frequency.
+    Damping is caused by the velocity controller, friction at the cable attachment, and aerodynamic drag.
+    However, it is assumed that the damping coefficient is small enough for the damped natural frequency to closely approximate the theoretical natural frequency.
     % This method is applied successfully by \cite{Erasmus2020} and \cite{Slabber2020} for cable length estimation.
     
     \paragraph
-    Figure~\ref{fig:vel_step_single_pend} shows the payload swing angle response 
-    to a position step setpoint.
+    Figure~\ref{fig:vel_step_single_pend} shows the payload swing angle response to a position step setpoint.
     The first few seconds of the step response are excluded from the \gls{FFT} 
-    to minimise the effect of the transient response and the multirotor controllers 
-    on the natural frequency measurement.
+    to minimise the effects of the transient response and multirotor controllers on the natural frequency measurement.
     Figure~\ref{fig:FFT_vel_step} shows the resulting single-sided amplitude spectrum of the \gls{FFT} of this data.
     
     \paragraph
     The dominant frequency is clearly identified by the peak at \SI{0.520}{\radian/\second}.
-    Since $m_Q$, $m_p$ and $g$ are known, and $\omega_n$ has been measured, 
-    $l$ can be determined from Equation~\ref{eq:nat_freq}.
+    Since $\omega_n$, $m_Q$, $m_p$ and $g$ are known, $l$ can be determined from Equation~\ref{eq:nat_freq}.
     The estimated length for this simulation is \SI{0.953}{\metre}.
-    The actual cable length is \SI{1}{\metre}, therefore this estimation has an error of 4.7\%.
-    As documented by \cite{Erasmus2020} and \cite{Slabber2020}, an error of this magnitude is acceptably small
-    and still results in effective control with a \gls{LQR}.
-    It was also shown by \cite{Erasmus2020} and \cite{Slabber2020} that this estimation method 
-    is effective for a range of different payloads in simulation.
+    The actual cable length is \SI{1}{\metre}, therefore this estimation error is 4.7\%.
+    As documented by \cite{Erasmus2020} and \cite{Slabber2020}, an error of this magnitude is acceptably small and still results in effective control with a \gls{LQR}.
+    It was also shown by \cite{Erasmus2020} and \cite{Slabber2020} that this estimation method is effective for a range of different payloads in simulation.
 
     \input{system_id/plots/FFT_vel_step_subfigs}
 
