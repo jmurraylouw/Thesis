@@ -115,8 +115,7 @@
         \paragraph
         Trajectory generation methods for suspended payload systems are based on open-loop control techniques.
         The objective of these techniques is to determine a trajectory in which the multirotor motion would induce a specific payload trajectory to reduce oscillations or avoid obstacles.
-        Numerous trajectory generation methods have been explored in the literature for suspended payload transportation 
-        \cite{Tang2015, Geisert2016, Zeng2019, Xian2020, Starr2005, Palunko2012, Su2019, Palunko2013, Faust2013}. % ?? Maybe remove this long citation?
+        Numerous trajectory generation methods have been explored in the literature for suspended payload transportation.
 
         \paragraph
         \citet{Zeng2019} and \citet{Tang2015} applied differential flatness based trajectory planning methods for multirotors in obstacle-filled environments.
@@ -171,8 +170,16 @@
         The \gls{EKF} was combined with an \gls{LQR} full-state feedback controller to produce \gls{LQG} control.
         Simulation results showed good swing damping control with position step inputs despite the unmeasured payload state, external disturbances, sensor noise, and parameter uncertainty.
 
+        \begin{figure}[htb]
+            \centering
+            \includegraphics[width=0.6\linewidth]{fran_control_architecture.pdf}            
+            \caption{Notch filter and LQR control architecture \cite{Slabber2020}}
+            \label{fig:fran_control_architecture}
+        \end{figure}
+
         \paragraph
         \citet{Slabber2020} implemented a \gls{LQR} controller augmented with a notch filter input shaper for improved swing damping performance.
+        This control architecture is shown in Figure~\ref{fig:fran_control_architecture}.
         The notch filter was applied to the velocity step reference and the 
         \gls{LQR} was then applied with the filtered reference signal for swing-damping control.
         The \gls{LQR} was designed with integral action added to the velocity state to ensure zero steady-state velocity tracking. 
@@ -349,7 +356,7 @@
     % However, these methods are still inherently sensitive to rational non-linearities which are form a significant part of the strongly coupled multirotor and suspended payload dynamics. 
 
     % \paragraph
-    % Related linear data-driven techniques such as DMDc ... 
+    % Related linear data-driven techniques such as \gls{DMDc} ... 
 
 \section{Summary} 
         

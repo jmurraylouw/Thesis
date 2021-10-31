@@ -156,7 +156,7 @@
             \paragraph
             Figure~\ref{fig:FFT_vel_step_double_pend} shows a snapshot of the payload angle data from a practical flight with a dynamic payload.
             Two superimposed frequencies are visible in the payload oscillations due to the double pendulum action of the elongated pendulum.
-            The two peaks corresponding to these two frequencies can easily be identified from the FFT amplitude spectrum in Figure~\ref{fig:FFT_double_pend_prac}.
+            The two peaks corresponding to these two frequencies can easily be identified from the \gls{FFT} amplitude spectrum in Figure~\ref{fig:FFT_double_pend_prac}.
             The cable length estimation method uses the frequency of the dominant peak and calculates the effective length corresponding to that frequency.
             This results in a single pendulum model that best matches the dynamic payload oscillations. 
 
@@ -461,7 +461,6 @@
         The effect of the \gls{MPC} sample time on the \gls{CPU} consumption will also be investigated.
         Finally, it will be shown that an \gls{MPC} node, which is based on a data-driven system identification model, effectively implements swing-damping control in a \gls{HITL} simulation.
 
-        % ?? Check gls acronyms    
         \FloatBarrier\subsection{Effect of hyperparameters on computational requirements}    
 
             \input{results/plots/CPU_vs_q.tex}

@@ -71,16 +71,15 @@
         \paragraph
         However, black-box techniques are very adaptable and provide a general system identification solution for a broad range of different dynamics.
         This is a major advantage over white-box techniques, which need to be manually redesigned for different use cases.
-        % Add more advantages ??
+        Furthermore, some payload cases are difficult to model from first principles, like fluids in a container.
+        In these cases, black-box modelling provides an method of representing the plant without deriving a model from first principles.
 
         \paragraph
         Black-box models can be categorised as non-linear or linear models.
         The dynamics of a multirotor and suspended payload are non-linear and are better represented by non-linear models.
-        % Examples of black-box models with multirotors and payloads in literature ???
         However, non-linear models are more complex than linear models. 
         Non-linear models may require control implementations that are too computationally intensive to be implemented with the hardware available on multirotors.
         Controllers based on low-complexity, linear models are attractive because these may be simple enough to execute on low-cost hardware.
-        % trade-off between accuracy and complexity.??
         
         \paragraph
         \gls{DMDc} and \gls{HAVOKc} are the data-driven system identification methods investigated in this work. 

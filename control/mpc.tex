@@ -11,7 +11,7 @@
         \caption{Diagram of the structure of a typical MPC}
         \label{fig:mpc_controller}
     \end{figure}
-% ?? remove all MV and MO
+    
     \paragraph
     Figure~\ref{fig:mpc_controller} shows the structure of a typical \gls{MPC} implementation.
     As a high-level overview, the \gls{MPC} receives the measured output vector, $\bm{y}$, 
@@ -42,8 +42,6 @@
             \label{fig:receding_horizon}
         \end{figure}
         
-        % ?? Remove background of figure, otherwise strange outline
-
         \paragraph
         Figure~\ref{fig:receding_horizon} illustrates the receding horizon concept for a \gls{SISO} system.
         One of the main objectives of the optimiser is to minimise the error between the predicted trajectory and the target trajectory.
@@ -165,10 +163,8 @@
         It was selected because it integrates well with our simulation environment in Simulink
         and it specifically uses a discrete state-space plant model.
         The Model Predictive Control Toolbox\texttrademark~ also supports C\texttt{++} code generation for stand-alone \gls{ROS} nodes.
-        Therefore, it can integrate with the SITL implementation of PX4 and it can be run on an \gls{OBC} for practical implementations.
+        Therefore, it can integrate with the \gls{SITL} implementation of PX4 and it can be run on an \gls{OBC} for practical implementations.
 
-        % ?? Check all Simulink\texttrademark~without TM
-        
         \paragraph
         The Model Predictive Control Toolbox\texttrademark ~solves the control optimisation problem as a \gls{QP} at each time interval \cite{MPCtoolbox2019}.
         To do this, it applies an active-set \gls{QP} solver using the KWIK algorithm from \cite{Schmid1994}.
@@ -372,8 +368,6 @@
         Hence, the default Kalman filter is used in the final control implementation.
         Zero steady-state error for velocity tracking was achieved for different payloads and different input disturbances, showing that integral action is achieved.
         The simulation results showing the \gls{MPC} integral action will be shown and discussed in Section~\ref{sec:control_implementation}.
-
-        % ?? plot showing the difference between with integral action and without
 
     \FloatBarrier\subsection{Tuning} \label{sec:mpc_tuning}
 
