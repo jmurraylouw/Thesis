@@ -6,32 +6,32 @@
 
 \paragraph
 Hierdie tesis hanteer die probleem van gestabiliseerde beheer vir 'n multirotor hommeltuig met 'n onbekende hangende loonvrag.
-Die beheerder aanvaar geen voorafkennis van die loonvragdinamika nie.
-Die swaaiende loonvrag het 'n negatiewe invloed op die multirotor-vlugdinamika deur ossillasies in die stelsel te veroorsaak.
+Die swaaiende loonvrag be\"invloed die vlugdinamika deur ossillasies in die stelsel te veroorsaak.
 'n Aanpasbare beheerargitektuur word voorgestel om hierdie ossillasies te demp vir stabiele vlugte met verskillende onbekende loonvragte.
-'n Datagedrewe stelsel-identifikasiemetode vorm deel van die argitektuur en word in simulasie en met praktiese vlugdata gedemonstreer.
+Die argitektuur maak gebruik van 'n datagedrewe stelsel-identifikasiemetode wat geen voorafkennis van die loonvragdinamika gebruik nie.
+Hierdie metode word in simulasies en met praktiese vlugdata gedemonstreer.
 Model Voorspellende Beheer (MVB) word toegepas vir swaaidempingsbeheer en word geverifieer met Hardeware-in-die-Lus (HIDL) simulasies.
 
 \paragraph
 'n Parameter-afskatter en Line\^ere Kwadratiese Gaussiese (LKG) word in die basislynargitektuur gebruik.
-Die LKG gebruik 'n voorafbepaalde model van die loonvrag, wat voltooi word met afskattings van die loonvragmassa en kabellengte.
-Die nuwe argitektuur, wat in hierdie werk voorgestel word, gebruik Dinamiese Modus Ontbinding met Beheer (DMOB) om 'n line\^ere toestand-ruimte model te bereken en die onbekende dinamika te benader.
-'n Kort lengte van vlugdata word vir opleiding gebruik.
+Die LKG gebruik 'n voorafbepaalde model van die sisteem wat voltooi word met afskattings van die loonvragmassa en kabellengte.
+Die nuwe voorgestelde argitektuur gebruik Dinamiese Modus Ontbinding met beheer (DMOb) om 'n line\^ere toestand-ruimte model te bereken en die dinamika af te skat sonder 'n voorafbepaalde model.
+Die argitektuur is ook getoets met 'n Hankel Alternatiewe Siening van Koopman (HASK)-algoritme wat in hierdie werk uitgebrei is om beheer in te sluit.
 'n MVB gebruik die data-gedrewe model om die multirotor te beheer en die loonvrag se ossillasies te demp.
 
 \paragraph 
-'n Simulink\texttrademark~simulator is ontwerp en geverifieer met praktiese data.
-In simulasies het beide die basislyn en voorgestelde argitekture byna swaaivrye multirotorbeheer met verskillende loonvragmassas en kabellengtes geproduseer.
-Selfs met 'n dinamiese loonvrag wat onreëlmatige ossillasies voortbring, het beide metodes gestabiliseerde beheer tot gevolg gehad.
+'n Simulink\texttrademark-simululeerder is ontwerp en geverifieer met praktiese data.
+In simulasies het beide die basislyn en voorgestelde argitekture byna-swaaivrye beheer met verskillende loonvragmassas en kabellengtes geproduseer.
+Selfs met 'n dinamiese loonvrag wat onre\"elmatige ossillasies voortbring, het beide metodes gestabiliseerde beheer tot gevolg gehad.
 Beide argitekture het ook effektiewe versteuringsverwerping getoon.
-Ten spyte daarvan dat die basislynmetode 'n akkurate voorafbepaalde model gebruik het, het die voorgestelde metode gelyke prestasies gelewer sonder voorafkennis van die dinamika.
-Die basislyn prestasie het aansienlik afgeneem vir 'n ander multirotor massa omdat hierdie parameter nie as 'n onbekende beskou is nie.
+Al gebruik die basislynmetode 'n akkurate voorafbepaalde model, het die voorgestelde metode gelyke prestasies gelewer sonder voorafkennis van die dinamika.
+Die basislyn prestasie het aansienlik afgeneem vir 'n aangepaste multirotormassa omdat hierdie parameter nie as 'n onbekende beskou is nie.
 Daarteenoor het die voorgestelde metode deurgaans goeie prestasies gelewer. 
 
 \paragraph
-Die akkuraatheid van die DMOB modelle is geverifieer met praktiese vlugdata.
+Die akkuraatheid van die DMOb modelle is geverifieer met praktiese vlugdata.
 Die voorgestelde beheerargitektuur is ook in HIDL-simulasies gedemonstreer.
-Die hardeware het die MVB teen die verlangde frekwensie uitgevoer, wat byna swaaivrye beheer in 'n Gazebo-simululeerder gelewer het.
+MVB is teen die verlangde frekwensie uitgevoer en het byna-swaaivrye beheer in 'n Gazebo-simululeerder gelewer.
 In die geheel is dit gewys dat die voorgestelde beheerargitektuur prakties uitvoerbaar is.
 Sonder kennis van die loonvragdinamika kan 'n data-gedrewe model met MVB gebruik word vir effektiewe swaaidempingsbeheer met 'n multirotor.
 
