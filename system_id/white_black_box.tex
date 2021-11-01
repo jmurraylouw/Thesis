@@ -14,7 +14,7 @@
         The system identification process is therefore reduced to parameter estimation to determine values for the system parameters.
 
         \paragraph 
-        This approach is used by \cite{Erasmus2020} and \cite{Slabber2020} for system identification in a swing damping control architecture for a multirotor with an unknown suspended payload.
+        This approach is used by \cite{Slabber2020} and \cite{Erasmus2020} for system identification in a swing damping control architecture for a multirotor with an unknown suspended payload.
         The same system definition and modelling process are used in this thesis.
         Recall from Chapter~\ref{chap:modelling} that the multirotor-payload system is modelled with the following assumptions:
         \begin{itemize}
@@ -29,7 +29,7 @@
 
         \paragraph
         The main advantage of this approach is its simplicity.
-        In the case considered by \cite{Erasmus2020} and \cite{Slabber2020}, only two parameters are estimated.
+        In the case considered by \cite{Slabber2020} and \cite{Erasmus2020}, only two parameters are estimated.
         In contrast, numerous values need to be estimated to reproduce the system dynamics with a black-box model.
         Therefore, white-box system identification methods are often less computationally complex and are easily implemented on low-cost hardware.
         Due to the lower complexity, 
@@ -39,7 +39,7 @@
         \paragraph 
         Therefore the white-box approach works well for systems with predictable dynamics. 
         However, is not very adaptable to systems that deviate from the predefined dynamics.
-        The payload considered by \cite{Erasmus2020} and \cite{Slabber2020} is limited to specific modelling assumptions. 
+        The payload considered by \cite{Slabber2020} and \cite{Erasmus2020} is limited to specific modelling assumptions. 
         However, if a payload or cable is used that violates one of the assumptions, the predefined model will no longer represent the system accurately.
         Many payloads considered for practical drone deliveries do not conform to these assumptions.
         

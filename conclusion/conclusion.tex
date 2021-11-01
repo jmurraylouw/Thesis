@@ -61,13 +61,12 @@
         This data was split into training and testing sets.
         The algorithms could then be trained on the set of training data and could be validated on the unseen testing set.
         The prediction accuracy of each model produced by these techniques was quantified with an \gls{NMAE} error metric.
-        This metric is based on multiple model prediction runs from different initial conditions over a specified time horizon.
 
         \paragraph
         A hyperparameters search showed a Pareto elbow as a function of the number of delay-coordinates, $q$, such that increasing $q$ passed this elbow does not significantly increase the model accuracy, but does increase model complexity.
         Furthermore, the `double-descent' phenomenon was identified when testing with various lengths of training data.
         It was consistently observed in different experiments that increasing the length of training data past a specific point decreases the prediction accuracy.
-        This is unintuitive because longer lengths of training data are expected to increase model accuracy by reducing overfitting.
+        This is unintuitive, because longer lengths of training data are expected to increase model accuracy by reducing overfitting.
         
         \paragraph
         Both techniques were shown to be robust to measurement noise.
@@ -131,7 +130,7 @@
         Numerous practical flights were performed with different payload masses, cable lengths, and with a dynamics payload.
         All conclusions made with simulation data for the system identification methods were verified with practical flight data.
         This further validated that the simulation environment is a good representative of the actual system.
-        This also showed that \gls{DMDc} produces accurate prediction models with practical levels of wind disturbances and measurement noise.
+        This showed that \gls{DMDc} produces accurate prediction models with practical levels of wind disturbances and measurement noise.
 
         \paragraph
         Finally, \gls{HITL} simulations were performed to demonstrate the computationally intensive controller algorithm working with the actual hardware and software toolchain.

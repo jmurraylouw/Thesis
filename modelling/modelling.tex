@@ -149,7 +149,7 @@ Finally, practical flight data will be used to verify the simulated mathematical
     \paragraph
     The multirotor is modelled as a \gls{6DOF} rigid body.
     This includes three translational and three rotational degrees of freedom.
-    This modelling process is well described by \cite{Erasmus2020} and \cite{Slabber2020}, and the same general procedure is used here. 
+    This modelling process is well described by \cite{Slabber2020} and \cite{Erasmus2020}, and the same general procedure is used here. 
     
     \paragraph
     The system parameters describing the physical properties of the multirotor are listed in Table~\ref{tbl:multirotor_params}.
@@ -281,7 +281,7 @@ Finally, practical flight data will be used to verify the simulated mathematical
         \bm{M}_\mathcal{B} &= \bm{M}_\mathcal{B}^T + \bm{M}_\mathcal{B}^A + \bm{M}_\mathcal{B}^G + \bm{M}_\mathcal{B}^P.
     \end{align}
     The phenomena that cause the different forces and moments are denoted by the superscripts, T, A, G, and P, which refer to actuator thrust, aerodynamic drag, gravity, and the payload respectively. 
-    These phenomena are also considered and modelled by \cite{Erasmus2020} and \cite{Slabber2020}.    
+    These phenomena are also considered and modelled by \cite{Slabber2020} and \cite{Erasmus2020}.    
 
     \paragraph
     \textbf{Actuator thrust} \newline
@@ -337,7 +337,7 @@ Finally, practical flight data will be used to verify the simulated mathematical
     \paragraph
     \textbf{Aerodynamics} \newline
     Multirotors experience aerodynamic forces due to the relative velocity of air over the vehicle.
-    The aerodynamic model is based on work done by \cite{Moller2015} and was also applied successfully by \cite{Erasmus2020} and \cite{Slabber2020}.
+    The aerodynamic model is based on work done by \cite{Moller2015} and was also applied successfully by \cite{Slabber2020} and \cite{Erasmus2020}.
     The model describes the aerodynamic forces as,
     \begin{equation} \label{eq:drag_quad}
         \bm{F}_\mathcal{B}^A = \frac{1}{2}   \rho   \bm{V}_{\mathcal{B}_{w}} |\bm{V}_{\mathcal{B}_{w}}|   \bm{C}_Q

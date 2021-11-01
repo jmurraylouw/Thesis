@@ -2,16 +2,16 @@
 
     \paragraph
     The controllers in this chapter are tested within a Simulink\texttrademark~simulation environment.
-    This is used rather than the \gls{SITL} and Gazebo simulation environment because it allows us to iterate designs faster.
-    Simulink\texttrademark~provides a graphical interface for control system design which enables us to change the control system design with ease.
-    In contrast, the \gls{SITL} and Gazebo simulation environment requires text-based control laws with C\texttt{++} and requires \gls{ROS} nodes to interface an \gls{MPC} with PX4.
-    This requires a lot more development time for control system design than the graphical tools in Simulink.
-    The \gls{SITL} and Gazebo simulation also has a longer runtime per simulation, which further adds to the development time of the iterative control system design process.
+    This is used rather than the \gls{SITL}/Gazebo simulation environment because it allows us to iterate designs faster.
+    Simulink\texttrademark~provides a graphical interface for control system design which is helpful for rapid development.
+    In contrast, the \gls{SITL}/Gazebo simulation environment requires text-based control laws in C\texttt{++} and requires \gls{ROS} nodes as an interface an between the \gls{MPC} and PX4.
+    This requires a lot more development time for control system design than the graphical tools in Simulink\texttrademark.
+    The \gls{SITL}/Gazebo simulation also has a longer runtime per simulation, which further adds to the development time of the iterative design process.
     
     \paragraph
     The multirotor and suspended payload system is modelled in Simulink\texttrademark~with the differential equations derived in Chapter~\ref{chap:modelling}.
-    The resulting controllers are also applied in Simulink.
-    Using the cascade \gls{PID} control architecture (discussed in the sections below), this simulation environment was verified against practical data with and without a payload.
+    The resulting controllers are also implemented in Simulink\texttrademark.
+    Using the cascaded \gls{PID} control architecture (discussed in the sections below), this simulation environment was verified against practical data with and without a payload.
     The plots in 
     Figure~\ref{fig:prac_vs_sim_vel_step_no_payload}, \ref{fig:prac_vs_sim_vel_step_with_payload}, and \ref{fig:prac_vs_sim_theta_with_payload} 
     from Chapter~\ref{chap:modelling}

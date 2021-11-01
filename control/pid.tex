@@ -69,7 +69,7 @@
         $\delta_{E_{sp}}$ is the virtual elevator setpoint.
         
         \paragraph
-        Some controller elements improve the practical implementation, but have a negligible effect on the design of the gains, namely:
+        Some elements improve the practical implementation of the controller, but have a negligible effect on the design of the gains, namely:
         \begin{itemize}
             \item A \gls{LPF} is added in the derivative path to reduce the effect of sensor noise.
             \item The derivative path is implemented on the plant output signal, instead of the error signal to eliminate derivative kick.
@@ -85,7 +85,6 @@
         It was determined by \cite{Grobler2020} that the default PX4 angular rate controller gains of the ZMR250 airframe provide excellent control for Honeybee and satisfy these design requirements.
         ZMR250 refers to a popular racing drone design.
         The practical system will be discussed in Chapter~\ref{chap:exp_design}.
-        These gains are documented in Appendix~\ref{appen:pid_gains}.
 
         \paragraph
         For a \SI{1}{\radian/\second} step response, the pitch rate controllers result in a 
@@ -95,13 +94,14 @@
         and \SI{138}{\radian/\second} bandwidth \cite{Grobler2020}.
         These gains are well suited for Honeybee and will also be implemented in this work.
         The default roll-rate and yaw-rate controller gains are also implemented for the same reason.
+        These gains are documented in Appendix~\ref{appen:pid_gains}.
 
     \FloatBarrier\subsection{Angle controller}
 
         \paragraph
         The pitch, roll, and yaw angles are controlled by the angle controller in the body frame.
         A quaternion based controller is implemented by PX4 for angle control based on work by \cite{Brescianini2013}.
-        The structure and design of this controller is well explained by \cite{Grobler2020}, \cite{Erasmus2020}, and \cite{Slabber2020} and is only briefly discussed here.
+        The structure and design of this controller is well explained by \cite{Slabber2020}, \cite{Erasmus2020} and \cite{Grobler2020} but is only briefly discussed here.
         
         \paragraph
         For the control law proposed by \cite{Brescianini2013}, the error quaternion is calculated as:
@@ -146,13 +146,13 @@
         \SI{0.47}{\second} for a 2~\% settling time, 
         and \SI{11}{\radian/\second} bandwidth \cite{Grobler2020}.
         This has a large time-scale separation from the angular rate controller, which has a bandwidth of \SI{138}{\radian/\second}.
-        A fast angle response is also desired in this work, hence the same gains designed by \cite{Grobler2020} will be used.
+        A fast angle response is desired in this work, hence the same gains designed by \cite{Grobler2020} will be used.
 
     \FloatBarrier\subsection{Translational controller}
 
         \paragraph
         The translational controller consists of the position and velocity controllers.
-        Position control is not required for training data in this work, therefore it will not be discussed in this section.
+        Position control is not considered in this work, therefore it will not be discussed in this section.
         A diagram of the North velocity controller is shown in Figure~\ref{fig:velocity_controller}.
         The West and Down velocity controllers duplicate the same configuration.
         
@@ -166,8 +166,8 @@
         \paragraph
         Recall from Chapter~\ref{chap:system_id}, that the cascaded \gls{PID} controller is used for velocity step inputs in the training data flight stage for system identification.
         The system identification methods produce linear models, which are used in swing damping controllers to minimise the payload angles during flight.
-        The velocity controller gains used for Honeybee by \cite{Grobler2020} result in aggressive velocity responses, which produces large payload swing angles.
-        Such large payload angles are undesirable for safe flights.
+        The velocity controller gains used for Honeybee by \cite{Grobler2020} result in aggressive velocity responses, which produce large payload swing angles.
+        Such large payload angles are undesirable in safe flights.
         Therefore the velocity controller gains are redesigned for a slower transient response and smaller payload swing angles.
 
         \paragraph
@@ -240,9 +240,8 @@
 
         \paragraph
         Figure~\ref{fig:pid_tuning_subfigs} shows a velocity step response for the resulting cascaded \gls{PID} controller with a specific payload.
-        The gains used are documented in Appendix~\ref{appen:pid_gains}.
+        The gains are documented in Appendix~\ref{appen:pid_gains}.
         Note that the response results in a large overshoot, however, this aids in keeping the payload angles low.
-        The initial swing angle is quite large, however, this attenuates to lower angles quickly enough for stable flight.
         The velocity oscillations are clearly visible in Figure~\ref{fig:pid_tuning_plot_vel}.
         The current \gls{PID} controller does not provide an adequate way of actively damping the payload oscillations,
         hence an active swing damping controller is required.
