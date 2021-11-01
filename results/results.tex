@@ -27,7 +27,6 @@
         The effect of wind on the parameter estimation technique will also be investigated.
         Finally, the cable length estimator will be applied to data from a dynamic payload.
         
-        %% ?? Add this if there is time
         % \subsection{Mass estimation} 
         
         %     As discussed in Chapter~\ref{chap:system_id}, for this method to work, the mass of the multirotor needs to be known.
@@ -59,7 +58,6 @@
             Figure~\ref{fig:cable_length_vs_train_time} shows the \gls{PE} of the cable length estimation for practical flight data with different payload masses and cable lengths using practical fligth data.
             Note that for each payload configuration, 
             the estimation converges to a constant error after a sufficient length of training data.
-            %% ?? Add the length of training data required to all techniques to compare white-box length to black-box length
             For these payload configurations, the converged \gls{PE} ranges from 18.9~\% to 32.4~\%.
             These errors may be due to the large difference between the theoretical and the damped natural frequency.
             It appears that the \gls{PID} controllers damp the payload oscillations significantly, 
@@ -94,7 +92,6 @@
             % Notice how the first two oscillation peaks differ noticeably from the expected linear damping shape.
             % Since the payload is attached below the \gls{CoM} of the multirotor, the oscillating pitch angle of the multirotor also affects the swing angle of the payload.
 
-            % ?? However, as discussed in Chapter~\ref{chap:control}, the \gls{LQR} controller which utilises the white-box model is quite robust against model uncertainty and may still result in acceptable control with such a model.
             % Recall from Chapter~\ref{chap:system_id} that the damping coefficient is not estimated, but a manually tuned value is used.
 
             \input{results/plots/cable_length_vs_train_time_wind.tex}
@@ -114,9 +111,6 @@
             even with wind speeds up to \SI{6}{\metre/\second}.
             Therefore a dominant oscillation frequency emerges from each flight, 
             even when the multirotor is heavily affected by wind.
-            % ?? Maybe add this if there is time: and show the effect of effective length vs actual length in the system id chapter.
-            % As discussed in Section~\ref{sec:param_estimation}, 
-            % the effective cable length corresponding to the dominant frequency is more important
         
         \FloatBarrier\subsection{Dynamic payload cable length estimation} \label{sec:dynamic_payload_prac}
 
@@ -193,13 +187,6 @@
             Even though the oscillations of the dynamic payload have an approximate sinusoidal shape, the time derivative of the data differs significantly from the sinusoidal white-box dynamics.
             This is clear from numerous infliction points in the payload angle data shown in Figure~\ref{fig:predictions_double_pend_prac_subfigs}.
             
-            % ?? Could add this if there is time
-            % Recall from Chapter~\ref{chap: modelling} that the white-box model consists of ordinary differential equations.
-            % Therefore the payload angle prediction depends on both the payload angle and angular rate at the prediction starting point.
-            % For example, there is an inflexion point in the measured payload angle near $Time =$~\SI{2}{\second} in Figure~\ref{fig:predictions_double_pend_prac_subfigs}.
-            % If the white-box model prediction starts at this point, the initial angular rate is zero and the initial payload angle is positive.
-            % Therefore the white-box model wrongly predicts that this corresponds to the peak of an oscillation, where the practical data shows that the payload angle is in ascend at this point.
-
             \paragraph
             However, as the size of the swing angles attenuate the relative oscillations of the elongated payload also decrease.
             Therefore the effect of the superimposed higher frequency oscillations become less prominent and the system dynamics approximate a single pendulum more closely.
@@ -228,11 +215,8 @@
             The mean offset is subtracted from the acceleration setpoint data, 
             which results in a signal with a zero mean which is used for system identification.
             This accounts for the mean force applied by the wind.
-            % ??  As shown in Figure~\ref{fig:}, this greatly reduces the prediction error.
             However, the wind speed also fluctuates from the mean randomly.
             This results in random process noise in the plant which cannot easily be removed from the measured data.
-
-            % ?? Shows a plot of data with high wind and low wind
 
             \input{results/plots/wind_Ttrain.tex}
 
@@ -243,7 +227,6 @@
             Note that the prediction error corresponding to \SI{6}{\metre/\second} winds does not vary much with the length of training data.
             % This may be because the unmeasured wind disturbance dominates the flight dynamics such the data-driven algorithms cannot identify a representative model with any length of training data. 
             The prediction error at this wind speed is quite large and a model generated from such data will probably not be useful for control.
-            %  ?? Figure of prediction with wind clearly shows that the prediction model does not represent the actual flight dynamics.
 
             \input{results/plots/havok_vs_dmd_Ttrain_2mps.tex}
 
@@ -336,8 +319,6 @@
 
             \input{results/plots/prac_pediction_single_pend_vel_black.tex}
 
-            % ?? if there is time. Plot prediction of vel with wind
-        
         \FloatBarrier\subsection{Extended dimensions}
 
             \paragraph
@@ -391,8 +372,6 @@
                 \caption{Data-driven predictions of practical data for a model with both North and East axis dynamics}
                 \label{fig:xy_predictions}  
             \end{figure}
-
-        %     Maybe add plot error vs q if there is time??
 
         \FloatBarrier\subsection{Dynamic payload} 
 
@@ -480,11 +459,6 @@
             The \gls{MPC} node achieves stable, swing-damping control with this model.
             However, for $q = 70$ the \gls{MPC} node uses \scaleobj{0.8}{\%}CPU~$= 98.7\%$ and the optimisation problem can not be solved fast enough for stable multirotor control.
             This results in an unstable controller and the multirotor-payload system crashes consistently with this \gls{MPC} node. 
-
-            % ?? Check tenses in body of whole thesis.
-            % Intro = future
-            % body = present
-            % conclusion = past
 
             \input{results/plots/RAM_vs_q.tex}
 

@@ -38,8 +38,6 @@
     rudder, and 
     thrust commands.
 
-    % ?? Fix notation of symbols and define them
-
     \paragraph
     The inner-most control element is the mixer, which converts virtual actuator commands to actuator thrust commands.
     % This is achieved with simple matrix multiplication.
@@ -59,8 +57,6 @@
         The yaw and roll controllers are not shown here, but they replicate the same structure.
         
         \input{control/diagrams/angular_rate_controller.tex}
-
-        % ?? Omega not defined as a symbol
 
         \paragraph
         In Figure~\ref{fig:angular_rate_controller},
@@ -87,9 +83,9 @@
         This same process is also explained in detail by \cite{Erasmus2020}.
         The controller gains were designed for a transient response that is as fast as possible while retaining fast disturbance rejection, and minimal overshoot.            
         It was determined by \cite{Grobler2020} that the default PX4 angular rate controller gains of the ZMR250 airframe provide excellent control for Honeybee and satisfy these design requirements.
+        ZMR250 refers to a popular racing drone design.
+        The practical system will be discussed in Chapter~\ref{chap:exp_design}.
         These gains are documented in Appendix~\ref{appen:pid_gains}.
-
-        % ?? Input figure of the angular rate step response
 
         \paragraph
         For a \SI{1}{\radian/\second} step response, the pitch rate controllers result in a 
@@ -131,15 +127,12 @@
         $\bm{q}_{v_e}$ is the error of the vector component of the quaternion.
         The implementation of this control law is illustrated in Figure~\ref{fig:angle_controller} for a single element of $\bm{\Omega}_{sp}$.
 
-        %  ?? Fix symbols be matrix and correspond with diagram and explain matrix
-
         \input{control/diagrams/angle_controller.tex}
         
         \paragraph
         In Figure~\ref{fig:angle_controller}, the $j$ subscript denotes a specific element in the vectors $\bm{q}_e$, $\bm{P}_{q}$, and $\bm{\Omega}_{sp}$, where $j = \{ 1, 2, 3 \}$.
         The attitude quaternion setpoint is taken as input, 
         the current attitude is received from the PX4 estimator, and the resulting angular rate setpoint is produced as the control signal.
-
 
         \paragraph
         % An integrator is not required in this controller, 
@@ -163,8 +156,6 @@
         A diagram of the North velocity controller is shown in Figure~\ref{fig:velocity_controller}.
         The West and Down velocity controllers duplicate the same configuration.
         
-        % ?? Ensure body frame and the inertial frame is explained in modelling chapter
-
         \input{control/diagrams/velocity_controller.tex}
 
         \paragraph
