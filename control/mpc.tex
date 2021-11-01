@@ -17,11 +17,11 @@
     As a high-level overview, the \gls{MPC} receives the measured output vector, $\bm{y}$, 
     and the output setpoint $\bm{y}_{sp}$, and determines the control action, $\bm{u}$, to drive the values in $\bm{y}$ to the values $\bm{y}_{sp}$.
     An optimiser uses an internal plant model to determine an optimal control sequence over a prediction horizon \cite{Mayne2000}.
-    Therefore $\bm{y}_{sp}$ may be replaced by a target trajectory for the prediction horizon. 
+    Therefore $\bm{y}_{sp}$ may be replaced by a target trajectory for each output over the prediction horizon. 
     In many implementations, only the first control action of the optimal sequence is executed and the optimisation is re-calculated at every time-step.
 
     \paragraph
-    Each \gls{MPC} implementation depends on the plant model representation \cite{Garcia1989}.
+    Each \gls{MPC} implementation depends on the plant model representation used \cite{Garcia1989}.
     In this section, an overview will be given of the specific \gls{MPC} implementation used in this work.
     The \gls{MPC} objective function will be explained and the design process to tune the controller will be discussed.
     It will also be discussed how integral action is achieved with the \gls{MPC}.
@@ -46,13 +46,14 @@
         Figure~\ref{fig:receding_horizon} illustrates the receding horizon concept for a \gls{SISO} system.
         One of the main objectives of the optimiser is to minimise the error between the predicted trajectory and the target trajectory.
         % Therefore the \gls{MPC} determines a control sequence that would produce the optimised trajectory of the output variable.
-        Starting at time-step $k$, a prediction horizon of $N_p$ time-steps is considered, and the optimiser suggests a controller decision of $N_c$ unique control values.
+        Starting at time-step $k$, a prediction horizon of $N_p$ time-steps is considered, and the optimiser suggests a controller decision with $N_c$ unique control values.
         $N_c$ is referred to as the control horizon and is subject to the condition, $N_c \leq N_p$.
         The control sequence, or controller decision, at time-step $k$ is denoted by,
         \begin{equation}
             {\bm{z}_k}^T = [ \bm{u}( k | k )^T ~~ \bm{u}( k+1 | k)^T ~~ ... ~~ \bm{u}( k+p-1 | k )^T ] ,
         \end{equation}
         which minimizes a specific objective function over the prediction horizon.
+        As an example, $\bm{u}( k + 1 | k )$ represents the optimised input vector calculated at time-step $k$, which will be executed at time-step $k+1$.
         The controller decision produces the predicted trajectory when applied to the plant model.
         % Note that only the first control action, $\bm{u}( k | k )$, will be executed and a new controller decision will be determined at time-step $k+1$.
         Note that if $N_c < N_p$, the remaining control actions are set to,
@@ -74,8 +75,7 @@
         \end{equation}
         where
         $\bm{A}_{mpc}$ is the system matrix and
-        $\bm{B}_{mpc}$ is the input matrix
-        applied by the \gls{MPC}.
+        $\bm{B}_{mpc}$ is the input matrix.
         $\bm{x}_{mpc} (k)$ is the state vector and
         $\bm{u}_{mpc} (k)$ is the input vector at time-step $k$
         for this state space model.
@@ -120,22 +120,21 @@
         \end{align}
         where $\bm{I}_d$ is the identity matrix that links the corresponding entries in $[ \bm{x}_{dmd} (k) ~~ \bm{d} (k) ]^T$ to $\bm{d}(k+1)$.
         This produces large state-space matrices with many output variables (represented in $\bm{d}(k+1)$) that are necessary for state predictions but do not require setpoint tracking.
-        To ignore these variables in the control optimisation, they are assigned a zero weight in the \gls{MPC} objective function.
-        The objective function will be further discussed in the sections below.
+        The state delay vector, defined in Section~\ref{sec:dmdc}, is symbolised by $\bm{d}$.
+        To ignore these variables in the control optimisation problem, they are assigned a zero weighting in the \gls{MPC} objective function.
 
         \paragraph
-        Recall from Section~\ref{sec:payload_state_variable} that $\dot{\theta}$ is not used in the estimated model.
+        Recall from Section~\ref{sec:payload_state_variable} that $\dot{\theta}$ was not used in the estimated model.
         However, as discussed in Section~\ref{sec:lqr}, it is better for a controller to minimise $\dot{\theta}$, 
         rather than $\theta$.
-        This is because $\theta$ has a non-zero steady-state value during a velocity step response due to aerodynamic drag.
-        The state vector is therefore augmented with the $\dot{\theta}$ variable, such that the state vector is rather defined by,
+        This is because $\theta$ has a non-zero steady-state value during a velocity step response caused by aerodynamic drag.
+        The state vector is therefore augmented with the $\dot{\theta}$ variable, such that,
         \begin{equation}
             {\bm{x}_{mpc}}^T = 
                 \begin{bmatrix}
                     V_N & \theta & \dot{\theta} & \bm{d}
-                \end{bmatrix} , \phantom{~~~}
+                \end{bmatrix} .
         \end{equation}
-        where $\bm{d}$ is the delay state vector defined in Equation~\ref{eq:delay_vector}.
         The $\bm{A}_{mpc}$ matrix is also augmented with a Backwards Euler numerical differentiation equation, such that,
         \begin{equation}
             \dot{\theta} (k) = \frac{1}{T_s} \theta(k) - \frac{1}{T_s} \theta(k-1) 
@@ -146,7 +145,7 @@
     \FloatBarrier\subsection{Algorithm implementation}
 
         \paragraph
-        A specific algorithm needs to be selected or designed to implement \gls{MPC} in this work.
+        A algorithm needs to be selected or designed to implement \gls{MPC}.
         There are numerous open-source methods available for this purpose.
         An extensive list of options is provided in the survey by \cite{Nguyen2020} and the most promising ones are summarised here.
         A custom \gls{MPC} implementation can be developed in MATLAB\textsuperscript{\textregistered} or C\texttt{++} 
@@ -160,10 +159,10 @@
         
         \paragraph
         The Simulink\texttrademark~implementation of an \gls{MPC} from the Model Predictive Control Toolbox\texttrademark~ \cite{MPCtoolbox2019} was selected for this work. 
-        It was selected because it integrates well with our simulation environment in Simulink
+        It was selected because it integrates well with our simulation environment in Simulink\texttrademark~
         and it specifically uses a discrete state-space plant model.
-        The Model Predictive Control Toolbox\texttrademark~ also supports C\texttt{++} code generation for stand-alone \gls{ROS} nodes.
-        Therefore, it can integrate with the \gls{SITL} implementation of PX4 and it can be run on an \gls{OBC} for practical implementations.
+        The Model Predictive Control Toolbox\texttrademark~also supports C\texttt{++} code generation for stand-alone \gls{ROS} nodes.
+        Therefore, it can integrate with the \gls{SITL} implementation of PX4 and it can run on an \gls{OBC} for practical implementations.
 
         \paragraph
         The Model Predictive Control Toolbox\texttrademark ~solves the control optimisation problem as a \gls{QP} at each time interval \cite{MPCtoolbox2019}.
@@ -184,7 +183,7 @@
         This is advantageous for practical implementations because unconstrained \gls{MPC} is less computationally complex than constrained \gls{MPC}.
 
         \paragraph
-        The objective function used by the Model Predictive Control Toolbox\texttrademark~ is documented well by the corresponding user manual \cite{MPCtoolbox2019}, and an overview of this implementation will be presented.
+        The objective function used by the Model Predictive Control Toolbox\texttrademark~ is documented well by the corresponding user manual \cite{MPCtoolbox2019}, and a brief overview of this implementation will be presented here.
         The objective function consists of the sum of three terms that each quantify a specific aspect of the control performance,
         and is calculated as,
         \begin{equation} \label{eq:mpc_objective_function}
@@ -193,8 +192,8 @@
         where $\bm{z}_k$ is the controller decision at time-step $k$.
         The three scalar performance measures are denoted as
         $J_y(\bm{z}_k)$ for output setpoint tracking,
-        $J_u(\bm{z}_k)$ for \gls{MV} tracking, and
-        $J_{\delta u}(\bm{z}_k)$ for \gls{MV} move suppression.
+        $J_u(\bm{z}_k)$ for control action tracking, and
+        $J_{\delta u}(\bm{z}_k)$ for control action move suppression.
         Each performance measure includes weights that balance the competing objectives of the different terms.
         These weights need to be manually tuned for a desired controller performance.
 
@@ -228,9 +227,9 @@
 
         \paragraph
         \textbf{Manipulated variable tracking}  \newline
-        In some control applications, it is desirable to keep specific \gls{MV} variables close to a target value.
-        In the multirotor use case, lower \gls{MV} values are preferred because this corresponds to lower energy use.
-        The \gls{MV} target values are therefore set.
+        In some control applications, it is desirable to keep specific control action variables close to a target value.
+        In the multirotor use case, lower control action values are preferred because this corresponds to lower energy use.
+        The control action target values are therefore set.
         The performance measure of manipulated variable tracking is calculated as,
         \begin{equation}
             J_u(\bm{z}_k) = \sum_{j = 1}^{n_u} ~ \sum_{i = 0}^{N_p - 1} 
@@ -244,9 +243,9 @@
         where the symbols are denoted as, \newline
         \begin{tabular}{ l l } 
             $n_u$           & Number of manipulated variables. \\ 
-            $u_j( k+i | k)$ & Control decision of $j$\textsuperscript{th} \gls{MV} at $i$\textsuperscript{th} time-step from $k$. \\
-            $u_{j,target}( k+i | k)$ & Target value of $j$\textsuperscript{th} \gls{MV} at $i$\textsuperscript{th} time-step from $k$. \\
-            ${w^u}_{j}$   & Tuning weight for $j$\textsuperscript{th} \gls{MV}. \\
+            $u_j( k+i | k)$ & Control decision of $j$\textsuperscript{th} control action at $i$\textsuperscript{th} time-step from $k$. \\
+            $u_{j,target}( k+i | k)$ & Target value of $j$\textsuperscript{th} control action at $i$\textsuperscript{th} time-step from $k$. \\
+            ${w^u}_{j}$   & Tuning weight for $j$\textsuperscript{th} control action. \\
         \end{tabular}
 
         \paragraph
@@ -257,13 +256,13 @@
         
         \paragraph
         \textbf{Manipulated variable increment suppression}  \newline
-        Large increments or moves in the \gls{MV} values are often undesirable for good control performance.
-        In the multirotor use case, large increments of the acceleration \gls{MV}s result in aggressive jerks which may cause the system to go beyond the accurate domain of the linear approximation model.
-        High frequency moves in the acceleration \gls{MV}s may also cause jittery flight dynamics because acceleration setpoint changes correspond to attitude changes.
-        The performance measure of \gls{MV} tracking is used to penalise increments in the \gls{MV}s.
+        Large increments or moves in the control action values are often undesirable for good control performance.
+        In the multirotor use case, large increments of the acceleration control actions result in aggressive jerks which may cause the system to go beyond the accurate domain of the linear approximation model.
+        High frequency moves in the acceleration control actions may also cause jittery flight dynamics because acceleration setpoint changes correspond to attitude changes.
+        The performance measure of control action tracking is used to penalise increments in the control actions.
         This is calculated as,
         \begin{equation}
-            J_\Delta u (\bm{z}_k) = \sum_{j = 1}^{n_u} ~ \sum_{i = 0}^{N_p - 1} 
+            J_{\Delta u} (\bm{z}_k) = \sum_{j = 1}^{n_u} ~ \sum_{i = 0}^{N_p - 1} 
                 \left\{ 
                     {w^{\Delta u}}_{j} 
                         \left[ 
@@ -273,7 +272,7 @@
         \end{equation}
         where the symbols are denoted as, \newline
         \begin{tabular}{ l l } 
-            ${w^{\delta u}}_{j}$   & Tuning weight for movement in the $j$\textsuperscript{th} \gls{MV}. \\
+            ${w^{\delta u}}_{j}$   & Tuning weight for movement in the $j$\textsuperscript{th} control action. \\
         \end{tabular}
 
         \paragraph
@@ -281,8 +280,8 @@
 
         \paragraph
         It is important to note the similarities and differences between the \gls{LQR} and \gls{MPC} objective functions.
-        The \gls{LQR} implementation described in Section~\ref{sec:lqr}, did not included penalisation for MV increments.
-        However, if $J_\Delta u (\bm{z}_k)$ is removed from Equation~\ref{eq:mpc_objective_function}, the \gls{MPC} and \gls{LQR} optimiser consider the same variables.
+        The \gls{LQR} implementation described in Section~\ref{sec:lqr}, did not included penalisation for control action increments.
+        However, if $J_{\Delta u} (\bm{z}_k)$ is removed from Equation~\ref{eq:mpc_objective_function}, the \gls{MPC} and \gls{LQR} optimiser consider the same variables.
 
         \paragraph
         The \gls{LQR} optimisation corresponds to solving the unconstrained \gls{MPC} optimisation problem for $N_p = \infty$.
@@ -309,14 +308,14 @@
         
         \paragraph
         Different methods have been proposed to apply integral action with an \gls{MPC}.
-        A commonly used method involves applying an integrator to the control action determined by the \gls{MPC} \cite{Ruscio2013}.
+        A common method involves applying an integrator to the control action determined by the \gls{MPC} \cite{Ruscio2013}.
         In this implementation, the \gls{MPC} determines the optimal control action increment, ${\Delta u_k}^*$,
         and calculates the control action, $u_k = u_{k-1} + {\Delta u_k}^*$ which is then applied.
         Hence, integral action is applied to the plant input.
         This method is also described by \cite{Mayne2000}.
 
         \paragraph
-        Another commonly used strategy involves estimating an input disturbance that influences an output variable in the plant model \cite{Ruscio2013}.
+        Another common strategy involves estimating an input disturbance that influences an output variable in the plant model \cite{Ruscio2013}.
         In this way, integral action is applied to the plant output.
         This integral action strategy will be applied in this work.
         Since integral action is required for $V_N$ in the North velocity controller,
@@ -364,7 +363,7 @@
         The value of $\hat{u}_{ud}(k)$ is then used in the \gls{QP} solver to determine the optimal control action of the \gls{MPC}.
         
         \paragraph
-        It was determined from simulations with different payload parameters and disturbances that the \gls{MPC} with the default input disturbance estimator provides acceptable controller performance without additional tuning. 
+        It was determined from simulations with different payload parameters and disturbances that the \gls{MPC} with the default input disturbance estimator provides acceptable controller performance.
         Hence, the default Kalman filter is used in the final control implementation.
         Zero steady-state error for velocity tracking was achieved for different payloads and different input disturbances, showing that integral action is achieved.
         The simulation results showing the \gls{MPC} integral action will be shown and discussed in Section~\ref{sec:control_implementation}.
@@ -375,7 +374,7 @@
         An \gls{MPC} can easily be tuned for a range of different design requirements.
         The same general design requirements will be applied to the \gls{MPC} as to the \gls{LQR} in Section~\ref{sec:lqr}, namely,
         to produce a fast velocity response with zero steady-state error while damping the payload oscillations quickly.
-        The \gls{MPC} is firstly tuned to have a similar response time to the \gls{LQR} so that the controller performances can be roughly compared.
+        The \gls{MPC} is tuned to have a similar response time to the \gls{LQR} so that the controller performances can be compared.
         Thereafter, it is tuned to produce a trajectory that is as smooth as possible.
 
         \paragraph
@@ -386,7 +385,7 @@
         $\bm{w}^u$,
         $\bm{w}^{\Delta u}$, and
         $b_{ud}$.
-        $T_s$ is fixed by the system identification phase, since the sample time of the discrete model and the controller should match.
+        The $T_s$ value is fixed by the system identification phase, since the sample time of the discrete model and the controller should match.
 
         \paragraph
         In the controller tuning process, a large value of ${w^y}_{j}$ corresponds to aggressive control of the $j$\textsuperscript{th} output variable, 
@@ -409,9 +408,9 @@
         
         \paragraph
         The objective function weights were iteratively tuned for the desired control performance in a similar way to the LQR.
-        All the weights corresponding to the delay-coordinates are set to zero.
-        Due to the non-zero steady-state value of $\theta$, the corresponding weight is also set to zero.
-        Hereafter, the value of $T_p = T_c$ is incrementally decreased until a noticeable change in the controller performance.
+        Due to the non-zero steady-state value of $\theta$, the corresponding weight is set to zero.
+        All the weights corresponding to the delay-coordinates are also set to zero.
+        Hereafter, the value of $T_p = T_c$ is incrementally decreased until there is a noticeable change in the controller performance.
         $T_p$ is fixed at the smallest value before this change occurs.
         $T_c$ is then further decreased until a noticeable change in performance.
 
@@ -421,7 +420,7 @@
         Starting at an initial guess of $b_{ud} = 1$, the value is iteratively tuned for a consistent performance with a range of different payloads and wind disturbances.
 
         \paragraph
-        The final designed controller configuration parameters are shown in Table~\ref{tbl:mpc_params}.
+        The final controller parameters are shown in Table~\ref{tbl:mpc_params}.
         Note that the weights in $\bm{w}^y$ correspond to the variables in, 
         $ [ V_N ~~ \theta ~~ \dot{\theta} ] $,
         the weight in $\bm{w}^u$ corresponds to the variable $A_{N_{sp}}$, and 
