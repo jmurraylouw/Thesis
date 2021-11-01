@@ -4,7 +4,7 @@
 
     \paragraph
     This thesis considered the design and practical implementation of a stabilising control architecture for a multirotor with an unknown suspended payload.
-    A broad scope was considered which includes two different area of research, namely, 
+    A broad scope was considered which includes two different areas of research, namely, 
     \begin{itemize}
         \item Data-driven system identification of the unknown payload dynamics 
         \item Optimal swing damping control of the multirotor-payload system
@@ -15,13 +15,13 @@
 
         \paragraph
         Existing solutions for stabilised multirotor control with a suspended payload were identified in the literature.
-        The literature study showed that research seldomly includes experimental results or algorithm testing on practical hardware, even though this would provide valuable insight.
-        It also showed that most studies do not account for uncertainty in the controlled system.
-        A thorough study of the literature showed that some solutions account for parameter uncertainty, but very few assume no knowledge of the payload dynamics.
+        The literature study showed that research seldomly includes experimental results or algorithm tests with practical hardware, even though this would provide valuable insights.
+        It also shown that most studies do not account for uncertainty in the controlled system.
+        A thorough study of the literature showed that some solutions account for parameter uncertainty, but very few assume no prior knowledge of the payload dynamics.
         
         \paragraph
         Furthermore, the few studies that achieved stabilised control despite unknown dynamics, 
-        counteracted the payload effect as an unknown disturbance instead of actively controlling the payload state. 
+        counteracted the influence of the payload as an unknown disturbance instead of actively controlling the payload state. 
         This places the focus on robustness rather than smooth control of the complete multirotor-payload system. 
 
         % \paragraph
@@ -42,17 +42,18 @@
 
         \paragraph
         The baseline parameter estimation technique was described and applied to data from \gls{SITL} simulations with Gazebo.
-        It was shown that the white-box model which uses the estimated parameters captured the general shape of the system state predictions well.
+        It was shown that the white-box model which uses the estimated parameters captures the general shape of the system state predictions well.
         The white-box model with parameter estimation technique was also applied to a dynamic payload simulation.
         An elongated payload was suspended from the multirotor and acted as a double pendulum, inducing irregular oscillations in the system.
         For this use case, the resultant white-box model predictions did not represent the general shape of the payload dynamics.
 
         \paragraph
-        \gls{DMDc} and \gls{HAVOKc} were introduced as the data-driven system identification techniques proposed by this work.
+        \gls{DMDc} and \gls{HAVOKc} were introduced as the data-driven system identification techniques proposed in this work.
         These linear regression techniques each produce a discrete, linear space-space model of the considered dynamics based on input and output data only.
-        The conventional \gls{HAVOK} is not designed to be applied to controlled systems.
-        However, this algorithm was extended in this work to account for control inputs in a dynamical system and will be referred to as \gls{HAVOKc}.
-        The conventional \gls{DMDc} algorithm was altered to include delay-coordinates in a similar way to \gls{HAVOK}.
+        The conventional \gls{HAVOK} algorithm was not designed to be applied to controlled systems.
+        However, this algorithm was extended in this work to account for control inputs in a dynamical system.
+        The extended algorithm can be referred to as \gls{HAVOKc}.
+        The conventional \gls{DMDc} algorithm was altered in this work to include delay-coordinates in a similar way to \gls{HAVOK}.
         Furthermore, the mathematical complexity of these techniques was described in detail.
 
         \paragraph

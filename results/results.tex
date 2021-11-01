@@ -22,7 +22,7 @@
     \FloatBarrier\section{Parameter estimation with practical data}
 
         \paragraph
-        In Section~\ref{sec:param_estimation}, a cable length parameter estimation technique was performed with simulation data and the resulting white-box models provided reasonably accurate representations of the simulated multirotor-payload dynamics.
+        In Section~\ref{sec:param_estimation}, a cable length parameter estimation technique was performed with simulation data and the resulting white-box models produced reasonably accurate representations of the simulated multirotor-payload dynamics.
         In this section, the cable length estimation technique will be applied to practical flight data with different payload masses and cable lengths.
         The effect of wind on the parameter estimation technique will also be investigated.
         Finally, the cable length estimator will be applied to data from a dynamic payload.
@@ -50,17 +50,17 @@
                 PE = \frac{ l_{estimated} - l_{actual} }{ l_{actual} } \times 100 \% ,
             \end{equation}
             where $l_{actual}$ is the actual cable length and $l_{estimated}$ is the estimated cable length.
-            The \gls{PE} can be interpreted as the percentage of the actual length by which the actual length differs from the estimated length.
+            The \gls{PE} can be interpreted as the percentage of the actual length by which the estimated length differs from the actual length.
             
             \input{results/plots/cable_length_vs_train_time.tex}
 
             \paragraph 
-            Figure~\ref{fig:cable_length_vs_train_time} shows the \gls{PE} of the cable length estimation for practical flight data with different payload masses and cable lengths using practical fligth data.
+            Figure~\ref{fig:cable_length_vs_train_time} shows the \gls{PE} of cable length estimation for practical flight data with different payload masses and cable lengths using practical fligth data.
             Note that for each payload configuration, 
             the estimation converges to a constant error after a sufficient length of training data.
             For these payload configurations, the converged \gls{PE} ranges from 18.9~\% to 32.4~\%.
             These errors may be due to the large difference between the theoretical and the damped natural frequency.
-            It appears that the \gls{PID} controllers damp the payload oscillations significantly, 
+            It appears that the \gls{PID} controllers damp the payload swing angles, 
             which affects the oscillation frequency of the payload.
             Hence, an inaccurate length is estimated from the frequency peak identified in the \gls{FFT}.
             % The estimation accuracy could be improved by including the effect of damping in the calculation of the cable length from the measured natural frequency.
@@ -79,7 +79,7 @@
             
             \paragraph
             Furthermore, the practical swing angle peaks are attenuated by non-linear damping, which differs from the linear damping of the white-box model.
-            This is a minor modelling error expected from a linear approximation of a non-linear system. 
+            This is a minor modelling error expected from a linearised model.
 
             % \input{results/plots/prediction_single_pend_white_prac_bad.tex}
             % \paragraph
@@ -100,9 +100,9 @@
             Figure~\ref{fig:cable_length_vs_train_time_wind} shows the \gls{PE} of cable length estimation for flights with different wind conditions.
             These flights were all performed with the same payload.
             Wind conditions are referenced here by the wind speed recorded by the website, www.yr.no, for the hour of the day of the flight.
-            It appears that the wind speed does affect the parameter estimation result since the estimation error differs significantly for different wind speeds.
+            It appears that the wind speed affects the parameter estimation result since the estimation error differs significantly for different wind speeds.
             This is probably due to the variable damping effect of the controllers at different wind speeds.
-            From the considered flights, it appears that the largest \gls{PE} occurs at the highest wind speed, 
+            From the considered flights, the largest \gls{PE} occurs at the highest wind speed, 
             and the lowest \gls{PE} at the lowest wind speed.
             However, only a few different wind speeds were tested and a trend cannot be identified conclusively from this small sample.
 
@@ -183,15 +183,17 @@
             Figure~\ref{fig:prediction_double_pend_white_prac_diff_IC} shows the white-box model predictions for the dynamic payload data with slightly different starting positions in the data.
             Note how much the predictions differ even though the starting points are so close together. 
             This shows how sensitive the white-box model is to the initial condition of the prediction.
-            This is because the white-box model consists of ordinary differential equations depend on the initial angular rate of the payload.
+            This is because the white-box model consists of ordinary differential equations which depend on the initial angular rate of the payload.
             Even though the oscillations of the dynamic payload have an approximate sinusoidal shape, the time derivative of the data differs significantly from the sinusoidal white-box dynamics.
             This is clear from numerous infliction points in the payload angle data shown in Figure~\ref{fig:predictions_double_pend_prac_subfigs}.
             
             \paragraph
-            However, as the size of the swing angles attenuate the relative oscillations of the elongated payload also decrease.
-            Therefore the effect of the superimposed higher frequency oscillations become less prominent and the system dynamics approximate a single pendulum more closely.
+            However, as the size of the swing angles attenuates the relative oscillation of the elongated payload also decreases.
+            Therefore the effect of the superimposed higher frequency oscillations become less prominent and the system dynamics approximates a single pendulum more closely.
             For example, in Figure~\ref{fig:predictions_double_pend_prac_subfigs} it can be seen that the oscillations after \SI{12}{\second} are much less irregular than before. 
             Therefore the single pendulum model provides a decent representation of a practical dynamic payload for small swing angles.
+            
+            \paragraph
             Overall, the white-box model represents the general shape of the practical data, but does not capture the transient response of the system and is very sensitive to initial conditions. 
             
     \FloatBarrier\section{Data-driven system identification with practical data} \label{sec:data_driven_sys_id_prac}
@@ -235,7 +237,7 @@
             This shows that the two techniques produce similar prediction errors for different wind conditions.
             The difference in prediction error is small and will probably not affect the performance of the controllers using these models.
             This affirms the observation in Chapter~\ref{chap:system_id} that the minor difference in the algorithm implementations has a negligible effect on prediction accuracy.
-            The \gls{DMDc} implementation is therefore preferred over \gls{HAVOKc} for practical data due to lower computational complexity.
+            Even for practical data, the \gls{DMDc} implementation is preferred over \gls{HAVOKc} for practical data due to lower computational complexity.
 
             
         \FloatBarrier\subsection{Hyperparameters}
@@ -322,7 +324,7 @@
         \FloatBarrier\subsection{Extended dimensions}
 
             \paragraph
-            Because the data-driven methods are only dependant on the input and output data used,
+            Because the data-driven methods are only dependant on input and output data,
             the prediction model can easily be extended to include more dimensions by adding more state measurement variables.
             In this section, a prediction model is generated and discussed which includes both the North and East axes dynamics.
             Such a model could be used in a single \gls{MPC} velocity controller to damp the payload oscillations in both axes simultaneously.
@@ -355,8 +357,10 @@
             To generate training data, random steps are commanded in the North and East axes simultaneously to excite the dynamics in both axes. 
             Figure~\ref{fig:XY_train_data_subfigs} shows an example of the practical training data used for this extended dimension model.
             Clear oscillations in the payload angle and velocity response of both axes are visible. 
+
+            \paragraph
             Figure~\ref{fig:xy_predictions} shows the state variable predictions of a \gls{DMDc} model 
-            build from the data in Figure~\ref{fig:XY_train_data_subfigs}.
+            built from the data in Figure~\ref{fig:XY_train_data_subfigs}.
             It is clear that this model provides an accurate prediction of each state variable considered.
             This shows that the data-driven methods can be effectively extended to include both the North and East axes dynamics. 
             This is a great advantage of the proposed data-driven approach.
@@ -429,7 +433,7 @@
         \paragraph
         As described in Section~\ref{sec:exp_design_hitl}, an \gls{OBC} runs a \gls{ROS} node which implements the \gls{MPC} algorithm.
         The \gls{MPC} is based on a \gls{DMDc} plant model generated from training data from a \gls{HITL} simulation.
-        The \gls{OBC} receives state feedback and sends control signals via a \gls{UART} connection to the \gls{FC}.
+        The \gls{OBC} receives state feedback and sends control signals to the \gls{FC}.
         The \gls{FC} runs the actual PX4 flight-stack firmware and executes the control signals received from the \gls{MPC} node.
         Sensor values are generated and sent to PX4 by the Gazebo simulator, which runs on a desktop computer connected to the \gls{FC} via \gls{USB}.
         In this way, we can safely determine whether the practical hardware is suitable for the computational complexity of the control algorithms.
@@ -483,10 +487,14 @@
             \paragraph
             An \gls{MPC} node with $T_s =$~\SI{40}{\milli\second} runs with a low \scaleobj{0.8}{\%}CPU, however it also results in unstable control.
             This is because the controller frequency is too low to provide adequate velocity control of the multirotor-payload dynamics.
-            However, an \gls{MPC} node with $T_s =$~\SI{30}{\milli\second} provides stable control of the multirotor-payload system.
+            An \gls{MPC} node with $T_s =$~\SI{30}{\milli\second} provides stable control of the multirotor-payload system.
             The \gls{QP} problem is solved within the given optimisation time and, as shown in the section below, the resulting controller frequency of \SI{33.33}{\hertz} appears to be fast enough to control the multirotor-payload dynamics.
+            
+            \paragraph
+            Note that the practical controller implementation experiences latency in various parts of the system.
+            The latency can be attributed to various hardware communication channels and software execution times.
+            \gls{HITL} simulations also determine whether the controller works despite the inherent latency of the system.
 
-            % ?? Simulations with latency included
         \FloatBarrier\subsection{Velocity step response}    
 
             \input{results/plots/HITL_mpc_vel.tex}
@@ -501,9 +509,8 @@
             \paragraph
             Figure~\ref{fig:HITL_mpc_theta} shows the payload angle data of the \gls{PID} and \gls{MPC} controllers during the velocity step response.
             From this plot, it can be seen that the \gls{MPC} controller damps the payload angle well.
-            Overall, these plots show that the swing-damping control achieved in simulations in Section~\ref{sec:mpc}, is also achievable with the final controller software running on the actual hardware.
-
-            % ?? Discuss practical feasibility as in intro
+            Overall, these plots show that the swing-damping control demonstrated in Chapter~\ref{chap:control}, is also achievable with the final controller software running on the actual hardware.
+            This shows that the practical hardware is suitable for the computational complexity of the control algorithms and the controller architecture is practically feasible.
 
     \FloatBarrier\section{Summary}
 
@@ -511,13 +518,13 @@
         In this chapter, the system identification techniques were applied to practical flight data.
         The cable length estimation technique described in Chapter~\ref{chap:system_id} was applied to data from flights with different payload masses and cable lengths.
         The results showed that the estimated length converged quickly for each payload configuration and that the estimation error was consistently quite large.
-        The large error was attributed to cable attachment being below the vehicle \gls{CoM}, and the damping effect of the controller, which were not considered in the parameter estimation algorithm. 
+        The large error was attributed to the cable attachment being below the vehicle \gls{CoM}, and the damping effect of the controller, which were not considered in the parameter estimation algorithm. 
         
         \paragraph
         It was also shown that the estimated length converged for flight data with different wind conditions and that the estimation error was the largest for the data with the most wind.
         Furthermore, the cable length estimator was applied to flight data with a double pendulum payload.
-        The estimated value converged to a length corresponding to the dominant frequency in the data, and the resulting white-box model prediction only captured the general shape of the data well.
-        However, the white-box model prediction was shown to be very sensitive to initial conditions.
+        The estimated value converged to a length corresponding to the dominant frequency in the data, and the resulting white-box model prediction only represented the general shape of the data.
+        The white-box model prediction was also shown to be very sensitive to initial conditions.
 
         \paragraph
         The data-driven system identification techniques were also successfully applied to practical flight data.
@@ -528,19 +535,19 @@
         \paragraph
         The \gls{DMDc} and \gls{HAVOKc} state predictions performed equally well on data from various flights.
         \gls{DMDc} was chosen as the preferred method due to its lower complexity.
-        It was shown that \gls{DMDc} could be applied to data from a wide range of different payload parameters and that it consistently generated accurate prediction models without prior knowledge of the payload configuration.
+        It was shown that \gls{DMDc} could be applied to data from a wide range of different payload parameters and that it consistently generated accurate prediction models without prior knowledge of the payload dynamics.
         The Pareto front and `double-descent' trends discussed in Chapter~\ref{chap:system_id} were also identified in these results.
         
         \paragraph
-        \gls{DMDc} was also extended to capture the North and East velocity dynamics simultaneously, and the resulting prediction model accurately reconstructed the system dynamics for test data.
+        \gls{DMDc} was extended to capture the North and East velocity dynamics simultaneously, and the resulting prediction model accurately reconstructed the system dynamics for test data.
         Furthermore, \gls{DMDc} was applied to flight data with a dynamic payload representing a double pendulum system.
         \gls{DMDc} accurately reconstructed the dynamics of this system for unseen test data.
         Unlike the white-box model which only represented the dominant oscillation frequency, the \gls{DMDc} model also predicted the irregular oscillations well.
 
         \paragraph
         Finally, the full data-driven system identification with \gls{MPC} control architecture was tested in \gls{HITL} simulations.
-        It was shown that the hardware successfully executes the \gls{MPC} algorithm at the desired speed for the selected hyperparameters and sample time.
+        It was shown that the hardware successfully executes the \gls{MPC} algorithm at the desired frequency for the selected hyperparameters and sample time.
         The successful velocity step response proved that the various software systems work together seamlessly.
-        It also showed that the control architecture can be implemented on the hardware of an actual multirotor to successfully apply swing-damping control of the multirotor-payload system.
+        It also showed that the control architecture can be implemented on the hardware of an actual multirotor for effective swing-damping control of the multirotor-payload system.
             
 }
