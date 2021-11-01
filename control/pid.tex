@@ -36,7 +36,7 @@
     aileron,
     elevator,
     rudder, and 
-    thrust commands.
+    thrust commands respectively.
 
     \paragraph
     The inner-most control element is the mixer, which converts virtual actuator commands to actuator thrust commands.
@@ -212,11 +212,9 @@
         Note that the actual input of the plant is $A_{N_{sp}}$, however, it is assumed that $A_{N_{sp}} \approx A_N$ due to the large time-scale separation between the velocity controller and attitude controller.
         The transfer function can therefore be calculated as, 
         \begin{align}\label{eq:lin_vel_quad_pl}
-            G_{V_N}(s) &= \frac{V_N(s)}{A_N(s)} = \textbf{C}_{long} \left(s \textbf{I} - \textbf{A}_{long}\right)^{-1} \textbf{B}_{long} \\
-            G_{V_N}(s) &= \dfrac{s^2 + \frac{c}{m_p l^2}s + \dfrac{g}{l}}{s \left[s^2 + \dfrac{c(m_Q + m_p)}{m_Q m_p l^2}s + \dfrac{g(m_Q + m_p)}{m_Q l}\right]} 
+            G_{V_N}(s) &= \frac{V_N(s)}{A_N(s)} = \textbf{C}_{long} \left(s \textbf{I} - \textbf{A}_{long}\right)^{-1} \textbf{B}_{long} ~~,\\
+            G_{V_N}(s) &= \dfrac{s^2 + \frac{c}{m_p l^2}s + \dfrac{g}{l}}{s \left[s^2 + \dfrac{c(m_Q + m_p)}{m_Q m_p l^2}s + \dfrac{g(m_Q + m_p)}{m_Q l}\right]} ~~.
         \end{align}
-
-        \input{control/plots/rootlocus_cl.tex}
 
         \paragraph
         A payload with $m_p =$~\SI{0.2}{\kilo\gram} and $l =$~\SI{1}{\metre} is considered for the controller design.
@@ -226,16 +224,6 @@
         These gains were also tested iteratively with different payload parameters in the ranges, $0.1 \leq m_p \leq 0.3$~kg and $0.5 \leq l \leq 2$~m, 
         to establish safe flights with different payloads.
 
-        \begin{figure}
-            \captionsetup[subfigure]{justification=centering}
-            \centering  
-            \input{control/plots/pid_tuning_plot_vel.tex} % subfigure
-            \input{control/plots/pid_tuning_plot_theta.tex} % subfigure
-            \caption{\gls{PID} velocity step response 
-            ($l =$~\SI{1}{\meter}, $m_p =$~\SI{0.2}{\kilo\gram})}
-            \label{fig:pid_tuning_subfigs}  
-        \end{figure}
-
         \paragraph
         Figure~\ref{fig:pid_tuning_subfigs} shows a velocity step response for the resulting cascaded \gls{PID} controller with a specific payload.
         The gains are documented in Appendix~\ref{appen:pid_gains}.
@@ -243,3 +231,15 @@
         The velocity oscillations are clearly visible in Figure~\ref{fig:pid_tuning_plot_vel}.
         The current \gls{PID} controller does not provide an adequate way of actively damping the payload oscillations,
         hence an active swing damping controller is required.
+
+        \input{control/plots/rootlocus_cl.tex}
+
+        \begin{figure}
+            \captionsetup[subfigure]{justification=centering}
+            \centering  
+            \input{control/plots/pid_tuning_plot_vel.tex} % subfigure
+            \input{control/plots/pid_tuning_plot_theta.tex} % subfigure
+            \caption{\gls{PID} velocity step response 
+            ($l =$~\SI{1}{\meter}, $m_p =$~\SI{0.2}{\kilo\gram}).}
+            \label{fig:pid_tuning_subfigs}  
+        \end{figure}

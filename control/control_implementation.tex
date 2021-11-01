@@ -201,7 +201,7 @@
             \input{control/plots/compare_control_vel_mq_changed.tex}
             \input{control/plots/compare_control_theta_mq_changed.tex}
             \caption{Velocity step responses with the multirotor mass decreased by \SI{0.25}{\kilo\gram}
-            ($l =$~\SI{0.5}{\meter}, $m_p =$~\SI{0.3}{\kilo\gram})}
+            ($l =$~\SI{0.5}{\meter}, $m_p =$~\SI{0.3}{\kilo\gram}).}
             \label{fig:mq_changed} 
         \end{figure}
 
@@ -253,7 +253,7 @@
     \paragraph
     Even though the estimated model used by the \gls{MPC} showed good prediction accuracy with the given testing data set, 
     the actual system response did not follow the predicted trajectory of the \gls{MPC} accurately.
-    It appears that the optimised trajectory of the \gls{MPC} is beyond the domain where the linear model provides an accurate approximation of the non-linear dynamics.
+    It appears that the optimised trajectory of the \gls{MPC} is beyond the domain where the linear model is an accurate approximation.
     % Therefore, the proposed \gls{DMDc} implementation does not provide a sufficient linear model approximation for effective \gls{MPC} control of such a dynamic payload.
 
     \paragraph

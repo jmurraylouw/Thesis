@@ -8,7 +8,7 @@
     \begin{figure}[ht]
         \centering
         \includegraphics[width=0.818\linewidth]{control/fig/MPC_controller}
-        \caption{Diagram of the structure of a typical MPC}
+        \caption{Diagram of the structure of a typical MPC.}
         \label{fig:mpc_controller}
     \end{figure}
     
@@ -38,7 +38,7 @@
         \begin{figure}[ht]
             \centering
             \includegraphics[width=0.818\linewidth]{control/fig/receding_horizon}
-            \caption{Illustration of the receding horizon of an \gls{MPC} \cite{horizon_diagram2021}}
+            \caption{Illustration of the receding horizon of an \gls{MPC} \cite{horizon_diagram2021}.}
             \label{fig:receding_horizon}
         \end{figure}
         
@@ -56,9 +56,9 @@
         As an example, $\bm{u}( k + 1 | k )$ represents the optimised input vector calculated at time-step $k$, which will be executed at time-step $k+1$.
         The controller decision produces the predicted trajectory when applied to the plant model.
         % Note that only the first control action, $\bm{u}( k | k )$, will be executed and a new controller decision will be determined at time-step $k+1$.
-        Note that if $N_c < N_p$, the remaining control actions are set to,
+        Note that if $N_c < N_p$, the remaining control actions are set to:
         \begin{equation}
-            \bm{u}( i | k ) = \bm{u}( N_c | k ), ~~ i > N_c .
+            \bm{u}( i | k ) = \bm{u}( N_c | k ), ~~ i > N_c ~.
         \end{equation}
 
     \FloatBarrier\subsection{Plant model} \label{sec:mpc_model}
@@ -137,7 +137,7 @@
         \end{equation}
         The $\bm{A}_{mpc}$ matrix is also augmented with a Backwards Euler numerical differentiation equation, such that,
         \begin{equation}
-            \dot{\theta} (k) = \frac{1}{T_s} \theta(k) - \frac{1}{T_s} \theta(k-1) 
+            \dot{\theta} (k) = \frac{1}{T_s} \theta(k) - \frac{1}{T_s} \theta(k-1) .
         \end{equation}
         In this way, a weight can be applied to the $\dot{\theta}$ variable in the \gls{MPC} objective function to control this variable.
         $\bm{B}_{mpc}$ is augmented with zeros so that the state space matrix dimensions agree and so that $\bm{u}_{mpc} (k)$ does not directly influence $\dot{\theta} (k)$.
