@@ -1,6 +1,5 @@
 \section{Plant considered for system identification} \label{sec:plant_considered}
  
-    % Gebruik dalk hierdie par erens??
     % \paragraph
     % As discussed in \ref{sec:linear_model}, the payload is attached near the \gls{CoM} of the vehicle 
     % and has a minimal effect on the attitude dynamics.
@@ -44,19 +43,15 @@
         \label{fig:floating_pend}
     \end{figure}
 
-    
-
     % Also note that the inner loop controllers handle the attitude dynamics of the multirotor.
     % During simulations of pure longitudinal velocity setpoints, 
     % it was observed that the multirotor experiences negligible altitude changes due the swinging payload.
-    % ?? This will be discussed in Section~\ref{sec:}
     % This is due to the speed of the altitude controllers and the weak coupling between the payload angle and the altitude dynamics, 
     % discussed in Chapter~\ref{chap:modelling}.
     % The plant seen by the system identification process therefore mimics the common pendulum-on-a-cart model.
     
     % The differential equations that describe the motion of this system 
     % were derived with Lagrangian mechanics in Chapter~\ref{chap:modelling}.
-    % ?? Linear state-space model 
 
     % From this derivation it is clear that the angular velocity of the payload, $\dot{\theta}$, is required to described the system dynamics.
     % However, $\dot{\theta}$ is not measured directly on the considered practical multirotor setup.

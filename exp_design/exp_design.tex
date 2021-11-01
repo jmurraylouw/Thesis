@@ -96,7 +96,7 @@
 
             \paragraph
             An \gls{OBC}, also called a companion computer, is used to run intensive computational processes that cannot be handled by the \gls{FC}.
-            A NVIDIA\textsuperscript{\textregistered} Jetson Nano\texttrademark, which is shown in Figure~\ref{fig:jetson}, is used as the \gls{OBC} for Honeybee.
+            A NVIDIA\textsuperscript{\textregistered} Jetson Nano\texttrademark is used as the \gls{OBC} for Honeybee and is shown in Figure~\ref{fig:jetson}.
             This has 4GB memory and a quad-core processor which runs at 1.43 GHz.
             The \gls{OBC} is connected to a serial port on the \gls{FC} for communication.
 
@@ -110,34 +110,34 @@
     \FloatBarrier\section{Software Toolchain}
 
         \paragraph
-        The software toolchain used with Honeybee includes PX4, QGroundControl, \gls{ROS}, and Gazebo simulator.
-        This toolchain and was also implemented and described well by \citet{Erasmus2020}, \citet{Slabber2020}, and \citet{Grobler2020}.
+        The software toolchain used with Honeybee includes PX4, QGroundControl, \gls{ROS}, and Gazebo.
+        This toolchain and was also implemented and described by \cite{Slabber2020}, \cite{Erasmus2020}, and \cite{Grobler2020}.
         A brief overview of the software toolchain is provided here.
         % Simulink\texttrademark~was also used to generate standalone \gls{ROS} nodes which runs on the \gls{OBC}.
 
         \subsection{PX4}
 
             \paragraph
-            PX4 is an open-source flight-stack that focuses on autonomous \glspl{UAV} \cite{Meier2015} and is used in research and industrial applications.
+            PX4 is an open-source flight-stack that focuses on autonomous \glspl{UAV} \cite{Meier2015} and is often used in research and industrial applications.
             \gls{SITL} and \gls{HITL} simulations are supported by PX4, which is helpful for research and development.
             
         \subsection{QGroundControl}
         
             \paragraph
-            \gls{QGC} is the recommended ground station software for PX4 systems \cite{PX4userguide}.
+            \gls{QGC} is the recommended ground station software for PX4 systems~\cite{PX4userguide}.
             A ground station computer running \gls{QGC} can be used to monitor and control a PX4 vehicle.
             \gls{QGC} communicates with PX4 via the MAVLink protocol over a telemetry connection during practical flights.
             During \gls{SITL} simulations, \gls{QGC} connects to PX4 over a local \gls{UDP} connection.
             \gls{QGC} is also an open-source product.
             
-        \subsection{Gazebo simulator}
+        \subsection{Gazebo}
 
             \paragraph
             Gazebo is an open-source graphical-based physics simulator used for robotics.
             This is the recommended simulator in the PX4 development toolchain and is capable of both \gls{SITL} and \gls{HITL} simulations \cite{PX4userguide}.
             The PX4 flight-stack includes multirotor models developed for Gazebo which include realistic sensor plugins.
             These plugins apply sensor noise, drift and bias which replicates the actual sensors used on Pixhawk boards.
-            The physical parameters of these models were changed to match Honeybee and a suspended payload was added to the model as shown in Figure~\ref{fig:gazebo_honeybee}.
+            The parameters defining these models were changed to match Honeybee and a suspended payload was added to the model as shown in Figure~\ref{fig:gazebo_honeybee}.
 
             \begin{figure}[ht]
                 \centering
@@ -151,7 +151,7 @@
             \paragraph
             \gls{ROS} is a communication framework with a set of tools used for robotics and control applications \cite{Quigley2009}. 
             \gls{ROS} is also open-source and is supported by PX4.
-            In this framework, executables are called \gls{ROS} nodes and these nodes interact with each with a publish-subscribe architecture.
+            In this framework, executables are called \gls{ROS} nodes and these nodes interact with each in a publish-subscribe architecture.
             A \gls{ROS} node can publish messages to a topic, and a different node can subscribe to that topic to read those messages.
 
             \paragraph
@@ -159,13 +159,6 @@
             % \gls{QGC} and Gazebo also communicate with PX4 through MAVLink.
             A MAVROS node receives MAVLink messages from PX4 and converts this to published \gls{ROS} topics for other \gls{ROS} nodes to access.
             The MAVROS node also subscribes to other topics to receive \gls{ROS} messages and send this data to PX4. 
-
-            \begin{figure}[!htbp]
-                \centering
-                \includegraphics[width=0.9\linewidth]{exp_design/fig/MAVROS}
-                \caption{Communication between \gls{ROS}, flight-stack, simulator, and ground station~\cite{Grobler2020}}
-                \label{fig:MAVROS}
-            \end{figure}
 
             \paragraph
             Simulink\texttrademark~was used to convert the \gls{MPC} controller developed in Section~\ref{sec:mpc} to C\texttt{++} code and generate a standalone \gls{ROS} node.
@@ -175,6 +168,14 @@
             State estimate data is received by the \gls{MPC} node by subscribing to the appropriate MAVROS topic.
             After the \gls{MPC} node calculates the next controller decision, it publishes the controller setpoint data to a MAVROS topic.
             The MAVROS node then sends it to PX4 via MAVLink.
+
+            \vspace{10mm}
+            \begin{figure}[!htbp]
+                \centering
+                \includegraphics[width=1\linewidth]{exp_design/fig/MAVROS}
+                \caption{Communication between \gls{ROS}, flight-stack, simulator, and ground station~\cite{Grobler2020}}
+                \label{fig:MAVROS}
+            \end{figure}
 
     \FloatBarrier\section{Hardware-in-the-Loop simulations} \label{sec:exp_design_hitl}
 
@@ -192,9 +193,10 @@
         Based on the received sensors values, the PX4 controllers determine \gls{PWM} actuator commands which are communicated back to Gazebo.
         The \gls{OBC} runs the \gls{MPC} and MAVROS nodes which send and receive MAVLink messages over a serial port connection to the \gls{FC}.
 
+        \vspace{10mm}
         \begin{figure}[ht]
             \centering
-            \includegraphics[width=0.8\linewidth]{exp_design/fig/HITL}
+            \includegraphics[width=0.9\linewidth]{exp_design/fig/HITL}
             \caption{Different software and hardware components of a \gls{HITL} simulation}
             \label{fig:HITL}
         \end{figure}

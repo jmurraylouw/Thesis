@@ -5,7 +5,7 @@
 \chapter{Practical implementation and results} \label{chap:results}
 
     \paragraph
-    In Chapter~\ref{chap:system_id}, it was shown within simulations that both the white-box and black-box system identification models could
+    In Chapter~\ref{chap:system_id}, it was shown within simulations that both the white-box and black-box system identification models can
     accurately represent the dynamics of a multirotor with a suspended payload.
     In Chapter~\ref{chap:control}, it was also shown within simulations that the proposed controllers effectively achieve swing-damping control. 
     However, practical flights may differ significantly from simulations, which would affect the performance of these implementations.
@@ -425,8 +425,7 @@
         In Section~\ref{sec:data_driven_sys_id_prac} it was shown that \gls{DMDc} can generate accurate state prediction models from practical flight data.
         It was also shown in Section~\ref{sec:mpc} that the \gls{DMDc} models can be used in an \gls{MPC} for effective swing-damping control.
         A \gls{HITL} simulation can now be used to test the complete control architecture with the final software running on the actual hardware.
-        % ?? see that exp design chapter links with this. 
-        % ?? Check all "as described in refs"
+
         \paragraph
         As described in Section~\ref{sec:exp_design_hitl}, an \gls{OBC} runs a \gls{ROS} node which implements the \gls{MPC} algorithm.
         The \gls{MPC} is based on a \gls{DMDc} plant model generated from training data from a \gls{HITL} simulation.
@@ -544,5 +543,4 @@
         The successful velocity step response proved that the various software systems work together seamlessly.
         It also showed that the control architecture can be implemented on the hardware of an actual multirotor to successfully apply swing-damping control of the multirotor-payload system.
             
-        % ?? Is hierdie te veel detail? Moet ek dit korter maak?
 }

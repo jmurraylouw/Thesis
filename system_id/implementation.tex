@@ -95,8 +95,6 @@
         The same setpoint schedules are used to generate this data for different simulations to ensure that the error metrics determined from different simulations are comparable. 
         These error metrics are used to evaluate and rank the performances of each model.       
         % It is important to note that the testing data contains steps sizes and intervals not captured in the training data.
-        % Write about generalisable models and that different steps sizes??
-        % Edit this part ??
 
         % \paragraph
         % As discussed before, the purpose of identifying a data-driven model of the plant dynamics 
@@ -144,6 +142,7 @@
         $\bm{\hat{x_k}}$ is the state prediction, 
         and 
         $\bm{\hat{x_k}}$ is the state prediction.
+        The \gls{MAE} can be interpreted as the mean error of the predicted value for a state variable over the prediction horizon.
         
         \paragraph
         Popular, scale-free error metrics, like \gls{MAPE}, \gls{MRAE} and \gls{MASE}, are also based on the $l_1$~norm,
@@ -170,13 +169,12 @@
         %     metric = \frac{1}{n_x} \cdot \sum_{i = 1}^{n_x} \left( \frac{ \bm{MAE_i} }{ x_{i, max} } \right) 
         % \end{equation}
         \begin{equation}
-            NMAE = \frac{ MAE }{ x_{max} - x_{min} }
+            NMAE = \frac{ MAE }{ x_{max} - x_{min} } ,
         \end{equation}
         where         
         $x_{i, max}$ and $x_{i, min}$ are the maximum and minimum values 
         of the considered variable in the testing data.
-        % ?? Write about what this error means
-        % ?? write that it is understood as percentage
+        The \gls{NMAE} therefore represents the prediction error as a fraction of the range of a variable. 
 
         \paragraph
         This produces an error metric for each predicted variable.
@@ -219,8 +217,6 @@
         If the prediction horizon is too short, these models may score unreasonably well.
         Selecting such a model could result in unstable control at certain control conditions.
         Therefore a long prediction horizon is used for testing so that marginally unstable models are penalised heavily in model selection. 
-
-        % \murray{Maybe insert example of good initial prediction but bad long term ??}
 
         \paragraph
         Different starting conditions also have a large influence on calculated error metrics.
@@ -644,8 +640,6 @@
         This is because it was specifically designed for the single pendulum payload.
         The data-driven approach provides an accurate system identification method for a much larger range of payloads without being redesigned for specific payload dynamics.
         
-        % ?? plot q of single pend on the same axis
-
         % \input{system_id/plots/MAE_vs_Ntrain_double_pend}
 
         % \paragraph
