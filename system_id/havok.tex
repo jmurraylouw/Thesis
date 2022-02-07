@@ -13,7 +13,7 @@
     \paragraph
     The original formulation of \gls{HAVOK} is only defined for uncontrolled dynamical systems \cite{Brunton2017a}.
     In this work, we have adapted the standard \gls{HAVOK} algorithm to account for the effect of control.
-    This implementation well be referred to as \gls{HAVOKc}.
+    This implementation will be referred to as \gls{HAVOKc}.
     This algorithm results in a discrete, linear model that approximates the behaviour of a controlled dynamical system.
     In this section, a brief overview is provided of this implementation of \gls{HAVOKc}.
     
@@ -22,7 +22,7 @@
     in the system identification process.
     To fit this into the standard state-space format, an extended state vector is defined as:
     \begin{equation}
-         \bm{a}_{k} = \begin{bmatrix} \bm{x}_{k-(q-1)} & \cdots & & \bm{x}_{k-1} & & \bm{x}_{k} \end{bmatrix}^T ,
+         \bm{a}_{k} = \begin{bmatrix} \bm{x}_{k-(q-1)} & \cdots & & \bm{x}_{k-1} & & \bm{x}_{k} \end{bmatrix}^T,
     \end{equation}
     where $\bm{a}_k \in \R^{(n_y)(q)}$, and the subscript of $\bm{a}$ denotes the highest subscript of ${\bm{x}}$ in the vector.
     
@@ -49,7 +49,7 @@
     where $w$ is the number of columns in $\bm{\Pi}$.
     A truncated \gls{SVD} of this Hankel matrix results in following approximation:
     \begin{equation} \label{eq:havok_svd_tilde}
-        \bm{\Pi} \approx \Tilde{\bm{U}} \Tilde{\bm{\Sigma}} \Tilde{\bm{V}}^T ,
+        \bm{\Pi} \approx \Tilde{\bm{U}} \Tilde{\bm{\Sigma}} \Tilde{\bm{V}}^T,
     \end{equation}
     where $\Tilde{\phantom{a}}$ represents rank-$p$ truncation.
     It is important to note that the model extracted by \gls{HAVOKc} depends on the choice of hyperparameters ($p$ and $q$),
@@ -67,7 +67,7 @@
     % 
     Consider the following discrete, state-space formulation:
     \begin{equation} \label{eq:v_ss}
-        \bm{v}_{k+1} = \bm{\Lambda} \bm{v}_k .
+        \bm{v}_{k+1} = \bm{\Lambda} \bm{v}_k.
     \end{equation}
     \gls{HAVOKc} determines the best fit linear operator $\bm{\Lambda}$ that maps the pseudo-state $\bm{v}_k$ to $\bm{v}_{k+1}$.
     To setup an over-determined equality for Equation~\ref{eq:v_ss}, $\Tilde{\bm{V}}^T$ is divided into two matrices:
@@ -97,7 +97,7 @@
     \phantom{.} = \phantom{.} (\Tilde{\bm{U}} \Tilde{\bm{\Sigma}}) \bm{\Lambda} (\Tilde{\bm{U}}  \Tilde{\bm{\Sigma}})^{\dagger} \phantom{.}
         \begin{bmatrix}
             \bm{a}_{k}  \\  \bm{u}_{k} 
-        \end{bmatrix} .
+        \end{bmatrix}.
     \end{equation}    
     % 
     % This form is used to extract $\bm{A}_H$ and $\bm{B}_H$ from the matrix,

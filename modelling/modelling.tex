@@ -112,14 +112,14 @@ Finally, practical flight data will be used to verify the simulated mathematical
                      \cos{\tfrac{\Phi}{2}} \cos{\tfrac{\Psi}{2}}    \sin{\tfrac{\Theta}{2}}  ~~ &+ ~~ \sin{\tfrac{\Phi}{2}}   \cos{\tfrac{\Psi}{2}}    \sin{\tfrac{\Psi}{2}} \\
                      \cos{\tfrac{\Phi}{2}} \cos{\tfrac{\Theta}{2}}  \sin{\tfrac{\Psi}{2}}    ~~ &- ~~ \sin{\tfrac{\Phi}{2}}   \cos{\tfrac{\Psi}{2}}    \sin{\tfrac{\Theta}{2}} \\
                 \end{aligned}
-            \end{array}\right] .
+            \end{array}\right].
         \end{equation}
 
         \paragraph
         The inverse of a quaternion is defined as,
         \begin{equation}
             \bm{q}^{-1} = 
-            \frac{ \begin{bmatrix} q_0 \\ -\bm{q}_v \end{bmatrix} }{ \sqrt{ {q_{0}}^{2} + {q_{1}}^{2} + {q_{2}}^{2} + {q_{3}}^{2} } } .
+            \frac{ \begin{bmatrix} q_0 \\ -\bm{q}_v \end{bmatrix} }{ \sqrt{ {q_{0}}^{2} + {q_{1}}^{2} + {q_{2}}^{2} + {q_{3}}^{2} } }.
         \end{equation}
 
         \paragraph
@@ -137,7 +137,7 @@ Finally, practical flight data will be used to verify the simulated mathematical
                 q_{1} & \phantom{-} q_{0} &           - q_{3} & \phantom{-} q_{2} \\
                 q_{2} & \phantom{-} q_{3} & \phantom{-} q_{0} &           - q_{1} \\
                 q_{3} &           - q_{2} & \phantom{-} q_{1} & \phantom{-} q_{0}
-            \end{array}\right] .
+            \end{array}\right].
         \end{equation}
 
         \paragraph
@@ -203,7 +203,7 @@ Finally, practical flight data will be used to verify the simulated mathematical
         \bm{V_\mathcal{B}}          &= 
         \begin{bmatrix}
             V_{\mathcal{B}_X} & V_{\mathcal{B}_Y} & V_{\mathcal{B}_Z}\\
-        \end{bmatrix}^T , \mbox{ and} \\
+        \end{bmatrix}^T, \mbox{ and} \\
         \bm{\varOmega_\mathcal{B}}  &= 
         \begin{bmatrix}
             \varOmega_{\mathcal{B}_X} & \varOmega_{\mathcal{B}_Y} & \varOmega_{\mathcal{B}_Z}\\
@@ -214,11 +214,11 @@ Finally, practical flight data will be used to verify the simulated mathematical
         \bm{F_\mathcal{B}} = &
         \begin{bmatrix}
             F_{\mathcal{B}_X} & F_{\mathcal{B}_Y} & F_{\mathcal{B}_Z} \\
-        \end{bmatrix}^T , \mbox{ and}\\
+        \end{bmatrix}^T, \mbox{ and}\\
             \bm{M_\mathcal{B}} = &
         \begin{bmatrix}
             M_{\mathcal{B}_X} & M_{\mathcal{B}_Y} & M_{\mathcal{B}_Z} \\
-        \end{bmatrix}^T .
+        \end{bmatrix}^T.
     \end{align}
 
     \paragraph
@@ -261,7 +261,7 @@ Finally, practical flight data will be used to verify the simulated mathematical
         q_{0}^{2}+q_{1}^{2}+q_{2}^{2}+q_{3}^{2} & 2\left(q_{1} q_{2}+q_{0} q_{3}\right) & 2\left(q_{1} q_{3}-q_{0} q_{2}\right) \\
         2\left(q_{1} q_{2}-q_{0} q_{3}\right) & q_{0}^{2}-q_{1}^{2}+q_{2}^{2}-q_{3}^{2} & 2\left(q_{2} q_{3}+q_{0} q_{1}\right) \\
         2\left(q_{1} q_{3}+q_{0} q_{2}\right) & 2\left(q_{2} q_{3}-q_{0} q_{1}\right) & q_{0}^{2}-q_{1}^{2}-q_{2}^{2}+q_{3}^{2}
-        \end{array}\right] .
+        \end{array}\right].
     \end{equation}
     $\bm{R}_{V}$ is the transformation matrix that describes the rotation from the body frame to the inertial frame such that,
     \begin{equation}
@@ -458,7 +458,7 @@ Finally, practical flight data will be used to verify the simulated mathematical
                 x_Q + l \cos \phi \sin \theta \\
                 y_Q +   \sin \phi \\
                 z_Q + l \cos \phi \cos \theta
-            \end{bmatrix} .
+            \end{bmatrix}.
         \end{equation}
         The vector of generalised coordinates, $\bm{p}$, of the system can now be defined as,
         \begin{equation} \label{eq:general_coords}
@@ -482,7 +482,7 @@ Finally, practical flight data will be used to verify the simulated mathematical
         Note that these energy equations describe the system modelled as two point-mass bodies and do not consider the attitude dynamics of the multirotor.
         The Lagrangian can now be determined as,
         \begin{equation}
-            \mathcal{L} = \mathcal{T}_p - \mathcal{V}_p .
+            \mathcal{L} = \mathcal{T}_p - \mathcal{V}_p.
         \end{equation}
 
     \FloatBarrier\subsection{Non-conservative forces}
@@ -515,7 +515,7 @@ Finally, practical flight data will be used to verify the simulated mathematical
         % The actuator thrust force was derived in Equation~\ref{eq:thurst_force_moment} for the body frame.
         % This is transformed in the inertial frame with the \gls{DCM} as,
         % \begin{equation}
-        %     \bm{F}_\mathcal{I}^T = \bm{R}_V^{-1} \bm{F}_\mathcal{B}^T .
+        %     \bm{F}_\mathcal{I}^T = \bm{R}_V^{-1} \bm{F}_\mathcal{B}^T.
         % \end{equation}
 
         \paragraph
@@ -573,7 +573,7 @@ Finally, practical flight data will be used to verify the simulated mathematical
         from Newton's second law, where $\ddot{\bm{r}}^P_Q$ represents the component of the multirotor acceleration caused by the suspended payload.
         This force can be represented in the body frame as,
         \begin{equation}
-            \bm{F}_{\mathcal{B}}^P = \bm{R}_V \bm{F}_{\mathcal{I}}^P .
+            \bm{F}_{\mathcal{B}}^P = \bm{R}_V \bm{F}_{\mathcal{I}}^P.
         \end{equation}
 
         \paragraph

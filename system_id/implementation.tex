@@ -111,7 +111,7 @@
     \subsection{Error metric}
 
         \paragraph        
-        It is common practice is to select a model for an \gls{MPC} based on k-step-ahead prediction errors because the model is used to make k-step-ahead predictions during control optimisation\cite{Zhao2014}.
+        It is common practice is to select a model for an \gls{MPC} based on k-step-ahead prediction errors because the model is used to make k-step-ahead predictions during control optimisation \cite{Zhao2014}.
         When model error is dominated by variance error caused by disturbances, 
         it may be better to use one-step-prediction error \cite{Zhao2014}.
         However, for the case of a multirotor with a payload, it is assumed that variance error caused by under-modelling dominates the model error.
@@ -342,13 +342,13 @@
         However, $\dot{\theta}$ can be represented with numerical differentiation of $\theta$.
         An example of this is the backward Euler form,
         \begin{equation}
-            \dot{\theta}_k = (\frac{1}{T_s}) \cdot \theta_k - (\frac{1}{T_s}) \cdot \theta_{k-1} .
+            \dot{\theta}_k = (\frac{1}{T_s}) \cdot \theta_k - (\frac{1}{T_s}) \cdot \theta_{k-1}.
         \end{equation}
         Therefore the original state vector can also be replaced by,
         $
             \bm{x} = \begin{bmatrix}
                 V_N & \theta
-            \end{bmatrix}^T ,
+            \end{bmatrix}^T,
         $
         for system identification.
 
@@ -442,7 +442,7 @@
         $
         and the cable length is limited to:
         $
-            0.5 \leq l \leq \SI{2}{\metre} .
+            0.5 \leq l \leq \SI{2}{\metre}.
         $
         Figure~\ref{fig:system_param_subfigs} shows the prediction error of \gls{HAVOKc} models 
         build from simulations with various values of $m_p$ and $l$.
@@ -486,7 +486,7 @@
         \paragraph
         This trend may be counter-intuitive because it is generally expected that more training data leads to better models.
         The logic follows that more training data leads to less overfitting which leads to better test data predictions.
-        However, a phenomenon named `double-descent' occurs when the dimension of a regression model, $D$ 
+        However, a phenomenon named `double-descent' occurs when the dimension of a regression model, $D$, 
         is near the number of training samples, $N_{train}$ \cite{Nakkiran2019}.
         In this critical region at the transition between over-parameterized and under-parameterized models,
         the prediction error initially decreases, then increases to a peak whereafter it decreases again \cite{Nakkiran2019}. 
@@ -495,11 +495,11 @@
         A rough calculation confirms that the critical region of `double-descent' is applicable to our use case.
         The highest $q$ in the considered range is 30, which corresponds to a model dimension of 
         \begin{equation}
-            D = (q \cdot n_x)^2 + (q \cdot n_x)(n_u) = 3660 .
+            D = (q \cdot n_x)^2 + (q \cdot n_x)(n_u) = 3660.
         \end{equation}
         The length of training data corresponding to $D = N_{train} \cdot n_x$ at the transition between over- and under-parameterization is therefore:
         \begin{equation}
-            T_{train} = N_{train} \cdot T_s = \SI{54.9}{\second} .
+            T_{train} = N_{train} \cdot T_s = \SI{54.9}{\second}.
         \end{equation}
         This value is indeed within the range of considered training data lengths,
         which explains why our training experiments experience this phenomenon.

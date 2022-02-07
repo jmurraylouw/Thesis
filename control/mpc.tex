@@ -108,14 +108,14 @@
             \end{bmatrix}
             \bm{u}_{dmd} (k) ,
             \\ 
-            \phantom{\begin{bmatrix} . \\ . \end{bmatrix}} % To get vertical spacing right
+            \phantom{\begin{bmatrix}. \\. \end{bmatrix}} % To get vertical spacing right
             \bm{x}_{mpc} (k+1) \hspace{7pt}
             &=
             \hspace{15pt} \bm{A}_{mpc} 
             \hspace{12pt} \cdot \hspace{5pt} \bm{x}_{mpc} (k) 
             \hspace{7pt} + 
             \hspace{7pt} \bm{B}_{mpc} 
-            \hspace{1pt} \cdot \bm{u}_{mpc} (k) ,
+            \hspace{1pt} \cdot \bm{u}_{mpc} (k),
             % 
         \end{align}
         where $\bm{I}_d$ is the identity matrix that links the corresponding entries in $[ \bm{x}_{dmd} (k) ~~ \bm{d} (k) ]^T$ to $\bm{d}(k+1)$.
@@ -133,11 +133,11 @@
             {\bm{x}_{mpc}}^T = 
                 \begin{bmatrix}
                     V_N & \theta & \dot{\theta} & \bm{d}
-                \end{bmatrix} .
+                \end{bmatrix}.
         \end{equation}
         The $\bm{A}_{mpc}$ matrix is also augmented with a Backwards Euler numerical differentiation equation, such that,
         \begin{equation}
-            \dot{\theta} (k) = \frac{1}{T_s} \theta(k) - \frac{1}{T_s} \theta(k-1) .
+            \dot{\theta} (k) = \frac{1}{T_s} \theta(k) - \frac{1}{T_s} \theta(k-1).
         \end{equation}
         In this way, a weight can be applied to the $\dot{\theta}$ variable in the \gls{MPC} objective function to control this variable.
         $\bm{B}_{mpc}$ is augmented with zeros so that the state space matrix dimensions agree and so that $\bm{u}_{mpc} (k)$ does not directly influence $\dot{\theta} (k)$.
@@ -342,14 +342,14 @@
             \bm{B_{ud}} = 
                 \begin{bmatrix}
                     b_{ud} & 0 & 0 & \bm{0}
-                \end{bmatrix}^T ,
+                \end{bmatrix}^T,
         \end{equation}
         such that an input disturbance only influences $V_N$ in the state vector,
         \begin{equation}
             {\bm{x}_{mpc}}^T = 
                 \begin{bmatrix}
                     V_N & \theta & \dot{\theta} & \bm{d}
-                \end{bmatrix} . \phantom{~~~}
+                \end{bmatrix}. \phantom{~~~}
         \end{equation}
         The variable $b_{ud}$ is a tunable value that quantifies the effect of the input disturbance on $V_N$.
         This variable will be tuned in Section~\ref{sec:mpc_tuning}

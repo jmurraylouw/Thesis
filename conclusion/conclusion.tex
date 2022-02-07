@@ -49,7 +49,7 @@
 
         \paragraph
         \gls{DMDc} and \gls{HAVOKc} were introduced as the data-driven system identification techniques proposed in this work.
-        These linear regression techniques each produce a discrete, linear space-space model of the considered dynamics based on input and output data only.
+        These linear regression techniques each produce a discrete, linear state-space model of the considered dynamics based on input and output data only.
         The conventional \gls{HAVOK} algorithm was not designed to be applied to controlled systems.
         However, this algorithm was extended in this work to account for control inputs in a dynamical system.
         The extended algorithm can be referred to as \gls{HAVOKc}.
@@ -105,7 +105,7 @@
         Both controllers also showed acceptable disturbance rejection during a constant unknown step input force to the multirotor.
 
         \paragraph
-        The control approaches were also tested for the dynamic payload case.
+        The controllers were also tested for the dynamic payload case.
         Despite the data-driven model showing a much better prediction accuracy than the white-box model, the \gls{LQR} and \gls{MPC} approached produced similar swing damping performances.
         It was shown that even though the data-driven model is accurate in the domain of the state and input vectors considered in training, the optimised trajectory of the \gls{MPC} goes beyond that domain.
         Hence, the model approximation is inaccurate and the resulting \gls{MPC} control is suboptimal.
